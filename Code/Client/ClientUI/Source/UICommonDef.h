@@ -30,11 +30,11 @@ enum class E_UI_ONLINE_STATUS
 
 enum class E_UI_ONLINE_CLIENT_TYPE //在线客户端类型
 {
-	ONLINE_CLIENT_UNKONWN,
-	ONLINE_CLIENT_PC,
-	ONLINE_CLIENT_MOBILE,
-	ONLINE_CLIENT_BOTH,
-	OFFLINE_CLIENT_BOTH
+	ONLINE_CLIENT_UNKONWN=0,
+	ONLINE_CLIENT_PC=1,
+	ONLINE_CLIENT_MOBILE=2,
+	ONLINE_CLIENT_BOTH=3,
+	OFFLINE_CLIENT_BOTH=4,
 };
 
 enum class E_UI_LOGIN_TYPE
@@ -45,32 +45,32 @@ enum class E_UI_LOGIN_TYPE
 
 enum class E_UI_LOGIN_RESULT_CODE	// 登录结果代码
 {
-	LOGIN_SUCCESS,				// 登录成功
-	LOGIN_FAILED,				// 登录失败
-	LOGIN_UNREGISTERED,			// 用户未注册
-	LOGIN_PASSWORD_ERROR,		// 密码错误
-	LOGIN_USER_CANCEL_LOGIN,	// 用户取消登录
-	LOGIN_SERVER_REFUSED,		// 服务器拒绝
-	LOGIN_SERVER_NOT_RESPONSE	// 服务器未响应
+	LOGIN_SUCCESS=0,				// 登录成功
+	LOGIN_FAILED=1,				// 登录失败
+	LOGIN_UNREGISTERED=2,			// 用户未注册
+	LOGIN_PASSWORD_ERROR=3,		// 密码错误
+	LOGIN_USER_CANCEL_LOGIN=4,	// 用户取消登录
+	LOGIN_SERVER_REFUSED=5,		// 服务器拒绝
+	LOGIN_SERVER_NOT_RESPONSE=6,	// 服务器未响应
 };
 
 enum class E_UI_REGISTER_RESULT_CODE	//注册结果代码
 {
-	REGISTER_SUCCESS,				//注册成功
-	REGISTER_EXIST,					//账号已经存在
-	REGISTER_FAILED,				//注册失败
-	REGISTER_SERVER_NOT_RESPONSE	//服务器未响应
+	REGISTER_SUCCESS=1,				//注册成功
+	REGISTER_EXIST=2,					//账号已经存在
+	REGISTER_FAILED=3,				//注册失败
+	REGISTER_SERVER_NOT_RESPONSE=4,	//服务器未响应
 };
 
 
 //加好友状态
 enum class E_UI_OPERATE_FRIEND
 {
-	UnKnown,//未知
-	Apply,//应用
-	Agree,//同意
-	Refuse,//拒绝
-	Delete,//删除
+	UnKnown=0,//未知
+	Apply=1,//应用
+	Agree=2,//同意
+	Refuse=3,//拒绝
+	Delete=4,//删除
 };
 
 enum class E_UI_ADD_FRIEND_RESULT	//添加好友结果

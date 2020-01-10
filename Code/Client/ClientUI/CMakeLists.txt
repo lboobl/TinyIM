@@ -77,7 +77,6 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/GroupInfoDlg.h ./Source/GroupInfoDlg.cpp
 ./../../msgStruct/CommonDef.cpp
 ./../../msgStruct/CommonMsg.cpp
-./Source/HideWindow.h ./Source/HideWindow.cpp
 ./Source/IImageOle.h
 ./Source/ImageEx.h ./Source/ImageEx.cpp
 ./Source/IniFile.h ./Source/IniFile.cpp
