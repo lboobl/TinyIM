@@ -87,14 +87,10 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/LoginSettingsDlg.h ./Source/LoginSettingsDlg.cpp 
 ./Source/LogonUserInfoDlg.h ./Source/LogonUserInfoDlg.cpp 
 ./Source/MainDlg.h ./Source/MainDlg.cpp
-./Source/MD5.h ./Source/MD5.cpp 
-./Source/MD5Sum.h ./Source/MD5Sum.cpp  
 ./Source/MessageLogger.h ./Source/MessageLogger.cpp
 ./Source/MiniBuffer.h ./Source/MinuBuffer.cpp 
-./Source/MobileStatusDlg.h ./Source/MobileStatusDlg.cpp 
 ./Source/ModifyMarkNameDlg.h ./Source/ModifyMarkNameDlg.cpp
 ./Source/ModifyPasswordDlg.h ./Source/ModifyPasswordDlg.cpp
-./Source/MsgTipDlg.h ./Source/MsgTipDlg.cpp
 ./Source/Path.h ./Source/Path.cpp  
 ./Source/PerformanceCounter.h ./Source/PerformanceCounter.cpp  
 ./Source/PicBarDlg.h ./Source/PicBarDlg.cpp  
@@ -102,8 +98,8 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/RegisterDialog.h ./Source/RegisterDialog.cpp
 ./Source/resource.h ./Source/Result.h 
 ./Source/RichEditUtil.h ./Source/RichEditUtil.cpp  
-./Source/SessChatDlg.h  ./Source/SessChatDlg.cpp    
 ./Source/SplitterCtrl.h  ./Source/SplitterCtrl.cpp   
+./Source/MsgTipDlg.h  ./Source/MsgTipDlg.cpp 
 ./Source/SrcVersion.h  ./Source/   
 ./Source/UICommonStruct.h 
 ./Source/UIWndMsgDef.h
