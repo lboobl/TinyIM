@@ -17,11 +17,9 @@
 #include "TeamDlg.h"
 #include "BuddyChatDlg.h"
 #include "GroupChatDlg.h"
-#include "SessChatDlg.h"
 #include "BuddyInfoDlg.h"
 #include "GroupInfoDlg.h"
 #include "FindFriendDlg.h"
-#include "RemoteDesktopDlg.h"
 #include "AddFriendConfirmDlg.h"
 #include "Updater.h"
 #include "UpdateDlg.h"
@@ -1320,12 +1318,7 @@ void CMainDlg::ShowLockPanel()
 	}
 
 	//隐藏所有的临时会话窗口
-	auto iter3 = m_mapSessChatDlg.begin();
-	for(;iter3!=m_mapSessChatDlg.end(); ++iter3)
-	{
-		if(iter3->second!=NULL && iter3->second->IsWindow())
-			iter3->second->ShowWindow(SW_HIDE);
-	}
+
 
 
 	InvalidateRect(NULL, TRUE);
@@ -5994,20 +5987,7 @@ void CMainDlg::CloseAllDlg()
 		m_mapGroupChatDlg.clear();
 	}
 
-	//关闭临时聊天会话框
-	{
-		for (auto iter = m_mapSessChatDlg.begin(); iter != m_mapSessChatDlg.end(); iter++)
-		{
-			CSessChatDlg* lpSessChatDlg = iter->second;
-			if (lpSessChatDlg != NULL)
-			{
-				if (lpSessChatDlg->IsWindow())
-					lpSessChatDlg->DestroyWindow();
-				delete lpSessChatDlg;
-			}
-		}
-		m_mapSessChatDlg.clear();
-	}
+
 
 	//关闭好友消息对话框
 	{

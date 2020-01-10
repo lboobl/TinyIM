@@ -69,7 +69,6 @@ class CBuddyChatDlg;
 class CBuddyInfoDlg;
 class CGroupChatDlg;
 class CGroupInfoDlg;
-class CSessChatDlg;
 
 class CFindFriendDlg;
 class CRemoteDesktopDlg;
@@ -494,7 +493,6 @@ private:
 
 	std::map<std::string, CBuddyChatDlg*> m_mapBuddyChatDlg;//好友聊天对话框MAP
 	std::map<std::string, CGroupChatDlg*> m_mapGroupChatDlg;//群组聊天对话框MAP
-	std::map<std::string, CSessChatDlg*> m_mapSessChatDlg;//临时会话对话框MAP
 
 
 	std::map<std::string, CBuddyInfoDlg*> m_mapBuddyInfoDlg;//好友信息对话框MAP
