@@ -1142,12 +1142,12 @@ void CBuddyChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 	fileDlg.m_ofn.lpstrTitle = _T("打开图片");
 	if (fileDlg.DoModal() == IDOK)
 	{
-		UINT64 nFileSize = IUGetFileSize2(fileDlg.m_ofn.lpstrFile);
+		/*UINT64 nFileSize = IUGetFileSize2(fileDlg.m_ofn.lpstrFile);
 		if(nFileSize > MAX_CHAT_IMAGE_SIZE)
 		{
             ::MessageBox(m_hWnd, _T("图片大小超过10M，请使用文件方式发送或使用截图工具。"), g_strAppTitle.c_str(), MB_OK | MB_ICONINFORMATION);
 			return;
-		}
+		}*/
 		
 		_RichEdit_InsertFace(m_richSend.m_hWnd, fileDlg.m_ofn.lpstrFile, -1, -1);
 		m_richSend.SetFocus();
@@ -2595,7 +2595,7 @@ BOOL CBuddyChatDlg::SendOfflineFile(PCTSTR pszFileName)
 			return FALSE;
 		}
 
-		UINT64 nFileSize = IUGetFileSize2(pszFileName);
+	/*	UINT64 nFileSize = IUGetFileSize2(pszFileName);*/
 		//if(nFileSize > (UINT64)MAX_OFFLINE_FILE_SIZE)
 		//{
 		//	::MessageBox(m_hWnd, _T("离线文件暂且不支持大小超过2G的文件。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);

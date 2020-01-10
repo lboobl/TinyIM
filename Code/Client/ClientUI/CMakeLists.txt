@@ -43,7 +43,6 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/BuddyChatDlg.h ./Source/BuddyChatDlg.cpp
 ./Source/BuddyInfoDlg.h ./Source/BuddyInfoDlg.cpp
 ./Source/BuddyListCtrl.h ./Source/BuddyListCtrl.cpp
-./Source/Buffer.h ./Source/Buffer.cpp
 ./Source/UI_Core_Convert.h ./Source/UI_Core_Convert.cpp
 ./Source/CascadeWinManager.h ./Source/CascadeWinManager.cpp
 ./Source/ChangePicHead.h ./Source/ChangePicHead.cpp

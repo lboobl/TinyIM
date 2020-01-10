@@ -15,7 +15,7 @@
 #include "EncodingUtil.h"
 #include "Utils.h"
 #include "Path.h"
-#include "Buffer.h"
+//#include "Buffer.h"
 
 //主程序目录
 TCHAR g_szHomePath[MAX_PATH] = {0};

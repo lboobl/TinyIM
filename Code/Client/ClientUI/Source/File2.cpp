@@ -223,11 +223,11 @@ CFile::CFile()
 
 CFile::~CFile()
 {
-	if(m_hFile != INVALID_HANDLE_VALUE)
+	/*if(m_hFile != INVALID_HANDLE_VALUE)
 	{
 		::CloseHandle(m_hFile);
 		m_Buffer.Release();
-	}
+	}*/
 }
 
 BOOL CFile::Open(LPCTSTR lpszFileName, BOOL bCreateAlways/* = TRUE*/)
@@ -248,7 +248,7 @@ long CFile::GetSize()
 
 const char* CFile::Read()
 {
-	if(m_hFile == INVALID_HANDLE_VALUE)
+	/*if(m_hFile == INVALID_HANDLE_VALUE)
 		return NULL;
 
 	m_Buffer.Release();
@@ -275,7 +275,8 @@ const char* CFile::Read()
 
 	m_Buffer.Add(pBuffer, nSize);
 
-	return (const char*)m_Buffer.GetData();
+	return (const char*)m_Buffer.GetData();*/
+	return FALSE;
 }
 
 BOOL CFile::Write(const char* pBuffer, long nSize)
@@ -310,12 +311,12 @@ BOOL CFile::Write(const char* pBuffer, long nSize)
 
 void CFile::Close()
 {
-	if(m_hFile != INVALID_HANDLE_VALUE)
-	{
-		::CloseHandle(m_hFile);
-		m_Buffer.Release();
-		m_hFile = INVALID_HANDLE_VALUE;
-	}
+	//if(m_hFile != INVALID_HANDLE_VALUE)
+	//{
+	//	::CloseHandle(m_hFile);
+	//	m_Buffer.Release();
+	//	m_hFile = INVALID_HANDLE_VALUE;
+	//}
 }
 
 

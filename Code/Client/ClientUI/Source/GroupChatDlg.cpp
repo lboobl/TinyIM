@@ -1089,12 +1089,12 @@ void CGroupChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 	fileDlg.m_ofn.lpstrTitle = _T("打开图片");
 	if (fileDlg.DoModal() == IDOK)
 	{
-		UINT64 nFileSize = IUGetFileSize2(fileDlg.m_ofn.lpstrFile);
+	/*	UINT64 nFileSize = IUGetFileSize2(fileDlg.m_ofn.lpstrFile);
 		if(nFileSize > MAX_CHAT_IMAGE_SIZE)
 		{
 			::MessageBox(m_hWnd, _T("图片大小超过10M，请使用截图工具。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
 			return;
-		}
+		}*/
 
 		_RichEdit_InsertFace(m_richSend.m_hWnd, fileDlg.m_ofn.lpstrFile, -1, -1);
 		m_richSend.SetFocus();
@@ -3385,11 +3385,11 @@ void CGroupChatDlg::AddMsgToRecvEdit(C_UI_BuddyMessage* lpGroupMsg)
 						long lStartChar = 0, lEndChar = 0;
 						RichEdit_GetSel(m_richRecv.m_hWnd, lStartChar, lEndChar);
 						//strFileName = m_lpFMGClient->m_UserMgr.GetChatPicFullName(lpContent->m_CFaceInfo.m_strFileName.c_str());
-                        if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
+                        /*if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
 						{
 							m_mapRecvFileInfo.insert(std::pair<CString, long>(strFileName.c_str(), lStartChar));						
 							strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DownloadImageProgress.gif");
-						}
+						}*/
 				
 						_RichEdit_InsertFace(m_richRecv.m_hWnd, strFileName.c_str(), -1, -1);
 					}
@@ -3400,10 +3400,10 @@ void CGroupChatDlg::AddMsgToRecvEdit(C_UI_BuddyMessage* lpGroupMsg)
 						if(iter != m_mapRecvFileInfo.end())
 						{
 							RichEdit_SetSel(m_richRecv.m_hWnd, iter->second, iter->second+1);
-							if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
+							/*if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
 							{
 								strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DownloadFailed.gif");
-							}
+							}*/
 						
 							_RichEdit_InsertFace(m_richRecv.m_hWnd, strFileName.c_str(), -1, -1);
 						}
@@ -3992,10 +3992,10 @@ void CGroupChatDlg::AddMsgToRecvEdit(std::vector<C_UI_Content*>& arrContent)
 						strFileName = lpContent->m_CFaceInfo.m_strName;
 					}
 					
-					if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
+				/*	if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
 					{
 						strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DownloadFailed.gif");
-					}
+					}*/
 					
 					_RichEdit_InsertFace(m_richRecv.m_hWnd, strFileName.c_str(), -1, -1);
 				}
@@ -4079,10 +4079,10 @@ void CGroupChatDlg::AddMsgToMsgLogEdit(std::vector<C_UI_Content*>& arrContent)
 						strFileName = lpContent->m_CFaceInfo.m_strName;
 					}
 					
-					if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
-					{
-						strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DownloadFailed.gif");
-					}
+					//if (!Hootina::CPath::IsFileExist(strFileName.c_str()) || IUGetFileSize(strFileName.c_str()) == 0)
+					//{
+					//	strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DownloadFailed.gif");
+					//}
 					
 					_RichEdit_InsertFace(m_richMsgLog.m_hWnd, strFileName.c_str(), -1, -1);
 				}
@@ -4268,12 +4268,12 @@ BOOL CGroupChatDlg::HandleFileDragResult(PCTSTR lpszFileName)
 	    strFileExtension==_T("bmp")  ||
 		strFileExtension==_T("gif") )
 	{
-		UINT64 nFileSize = IUGetFileSize2(lpszFileName);
+		/*UINT64 nFileSize = IUGetFileSize2(lpszFileName);
 		if(nFileSize > MAX_CHAT_IMAGE_SIZE)
 		{
 			::MessageBox(m_hWnd, _T("图片大小超过10M，请使用截图工具。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
 			return FALSE;
-		}
+		}*/
 		
 		_RichEdit_InsertFace(m_richSend.m_hWnd, lpszFileName, -1, -1);
 		m_richSend.SetFocus();
