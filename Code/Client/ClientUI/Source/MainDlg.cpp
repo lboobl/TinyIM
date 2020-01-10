@@ -11,7 +11,6 @@
 #include "net/IUProtocolData.h"
 #include "SystemSettingDlg.h"
 #include "ClosePromptDlg.h"
-#include "MobileStatusDlg.h"
 #include "UI_USER_INFO.h"
 #include "ModifyMarkNameDlg.h"
 #include "TeamDlg.h"
@@ -4088,11 +4087,11 @@ LRESULT CMainDlg::OnSelfStatusChange(UINT message, WPARAM wParam, LPARAM lParam)
 		CString strInfo;
 		//strInfo.Format(_T("尊敬的%s(%s)\r\n    您的账号在另一台机器上登录，你被迫下线。如果这不是你本人亲自操作，建议你修改密码！"), m_userMgr.m_UserInfo.m_strNickName.c_str(),  m_userMgr.m_UserInfo.m_strAccount.c_str());
 		
-		CMobileStatusDlg dlg;
-		dlg.SetWindowTitle(_T("下线通知"));
-		dlg.SetInfoText(strInfo);
-		dlg.EnableAutoDisappear(FALSE);
-		dlg.DoModal(m_hWnd, NULL);
+		//CMobileStatusDlg dlg;
+		//dlg.SetWindowTitle(_T("下线通知"));
+		//dlg.SetInfoText(strInfo);
+		//dlg.EnableAutoDisappear(FALSE);
+		//dlg.DoModal(m_hWnd, NULL);
 
 		m_userMgr.ClearUserInfo();
 		m_userMgr.m_UserInfo.Reset();
@@ -4105,14 +4104,14 @@ LRESULT CMainDlg::OnSelfStatusChange(UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	else if(nStatus== E_UI_ONLINE_STATUS::STATUS_MOBILE_ONLINE)
 	{
-		CString strInfo;
-		strInfo.Format(_T("尊敬的%s(%s)\r\n    您的账号在手机端上线。\r\n    如果这不是你本人亲自操作，建议你修改密码。"), m_userMgr.m_UserInfo.m_strNickName.c_str(),  m_userMgr.m_UserInfo.m_strAccount.c_str());
-		CMobileStatusDlg dlg;
-		
-		dlg.SetWindowTitle(_T("手机上线提示"));
-		dlg.SetInfoText(strInfo);
-		dlg.EnableAutoDisappear(TRUE);
-		dlg.DoModal(NULL, NULL);
+		//CString strInfo;
+		//strInfo.Format(_T("尊敬的%s(%s)\r\n    您的账号在手机端上线。\r\n    如果这不是你本人亲自操作，建议你修改密码。"), m_userMgr.m_UserInfo.m_strNickName.c_str(),  m_userMgr.m_UserInfo.m_strAccount.c_str());
+		//CMobileStatusDlg dlg;
+		//
+		//dlg.SetWindowTitle(_T("手机上线提示"));
+		//dlg.SetInfoText(strInfo);
+		//dlg.EnableAutoDisappear(TRUE);
+		//dlg.DoModal(NULL, NULL);
 		return (LRESULT)1;
 	}
 	//else if(nStatus==STATUS_MOBILE_OFFLINE)

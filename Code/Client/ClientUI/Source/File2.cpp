@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
 #include "File2.h"
-#include "MD5Sum.h"
 #include "MiniBuffer.h"
 #include "Path.h"
 #include "EncodingUtil.h"
@@ -51,111 +50,111 @@ UINT64 IUGetFileSize2(PCTSTR pszFileName)
 }
 
 //获取文件md5值
-E_UI_GET_FILE_MD5_RETCODE GetFileMd5ValueA(PCTSTR pszFileName, char* pszMd5, long nMd5Length, int64_t& nFileSize, HWND hwndReflection/*=NULL*/, HANDLE hCancelEvent/*=NULL*/)
-{
-    nFileSize = 0;
+//E_UI_GET_FILE_MD5_RETCODE GetFileMd5ValueA(PCTSTR pszFileName, char* pszMd5, long nMd5Length, int64_t& nFileSize, HWND hwndReflection/*=NULL*/, HANDLE hCancelEvent/*=NULL*/)
+//{
+//    nFileSize = 0;
+//
+//    HANDLE hFile = GetFileHandle(pszFileName);
+//	if(hFile == INVALID_HANDLE_VALUE)	
+//		return E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_FAILED;
+//
+//	CAutoFileHandle autoFile(hFile);
+//    DWORD dwFileSizeHigh;
+//    DWORD dwFileSizeLow = ::GetFileSize(hFile, &dwFileSizeHigh);
+//    //获取文件失败或者0字节的文件不能上传
+//    if (dwFileSizeLow == INVALID_FILE_SIZE || (dwFileSizeLow == 0 && dwFileSizeHigh == 0))
+//		return E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_FAILED;
+//
+//	BOOL bError = FALSE;
+//
+//    nFileSize = (((int64_t)(((int64_t)dwFileSizeHigh) << 32)) + (int64_t)dwFileSizeLow);
+//	//每次最多读取500k大小
+//	int64_t nSizeEachRead = 500*1024;
+//    if (nFileSize <= nSizeEachRead)
+//        nSizeEachRead = nFileSize;
+//
+//	int64_t nFileOffset = 0;
+//	BOOL bRet = 0;
+//	//读取的字节数
+//    DWORD dwFileRead = 0;
+//	MD5_CTX ctx;
+//    MD5Init(&ctx);
+//	FileProgress* pFileProgress = NULL;
+//
+//	while(TRUE)
+//	{
+//		if(hCancelEvent!=NULL && ::WaitForSingleObject(hCancelEvent, 0)==WAIT_OBJECT_0)
+//		{
+//			return E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_USERCANCEL;
+//		}
+//		
+//		//如果剩下的文件大小已经不足一个nSizeEachRead
+//        if (nFileOffset + nSizeEachRead > nFileSize)
+//			nSizeEachRead = nFileSize-nFileOffset;
+//		
+//		CMiniBuffer miniBuffer(nSizeEachRead);
+//
+//        bRet = ::ReadFile(hFile, miniBuffer.GetBuffer(), (DWORD)nSizeEachRead, &dwFileRead, NULL);
+//		if(!bRet || nSizeEachRead!=dwFileRead)
+//		{
+//			bError = TRUE;
+//			break;
+//		}
+//
+//		MD5Update(&ctx, (unsigned char*)miniBuffer.GetBuffer(), (unsigned int)nSizeEachRead);
+//
+//		nFileOffset += nSizeEachRead;
+//
+//		if(nFileOffset >= nFileSize)
+//			break;
+//
+//		
+//		pFileProgress = new FileProgress();
+//		memset(pFileProgress, 0, sizeof(FileProgress));
+//		pFileProgress->nPercent = -1;
+//		pFileProgress->nVerificationPercent = (long)((__int64)nFileOffset*100/nFileSize);
+//		//_tcscpy_s(pFileProgress->szDestPath, ARRAYSIZE(pFileProgress->szDestPath), pszFileName);
+//		::PostMessage(hwndReflection, FMG_MSG_SEND_FILE_PROGRESS, 0, (LPARAM)pFileProgress);
+//
+//		::Sleep(1);
+//		
+//	}// end while-loop
+//	
+//	
+//	if(!bError)
+//	{
+//		unsigned char szTempMd5[16] = {0};
+//		MD5Final(szTempMd5 , &ctx );
+//		CStringA strTemp;
+//		CStringA strMd5;
+//		for (int i = 0; i < 16; i++)
+//		{
+//			strTemp.Format("%02x", szTempMd5[i]);
+//			strMd5 += strTemp;
+//		}
+//
+//		strcpy_s((char*)pszMd5, nMd5Length, strMd5);
+//
+//		pFileProgress = new FileProgress();
+//		memset(pFileProgress, 0, sizeof(FileProgress));
+//		pFileProgress->nPercent = -1;
+//		pFileProgress->nVerificationPercent = 100;
+//		//_tcscpy_s(pFileProgress->szDestPath, ARRAYSIZE(pFileProgress->szDestPath), pszFileName);
+//		::PostMessage(hwndReflection, FMG_MSG_SEND_FILE_PROGRESS, 0, (LPARAM)pFileProgress);
+//	}
+//
+//	return !bError ? E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_SUCESS: E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_FAILED;
+//}
 
-    HANDLE hFile = GetFileHandle(pszFileName);
-	if(hFile == INVALID_HANDLE_VALUE)	
-		return E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_FAILED;
-
-	CAutoFileHandle autoFile(hFile);
-    DWORD dwFileSizeHigh;
-    DWORD dwFileSizeLow = ::GetFileSize(hFile, &dwFileSizeHigh);
-    //获取文件失败或者0字节的文件不能上传
-    if (dwFileSizeLow == INVALID_FILE_SIZE || (dwFileSizeLow == 0 && dwFileSizeHigh == 0))
-		return E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_FAILED;
-
-	BOOL bError = FALSE;
-
-    nFileSize = (((int64_t)(((int64_t)dwFileSizeHigh) << 32)) + (int64_t)dwFileSizeLow);
-	//每次最多读取500k大小
-	int64_t nSizeEachRead = 500*1024;
-    if (nFileSize <= nSizeEachRead)
-        nSizeEachRead = nFileSize;
-
-	int64_t nFileOffset = 0;
-	BOOL bRet = 0;
-	//读取的字节数
-    DWORD dwFileRead = 0;
-	MD5_CTX ctx;
-    MD5Init(&ctx);
-	FileProgress* pFileProgress = NULL;
-
-	while(TRUE)
-	{
-		if(hCancelEvent!=NULL && ::WaitForSingleObject(hCancelEvent, 0)==WAIT_OBJECT_0)
-		{
-			return E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_USERCANCEL;
-		}
-		
-		//如果剩下的文件大小已经不足一个nSizeEachRead
-        if (nFileOffset + nSizeEachRead > nFileSize)
-			nSizeEachRead = nFileSize-nFileOffset;
-		
-		CMiniBuffer miniBuffer(nSizeEachRead);
-
-        bRet = ::ReadFile(hFile, miniBuffer.GetBuffer(), (DWORD)nSizeEachRead, &dwFileRead, NULL);
-		if(!bRet || nSizeEachRead!=dwFileRead)
-		{
-			bError = TRUE;
-			break;
-		}
-
-		MD5Update(&ctx, (unsigned char*)miniBuffer.GetBuffer(), (unsigned int)nSizeEachRead);
-
-		nFileOffset += nSizeEachRead;
-
-		if(nFileOffset >= nFileSize)
-			break;
-
-		
-		pFileProgress = new FileProgress();
-		memset(pFileProgress, 0, sizeof(FileProgress));
-		pFileProgress->nPercent = -1;
-		pFileProgress->nVerificationPercent = (long)((__int64)nFileOffset*100/nFileSize);
-		//_tcscpy_s(pFileProgress->szDestPath, ARRAYSIZE(pFileProgress->szDestPath), pszFileName);
-		::PostMessage(hwndReflection, FMG_MSG_SEND_FILE_PROGRESS, 0, (LPARAM)pFileProgress);
-
-		::Sleep(1);
-		
-	}// end while-loop
-	
-	
-	if(!bError)
-	{
-		unsigned char szTempMd5[16] = {0};
-		MD5Final(szTempMd5 , &ctx );
-		CStringA strTemp;
-		CStringA strMd5;
-		for (int i = 0; i < 16; i++)
-		{
-			strTemp.Format("%02x", szTempMd5[i]);
-			strMd5 += strTemp;
-		}
-
-		strcpy_s((char*)pszMd5, nMd5Length, strMd5);
-
-		pFileProgress = new FileProgress();
-		memset(pFileProgress, 0, sizeof(FileProgress));
-		pFileProgress->nPercent = -1;
-		pFileProgress->nVerificationPercent = 100;
-		//_tcscpy_s(pFileProgress->szDestPath, ARRAYSIZE(pFileProgress->szDestPath), pszFileName);
-		::PostMessage(hwndReflection, FMG_MSG_SEND_FILE_PROGRESS, 0, (LPARAM)pFileProgress);
-	}
-
-	return !bError ? E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_SUCESS: E_UI_GET_FILE_MD5_RETCODE::GET_FILE_MD5_FAILED;
-}
-
-BOOL GetFileMd5ValueW(PCTSTR pszFileName, TCHAR* pszMd5, long nMd5Length)
-{
-	char szMd5[64] = {0};
-    /*int64_t nFileSize;
-    if (!GetFileMd5ValueA(pszFileName, szMd5, ARRAYSIZE(szMd5), nFileSize))
-		return FALSE;*/
-
-	return EncodeUtil::AnsiToUnicode(szMd5, pszMd5, nMd5Length);
-}
+//BOOL GetFileMd5ValueW(PCTSTR pszFileName, TCHAR* pszMd5, long nMd5Length)
+//{
+//	char szMd5[64] = {0};
+//    /*int64_t nFileSize;
+//    if (!GetFileMd5ValueA(pszFileName, szMd5, ARRAYSIZE(szMd5), nFileSize))
+//		return FALSE;*/
+//
+//	return EncodeUtil::AnsiToUnicode(szMd5, pszMd5, nMd5Length);
+//}
 
 //获取文件的上传名称：大小|md5值
 BOOL GetFileUploadName(PCTSTR pszFileName, char* pszUploadName, long nUploadNameLength)
