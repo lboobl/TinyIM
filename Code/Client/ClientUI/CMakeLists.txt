@@ -56,8 +56,6 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/UIDefaultValue.h
 ./Source/UICommonStruct.cpp
 ./Source/CreateNewGroupDlg.h ./Source/CreateNewGroupDlg.cpp
-./Source/CriticalSection.h ./Source/CriticalSection.cpp
-./Source/CriticalSection.h ./Source/ChangePicHeadDlg.cpp
 ./Source/CustomMsgDef.h
 ./Source/DstVersion.h
 
@@ -65,7 +63,6 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/FaceCtrl.h ./Source/FaceCtrl.cpp
 ./Source/FaceList.h ./Source/FaceList.cpp
 ./Source/FaceSelDlg.h ./Source/FaceSelDlg.cpp
-./Source/File.h ./Source/File.cpp
 ./Source/File2.h ./Source/File2.cpp
 ./Source/FileTransferCtrl.h ./Source/FileTransferCtrl.cpp
 ./Source/FindFriendDlg.h ./Source/FindFriendDlg.cpp
