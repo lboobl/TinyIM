@@ -6,7 +6,7 @@
 #include "Path.h"
 #include "Utils.h"
 #include "UIWndMsgDef.h"
-#include "File2.h"
+#include "FileTool.h"
 /**
  * @brief 获取单例,TODO 应该有更好的写法
  * 
@@ -1089,7 +1089,7 @@ BOOL CUserMgr::LoadRecentList()
 {
 	CString strRecentFilePath;
 	strRecentFilePath.Format(_T("%sUsers\\%s\\RecentSessionList.rsl"), g_szHomePath, m_UserInfo.m_strAccount.c_str());
-	CFile RecentFile;
+	CTinyImFile RecentFile;
 	if(!RecentFile.Open(strRecentFilePath, FALSE))
 		return FALSE;
 
@@ -1158,7 +1158,7 @@ BOOL CUserMgr::StoreRecentList()
 		//_tcscpy_s(pBufferToWrite[i].szLastMsgText, ARRAYSIZE(pBufferToWrite[i].szLastMsgText), pRecentInfo->m_szLastMsgText);
 	}
 
-	CFile RecentFile;
+	CTinyImFile RecentFile;
     //FIXME: 将int64_t强制转换成int32可能会有问题
 	if(!RecentFile.Open(strRecentFilePath, TRUE) || !RecentFile.Write(miniBuffer.GetBuffer(), (int)miniBuffer.GetSize()))
 		return FALSE;
@@ -1212,7 +1212,7 @@ BOOL CUserMgr::LoadTeamInfo()
 {
 	CString strTeamInfoFilePath;
 	strTeamInfoFilePath.Format(_T("%sUsers\\%s\\BuddyTeamInfo.bti"), g_szHomePath, m_UserInfo.m_strAccount.c_str());
-	CFile file;
+	CTinyImFile file;
 	if(!file.Open(strTeamInfoFilePath, FALSE))
 		return FALSE;
 
@@ -1272,7 +1272,7 @@ BOOL CUserMgr::StoreTeamInfo()
 
 	CString strTeamInfoFilePath;
 	strTeamInfoFilePath.Format(_T("%sUsers\\%s\\BuddyTeamInfo.bti"), g_szHomePath, m_UserInfo.m_strAccount.c_str());
-	CFile file;
+	CTinyImFile file;
     //FIXME: 将int64_t强制转换成int32可能会有问题
 	if(!file.Open(strTeamInfoFilePath, TRUE) || !file.Write(miniBuffer.GetBuffer(), (int)miniBuffer.GetSize()))
 		return FALSE;
@@ -1289,7 +1289,7 @@ BOOL CUserMgr::LoadBuddyInfo()
 {
 	CString strBuddyInfoFilePath;
 	strBuddyInfoFilePath.Format(_T("%sUsers\\%s\\BuddyInfo.bi"), g_szHomePath, m_UserInfo.m_strAccount.c_str());
-	CFile file;
+	CTinyImFile file;
 	if(!file.Open(strBuddyInfoFilePath, FALSE))
 		return FALSE;
 
@@ -1371,7 +1371,7 @@ BOOL CUserMgr::SaveBuddyInfo()
 
 	CString strBuddyInfoFilePath;
 	strBuddyInfoFilePath.Format(_T("%sUsers\\%s\\BuddyInfo.bi"), g_szHomePath, m_UserInfo.m_strAccount.c_str());
-	CFile file;
+	CTinyImFile file;
     //FIXME: 将int64_t强制转换成int32可能会有问题
 	if(!file.Open(strBuddyInfoFilePath, TRUE) || !file.Write(miniBuffer.GetBuffer(), (int)miniBuffer.GetSize()))
 		return FALSE;

@@ -3,8 +3,7 @@
 #include "UI_USER_INFO.h"
 #include "EncodingUtil.h"
 #include "Utils.h"
-#include "File2.h"
-//#include "FileTaskThread.h"
+#include "FileTool.h"
 
 Updater::Updater(CFileTaskThread* pFileTask)
 {
@@ -44,7 +43,7 @@ BOOL Updater::IsNeedUpdate()
 	}
 	
 	//如果本地版本文件存在
-	CFile file;
+	CTinyImFile file;
 	if(!file.Open(szLocalVersionFile, FALSE))
 		return FALSE;
 	

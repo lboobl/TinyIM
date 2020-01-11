@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "UpdateDlg.h"
 #include "UI_USER_INFO.h"
-#include "File2.h"
+#include "FileTool.h"
 #include "UserMgr.h"
 #include "CustomMsgDef.h"
 #include "EncodingUtil.h"
@@ -241,13 +241,13 @@ DWORD WINAPI CUpdateDlg::DownloadThread(LPVOID lpParameter)
 		WString strVersionFile = g_szHomePath;
 		strVersionFile += _T("config\\version.ver");
 
-		CFile file;
+		CTinyImFile file;
 		if(!file.Open(strBackupVersionFile.c_str(), FALSE))
 			return 0;
 		const char* pBuffer = file.Read();
 		if(pBuffer == NULL)
 			return 0;
-		CFile file2;
+		CTinyImFile file2;
 		if(!file2.Open(strVersionFile.c_str(), TRUE) || !file2.Write(pBuffer, file.GetSize()))
 			return 0;
 

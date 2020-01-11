@@ -14,7 +14,7 @@
 #include "MiniBuffer.h"
 #include "EncodingUtil.h"
 #include "Utils.h"
-#include "File2.h"
+#include "FileTool.h"
 #include "GDIFactory.h"
 #include "UIText.h"
 #include "IniFile.h"
@@ -69,7 +69,7 @@ LRESULT CAboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 
     CString strAboutInfoPath;
     strAboutInfoPath.Format(_T("%sconfig\\AboutInfo.txt"), g_szHomePath);
-    CFile file;
+    CTinyImFile file;
     if (file.Open(strAboutInfoPath, FALSE))
     {
         const char* pBuffer = file.Read();

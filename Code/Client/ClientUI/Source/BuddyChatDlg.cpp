@@ -23,7 +23,7 @@
 #include "net/protocolstream.h"
 #include "net/Msg.h"
 #include "UIText.h"
-#include "File2.h"
+#include "FileTool.h"
 #include "UIDefaultValue.h"
 #include "UICommonStruct.h"
 #include "Path.h"
@@ -2046,7 +2046,7 @@ void CBuddyChatDlg::OnMenu_ExportMsgLog(UINT uNotifyCode, int nID, CWindow wndCt
 	{
 		CString strSavePath = fileDlg.m_ofn.lpstrFile;
 		CString strExtName = (_T(".") + Hootina::CPath::GetExtension(strSavePath)).c_str();
-		CFile file;
+		CTinyImFile file;
 		if(!file.Open(strSavePath, TRUE))
 		{
 			return;

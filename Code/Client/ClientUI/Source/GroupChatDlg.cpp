@@ -11,7 +11,7 @@
 #include "UIText.h"
 #include "net/IUProtocolData.h"
 #include "UIDefaultValue.h"
-#include "File2.h"
+#include "FileTool.h"
 
 
 CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())

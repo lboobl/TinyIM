@@ -63,7 +63,7 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/FaceCtrl.h ./Source/FaceCtrl.cpp
 ./Source/FaceList.h ./Source/FaceList.cpp
 ./Source/FaceSelDlg.h ./Source/FaceSelDlg.cpp
-./Source/File2.h ./Source/File2.cpp
+./Source/FileTool.h ./Source/FileTool.cpp
 ./Source/FileTransferCtrl.h ./Source/FileTransferCtrl.cpp
 ./Source/FindFriendDlg.h ./Source/FindFriendDlg.cpp
 ./Source/FontSelDlg.h ./Source/FontSelDlg.cpp
