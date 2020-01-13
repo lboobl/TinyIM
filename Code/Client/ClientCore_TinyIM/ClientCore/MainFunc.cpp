@@ -1,4 +1,15 @@
-﻿#include "MainFunc.h"
+﻿/**
+ * @file MainFunc.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 
+ * @version 0.1
+ * @date 2020-01-13
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "MainFunc.h"
 #include <iostream>
 #include <memory>
 #include "CMediumServer.h"
