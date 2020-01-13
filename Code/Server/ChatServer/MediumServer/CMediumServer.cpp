@@ -178,10 +178,6 @@ void CChatServer::do_accept()
 void CChatServer::OnTimer()
 {
 	LOG_INFO(this->ms_loger,"{} Users Is OnLine Chat Server [ {} {} ]",m_UserSessVec.size(), __FILENAME__,__LINE__);
-	for(auto& item:m_queueVec)
-	{
-		item->OnTimer();
-	}
 	CheckAllConnect();
 }
 
@@ -786,20 +782,6 @@ void CChatServer::start(const std::function<void(const std::error_code &)> &call
 		if (m_udpServer)
 		{
 			m_udpServer->StartConnect();
-		}
-		if (0)
-		{
-			for (auto item : m_clientCfgVec)
-			{
-				if (item.Valid())
-				{
-					auto pQueue = std::make_shared<CClientSessManager>(item);
-					m_queueVec.push_back(pQueue);
-					std::error_code ec;
-					pQueue->Start(this, m_ioService, ec);
-					LOG_INFO(ms_loger, "ConnectTo: {} [{} {}]", item.to_string(), __FILENAME__, __LINE__);
-				}
-			}
 		}
 		{
 			m_util.ConnectToServer(m_dbCfg.m_strUserName,

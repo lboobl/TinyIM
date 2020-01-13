@@ -22,7 +22,6 @@
 #include "json11.hpp"
 
 #include "CClientSess.h"
-#include "CClientSessManager.h"
 #include "CServerSess.h"
 #include "CUdpServer.h"
 #include "planform.h"
@@ -117,8 +116,6 @@ public:
     void SetTimer(int nSeconds);
     
     void OnTimer();
-
-    std::vector<std::shared_ptr<CClientSessManager>> m_queueVec;
     
     std::error_code m_ec;
 

@@ -40,7 +40,6 @@ endif()
 set(SERVER_FILES 
 		MediumServer.cpp
 		CServerSess.h CServerSess.cpp
-		CClientSessManager.h CClientSessManager.cpp
         CMediumServer.h CMediumServer.cpp 
         ../../../msgStruct/json11/json11.cpp
         CClientSess.h CClientSess.cpp 

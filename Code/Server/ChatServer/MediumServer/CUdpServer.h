@@ -1,4 +1,4 @@
-#ifndef _DENNIS_THINK_C_UDP_SERVER_H_
+ï»¿#ifndef _DENNIS_THINK_C_UDP_SERVER_H_
 #define _DENNIS_THINK_C_UDP_SERVER_H_
 #include "json11.hpp"
 #include "CommonMsg.h"
@@ -9,9 +9,8 @@ using UDP_CALL_BACK=std::function<void(const asio::ip::udp::endpoint sendPt, con
 namespace ChatServer
 {
 	using asio::ip::tcp;
-	class CClientSessManager;
 	/**
-	 * @brief ÓÃÓÚÁ¬½Óµ½Ô¶¶Ë·şÎñÆ÷µÄSess
+	 * @brief ç”¨äºè¿æ¥åˆ°è¿œç«¯æœåŠ¡å™¨çš„Sess
 	 *
 	 */
 	class CUdpServer : public std::enable_shared_from_this<CUdpServer> {
@@ -23,29 +22,29 @@ namespace ChatServer
 
 
 
-		//Á¬½ÓĞÅÏ¢,ĞèÒª¶à´Î»ñÈ¡,Òò´Ë±£´æµ½±äÁ¿ÖĞ
+		//è¿æ¥ä¿¡æ¯,éœ€è¦å¤šæ¬¡è·å–,å› æ­¤ä¿å­˜åˆ°å˜é‡ä¸­
 		std::string m_connectInfo;
 
 		enum { max_length = 16384, msg_max_len = 8192 };
 
-		//½ÓÊÕbuf
+		//æ¥æ”¶buf
 		char m_recvbuf[max_length];
 
-		//½ÓÊÕbuf
+		//æ¥æ”¶buf
 		char m_sendbuf[max_length];
 
-		//½ÓÊÕÎ»ÖÃ
+		//æ¥æ”¶ä½ç½®
 		uint32_t m_recvpos = 0;
 	public:
 		static	std::shared_ptr<spdlog::logger> ms_loger;
 	public:
-		//¼ì²éÊÇ·ñÎªÍ¬Ò»¸öÁ¬½Ó
+		//æ£€æŸ¥æ˜¯å¦ä¸ºåŒä¸€ä¸ªè¿æ¥
 		bool is_same_connect(const std::string& strIp, const int nport)
 		{
 			return ((m_serverIp.compare(strIp) == 0) &&
 				(nport == m_serverPort));
 		}
-		//»ñÈ¡Á¬½ÓµÄipµØÖ·ºÍ¶Ë¿ÚºÅ,¸ñÊ½Îª xx.xx.xx.xx:port
+		//è·å–è¿æ¥çš„ipåœ°å€å’Œç«¯å£å·,æ ¼å¼ä¸º xx.xx.xx.xx:port
 		std::string GetConnectInfo() { return m_connectInfo; }
 
 		bool SendKeepAlive();
@@ -68,7 +67,7 @@ namespace ChatServer
 
 		void handleKeepAliveRsp(const KeepAliveRspMsg& rspMsg);
 		UDP_CALL_BACK m_udpCallBack;
-		//tcpÁ¬½ÓµÄsocket
+		//tcpè¿æ¥çš„socket
 		std::shared_ptr<asio::ip::udp::socket>   m_socket;
 		asio::ip::udp::endpoint m_serverPt;
 	};

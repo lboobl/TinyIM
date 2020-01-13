@@ -16,6 +16,7 @@
 #include "asio_common.h"
 #include "Log.h"
 #include <atomic>
+#include <queue>
 /*static std::string StringToHex(const char * data,const std::size_t length)
 {
 	const std::string hex = "0123456789ABCDEF";
