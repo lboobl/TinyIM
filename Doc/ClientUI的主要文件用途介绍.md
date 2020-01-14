@@ -61,157 +61,265 @@ zlib有关的代码，可以完成压缩和解压缩(可以去掉)
 
 TODO: 暂不确定
 
-ChangePicHead.cpp
-ChangePicHead.h
+16. ChangePicHead.h ChangePicHead.cpp
 
-ChangePicHeadDlg.cpp
-ChangePicHeadDlg.h
+修改头像功能。
 
-ChatDlgCommon.cpp
-ChatDlgCommon.h
+17. ChangePicHeadDlg.cpp ChangePicHeadDlg.h
+
+修改头像功能的对话框
+
+18. ChatDlgCommon.h ChatDlgCommon.cpp
+
+窗口抖动功能的实现。
 
 ChatTabMgr.cpp
 ChatTabMgr.h
 
-ClosePromptDlg.cpp
-ClosePromptDlg.h
+20. ClosePromptDlg.h ClosePromptDlg.cpp
 
-Crash.cpp
+退出提示对话框。
 
-CreateNewGroupDlg.cpp
-CreateNewGroupDlg.h
+21. Crash.cpp
 
-CRegisterSkinHyperLink.cpp
-CRegisterSkinHyperLink.h
+处理程序崩溃的相关问题。
 
-CustomMsgDef.h
-DstVersion.h
-EncodingUtil.cpp
-EncodingUtil.h
-FaceCtrl.cpp
-FaceCtrl.h
-FaceList.cpp
-FaceList.h
-FaceSelDlg.cpp
-FaceSelDlg.h
-FileTool.cpp
-FileTool.h
-FileTransferCtrl.cpp
-FileTransferCtrl.h
-FindFriendDlg.cpp
-FindFriendDlg.h
-flamingo.aps
-flamingo.rc
-FontSelDlg.cpp
-FontSelDlg.h
-GDIFactory.cpp
-GDIFactory.h
-GifImage.cpp
-GifImage.h
-GroupChatDlg.cpp
-GroupChatDlg.h
-GroupInfoDlg.cpp
-GroupInfoDlg.h
-GroupListCtrl.cpp
-GroupListCtrl.h
-IImageOle.h
-ImageEx.cpp
-ImageEx.h
-IniFile.cpp
-IniFile.h
-IULog.cpp
-IULog.h
-lib/
-list.txt
-LoginAccountList.cpp
-LoginAccountList.h
-LoginDlg.cpp
-LoginDlg.h
-LoginSettingsDlg.cpp
-LoginSettingsDlg.h
-LogonUserInfoDlg.cpp
-LogonUserInfoDlg.h
-MainDlg.cpp
-MainDlg.h
-MessageBoxDlg.cpp
-MessageBoxDlg.h
-MessageLogger.cpp
-MessageLogger.h
-MiniBuffer.h
-MinuBuffer.cpp
-MiscConfig.xml
-ModifyMarkNameDlg.cpp
-ModifyMarkNameDlg.h
-ModifyPasswordDlg.cpp
-ModifyPasswordDlg.h
-MsgTipDlg.cpp
-MsgTipDlg.h
+22. CreateNewGroupDlg.h CreateNewGroupDlg.cpp
+
+创建新群组的对话框。
+
+23. CRegisterSkinHyperLink.h CRegisterSkinHyperLink.cpp
+
+超链接相关操作的对话框
+
+24. CustomMsgDef.h
+
+WM一些消息的定义,可以考虑和其他的文件合并。
+
+25. DstVersion.h
+
+程序的目标版本
+
+26. EncodingUtil.h EncodingUtil.cpp
+
+字符转码的相关函数
+
+27. FaceCtrl.h FaceCtrl.cpp
+
+头像控件。
+
+28. FaceList.h FaceList.cpp
+
+头像列表控件。
+
+29. FaceSelDlg.h  FaceSelDlg.cpp
+
+头像选择对话框。
+
+30. FileTool.h FileTool.cpp
+
+完成文件的读取和写入。
+
+31. FileTransferCtrl.h FileTransferCtrl.cpp
+
+文件传输控件。
+
+32. FindFriendDlg.h FindFriendDlg.cpp
+
+查找好友对话框
+
+33. flamingo.rc
+
+资源文件。
+
+33. FontSelDlg.h FontSelDlg.cpp
+
+字体选择对话框。
+
+34. GDIFactory.h GDIFactory.cpp
+
+字体等信息的操作。
+
+35. GifImage.h GifImage.cpp
+
+支持GIF图片的显示。
+
+36. GroupChatDlg.h GroupChatDlg.cpp
+
+群组聊天对话框
+
+37. GroupInfoDlg.h GroupInfoDlg.cpp
+
+群组信息对话框。
+
+38. GroupListCtrl.h GroupListCtrl.cpp
+
+群组列表控件。
+
+39. IImageOle.h
+
+具体用途不明。
+
+40. ImageEx.h ImageEx.cpp
+
+用来显示图片的扩展类
+
+41. IniFile.h IniFile.cpp
+
+Ini文件操作的类
+
+42. IULog.h IULog.cpp
+
+打印日志的类
+
+43. LoginAccountList.h LoginAccountList.cpp
+
+登录账号列表类。
+
+44. LoginDlg.h LoginDlg.cpp
+
+登录对话框类。
+
+45. LoginSettingsDlg.h LoginSettingsDlg.cpp
+
+登录设置对话框类
+
+46. LogonUserInfoDlg.h LogonUserInfoDlg.cpp
+
+登录用户信息对话框类
+
+47. MainDlg.h MainDlg.cpp
+
+主界面对话框。
+
+48. MessageBoxDlg.h MessageBoxDlg.cpp
+
+弹出的消息提示框。
+
+49. MessageLogger.h MessageLogger.cpp
+
+可以考虑去掉。
+
+50. MiniBuffer.h MinuBuffer.cpp
+
+可以考虑去掉。
+
+
+51. ModifyMarkNameDlg.h ModifyMarkNameDlg.cpp
+
+修改备注名对话框。
+
+52. ModifyPasswordDlg.h ModifyPasswordDlg.cpp
+
+修改密码对话框。
+
+53. MsgTipDlg.cpp MsgTipDlg.h
+
+状态栏消息提示对话框。
+
 net/
-Path.cpp
-Path.h
-PerformanceCounter.cpp
-PerformanceCounter.h
-PicBarDlg.cpp
-PicBarDlg.h
+
+54. Path.h Path.cpp
+
+路径相关的一些操作
+
+55. PerformanceCounter.h PerformanceCounter.cpp
+
+性能测量的类，可以去掉。
+
+56. PicBarDlg.h PicBarDlg.cpp
+
+用来显示图片的对话框，图片的放大，缩小
+
 Proto/
 ProtoTestMain.cpp
-RecentListCtrl.cpp
-RecentListCtrl.h
-RegisterDialog.cpp
-RegisterDialog.h
-RemoteDesktop/
-res/
-resource.h
-Result.h
-RichEditUtil.cpp
-RichEditUtil.h
-SkinLib/
-SplitterCtrl.cpp
-SplitterCtrl.h
-SQLite 3.7.17/
-SrcVersion.h
-Startup.cpp
-Startup.h
-stdafx.cpp
-stdafx.h
-SystemSettingDlg.cpp
-SystemSettingDlg.h
-TeamDlg.cpp
-TeamDlg.h
-Thread.cpp
-Thread.h
+
+57. RecentListCtrl.h RecentListCtrl.cpp
+
+最近聊天列表的控件类。
+
+58. RegisterDialog.h RegisterDialog.cpp
+
+注册对话框类。
+
+59. RichEditUtil.h RichEditUtil.cpp
+
+用来显示聊天消息的窗口类，包括发送消息、接收消息、历史消息。
+
+60. SplitterCtrl.h SplitterCtrl.cpp
+
+分割控件类
+
+61. SrcVersion.h
+
+客户端版本信息头文件
+
+62. Startup.h Startup.cpp
+
+程序入口的头文件和实现文件
+
+63. stdafx.h stdafx.cpp
+
+windows平台公用头文件和实现文件。
+
+64. SystemSettingDlg.h SystemSettingDlg.cpp
+
+系统设置对话框。
+
+65. TeamDlg.h TeamDlg.cpp
+
+群组对话框.
+
+66. Thread.h Thread.cpp
+
+线程的封装(可以考虑去掉）
+
+
 ThreadPool.cpp
 ThreadPool.h
+
 TrayIcon.cpp
 TrayIcon.h
+
 UI_Core_Convert.cpp
 UI_Core_Convert.h
+
 UI_USER_INFO.cpp
 UI_USER_INFO.h
+
 UICommonDef.h
+
 UICommonStruct.cpp
 UICommonStruct.h
+
 UICommonType.h
 UIDefaultValue.h
 UIText.h
 UIWndMsgDef.h
+
 UpdateDlg.cpp
 UpdateDlg.h
+
 Updater.cpp
 Updater.h
+
 UserConfig.cpp
 UserConfig.h
+
 UserMgr.cpp
 UserMgr.h
+
 UserSnapInfoDlg.cpp
 UserSnapInfoDlg.h
+
 Utils.cpp
 Utils.h
+
 UtilTime.cpp
 UtilTime.h
+
 wtl9.0/
+
 XmlDocument.cpp
 XmlDocument.h
-zlib1.2.11/
-ZlibUtil.cpp
-ZlibUtil.h
+
