@@ -22,7 +22,7 @@
 #include "PicBarDlg.h"
 #include "SplitterCtrl.h"
 #include "UI_USER_INFO.h"
-#include "MessageLogger.h"
+//#include "MessageLogger.h"
 #include "IUProtocolData.h"
 #include "Proto.h"
 #include "UICommonDef.h"
@@ -215,7 +215,7 @@ private:
 	void AddMsgToRecvEdit(time_t nTime, LPCTSTR lpText);
 	void AddMsgToRecvEdit(C_UI_BuddyMessage* lpGroupMsg);
 	void AddMsgToRecvEdit(std::vector<C_UI_Content*>& arrContent);
-	void AddMsgToRecvEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog);
+	//void AddMsgToRecvEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog);
 
 	//Dennis Begin
 	void AddUserToRecvEdit(const std::string strUserName, const time_t nTime);
@@ -228,7 +228,7 @@ private:
 	void OpenMsgLogBrowser();			// 打开消息记录浏览窗口
 	void CloseMsgLogBrowser();			// 关闭消息记录浏览窗口
 
-	void AddMsgToMsgLogEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog);
+	//void AddMsgToMsgLogEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog);
 	void AnalyseContent(WString& strContent, HWND hRichWnd=NULL);
 	void AddMsgToMsgLogEdit(std::vector<C_UI_Content*>& arrContent);
 	BOOL HandleSysFaceId(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
@@ -312,7 +312,7 @@ private:
 
 	BOOL					m_bMsgLogWindowVisible;  //是否显示历史消息控件
 	long					m_nMsgLogIndexInToolbar;
-	CMessageLogger			m_MsgLogger;				// 消息记录
+	//CMessageLogger			m_MsgLogger;				// 消息记录
 	long					m_nMsgLogRecordOffset;		//当前消息记录的偏移量+1
 	long					m_nMsgLogCurrentPageIndex;	//消息记录当前页码
 

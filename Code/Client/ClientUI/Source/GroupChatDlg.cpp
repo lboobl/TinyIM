@@ -3680,62 +3680,62 @@ void CGroupChatDlg::CloseMsgLogBrowser()
 	OnSizeNotShowMsgHistory();
 }
 
-void CGroupChatDlg::AddMsgToMsgLogEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog)
-{
-	m_richMsgLog.SetWindowText(_T(""));
-	
-	UINT nID;
-	UINT nUTalkNum;
-	WString strNickName;
-	UINT64 nTime;
-	//BOOL bSendFlag;
-	WString strContent;
-	TCHAR szTime[32];
-	COLORREF clrNickName(RGB(0, 0, 0));
-	size_t nSize = arrMsgLog.size();
-	for (size_t i = 0; i < nSize; ++i)
-	{
-		nID = arrMsgLog[i]->nID;
-		nUTalkNum = arrMsgLog[i]->nUTalkNum;
-		strNickName = arrMsgLog[i]->strNickName;
-		nTime = arrMsgLog[i]->nTime;
-		//bSendFlag = arrMsgLog[i]->bSendFlag;
-		strContent = arrMsgLog[i]->strContent;
-
-		
-		memset(szTime, 0, sizeof(szTime));
-		if (IsToday(nTime))
-		{
-			FormatTime(nTime, _T("%H:%M:%S"), szTime, ARRAYSIZE(szTime));
-		}
-		else
-		{
-			FormatTime(nTime, _T("%Y-%m-%d %H:%M:%S"), szTime, ARRAYSIZE(szTime));
-		}
-
-		CString strText;
-		strText.Format(_T("%s  %s\r\n"), strNickName.c_str(), szTime);
-
-		RichEdit_SetSel(m_richMsgLog.m_hWnd, -1, -1);
-		//if(nUTalkNum == m_lpFMGClient->m_UserMgr.m_UserInfo.m_uUserID)
-		//clrNickName = RGB(0, 128, 64);
-		//else
-			clrNickName = RGB(0, 0, 255);
-		RichEdit_ReplaceSel(m_richMsgLog.m_hWnd, strText, _T("微软雅黑"), 10, clrNickName, FALSE, FALSE, FALSE, FALSE, 0);
-		strText = _T("");
-
-		//AnalyseContent(strContent);
-		
-		//AddMsg(m_richMsgLog.m_hWnd, strContent.c_str());
-
-		RichEdit_ReplaceSel(m_richMsgLog.m_hWnd, _T("\r\n"));
-		RichEdit_SetStartIndent(m_richMsgLog.m_hWnd, 0);
-		//m_richMsgLog.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-	}
-
-	//m_richMsgLog.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-	//m_richMsgLog.UpdateWindow();
-}
+//void CGroupChatDlg::AddMsgToMsgLogEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog)
+//{
+//	m_richMsgLog.SetWindowText(_T(""));
+//	
+//	UINT nID;
+//	UINT nUTalkNum;
+//	WString strNickName;
+//	UINT64 nTime;
+//	//BOOL bSendFlag;
+//	WString strContent;
+//	TCHAR szTime[32];
+//	COLORREF clrNickName(RGB(0, 0, 0));
+//	size_t nSize = arrMsgLog.size();
+//	for (size_t i = 0; i < nSize; ++i)
+//	{
+//		nID = arrMsgLog[i]->nID;
+//		nUTalkNum = arrMsgLog[i]->nUTalkNum;
+//		strNickName = arrMsgLog[i]->strNickName;
+//		nTime = arrMsgLog[i]->nTime;
+//		//bSendFlag = arrMsgLog[i]->bSendFlag;
+//		strContent = arrMsgLog[i]->strContent;
+//
+//		
+//		memset(szTime, 0, sizeof(szTime));
+//		if (IsToday(nTime))
+//		{
+//			FormatTime(nTime, _T("%H:%M:%S"), szTime, ARRAYSIZE(szTime));
+//		}
+//		else
+//		{
+//			FormatTime(nTime, _T("%Y-%m-%d %H:%M:%S"), szTime, ARRAYSIZE(szTime));
+//		}
+//
+//		CString strText;
+//		strText.Format(_T("%s  %s\r\n"), strNickName.c_str(), szTime);
+//
+//		RichEdit_SetSel(m_richMsgLog.m_hWnd, -1, -1);
+//		//if(nUTalkNum == m_lpFMGClient->m_UserMgr.m_UserInfo.m_uUserID)
+//		//clrNickName = RGB(0, 128, 64);
+//		//else
+//			clrNickName = RGB(0, 0, 255);
+//		RichEdit_ReplaceSel(m_richMsgLog.m_hWnd, strText, _T("微软雅黑"), 10, clrNickName, FALSE, FALSE, FALSE, FALSE, 0);
+//		strText = _T("");
+//
+//		//AnalyseContent(strContent);
+//		
+//		//AddMsg(m_richMsgLog.m_hWnd, strContent.c_str());
+//
+//		RichEdit_ReplaceSel(m_richMsgLog.m_hWnd, _T("\r\n"));
+//		RichEdit_SetStartIndent(m_richMsgLog.m_hWnd, 0);
+//		//m_richMsgLog.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+//	}
+//
+//	//m_richMsgLog.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+//	//m_richMsgLog.UpdateWindow();
+//}
 
 // "/f["系统表情id"] /c["自定义表情文件名"] /o[字体名称，大小，颜色，加粗，倾斜，下划线]"
 //void CGroupChatDlg::AnalyseContent(WString& strContent, HWND hRichWnd/*=NULL*/)
@@ -4378,7 +4378,7 @@ void CGroupChatDlg::ShowLastMsgInRecvRichEdit()
 {
 	CString strMsgFile;// (m_lpFMGClient->GetMsgLogFullName().c_str());
 	strMsgFile.Replace(_T("\\"), _T("/"));
-	m_MsgLogger.SetMsgLogFileName(strMsgFile);
+	//m_MsgLogger.SetMsgLogFileName(strMsgFile);
 
 	//CString strChatPicDir = m_lpFMGClient->GetChatPicFolder().c_str();
 	//strChatPicDir.Replace(_T("\\"), _T("/"));
@@ -4414,7 +4414,7 @@ void CGroupChatDlg::ShowLastMsgInRecvRichEdit()
 		nRows = (UINT)nTotalCount;
 	}
 
-	std::vector<GROUP_MSG_LOG*> arrMsgLog;
+	//std::vector<GROUP_MSG_LOG*> arrMsgLog;
 	//从消息记录文件中获取消息记录
 	long cntArrMsgLog = 0;
 	if (nTotalCount > 5)
@@ -4426,68 +4426,68 @@ void CGroupChatDlg::ShowLastMsgInRecvRichEdit()
 		//cntArrMsgLog = m_MsgLogger.ReadGroupMsgLog(m_nGroupCode, 0, nRows, arrMsgLog);
 	}
 	//添加到消息记录富文本控件中
-	AddMsgToRecvEdit(arrMsgLog);
+	//AddMsgToRecvEdit(arrMsgLog);
 }
-
-void CGroupChatDlg::AddMsgToRecvEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog)
-{
-	UINT nID;
-	UINT nUTalkNum;
-	WString strNickName;
-	UINT64 nTime;
-	//BOOL bSendFlag;
-	WString strContent;
-	TCHAR szTime[32];
-	
-	size_t nSize = arrMsgLog.size();
-	for (size_t i = 0; i < nSize; ++i)
-	{
-		nID = arrMsgLog[i]->nID;
-		nUTalkNum = arrMsgLog[i]->nUTalkNum;
-		strNickName = arrMsgLog[i]->strNickName;
-		nTime = arrMsgLog[i]->nTime;
-		//bSendFlag = arrMsgLog[i]->bSendFlag;
-		strContent = arrMsgLog[i]->strContent;
-
-		
-		memset(szTime, 0, sizeof(szTime));
-		if (IsToday(nTime))
-		{
-			FormatTime(nTime, _T("%H:%M:%S"), szTime, ARRAYSIZE(szTime));
-		}
-		else
-		{
-			FormatTime(nTime, _T("%Y-%m-%d %H:%M:%S"), szTime, ARRAYSIZE(szTime));
-		}
-
-		CString strText;
-		strText.Format(_T("%s  %s\r\n"), strNickName.c_str(), szTime);
-
-		RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
-		//if(nUTalkNum == m_lpFMGClient->m_UserMgr.m_UserInfo.m_uUserID)
-		//	RichEdit_ReplaceSel(m_richRecv.m_hWnd, strText, _T("微软雅黑"), 10, RGB(0,128,64), FALSE, FALSE, FALSE, FALSE, 0);
-		//else
-			RichEdit_ReplaceSel(m_richRecv.m_hWnd, strText, _T("微软雅黑"), 10, RGB(0, 0, 255), FALSE, FALSE, FALSE, FALSE, 0);
-		strText = _T("");
-
-		//AnalyseContent(strContent, m_richRecv.m_hWnd);
-		
-		RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\r\n"));
-		RichEdit_SetStartIndent(m_richRecv.m_hWnd, 0);
-		m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-		
-	}
-
-	if(nSize > 0)
-	{
-		RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
-		RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ————以上是历史消息————\r\n"), _T("微软雅黑"), 9, RGB(128,128,128), FALSE, FALSE, FALSE, FALSE, 0);
-		m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-	}
-	//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\n"));
-	////TODO: 奇怪，滚动条为什么不能滚到低？
-	//m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-}
+//
+//void CGroupChatDlg::AddMsgToRecvEdit(std::vector<GROUP_MSG_LOG*>& arrMsgLog)
+//{
+//	UINT nID;
+//	UINT nUTalkNum;
+//	WString strNickName;
+//	UINT64 nTime;
+//	//BOOL bSendFlag;
+//	WString strContent;
+//	TCHAR szTime[32];
+//	
+//	size_t nSize = arrMsgLog.size();
+//	for (size_t i = 0; i < nSize; ++i)
+//	{
+//		nID = arrMsgLog[i]->nID;
+//		nUTalkNum = arrMsgLog[i]->nUTalkNum;
+//		strNickName = arrMsgLog[i]->strNickName;
+//		nTime = arrMsgLog[i]->nTime;
+//		//bSendFlag = arrMsgLog[i]->bSendFlag;
+//		strContent = arrMsgLog[i]->strContent;
+//
+//		
+//		memset(szTime, 0, sizeof(szTime));
+//		if (IsToday(nTime))
+//		{
+//			FormatTime(nTime, _T("%H:%M:%S"), szTime, ARRAYSIZE(szTime));
+//		}
+//		else
+//		{
+//			FormatTime(nTime, _T("%Y-%m-%d %H:%M:%S"), szTime, ARRAYSIZE(szTime));
+//		}
+//
+//		CString strText;
+//		strText.Format(_T("%s  %s\r\n"), strNickName.c_str(), szTime);
+//
+//		RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+//		//if(nUTalkNum == m_lpFMGClient->m_UserMgr.m_UserInfo.m_uUserID)
+//		//	RichEdit_ReplaceSel(m_richRecv.m_hWnd, strText, _T("微软雅黑"), 10, RGB(0,128,64), FALSE, FALSE, FALSE, FALSE, 0);
+//		//else
+//			RichEdit_ReplaceSel(m_richRecv.m_hWnd, strText, _T("微软雅黑"), 10, RGB(0, 0, 255), FALSE, FALSE, FALSE, FALSE, 0);
+//		strText = _T("");
+//
+//		//AnalyseContent(strContent, m_richRecv.m_hWnd);
+//		
+//		RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\r\n"));
+//		RichEdit_SetStartIndent(m_richRecv.m_hWnd, 0);
+//		m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+//		
+//	}
+//
+//	if(nSize > 0)
+//	{
+//		RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+//		RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("                                            ————以上是历史消息————\r\n"), _T("微软雅黑"), 9, RGB(128,128,128), FALSE, FALSE, FALSE, FALSE, 0);
+//		m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+//	}
+//	//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\n"));
+//	////TODO: 奇怪，滚动条为什么不能滚到低？
+//	//m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+//}
 
 void CGroupChatDlg::ReCaculateCtrlPostion(long nMouseY)
 {

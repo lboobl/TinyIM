@@ -82,12 +82,10 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/LoginSettingsDlg.h ./Source/LoginSettingsDlg.cpp 
 ./Source/LogonUserInfoDlg.h ./Source/LogonUserInfoDlg.cpp 
 ./Source/MainDlg.h ./Source/MainDlg.cpp
-./Source/MessageLogger.h ./Source/MessageLogger.cpp
 ./Source/MiniBuffer.h ./Source/MinuBuffer.cpp 
 ./Source/ModifyMarkNameDlg.h ./Source/ModifyMarkNameDlg.cpp
 ./Source/ModifyPasswordDlg.h ./Source/ModifyPasswordDlg.cpp
-./Source/Path.h ./Source/Path.cpp  
-./Source/PerformanceCounter.h ./Source/PerformanceCounter.cpp  
+./Source/Path.h ./Source/Path.cpp   
 ./Source/PicBarDlg.h ./Source/PicBarDlg.cpp  
 ./Source/RecentListCtrl.h ./Source/RecentListCtrl.cpp   
 ./Source/RegisterDialog.h ./Source/RegisterDialog.cpp
@@ -114,7 +112,6 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/UserSnapInfoDlg.h  ./Source/UserSnapInfoDlg.cpp
 ./Source/Utils.h  ./Source/Utils.cpp
 ./Source/XmlDocument.h  ./Source/XmlDocument.cpp
-./Source/ZlibUtil.h  ./Source/ZlibUtil.cpp
 ./Source/flamingo.rc)
 
 SET(ENCODE_UTIL_SOURCE_FILE ./Source/EncodingUtil.h ./Source/EncodingUtil.cpp)
@@ -131,18 +128,8 @@ SET(NET_SOURCE_FILE ./Source/net/Msg.h ./Source/net/FileMsg.h
 )
 
 
-
-SET(REMOTE_DESKTOP_SOURCE_FILE ./Source/RemoteDesktop/CursorInfo.h 
-./Source/RemoteDesktop/ScreenManager.h 
-./Source/RemoteDesktop/ScreenManager.cpp
-./Source/RemoteDesktop/ScreenSpy.h
-./Source/RemoteDesktop/ScreenSpy.cpp
-./Source/RemoteDesktop/until.h
-./Source/RemoteDesktop/until.cpp)
-
 add_subdirectory(./Source/SkinLib)
-add_subdirectory(./Source/zlib1.2.11)
-link_libraries(SkinLib zlib RichEd20)
+link_libraries(SkinLib RichEd20)
 if(CMAKE_CL_64)
     #设置64位的程序目标(可执行程序)输出路径
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR}/bin/Debug64/)     

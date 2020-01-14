@@ -12,7 +12,7 @@
 #ifndef _DENNIS_THINK_USER_MGR_H_
 #define _DENNIS_THINK_USER_MGR_H_
 #include "UI_USER_INFO.h"
-#include "MessageLogger.h"
+//#include "MessageLogger.h"
 #include "UserConfig.h"
 #include <map>
 
@@ -120,7 +120,7 @@ public:
 	C_UI_BuddyList		m_BuddyList;
 	
 	C_UI_MessageList	m_MsgList;
-	CMessageLogger	m_MsgLogger;
+	//CMessageLogger	m_MsgLogger;
 
 	CGroupList		m_GroupList;
 	C_UI_RecentList		m_RecentList;

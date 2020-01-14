@@ -18,7 +18,6 @@
 #include "Utils.h"
 #include "IniFile.h"
 #include "UIText.h"
-#include "PerformanceCounter.h"
 
 #include "asioNet/CSessManager.h"
 #include "Proto.h"
@@ -158,7 +157,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
     //初始化性能计数器
     TCHAR szPerformanceFileName[MAX_PATH] = { 0 };
     _stprintf_s(szPerformanceFileName, MAX_PATH, _T("%s\\Logs\\%04d%02d%02d%02d%02d%02d.perf"), g_szHomePath, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
-    CPerformanceCounter::Init(true, szPerformanceFileName);
+    //CPerformanceCounter::Init(true, szPerformanceFileName);
 
     //TODO: 统一到AppConfig类中去
     CIniFile iniFile;

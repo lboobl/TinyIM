@@ -370,7 +370,7 @@ private:
 	int					m_cyPicBarDlg;//图片高度
 	int					m_nMsgLogIndexInToolbar;	//消息记录在toolbar上的索引
 
-	CMessageLogger		m_MsgLogger;				// 消息记录
+	//CMessageLogger		m_MsgLogger;				// 消息记录
 	CString				m_strBuddyName;			//好友名，界面显示使用
 	CString				m_strBuddySign;			//好友签名,界面显示使用
 	CString				m_strUserName;			//用户名,界面显示使用

@@ -13,7 +13,7 @@
 #include "net/IUProtocolData.h"
 #include "Proto.h"
 #include "BuddyChatDlg.h"
-#include "MessageLogger.h"
+//#include "MessageLogger.h"
 #include "UI_USER_INFO.h"
 #include "Time.h"
 #include "ChatDlgCommon.h"

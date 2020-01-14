@@ -29,7 +29,7 @@
 #include "ChatDlgCommon.h"
 #include "EncodingUtil.h"
 #include "UIText.h"
-#include "PerformanceCounter.h"
+
 #include "net/Msg.h"
 #include "Proto.h"
 #include "UIDefaultValue.h"
