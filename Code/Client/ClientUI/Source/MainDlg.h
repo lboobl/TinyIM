@@ -14,7 +14,6 @@
 
 #include "CustomMsgDef.h"
 #include "SkinLib/SkinLib.h"
-//#include "FlamingoClient.h"
 #include "TrayIcon.h"
 #include "FaceList.h"
 #include "LoginAccountList.h"
@@ -22,7 +21,6 @@
 #include "RecentListCtrl.h"
 #include "BuddyListCtrl.h"
 #include "LoginDlg.h"
-//#include "VerifyCodeDlg.h"
 #include "MsgTipDlg.h"
 #include "LogonUserInfoDlg.h"
 #include "ModifyPasswordDlg.h"
