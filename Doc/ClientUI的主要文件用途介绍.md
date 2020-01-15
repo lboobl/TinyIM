@@ -274,52 +274,76 @@ windows平台公用头文件和实现文件。
 
 线程的封装(可以考虑去掉）
 
+67. ThreadPool.h ThreadPool.cpp
 
-ThreadPool.cpp
-ThreadPool.h
+线程池的封装。
 
-TrayIcon.cpp
-TrayIcon.h
+68. TrayIcon.h TrayIcon.cpp
 
-UI_Core_Convert.cpp
-UI_Core_Convert.h
+托盘区图标的封装。
 
-UI_USER_INFO.cpp
-UI_USER_INFO.h
+69. UI_Core_Convert.h UI_Core_Convert.cpp
 
-UICommonDef.h
+GUI消息、数据结构和Core消息以及数据结构的相互转换。
 
-UICommonStruct.cpp
-UICommonStruct.h
+70. UI_USER_INFO.h UI_USER_INFO.cpp
 
-UICommonType.h
-UIDefaultValue.h
-UIText.h
-UIWndMsgDef.h
+GUI用户信息的定义和实现
 
-UpdateDlg.cpp
-UpdateDlg.h
+71. UICommonDef.h
 
-Updater.cpp
-Updater.h
+GUI需要使用的一些公用的定义。
 
-UserConfig.cpp
-UserConfig.h
+72. UICommonStruct.h UICommonStruct.cpp
 
-UserMgr.cpp
-UserMgr.h
+GUI 公用的结构体定义。
 
-UserSnapInfoDlg.cpp
-UserSnapInfoDlg.h
+73. UICommonType.h
 
-Utils.cpp
-Utils.h
+GUI的公用类型定义。
 
-UtilTime.cpp
-UtilTime.h
+74. UIDefaultValue.h
 
-wtl9.0/
+GUI的默认值定义。
 
-XmlDocument.cpp
-XmlDocument.h
+75. UIText.h
+
+GUI文本定义。
+
+76. UIWndMsgDef.h
+
+GUI的Wnd消息的定义
+
+77. UpdateDlg.h UpdateDlg.cpp
+
+程序更新对话框。
+
+78. Updater.h Updater.cpp
+
+程序更新的实现类。
+
+79. UserConfig.h UserConfig.cpp
+
+用户配置的实现类。
+
+80. UserMgr.h UserMgr.cpp
+
+用户信息管理的实现类
+
+81. UserSnapInfoDlg.h UserSnapInfoDlg.cpp
+
+用户的Snap信息对话框。
+
+82. Utils.h Utils.cpp 
+
+常用功能的实现类
+
+83. UtilTime.h UtilTime.cpp
+
+时间操作的工具类。
+
+
+84. XmlDocument.h XmlDocument.cpp
+
+Xml文档操作的类。
 
