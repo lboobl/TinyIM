@@ -25,6 +25,8 @@
 #include "CServerSess.h"
 #include "CHttpServer.h"
 #include "CUdpClient.h"
+#include "CUdpMultiCastReciver.h"
+#include "CUdpMultiCastSender.h"
 #include "planform.h"
 #include "CMsgPersistentUtil.h"
 #include "CFileUtil.h"
@@ -150,6 +152,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	SearchChatHistoryRsp DoSearchChatHistoryReq(const SearchChatHistoryReq& reqMsg);
 	TransBaseMsg_S_PTR DoSendBackFileDataSendRsp(const FileDataSendRspMsg& rspMsg);
 private:
+	std::vector<std::string> GetLocalAllIp();
 	CServerSess_SHARED_PTR Get_GUI_Sess(const std::string strUserId);
 	bool HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg);
 	bool HandleSendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg);
@@ -176,6 +179,9 @@ private:
 
 	void HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg);
 	void HandleFriendChatRecvTextMsgRsp(const FriendChatRecvTxtReqMsg& reqMsg);
+	
+	void CheckMultiCast();
+	
 	std::map<std::string, std::string> m_userName_UserIdMap;
 	std::map<std::string, CLIENT_SESS_STATE>  m_userStateMap;
 	std::map<std::string, UserLoginReqMsg> m_userLoginMsgMap;
@@ -189,6 +195,8 @@ private:
 	std::map<std::string, CMsgPersistentUtil_SHARED_PTR> m_UserId_MsgPersistentUtilMap;
 	std::map<std::string, std::vector<std::shared_ptr<BaseMsg>> > m_RecvWaitMsgMap;
 	std::map<std::string, FriendChatSendTxtReqMsg>  m_SendWaitMsgMap;
+	std::vector<CUdpMultiCastReciver_PTR> m_udpReciverVec;
+	std::vector<CUdpMultiCastSender_PTR> m_udpSenderVec;
 };
 } // namespace MediumServer
 

@@ -48,6 +48,10 @@ set(SERVER_FILES
         ./CHttpServer.cpp
 		CMsgPersistentUtil.h 
         CMsgPersistentUtil.cpp
+		./CUdpMultiCastSender.h
+        ./CUdpMultiCastSender.cpp		
+		./CUdpMultiCastReciver.h 
+		./CUdpMultiCastReciver.cpp
 		../../../CommonFunction/CFileUtil.h  
 		../../../CommonFunction/CFileUtil.cpp
 		../../../CommonFunction/md5.h  
@@ -69,4 +73,6 @@ SET(SQLITE_CPP_SOURCE ../include/thirdparty/SQLiteCpp/sqlite3/sqlite3.c
 ../include/thirdparty/SQLiteCpp/src/Transaction.cpp)
 
 add_executable(ClientCore MediumServer.cpp ${SERVER_FILES}  ${SQLITE_CPP_SOURCE})
+add_executable(Sender ./sender.cpp)
+add_executable(Reciver ./reciver.cpp)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin)  

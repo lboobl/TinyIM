@@ -204,6 +204,24 @@ void CMediumServer::HandleSendBack_FileDataSendRsp(const std::shared_ptr<CClient
 	pClientSess->SendMsg(pMsg);
 }
 
+std::vector<std::string> CMediumServer::GetLocalAllIp()
+{
+	std::vector<std::string> result;
+	asio::ip::tcp::resolver resolver(m_ioService);
+	asio::ip::tcp::resolver::query query(asio::ip::host_name(), "");
+	asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
+	asio::ip::tcp::resolver::iterator end; // End marker.
+	while (iter != end)
+	{
+		tcp::endpoint ep = *iter++;
+		if (ep.address().is_v4())
+		{
+			result.push_back(ep.address().to_string());
+		}
+	}
+
+	return result;
+}
 /**
  * @brief 实际处理文件数据发送的回复消息
  * 
@@ -443,6 +461,28 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 		exit(BIND_FAILED_EXIT);
 #endif
 	}
+	auto allIp = GetLocalAllIp();
+	CUdpMultiCastReciver::ms_loger = ms_loger;
+	CUdpMultiCastSender::ms_loger = ms_loger;
+	const int MULTI_CAST_PORT = 3345;
+	for (auto item : allIp)
+	{
+		LOG_INFO(ms_loger, "IP:{}  [{} {}]", item, __FILENAME__, __LINE__);
+		{
+			auto pReciver = std::make_shared<CUdpMultiCastReciver>(m_ioService, item, MULTI_CAST_PORT, [](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)->void {
+
+			});
+			m_udpReciverVec.push_back(pReciver);
+			pReciver->StartConnect();
+		}
+		{
+			auto pSender = std::make_shared<CUdpMultiCastSender>(m_ioService, item, MULTI_CAST_PORT, [](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)->void {
+
+			});
+			m_udpSenderVec.push_back(pSender);
+			pSender->StartConnect();
+		}
+	}
 }
 
 /**
@@ -542,6 +582,17 @@ void CMediumServer::CheckAllConnect()
 			item.second->sendToServer(&reqMsg);
 		}
 		CheckFriendP2PConnect();
+	}
+}
+
+void CMediumServer::CheckMultiCast()
+{
+	UdpMultiCastReqMsg reqMsg;
+	reqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
+	reqMsg.m_strUserId = reqMsg.m_strMsgId;
+	for (auto item : m_udpSenderVec)
+	{
+		item->sendToServer(&reqMsg);
 	}
 }
 
@@ -704,6 +755,7 @@ void CMediumServer::OnTimer()
 			LOG_ERR(ms_loger, "No Sess Count {} [ {} {} ]", m_timeCount, __FILENAME__, __LINE__);
 		}
 	}
+	CheckMultiCast();
 }
 
 /**
