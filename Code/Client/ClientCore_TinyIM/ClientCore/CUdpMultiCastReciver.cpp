@@ -17,18 +17,19 @@ namespace ClientCore {
 	{
 		m_udpServerIp = strIp;
 		m_udpServerPort = port;
-		asio::ip::address listenAddress = asio::ip::make_address(strIp);
+		asio::ip::address listenAddress = asio::ip::make_address("0.0.0.0");
 		asio::ip::udp::endpoint listenPt(listenAddress, port);
 		m_udpSocket = std::make_shared<asio::ip::udp::socket>(ioService);
-		
 		m_udpSocket->open(listenPt.protocol());
 		m_udpSocket->set_option(asio::ip::udp::socket::reuse_address(true));
+		m_udpSocket->set_option(asio::ip::udp::socket::broadcast(true));
+
+
 		m_udpSocket->bind(listenPt);
 
-		asio::ip::address multiCastAddress = asio::ip::make_address(strIp);
 		std::error_code ec;
 
-		m_udpSocket->set_option(asio::ip::multicast::join_group(multiCastAddress),ec);
+		//m_udpSocket->set_option(asio::ip::multicast::join_group(multiCastAddress),ec);
 		LOG_INFO(ms_loger, "EC:{} {} [{} {}]", ec.value(), ec.message(), __FILENAME__, __LINE__);
 	}
 
@@ -50,7 +51,7 @@ namespace ClientCore {
 				if (!ec && bytes > 0)
 				{
 					TransBaseMsg_t trans(m_recvbuf);
-					if (bytes >= 8 && bytes > trans.GetSize())
+					if (bytes >= 8 && bytes >= trans.GetSize())
 					{
 						if (trans.GetType() != E_MsgType::FileSendDataReq_Type && trans.GetType() != E_MsgType::FileRecvDataReq_Type)
 						{

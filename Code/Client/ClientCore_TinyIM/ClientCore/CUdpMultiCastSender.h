@@ -15,6 +15,7 @@
 #include "Log.h"
 #include <memory>
 #include <queue>
+#include <atomic>
 
 using SENDER_CALL_BACK = std::function<void(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)>;
 namespace ClientCore {
@@ -40,6 +41,9 @@ namespace ClientCore {
 		std::string UserId()const {
 			return m_strUserId;
 		}
+		bool HasReciveMsg()const {
+			return  m_bRecvMsg;
+		}
 	public:
 		static std::shared_ptr<spdlog::logger> ms_loger;
 	private:
@@ -61,6 +65,8 @@ namespace ClientCore {
 		std::string m_strUserId;
 		std::atomic_bool m_bDoSend{ false };
 		void do_SendMsg();
+		bool m_bRecvMsg;
+		std::atomic_bool m_bDoRead;
 	};
 	using CUdpMultiCastSender_PTR = std::shared_ptr< CUdpMultiCastSender>;
 }

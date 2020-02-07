@@ -18,15 +18,18 @@ namespace ClientCore {
 		m_udpServerIp = strIp;
 		m_udpServerPort = port;
 		m_udpSocket = std::make_shared <asio::ip::udp::socket>(ioService);
-
 		asio::ip::address toAddress = asio::ip::make_address(strIp);
 		asio::ip::udp::endpoint toEndPt(toAddress, port);
+		m_udpSocket->open(toEndPt.protocol());
+		m_udpSocket->set_option(asio::ip::udp::socket::broadcast(true));
 		m_udpServerPt = toEndPt;
+		m_bRecvMsg = false;
+		m_bDoRead = false;
 	}
 
 	void CUdpMultiCastSender::StartConnect()
 	{
-		do_read();
+		//do_read();
 	}
 
 	/**
@@ -35,24 +38,28 @@ namespace ClientCore {
 	 */
 	void CUdpMultiCastSender::do_read()
 	{
-		if (m_udpSocket)
+		if (!m_bDoRead)
 		{
-			auto pSelf = shared_from_this();
-			m_udpSocket->async_receive_from(asio::buffer(m_recvbuf, max_msg_length_udp), m_recvFromPt, [this, pSelf](std::error_code ec, std::size_t bytes) {
-				if (!ec && bytes > 0)
-				{
-					TransBaseMsg_t trans(m_recvbuf);
-					if (bytes >= 8 && bytes > trans.GetSize())
+			if (m_udpSocket)
+			{
+				auto pSelf = shared_from_this();
+				m_udpSocket->async_receive_from(asio::buffer(m_recvbuf, max_msg_length_udp), m_recvFromPt, [this, pSelf](std::error_code ec, std::size_t bytes) {
+					if (!ec && bytes > 0)
 					{
-						if (trans.GetType() != E_MsgType::FileSendDataReq_Type && trans.GetType() != E_MsgType::FileRecvDataReq_Type)
+						TransBaseMsg_t trans(m_recvbuf);
+						if (bytes >= 8 && bytes >= trans.GetSize())
 						{
-							LOG_INFO(this->ms_loger, "[{}] UDP RECV: {} MSG:{} {} [{} {}]", UserId(), EndPoint(m_recvFromPt), MsgType(trans.GetType()), trans.to_string(), __FILENAME__, __LINE__);
+							if (trans.GetType() != E_MsgType::FileSendDataReq_Type && trans.GetType() != E_MsgType::FileRecvDataReq_Type)
+							{
+								LOG_INFO(this->ms_loger, "[{}] UDP RECV: {} MSG:{} {} [{} {}]", UserId(), EndPoint(m_recvFromPt), MsgType(trans.GetType()), trans.to_string(), __FILENAME__, __LINE__);
+							}
+							handle_msg(m_recvFromPt, &trans);
 						}
-						handle_msg(m_recvFromPt, &trans);
+						do_read();
 					}
-					do_read();
-				}
-			});
+				});
+			}
+			m_bDoRead = true;
 		}
 	}
 
@@ -65,6 +72,7 @@ namespace ClientCore {
 	void CUdpMultiCastSender::handle_msg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
 	{
 		m_callBack(endPt, pMsg);
+		m_bRecvMsg = true;
 	}
 
 
@@ -153,6 +161,7 @@ namespace ClientCore {
 			{
 				LOG_INFO(ms_loger, "{}", ec.what());
 			}
+			do_read();
 		}
 	}
 

@@ -1,165 +1,103 @@
-////
-//// receiver.cpp
-//// ~~~~~~~~~~~~
-////
-//// Copyright (c) - Christopher M. Kohlhoff (chris at kohlhoff dot com)
-////
-//// Distributed under the Boost Software License, Version 1.0. (See accompanying
-//// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-////
-//
-//#include <array>
-//#include <iostream>
-//#include <string>
-//#include "asio.hpp"
-//
-//constexpr short multicast_port = 1;
-//
-//class receiver
-//{
-//public:
-//  receiver(asio::io_context& io_context,
-//      const asio::ip::address& listen_address,
-//      const asio::ip::address& multicast_address)
-//    : socket_(io_context)
-//  {
-//    // Create the socket so that multiple may be bound to the same address.
-//    asio::ip::udp::endpoint listen_endpoint(
-//        listen_address, multicast_port);
-//    socket_.open(listen_endpoint.protocol());
-//    socket_.set_option(asio::ip::udp::socket::reuse_address(true));
-//	socket_.set_option(asio::ip::multicast::enable_loopback(true));
-//	socket_.set_option(asio::ip::multicast::hops(4));
-//    socket_.bind(listen_endpoint);
-//    // Join the multicast group.
-//    socket_.set_option(
-//        asio::ip::multicast::join_group(multicast_address.to_v4));
-//
-//    do_receive();
-//  }
-//
-//private:
-//  void do_receive()
-//  {
-//    socket_.async_receive_from(
-//        asio::buffer(data_), sender_endpoint_,
-//        [this](std::error_code ec, std::size_t length)
-//        {
-//          if (!ec)
-//          {
-//            std::cout.write(data_.data(), length);
-//            std::cout << std::endl;
-//
-//            do_receive();
-//          }
-//        });
-//  }
-//
-//  asio::ip::udp::socket socket_;
-//  asio::ip::udp::endpoint sender_endpoint_;
-//  std::array<char, > data_;
-//};
-//
-//int main(int argc, char* argv[])
-//{
-//  try
-//  {
-//    if (argc != 3)
-//    {
-//      std::cerr << "Usage: receiver <listen_address> <multicast_address>\n";
-//      std::cerr << "  For IPv4, try:\n";
-//      std::cerr << "    receiver 0.0.0.0 9.5.0.1\n";
-//      std::cerr << "  For IPv6, try:\n";
-//      std::cerr << "    receiver 0::0 ff:::\n";
-//      return 1;
-//    }
-//
-//    asio::io_context io_context;
-//    receiver r(io_context,
-//        asio::ip::make_address(argv[1]),
-//        asio::ip::make_address(argv[2]));
-//    io_context.run();
-//  }
-//  catch (std::exception& e)
-//  {
-//    std::cerr << "Exception: " << e.what() << "\n";
-//  }
-//
-//  return 0;
-//}
 
-#include <stdio.h>
-//#include <arpa/inet.h>
-#include <sys/types.h>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-#include <stdlib.h>
-//#include <unistd.h>
-#include <string.h>
+/**
+ * @file UdpReciver.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief UDP多播示例程序的接收代码
+ * @version 0.1
+ * @date 2020-02-06
+ *
+ * @copyright Copyright (c) 2020
+ *
+ * //http://www.cs.ubbcluj.ro/~dadi/compnet/labs/lab3/udp-broadcast.html
+ */
 
-#include <WinSock2.h>
+#ifdef WIN32
+#include"winsock2.h"
 #pragma comment(lib, "Ws2_32.lib")
-#define N 128
+#endif 
 
-		
-int main(int argc, const char *argv[])
+#include<iostream>
+#include<conio.h>
+
+
+#define MYPORT 3345    // the port users will be connecting to
+
+
+int main(int argc, char * argv[])
 {
-	WSAData wsa;
-	if (::WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+
+#ifdef WIN32
+	WSADATA wsaData;
+	WSAStartup(MAKEWORD(2, 2), &wsaData);
+#endif
+
+	SOCKET sock;
+	sock = socket(AF_INET, SOCK_DGRAM, 0);
+	char broadcast = '1';
+
+	//     This option is needed on the socket in order to be able to receive broadcast messages
+	//   If not set the receiver will not receive broadcast messages in the local network.
+	if (setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast)) < 0)
 	{
+		std::cout << "Error in setting Broadcast option";
+		closesocket(sock);
 		return 0;
 	}
-	int sockfd;
-	struct sockaddr_in broadcastaddr, addr;
-	int addrlen = sizeof(broadcastaddr);
-	char buf[N] = {};
 
-	if (argc < 3)
+	struct sockaddr_in Recv_addr;
+	struct sockaddr_in Sender_addr;
+
+	int len = sizeof(struct sockaddr_in);
+
+	char recvbuff[128] = { 0 };
+	int recvbufflen = 128;
+
+	char sendMSG[] = "Broadcast UDP Sender https://www.dennisthink.com/";
+
+	Recv_addr.sin_family = AF_INET;
+	Recv_addr.sin_port = htons(MYPORT);
+	Recv_addr.sin_addr.s_addr = INADDR_ANY;
+
+
+
+	if (bind(sock, (sockaddr*)&Recv_addr, sizeof(Recv_addr)) < 0)
 	{
-		fprintf(stderr, "Usage: %s ip port\n", argv[0]);
-		exit(1);
+#ifdef _WIN32_
+		std::cout << "Error in BINDING" << WSAGetLastError();
+		_getch();
+		closesocket(sock);
+#endif
+		return 0;
 	}
 
-	//第一步:创建套接字
-	if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-	{
-		//errlog("fail to socket");
-	}
 
-	//第二步:填充广播网络信息结构体
-	//inet_addr:将点分十进制ip地址转化为网络字节序的整型数据
-	//htons:将主机字节序转化为网络字节序
-	//atoi:将数字型字符串转化为整型数据
-	broadcastaddr.sin_family = AF_INET;
-	broadcastaddr.sin_addr.s_addr = inet_addr(argv[1]);
-	broadcastaddr.sin_port = htons(atoi(argv[2]));
-
-	//第三步:将套接字与服务器网络信息结构体绑定
-	if (bind(sockfd, (struct sockaddr *)&broadcastaddr, addrlen) < 0)
+	while (true)
 	{
-		//errlog("fail to bind");
-	}
-
-	int bytes;
-	while (1)
-	{
-		if ((bytes = recvfrom(sockfd, buf, N, 0, \
-			(struct sockaddr *)&addr, &addrlen)) < 0)
+		recvfrom(sock, recvbuff, recvbufflen, 0, (sockaddr *)&Sender_addr, &len);
+		std::cout << "\n\n\tRECV FROM:(" << inet_ntoa(Sender_addr.sin_addr) << ":" << Sender_addr.sin_port << ") MSG: " << recvbuff << std::endl;
+		if (sendto(sock, recvbuff, len, 0, (sockaddr *)&Sender_addr, sizeof(Sender_addr)) < 0)
 		{
-			//errlog("fail to recvfrom");
+			std::cout << "Error in Sending." << WSAGetLastError();
+			std::cout << "\n\n\t\t Press any key to continue....";
+			_getch();
+			closesocket(sock);
+			return 0;
 		}
 		else
 		{
-			printf("ip: %s, port: %d\n", \
-				inet_ntoa(addr.sin_addr), \
-				ntohs(addr.sin_port));
-
-			printf("broadcast : %s\n", buf);
-
+			std::cout << "\n\n\n\tREADER sends the broadcast message Successfully";
 		}
 	}
 
-	closesocket(sockfd);
+	std::cout << "\n\n\tpress any key to CONT...";
+	_getch();
+
+#ifdef WIN32
+	closesocket(sock);
 	WSACleanup();
+#endif 
+
 	return 0;
 }
+
+

@@ -73,6 +73,6 @@ SET(SQLITE_CPP_SOURCE ../include/thirdparty/SQLiteCpp/sqlite3/sqlite3.c
 ../include/thirdparty/SQLiteCpp/src/Transaction.cpp)
 
 add_executable(ClientCore MediumServer.cpp ${SERVER_FILES}  ${SQLITE_CPP_SOURCE})
-add_executable(Sender ./sender.cpp)
-add_executable(Reciver ./reciver.cpp)
+add_executable(Sender ./sender.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
+add_executable(Reciver ./reciver.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin)  

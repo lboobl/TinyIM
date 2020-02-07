@@ -204,6 +204,42 @@ void CMediumServer::HandleSendBack_FileDataSendRsp(const std::shared_ptr<CClient
 	pClientSess->SendMsg(pMsg);
 }
 
+void CMediumServer::DispatchUdpMultiCastReciverMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
+{
+	switch (pMsg->GetType())
+	{
+	case E_MsgType::KeepAliveReq_Type:
+	{
+		KeepAliveReqMsg reqMsg;
+		if (reqMsg.FromString(pMsg->to_string())) {
+			KeepAliveRspMsg rspMsg;
+			rspMsg.m_strClientId = "RSPMSG";
+			if (!m_udpReciverVec.empty()) {
+				m_udpReciverVec[0]->send_msg(endPt, &rspMsg);
+			}
+		}
+	}break;
+	case E_MsgType::UdpMultiCastReq_Type:
+	{
+		UdpMultiCastReqMsg reqMsg;
+		if (reqMsg.FromString(pMsg->to_string())) {
+			UdpMultiCastRspMsg rspMsg;
+			rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+			rspMsg.m_strFriendId = reqMsg.m_strUserId;
+			rspMsg.m_strFriendId = reqMsg.m_strUserId;
+			if (!m_udpReciverVec.empty()) {
+				m_udpReciverVec[0]->send_msg(endPt, &rspMsg);
+			}
+		}
+	}break;
+	default:
+	{
+
+	}break;
+	}
+}
+
+
 std::vector<std::string> CMediumServer::GetLocalAllIp()
 {
 	std::vector<std::string> result;
@@ -465,22 +501,19 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 	CUdpMultiCastReciver::ms_loger = ms_loger;
 	CUdpMultiCastSender::ms_loger = ms_loger;
 	const int MULTI_CAST_PORT = 3345;
-	for (auto item : allIp)
+	//for (auto item : allIp)
 	{
-		LOG_INFO(ms_loger, "IP:{}  [{} {}]", item, __FILENAME__, __LINE__);
+		//LOG_INFO(ms_loger, "IP:{}  [{} {}]", item, __FILENAME__, __LINE__);
 		{
-			auto pReciver = std::make_shared<CUdpMultiCastReciver>(m_ioService, item, MULTI_CAST_PORT, [](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)->void {
-
+			auto pSelf = shared_from_this();
+			auto pReciver = std::make_shared<CUdpMultiCastReciver>(m_ioService, "127.0.0.1", MULTI_CAST_PORT, [this,pSelf](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)->void {
+				DispatchUdpMultiCastReciverMsg(endPt, pMsg);
 			});
 			m_udpReciverVec.push_back(pReciver);
 			pReciver->StartConnect();
 		}
 		{
-			auto pSender = std::make_shared<CUdpMultiCastSender>(m_ioService, item, MULTI_CAST_PORT, [](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)->void {
-
-			});
-			m_udpSenderVec.push_back(pSender);
-			pSender->StartConnect();
+			
 		}
 	}
 }
@@ -587,12 +620,36 @@ void CMediumServer::CheckAllConnect()
 
 void CMediumServer::CheckMultiCast()
 {
+	static int nRecvCount = 0;
 	UdpMultiCastReqMsg reqMsg;
 	reqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
 	reqMsg.m_strUserId = reqMsg.m_strMsgId;
-	for (auto item : m_udpSenderVec)
+	if (m_udpSenderVec.empty())
 	{
-		item->sendToServer(&reqMsg);
+		const int MULTI_CAST_PORT = 3345;
+		auto pSender = std::make_shared<CUdpMultiCastSender>(m_ioService, "192.168.1.255", MULTI_CAST_PORT, [](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)->void {
+
+		});
+		m_udpSenderVec.push_back(pSender);
+		pSender->StartConnect();
+	}
+	else
+	{	
+		bool bRecv = false;
+		for (auto item : m_udpSenderVec)
+		{
+			item->sendToServer(&reqMsg);
+			bRecv = item->HasReciveMsg() || bRecv;
+		}
+		if (!bRecv)
+		{
+			nRecvCount++;
+		}
+		if (nRecvCount > 5)
+		{
+			nRecvCount = 0;
+			m_udpSenderVec.clear();
+		}
 	}
 }
 
