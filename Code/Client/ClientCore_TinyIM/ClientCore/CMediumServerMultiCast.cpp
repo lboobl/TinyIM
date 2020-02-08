@@ -9,7 +9,7 @@
  * 
  */
 
-#include "CMediumServer.h"
+#include "CMediumServerMultiCast.h"
 #include "json11.hpp"
 #include "DaemonSvcApp.h"
 #include "Msg.h"

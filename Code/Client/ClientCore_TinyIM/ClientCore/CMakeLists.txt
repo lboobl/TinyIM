@@ -68,6 +68,7 @@ SET(TCP_MAIN_SERVER
 CMediumServer.h 
 CMediumServer.cpp		
 ./MainFunc.cpp)
+
 SET(UDP_MAIN_FILES 
 ./CMediumServerMultiCast.h 
 ./CMediumServerMultiCast.cpp
@@ -102,9 +103,9 @@ ${HTTP_FILES}
 ${DAEMON_FILES}
 ${MSG_STRUCT_FILES}
 ${MULTI_CAST_SESS_FILES}
-${UDP_MAIN_SERVER})
+${UDP_MAIN_FILES})
 
-#add_executable(ClientCore MediumServer.cpp ${TCP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
+add_executable(ClientCore MediumServer.cpp ${TCP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
 add_executable(MultiCastCore MediumServer.cpp ${UDP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
 #add_executable(Sender ./sender.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
 #add_executable(Reciver ./reciver.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
