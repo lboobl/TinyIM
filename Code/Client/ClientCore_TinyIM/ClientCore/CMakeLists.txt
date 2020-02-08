@@ -62,6 +62,8 @@ set(SERVER_FILES
 		../include/common/CommonFunction.cpp
 		./MainFunc.h
 		./MainFunc.cpp
+		./CNetUtil.h 
+		./CNetUtil.cpp
         )
 
 SET(SQLITE_CPP_SOURCE ../include/thirdparty/SQLiteCpp/sqlite3/sqlite3.c

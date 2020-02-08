@@ -98,6 +98,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 
 	void Handle_RecvFileOnlineRsp(const FriendRecvFileMsgRspMsg& rspMsg);
 	void DispatchUdpMultiCastReciverMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg);
+	void DispatchUdpMultiCastSenderMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg);
 	void DispatchUdpMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg);
 	void Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const FileDataSendRspMsg& Msg);
 	void Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const KeepAliveRspMsg& Msg);
