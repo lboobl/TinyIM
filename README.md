@@ -1,13 +1,30 @@
 # TinyIM
 
+一个能编写聊天机器人的IM。
+
 ## 0. 项目简介
 
 一个基于C++的IM实现     
-最初的客户端设计来自flamingo https://github.com/balloonwj/flamingo      
-服务器是我完全重写的,个人blog https://www.dennisthink.com/      
-有问题可以联系 dennismi1024@gmail.com            
+TinyIM软件是一款实现文本单聊和文本群聊的IM软件，该软件使用C++语言编写。客户端目前支持Windows平台，后续计划支持Linux和Mac平台，服务端支持Windows、Linux、Mac平台。整个项目主要分为ClientUI,ClientCore,ChatServer三个部分。
+
+ImRobot 作为一个聊天机器人的示例程序。
+ClientUI主要完成客户端的界面显示和用户交互。
+ClientCore主要完成客户端的业务逻辑操作,同时提供HTTP和TCP接口。
+
+ChatServer主要完成IM服务器的功能。
+
+有问题可以联系: dennismi1024@gmail.com            
 或者加入QQ群：106350930                    
-文档链接:https://dennisthink.github.io/AboutAuther.html             
+文档链接:https://dennisthink.github.io/index.html             
+
+## 1. 支持平台
+
+|组件|Windows|Linux|MacOS|
+|---|----|----|----|
+|ClientCore|支持|支持|理论支持,暂未测试|
+|ClientGUI|支持|不支持|不支持|
+|ChatServer|支持|支持|理论支持,暂未测试|
+|ImRobot|支持|支持|理论支持,暂未测试|
 
 ## 1.编译介绍
 TinyIM采用C++语言进行开发,CMake工具进行编译,目前已经在Windows7的64位上使用VS2017编译通过了。

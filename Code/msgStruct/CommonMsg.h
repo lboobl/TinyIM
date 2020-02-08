@@ -2315,6 +2315,28 @@ public:
 	virtual std::string ToString() const override;
 	virtual bool FromString(const std::string& strJson) override;
 };
+class UdpMultiCastReqMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+public:
+	UdpMultiCastReqMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class UdpMultiCastRspMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strFriendId;//好友ID
+public:
+	UdpMultiCastRspMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
 /**
  * @brief 服务器配置
  * 

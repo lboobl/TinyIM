@@ -359,6 +359,9 @@ NetSpeedDataReq_Type,
 NetSpeedTestReq_Type,
 
 NetSpeedTestRsp_Type,
+
+UdpMultiCastReq_Type,
+UdpMultiCastRsp_Type,
 };
 
 //客户端会话状态

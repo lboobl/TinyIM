@@ -34,3 +34,10 @@ bin
 Build64Bat
 /Code/Client/ClientUI/VS2017
 Code/Client/.vscode/ipch/14f0f5301935718e/mmap_address.bin
+/Code/Client/ClientCore_TinyIM/ClientCore/build/CMakeFiles/*.check_cache
+/Code/Client/ClientCore_TinyIM/ClientCore/build/.cmake/api/v1/query/client-integration-vscode/cache-v2
+/Code/Client/ClientCore_TinyIM/ClientCore/build/.cmake/api/v1/query/client-integration-vscode/cmakeFiles-v1
+/Code/Client/ClientCore_TinyIM/ClientCore/build/.cmake/api/v1/query/client-integration-vscode/codemodel-v2
+/Code/Client/ClientCore_TinyIM/ClientCore/build/CMakeCache.txt
+/Code/Client/ClientCore_TinyIM/ClientCore/build/CMakeFiles/3.14.1/CMakeSystem.cmake
+/Code/Client/ClientCore_TinyIM/ClientCore/build/CMakeFiles/CMakeOutput.log

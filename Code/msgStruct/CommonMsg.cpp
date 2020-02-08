@@ -9210,3 +9210,107 @@ bool UdpP2pStartRspMsg::FromString(const std::string &strJson)
 	}
 	return true;
 }
+
+
+UdpMultiCastReqMsg::UdpMultiCastReqMsg()
+{
+	m_type = E_MsgType::UdpMultiCastReq_Type;
+}
+
+std::string UdpMultiCastReqMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+		});
+
+	return clientObj.dump();
+}
+
+bool UdpMultiCastReqMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
+UdpMultiCastRspMsg::UdpMultiCastRspMsg()
+{
+	m_type = E_MsgType::UdpMultiCastRsp_Type;
+}
+
+std::string UdpMultiCastRspMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"FriendId",m_strFriendId},
+		});
+
+	return clientObj.dump();
+}
+
+bool UdpMultiCastRspMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["FriendId"].is_string())
+	{
+		m_strFriendId = json["FriendId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}

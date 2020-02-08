@@ -36,35 +36,50 @@ if(WIN32)
 else()
 link_libraries(pthread dl)
 endif()
-set(SERVER_FILES 
-		CServerSess.h CServerSess.cpp
-        CMediumServer.h CMediumServer.cpp 
-        ../../../msgStruct/json11/json11.cpp
+
+SET(MSG_STRUCT_FILES ../../../msgStruct/json11/json11.cpp
+../../../msgStruct/CommonDef.cpp
+../../../msgStruct/CommonMsg.cpp
+CMsgPersistentUtil.h 
+CMsgPersistentUtil.cpp
+CServerSess.h 
+CServerSess.cpp)
+
+SET(DAEMON_FILES ../include/DaemonApp/DaemonSvcApp.h 
+				 ../include/DaemonApp/DaemonSvcApp.cpp)
+
+SET(MULTI_CAST_SESS_FILES ./CUdpMultiCastSender.h
+./CUdpMultiCastSender.cpp		
+./CUdpMultiCastReciver.h 
+./CUdpMultiCastReciver.cpp
+./CNetUtil.h 
+./CNetUtil.cpp)
+
+SET(HTTP_FILES 		./CHttpServer.h 
+					./CHttpServer.cpp)
+
+SET(COMMON_FUNCTION_FILES 		../../../CommonFunction/CFileUtil.h  
+../../../CommonFunction/CFileUtil.cpp
+../../../CommonFunction/md5.h  
+../../../CommonFunction/md5.cpp
+)
+
+SET(TCP_MAIN_SERVER  
+CMediumServer.h 
+CMediumServer.cpp		
+./MainFunc.cpp)
+SET(UDP_MAIN_FILES 
+./CMediumServerMultiCast.h 
+./CMediumServerMultiCast.cpp
+./MainFuncMultiCast.cpp)
+
+set(TCP_CORE_FILES 
         CClientSess.h CClientSess.cpp
 		../include/common/IUProtocolData.cpp
-        ../include/DaemonApp/DaemonSvcApp.h 
-        ../include/DaemonApp/DaemonSvcApp.cpp
-		./CHttpServer.h 
-        ./CHttpServer.cpp
-		CMsgPersistentUtil.h 
-        CMsgPersistentUtil.cpp
-		./CUdpMultiCastSender.h
-        ./CUdpMultiCastSender.cpp		
-		./CUdpMultiCastReciver.h 
-		./CUdpMultiCastReciver.cpp
-		../../../CommonFunction/CFileUtil.h  
-		../../../CommonFunction/CFileUtil.cpp
-		../../../CommonFunction/md5.h  
-		../../../CommonFunction/md5.cpp
 		./CUdpClient.h ./CUdpClient.cpp
-		../../../msgStruct/CommonDef.cpp
-		../../../msgStruct/CommonMsg.cpp
 		../include/common/CommonFunction.cpp
 		./MainFunc.h
-		./MainFunc.cpp
-		./CNetUtil.h 
-		./CNetUtil.cpp
-        )
+)
 
 SET(SQLITE_CPP_SOURCE ../include/thirdparty/SQLiteCpp/sqlite3/sqlite3.c
 ../include/thirdparty/SQLiteCpp/src/Backup.cpp
@@ -74,7 +89,23 @@ SET(SQLITE_CPP_SOURCE ../include/thirdparty/SQLiteCpp/sqlite3/sqlite3.c
 ../include/thirdparty/SQLiteCpp/src/Statement.cpp
 ../include/thirdparty/SQLiteCpp/src/Transaction.cpp)
 
-add_executable(ClientCore MediumServer.cpp ${SERVER_FILES}  ${SQLITE_CPP_SOURCE})
-add_executable(Sender ./sender.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
-add_executable(Reciver ./reciver.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
+SET(TCP_SERVER_FILES ${TCP_CORE_FILES} 
+					 ${COMMON_FUNCTION_FILES} 
+					 ${HTTP_FILES} 
+					 ${DAEMON_FILES}
+					 ${MSG_STRUCT_FILES}
+					 ${TCP_MAIN_SERVER})
+
+SET(UDP_SERVER_FILES ${TCP_CORE_FILES} 
+${COMMON_FUNCTION_FILES} 
+${HTTP_FILES} 
+${DAEMON_FILES}
+${MSG_STRUCT_FILES}
+${MULTI_CAST_SESS_FILES}
+${UDP_MAIN_SERVER})
+
+#add_executable(ClientCore MediumServer.cpp ${TCP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
+add_executable(MultiCastCore MediumServer.cpp ${UDP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
+#add_executable(Sender ./sender.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
+#add_executable(Reciver ./reciver.cpp ../../../msgStruct/CommonMsg.cpp ../../../msgStruct/json11/json11.cpp ../../../msgStruct/CommonDef.cpp)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin)  

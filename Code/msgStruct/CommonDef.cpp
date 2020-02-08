@@ -315,6 +315,8 @@ std::string MsgType(const E_MsgType& msgType)
 		ENUM_TO_STRING(E_MsgType::FileTransProgressNotifyReq_Type)
 		ENUM_TO_STRING(E_MsgType::FileDownLoadReq_Type)
 		ENUM_TO_STRING(E_MsgType::FileDownLoadRsp_Type)
+		ENUM_TO_STRING(E_MsgType::UdpMultiCastReq_Type)
+		ENUM_TO_STRING(E_MsgType::UdpMultiCastRsp_Type)
 	default:
 		{
 			return "UnKnownMsgType: "+std::to_string(static_cast<int>(msgType));

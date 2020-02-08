@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef _MEDIUM_SERVER_C_MEDIUM_SERVER_H_
-#define _MEDIUM_SERVER_C_MEDIUM_SERVER_H_
+#ifndef _MEDIUM_SERVER_C_MEDIUM_SERVER_MULTI_CAST_H_
+#define _MEDIUM_SERVER_C_MEDIUM_SERVER_MULTI_CAST_H_
 
 #include <functional>
 
@@ -25,6 +25,8 @@
 #include "CServerSess.h"
 #include "CHttpServer.h"
 #include "CUdpClient.h"
+#include "CUdpMultiCastReciver.h"
+#include "CUdpMultiCastSender.h"
 #include "planform.h"
 #include "CMsgPersistentUtil.h"
 #include "CFileUtil.h"
@@ -180,6 +182,7 @@ private:
 	void HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg);
 	void HandleFriendChatRecvTextMsgRsp(const FriendChatRecvTxtReqMsg& reqMsg);
 	
+	void CheckMultiCast();
 	
 	std::map<std::string, std::string> m_userName_UserIdMap;
 	std::map<std::string, CLIENT_SESS_STATE>  m_userStateMap;
@@ -194,6 +197,8 @@ private:
 	std::map<std::string, CMsgPersistentUtil_SHARED_PTR> m_UserId_MsgPersistentUtilMap;
 	std::map<std::string, std::vector<std::shared_ptr<BaseMsg>> > m_RecvWaitMsgMap;
 	std::map<std::string, FriendChatSendTxtReqMsg>  m_SendWaitMsgMap;
+	std::vector<CUdpMultiCastReciver_PTR> m_udpReciverVec;
+	std::vector<CUdpMultiCastSender_PTR> m_udpSenderVec;
 };
 } // namespace MediumServer
 

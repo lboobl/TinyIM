@@ -1,5 +1,6 @@
 mkdir Build32Bat
 cd Build32Bat
 cmake ..
-MSBuild.exe Project.sln -property:Configuration=Debug
+MSBuild.exe ClientCore_TinyIM.sln -property:Configuration=Debug
 pause
+cd ..
