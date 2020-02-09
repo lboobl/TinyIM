@@ -21,7 +21,6 @@
 #include "asio_common.h"
 #include "json11.hpp"
 
-#include "CClientSess.h"
 #include "CServerSess.h"
 #include "CHttpServer.h"
 #include "CUdpClient.h"
@@ -33,7 +32,6 @@
 namespace ClientCore
 {
 using tcp = asio::ip::tcp;
-class CClientSess;
 class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 {
   protected:
@@ -59,11 +57,9 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	//std::vector<std::shared_ptr<CClientSess>> m_ConnectSessList; //连接到服务器的套接字列表
 
 
-	std::map<std::shared_ptr<CServerSess>, std::shared_ptr<CClientSess>> m_ForwardSessMap;
-	std::map<std::shared_ptr<CClientSess>, std::shared_ptr<CServerSess>> m_BackSessMap;
 
 
-	std::map<std::string, std::shared_ptr<CClientSess>> m_userId_ClientSessMap;
+
 	std::map<std::string, std::shared_ptr<CServerSess>> m_userId_ServerSessMap;
 
 	std::map<std::string, std::string> m_userId_UserNameMap;
@@ -71,7 +67,6 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
     std::shared_ptr<asio::high_resolution_timer> m_timer = nullptr;
 
 	std::shared_ptr<CHttpServer> m_httpServer;
-	CClientSess_SHARED_PTR m_freeClientSess;
 	std::map<std::string, std::vector<std::string>> m_userFriendListMap;
 	std::map<std::string, time_t> m_userKeepAliveMap;
     void SetTimer(int nSeconds);
@@ -93,7 +88,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
     inline IpPortCfg &config() { return m_serverCfg; }
 
 
-    void SendBack(const std::shared_ptr<CClientSess>& pClientSess,const TransBaseMsg_t& msg);
+    //void SendBack(const std::shared_ptr<CClientSess>& pClientSess,const TransBaseMsg_t& msg);
 	void SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg);
 
 	void Handle_RecvFileOnlineRsp(const FriendRecvFileMsgRspMsg& rspMsg);
@@ -111,8 +106,6 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	void CheckAllConnect();
 	void CheckFriendP2PConnect();
 
-	CClientSess_SHARED_PTR GetClientSess(const std::string strUserId);
-	CClientSess_SHARED_PTR CreateClientSess();
 	//CClientSess_SHARED_PTR CreateClientSess(const std::string strUserName);
 	CUdpClient_PTR CreateUdpSess();
 	CUdpClient_PTR GetUdpSess(const std::string strUserId);
@@ -157,7 +150,7 @@ private:
 	std::vector<std::string> GetLocalAllIp();
 	CServerSess_SHARED_PTR Get_GUI_Sess(const std::string strUserId);
 	bool HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg);
-	bool HandleSendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg);
+	/*bool HandleSendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg);
 	bool HandleSendBack_GetFriendListRsp(const std::shared_ptr<CClientSess>& pClientSess, const GetFriendListRspMsg& msg);
 	void HandleSendBack_FriendChatRecvTxtReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatRecvTxtReqMsg reqMsg);
 	void HandleSendBack_FriendChatSendTxtRsp(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatSendTxtRspMsg reqMsg);
@@ -170,13 +163,13 @@ private:
 	void HandleSendBack_FileDownLoadRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileDownLoadRspMsg rspMsg);
 	void HandleSendBack_FileDataSendRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileDataSendRspMsg& rspMsg);
 	void HandleSendBack_FileVerifyRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileVerifyRspMsg& rspMsg);
-	void HandleSendBack_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg);
+	void HandleSendBack_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg);*/
 
 	void HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& msg);
 	void HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& msg);
 	void HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& msg);
 	void HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& msg);
-	void Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSess, const FileDataRecvReqMsg& reqMsg);
+	//void Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSess, const FileDataRecvReqMsg& reqMsg);
 
 
 	void HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg);

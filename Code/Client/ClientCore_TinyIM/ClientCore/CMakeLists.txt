@@ -62,6 +62,7 @@ SET(COMMON_FUNCTION_FILES 		../../../CommonFunction/CFileUtil.h
 ../../../CommonFunction/CFileUtil.cpp
 ../../../CommonFunction/md5.h  
 ../../../CommonFunction/md5.cpp
+../include/common/CommonFunction.cpp
 )
 
 SET(TCP_MAIN_SERVER  
@@ -74,11 +75,17 @@ SET(UDP_MAIN_FILES
 ./CMediumServerMultiCast.cpp
 ./MainFuncMultiCast.cpp)
 
+SET(TCP_SESS_SERVER_FILES   
+
+CClientSess.h 
+
+CClientSess.cpp)
+
 set(TCP_CORE_FILES 
-        CClientSess.h CClientSess.cpp
+      
 		../include/common/IUProtocolData.cpp
 		./CUdpClient.h ./CUdpClient.cpp
-		../include/common/CommonFunction.cpp
+
 		./MainFunc.h
 )
 
@@ -95,7 +102,7 @@ SET(TCP_SERVER_FILES ${TCP_CORE_FILES}
 					 ${HTTP_FILES} 
 					 ${DAEMON_FILES}
 					 ${MSG_STRUCT_FILES}
-					 ${TCP_MAIN_SERVER})
+					 ${TCP_MAIN_SERVER} ${TCP_SESS_SERVER_FILES})
 
 SET(UDP_SERVER_FILES ${TCP_CORE_FILES} 
 ${COMMON_FUNCTION_FILES} 

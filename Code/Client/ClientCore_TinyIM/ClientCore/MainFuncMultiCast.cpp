@@ -52,7 +52,7 @@ void RunProgram(ParseParamResult result)
 		std::cout << "Can not Create Logger" << std::endl;
 		return;
 	}
-	ClientCore::CClientSess::ms_loger = logger;
+	/*ClientCore::CClientSess::ms_loger = logger;*/
 	ClientCore::CServerSess::ms_loger = logger;
 	ClientCore::CMediumServer::ms_loger = logger;
 	ClientCore::CHttpServer::ms_loger = logger;

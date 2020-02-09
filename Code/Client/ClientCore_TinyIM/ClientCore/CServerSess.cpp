@@ -52,10 +52,12 @@ void CServerSess::do_read()
  */
 void CServerSess::StopConnect()
 {
+#if 0
 	if (m_server)
 	{
 		m_server->ServerSessClose(shared_from_this());
 	}
+#endif
 	m_socket.close();
 	m_bConnect = false;
 }

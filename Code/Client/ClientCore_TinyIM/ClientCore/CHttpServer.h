@@ -14,9 +14,9 @@
 #include <memory>
 #include <map>
 #include "server_http.hpp"
-#include "CClientSess.h"
 #include "SnowFlake.h"
 #include "CommonMsg.h"
+#include "Log.h"
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 class RSP_SECOND {
 public:
@@ -194,7 +194,7 @@ namespace ClientCore {
 		NormalRspMsg m_wrongRequestFormatRsp;//请求格式错误的回复
 		NormalRspMsg m_userNotLoginRsp;//用户未登录的请的回
 	
-		std::map<CClientSess_SHARED_PTR, std::shared_ptr<HttpServer::Response>> m_clientSessResponseMap;
+		//std::map<CClientSess_SHARED_PTR, std::shared_ptr<HttpServer::Response>> m_clientSessResponseMap;
 		HTTP_RSP_MAP m_httpRspMap;
 
 		std::map<std::string, UserLoginReqMsg> m_userLoginMsgMap;

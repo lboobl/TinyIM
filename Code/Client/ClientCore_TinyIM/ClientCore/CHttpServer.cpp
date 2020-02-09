@@ -24,6 +24,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_RegisterUser(std::shared_ptr<HttpServer::Response> response,std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		UserRegisterReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -46,6 +47,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 
 
@@ -57,6 +59,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_UnRegisterUser(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		UserUnRegisterReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -79,6 +82,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 
 	/**
@@ -89,6 +93,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_UserLogin(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		UserLoginReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -119,6 +124,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 
 	/**
@@ -129,6 +135,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_UserLogout(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		UserLogoutReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -150,6 +157,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 
 	/**
@@ -160,6 +168,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Get_RandomUserNameReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string strUserId = GetHttpParamUserId(request);
 		if (!strUserId.empty())
 		{
@@ -183,6 +192,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 	/**
 	 * @brief 处理接收到好友文本消息的HTTP请求
@@ -216,6 +226,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_FriendChatRecvTxtRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		FriendChatRecvTxtRspMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -236,6 +247,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 
 	/**
@@ -327,6 +339,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_AddFriendReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		AddFriendSendReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -349,6 +362,7 @@ namespace ClientCore
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
+#endif
 	}
 
 	/**
@@ -359,6 +373,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_SendAddToGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		AddToGroupReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -380,6 +395,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif 
 
 	}
 
@@ -392,6 +408,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_FindGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		FindGroupReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -413,6 +430,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -423,6 +441,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_CreateGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		CreateGroupReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -444,6 +463,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -454,6 +474,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_DestroyGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		DestroyGroupReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -475,6 +496,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -485,6 +507,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_SendGroupTextMsg(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		SendGroupTextMsgReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -506,6 +529,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 
@@ -545,6 +569,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_FindFriendReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		FindFriendReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -566,6 +591,7 @@ namespace ClientCore
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 
 		}
+#endif
 	}
 
 	/**
@@ -600,6 +626,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Get_FriendListReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string strUserId = GetHttpParamUserId(request);
 		if (strUserId.length() > 0)
 		{
@@ -623,6 +650,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 
@@ -634,6 +662,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_RecvGroupTextMsgRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		RecvGroupTextMsgRspMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -654,6 +683,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -687,6 +717,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_RemoveFriend(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		RemoveFriendReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -707,6 +738,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -717,6 +749,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_RecvAddFriendRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		AddFriendRecvRspMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -743,6 +776,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 
@@ -754,6 +788,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Get_AddFriendNotify(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		AddFriendNotifyReqMsg reqMsg;
 		std::string strUserId = GetHttpParamUserId(request);
 		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
@@ -784,6 +819,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 		}
+#endif
 	}
 
 	/**
@@ -794,6 +830,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_SendFileOnlineReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		FriendSendFileMsgReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -823,6 +860,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 		}
+#endif
 	}
 
 
@@ -859,6 +897,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_RecvFileOnlineRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		FriendRecvFileMsgRspMsg rspMsg;
 		
@@ -883,6 +922,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 		}
+#endif
 	}
 
 	
@@ -982,6 +1022,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Get_GroupListReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string strUserId = GetHttpParamUserId(request);
 		if (strUserId.length() > 0)
 		{
@@ -1004,6 +1045,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -1014,6 +1056,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_AddFriendTeamReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		AddTeamReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -1031,6 +1074,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -1041,6 +1085,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_DestroyFriendTeamReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		RemoveTeamReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -1062,6 +1107,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -1072,6 +1118,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Post_MoveFriendToTeamReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		std::string  strReq = request->content.string();
 		MoveFriendToTeamReqMsg reqMsg;
 		if (reqMsg.FromString(strReq))
@@ -1089,6 +1136,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 		}
+#endif
 	}
 
 	/**
@@ -1363,6 +1411,7 @@ namespace ClientCore
 	 */
 	void CHttpServer::Get_SendFileOnlineNotifyReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
+#if 0
 		FriendNotifyFileMsgReqMsg reqMsg;
 		auto strUserId = GetHttpParamUserId(request);
 		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
@@ -1387,6 +1436,7 @@ namespace ClientCore
 		{
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 		}
+#endif
 	}
 
 	/**
