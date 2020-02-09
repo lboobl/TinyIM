@@ -32,17 +32,27 @@ public:
 using HTTP_RSP_SECOND = RSP_SECOND;
 using HTTP_RSP_MAP = std::map<std::string, HTTP_RSP_SECOND>;
 using HTTP_RSP_MAP_PAIR = std::pair<std::string, HTTP_RSP_SECOND>;
-
+using HTTP_CALL_BACK_FUNC = std::function<bool(const BaseMsg* pMsg)>;
 namespace ClientCore {
 	class CMediumServer;
 	class CHttpServer : public std::enable_shared_from_this<CHttpServer>
 	{
 	public:
-		explicit CHttpServer(asio::io_service& ioService,CMediumServer* pServer) :
+		//explicit CHttpServer(asio::io_service& ioService,CMediumServer* pServer) :
+		//	m_httpServer(ioService),
+		//	m_pServer(pServer),
+		//	m_msgIdUtil(2,2),
+		//	m_wrongRequestFormatRsp(ERROR_CODE_TYPE::E_CODE_BAD_REQUEST_FORMAT), 
+		//	m_userNotLoginRsp(ERROR_CODE_TYPE::E_CODE_USER_NOT_LOGIN)
+		//{
+
+		//}
+
+		explicit CHttpServer(asio::io_service& ioService,HTTP_CALL_BACK_FUNC&& callBack) :
 			m_httpServer(ioService),
-			m_pServer(pServer),
-			m_msgIdUtil(2,2),
-			m_wrongRequestFormatRsp(ERROR_CODE_TYPE::E_CODE_BAD_REQUEST_FORMAT), 
+			m_callBack(callBack),
+			m_msgIdUtil(2, 2),
+			m_wrongRequestFormatRsp(ERROR_CODE_TYPE::E_CODE_BAD_REQUEST_FORMAT),
 			m_userNotLoginRsp(ERROR_CODE_TYPE::E_CODE_USER_NOT_LOGIN)
 		{
 
@@ -190,6 +200,7 @@ namespace ClientCore {
 		
 		HttpServer m_httpServer;
 		CMediumServer* m_pServer;
+		HTTP_CALL_BACK_FUNC m_callBack;
 		SnowFlake m_msgIdUtil;
 		NormalRspMsg m_wrongRequestFormatRsp;//请求格式错误的回复
 		NormalRspMsg m_userNotLoginRsp;//用户未登录的请的回

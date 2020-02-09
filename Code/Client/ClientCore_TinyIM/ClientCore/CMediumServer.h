@@ -135,7 +135,6 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
         {
             m_timer = std::make_shared<asio::high_resolution_timer>(m_ioService);
         }
-		m_httpServer = std::make_shared<CHttpServer>(m_ioService,this);
 		m_timeCount = 0;
 		m_nNoSessTimeCount = 0;
     }

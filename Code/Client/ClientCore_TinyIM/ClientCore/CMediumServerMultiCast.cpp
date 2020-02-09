@@ -578,9 +578,18 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 				pSender->StartConnect();
 			}
 		}
+		{
+			auto pSelf = shared_from_this();
+			m_httpServer = std::make_shared<CHttpServer>(m_ioService, [this,pSelf](const BaseMsg* reqMsg)->bool {
+				return HandleHttpMsg(reqMsg);
+			});
+		}
 	}
 }
-
+bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
+{
+	return false;
+}
 /**
  * @brief 定时检查UDP的P2P 连接
  * 

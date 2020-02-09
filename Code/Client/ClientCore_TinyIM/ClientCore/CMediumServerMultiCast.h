@@ -88,6 +88,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
     inline IpPortCfg &config() { return m_serverCfg; }
 
 
+	bool HandleHttpMsg(const BaseMsg* pMsg);
     //void SendBack(const std::shared_ptr<CClientSess>& pClientSess,const TransBaseMsg_t& msg);
 	void SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg);
 
@@ -130,7 +131,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
         {
             m_timer = std::make_shared<asio::high_resolution_timer>(m_ioService);
         }
-		m_httpServer = std::make_shared<CHttpServer>(m_ioService,this);
+
 		m_timeCount = 0;
 		m_nNoSessTimeCount = 0;
     }
