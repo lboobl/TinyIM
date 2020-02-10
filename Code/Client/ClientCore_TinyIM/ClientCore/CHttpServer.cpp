@@ -205,6 +205,7 @@ namespace ClientCore
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 			}
 		}
@@ -594,6 +595,7 @@ namespace ClientCore
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 			}
 		}
@@ -678,7 +680,7 @@ namespace ClientCore
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
-
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 			}
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 			//m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, response));
@@ -713,6 +715,7 @@ namespace ClientCore
 				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 				if (m_callBack(&rspMsg))
 				{
+					m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 				}
 				else
 				{
@@ -743,6 +746,7 @@ namespace ClientCore
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 				//pClientSess->SendMsg(&reqMsg);
 				{
 					QueryUserUdpAddrReqMsg queryReq;
@@ -750,6 +754,7 @@ namespace ClientCore
 					queryReq.m_strUserId = reqMsg.m_strUserId;
 					queryReq.m_strUdpUserId = reqMsg.m_strFriendId;
 					m_callBack(&queryReq);
+					m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(queryReq.m_strMsgId, { time(nullptr),response }));
 				}
 				m_httpRspMap.insert(std::pair<std::string, HTTP_RSP_SECOND>(reqMsg.m_strMsgId, { time(nullptr), response }));
 			}
@@ -807,7 +812,7 @@ namespace ClientCore
 			rspMsg.m_nFileId = static_cast<int>(time(nullptr));
 			if (m_callBack(&rspMsg))
 			{
-	
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(rspMsg.m_strMsgId, { time(nullptr),response }));
 			}
 			else
 			{
@@ -957,8 +962,8 @@ namespace ClientCore
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 			}
-			m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId,HTTP_RSP_SECOND(time(nullptr), response)));
 		}
 		else
 		{
@@ -1302,6 +1307,9 @@ namespace ClientCore
 				FriendNotifyFileMsgRspMsg rspMsg;
 				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 				m_callBack(&rspMsg);
+				{
+					m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
+				}
 				msgUtil->Update_FriendNotifyFileMsgReqMsg(reqMsg);
 			}
 		}

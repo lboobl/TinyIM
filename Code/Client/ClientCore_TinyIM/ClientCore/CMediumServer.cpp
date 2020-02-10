@@ -429,11 +429,11 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 	m_acceptor.bind(endpoint, ec);
 	if (!ec)
 	{
-		LOG_WARN(ms_loger, "Bind To {} Succeed [{} {}]", m_serverCfg.to_string(),__FILENAME__,__LINE__);
+		LOG_INFO(ms_loger, "Bind To {} Succeed [{} {}]", m_serverCfg.to_string(),__FILENAME__,__LINE__);
 		m_acceptor.listen(asio::socket_base::max_connections, ec);
 		if (!ec)
 		{
-			LOG_WARN(ms_loger, "Listen To {} Succeed [{} {}]", m_serverCfg.to_string(), __FILENAME__, __LINE__);
+			LOG_INFO(ms_loger, "Listen To {} Succeed [{} {}]", m_serverCfg.to_string(), __FILENAME__, __LINE__);
 		}
 		else
 		{
@@ -474,7 +474,53 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 
 bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 {
-	return false;
+	switch (pMsg->GetMsgType())
+	{
+	case E_MsgType::UserRegisterReq_Type:
+	{
+		if (m_freeClientSess)
+		{
+			m_freeClientSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::UserLoginReq_Type:
+	{
+		UserLoginReqMsg* msg = (UserLoginReqMsg*)(pMsg);
+		auto pSess = CreateClientSess();
+		pSess->SendMsg(pMsg);
+	}break;
+	case E_MsgType::UserLogoutReq_Type:
+	{
+		UserLogoutReqMsg* msg = (UserLogoutReqMsg*)(pMsg);
+		auto pSess = GetClientSess(GetUserId(msg->m_strUserName));
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::FindFriendReq_Type:
+	{
+		FindFriendReqMsg* pSendMsg = (FindFriendReqMsg*)(pMsg);
+		auto pSess = GetClientSess(pSendMsg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::UserUnRegisterReq_Type:
+	{
+		if (m_freeClientSess)
+		{
+			m_freeClientSess->SendMsg(pMsg);
+		}
+	}break;
+	default:
+	{
+		LOG_ERR(ms_loger, "Unhandle Msg Type:{} [{} {}]", MsgType(pMsg->GetMsgType()), __FILENAME__, __LINE__);
+		return false;
+	}
+	}
+	return true;
 }
 
 /**
@@ -1429,6 +1475,10 @@ void CMediumServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
 			}
 		}break;
 		case E_MsgType::KeepAliveRsp_Type:
+		{
+
+		}break;
+		case E_MsgType::NetRecoverReport_Type:
 		{
 
 		}break;
@@ -2590,6 +2640,12 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 		FriendNotifyFileMsgReqMsg reqMsg;
 		if (reqMsg.FromString(msg.to_string())) {
 			HandleFriendNotifyFileMsgReq(reqMsg);
+		}
+	}break;
+	case E_MsgType::UserRegisterRsp_Type:
+	{
+		UserRegisterRspMsg rspMsg;
+		if (rspMsg.FromString(msg.to_string())) {
 		}
 	}break;
 	default:
