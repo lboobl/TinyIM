@@ -443,7 +443,14 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 		SetTimer(1);
 		do_accept();
 		LOG_INFO(ms_loger, "Http Server On :{} [{} {} ]", m_httpCfg.m_nPort,__FILENAME__,__LINE__);
-		m_httpServer->Start(m_httpCfg.m_nPort);
+		{
+			auto pSelf = shared_from_this();
+			m_httpServer = std::make_shared<CHttpServer>(m_ioService, [this,pSelf](const BaseMsg* pMsg)->bool {
+				return HandleHttpMsg(pMsg);
+			});
+			m_httpServer->Start(m_httpCfg.m_nPort);
+
+		}
 		if (!m_clientCfgVec.empty())
 		{
 			m_freeClientSess = std::make_shared<CClientSess>(m_ioService,
@@ -461,6 +468,13 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 		exit(BIND_FAILED_EXIT);
 #endif
 	}
+}
+
+
+
+bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
+{
+	return false;
 }
 
 /**

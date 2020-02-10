@@ -740,10 +740,9 @@ void CIMRobot::SendFriendFile()
 		try {
 			FriendSendFileMsgReqMsg reqMsg;
 			reqMsg.m_strMsgId = CreateMsgId();
-			reqMsg.m_strFromId = m_strUserId;
-			reqMsg.m_strToId = *(m_strFriendVec.begin());
-			reqMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
-			reqMsg.m_transMode = FILE_TRANS_TYPE::UDP_P2P_MODE;
+			reqMsg.m_strUserId = m_strUserId;
+			reqMsg.m_strFriendId = *(m_strFriendVec.begin());
+			reqMsg.m_transMode = FILE_TRANS_TYPE::UDP_ONLINE_P2P_MODE;
 			reqMsg.m_strFileName = R"(C:\Users\Public\Pictures\Sample Pictures\Hydrangeas.jpg)";
 
 
@@ -782,8 +781,8 @@ void CIMRobot::GetRecvFriendFileReq()
 		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 		rspMsg.m_errMsg = ErrMsg(rspMsg.m_eErrCode);
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-		rspMsg.m_strFromId = reqMsg.m_strToId;
-		rspMsg.m_strToId = reqMsg.m_strFromId;
+		rspMsg.m_strFriendId = reqMsg.m_strUserId;
+		rspMsg.m_strUserId = reqMsg.m_strFriendId;
 		rspMsg.m_eOption = rand() % 2 == 0 ? E_FRIEND_OPTION::E_AGREE_ADD : E_FRIEND_OPTION::E_REFUSE_ADD;
 		rspMsg.m_transMode = reqMsg.m_transMode;
 		rspMsg.m_strFileName = reqMsg.m_strFileName;

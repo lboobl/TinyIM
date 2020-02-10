@@ -429,9 +429,9 @@ void Do_SendFriendSendFileReqMsg(HttpClient& client, std::string strUserId, std:
 		FriendSendFileMsgReqMsg reqMsg;
 		reqMsg.m_strMsgId = "33333333";
 		reqMsg.m_strFileName = "TestFile.cpp";
-		reqMsg.m_strFromId = strUserId;
-		reqMsg.m_strToId = strFriendId;
-		reqMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+		reqMsg.m_strUserId = strUserId;
+		reqMsg.m_strFriendId = strFriendId;
+		reqMsg.m_transMode = FILE_TRANS_TYPE::TCP_ONLINE_MODE;
 
 
 		auto rsp = client.request("POST", "/send_file_online_to_friend_req", reqMsg.ToString());
@@ -490,9 +490,9 @@ void Do_PostFriendChatRecvFileMsg(HttpClient& client, FriendRecvFileMsgReqMsg re
 	FriendRecvFileMsgRspMsg rspMsg;
 	try {
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-		rspMsg.m_strFromId = reqMsg.m_strFromId;
-		rspMsg.m_strToId = reqMsg.m_strToId;
-		rspMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+		rspMsg.m_strUserId = reqMsg.m_strUserId;
+		rspMsg.m_strFriendId = reqMsg.m_strFriendId;
+		rspMsg.m_transMode = reqMsg.m_transMode;
 		rspMsg.m_eOption = E_FRIEND_OPTION::E_AGREE_ADD;
 		rspMsg.m_strFileName = reqMsg.m_strFileName;
 		auto rsp = client.request("POST", "/on_recv_file_online_from_friend_rsp", rspMsg.ToString());
@@ -536,8 +536,8 @@ void Do_PostFriendChatRecvTextMsg(HttpClient& client,FriendChatRecvTxtReqMsg req
 	FriendChatRecvTxtRspMsg rspMsg;
 	try {
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-		rspMsg.m_strFromId = reqMsg.m_strFromId;
-		rspMsg.m_strToId = reqMsg.m_strToId;
+		rspMsg.m_strUserId = reqMsg.m_chatMsg.m_strSenderId;
+		rspMsg.m_strFriendId = reqMsg.m_chatMsg.m_strReceiverId;
 		auto rsp = client.request("POST", "/on_friend_chat_recv_text_msg", rspMsg.ToString());
 		std::string strRsp = rsp->content.string();
 		std::cout << strRsp << std::endl;

@@ -90,7 +90,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
     static std::shared_ptr<spdlog::logger> ms_loger;
     inline IpPortCfg &config() { return m_serverCfg; }
 
-
+	bool HandleHttpMsg(const BaseMsg* pMsg);
     void SendBack(const std::shared_ptr<CClientSess>& pClientSess,const TransBaseMsg_t& msg);
 	void SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg);
 
