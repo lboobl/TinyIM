@@ -2002,15 +2002,23 @@ UserUnRegisterRspMsg CChatServer::DoUserUnRegisterReq(const UserUnRegisterReqMsg
 	}
 	else
 	{
-		if (userBean.m_strF_USER_NAME == reqMsg.m_strUserName && userBean.m_strF_PASS_WORD == reqMsg.m_strPassword)
+		if (userBean.m_strF_USER_NAME == reqMsg.m_strUserName && VerifyPassword(reqMsg.m_strPassword,userBean.m_strF_PASS_WORD))
 		{
 			T_USER_BEAN newUser;
 			m_util.DeleteUser(userBean.m_strF_USER_ID);
+
+			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+			rspMsg.m_strErrMsg = "Succeed";
+			rspMsg.m_strUserName = reqMsg.m_strUserName;
+		}
+		else
+		{
+			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_LOGIN_FAILED;
+			rspMsg.m_strErrMsg = "Failed";
+			rspMsg.m_strUserName = reqMsg.m_strUserName;
 		}
 
-		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
-		rspMsg.m_strErrMsg = "Succeed";
-		rspMsg.m_strUserName = reqMsg.m_strUserName;
+		
 		return rspMsg;
 	}
 }
