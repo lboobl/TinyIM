@@ -396,7 +396,7 @@ bool CMySqlConnect::SelectUserByName(const std::string userName, T_USER_BEAN& be
 			MYSQL_BIND resultBind[3];
 			memset(resultBind, 0, sizeof(resultBind));
 
-			char resultBuf[3][64] = { 0 };
+			char resultBuf[3][128] = { 0 };
 			
 			resultBind[0].buffer_type = MYSQL_TYPE_STRING;
 			resultBind[0].buffer = resultBuf[0];
@@ -667,16 +667,17 @@ bool CMySqlConnect::InsertUser(const T_USER_BEAN& bean)
 		res = mysql_query(m_mysql, strSql.c_str());//查询
 		if (!res)
 		{
-
+			return true;
 		}
 		else
 		{
+			LOG_ERR(m_loger, "ERR:{} [{}  {} ]", mysql_errno(m_mysql),__FILENAME__, __LINE__);
 			return false;
 		}
-		return true;
 	}
 	else
 	{
+		LOG_ERR(m_loger, "Bean Is Not Valid [{} {}]", __FILENAME__, __LINE__);
 		return false;
 	}
 	
@@ -2239,7 +2240,6 @@ bool CMySqlConnect::GetAllUserName(std::vector<std::string>& userNameVec)
 {
 	if (nullptr == m_pSelectAllUserNameStmt)
 	{
-
 		m_pSelectAllUserNameStmt = mysql_stmt_init(m_mysql);
 		if (!m_pSelectAllUserNameStmt)
 		{

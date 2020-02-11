@@ -3016,7 +3016,7 @@ std::string CChatServer::GenerateSalt()
 	std::string strResult;
 	for (std::size_t i = 0; i < HASH_SALT_LENGTH; i++)
 	{
-		strResult += buff[rand() % bufLen];
+		strResult += buff[rand() % (bufLen-1)];
 	}
 
 	return strResult;
