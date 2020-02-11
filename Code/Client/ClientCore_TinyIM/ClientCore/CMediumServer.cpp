@@ -518,6 +518,106 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 			m_freeClientSess->SendMsg(pMsg);
 		}
 	}break;
+	case E_MsgType::CreateGroupReq_Type:
+	{
+		CreateGroupReqMsg * msg = (CreateGroupReqMsg *)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::FindGroupReq_Type:
+	{
+		FindGroupReqMsg * msg = (FindGroupReqMsg *)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::AddToGroupReq_Type:
+	{
+		AddToGroupReqMsg * msg = (AddToGroupReqMsg *)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::SendGroupTextMsgReq_Type:
+	{
+		SendGroupTextMsgReqMsg * msg = (SendGroupTextMsgReqMsg *)(pMsg);
+		auto pSess = GetClientSess(msg->m_strSenderId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::DestroyGroupReq_Type:
+	{
+		DestroyGroupReqMsg * msg = (DestroyGroupReqMsg *)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::FriendChatReceiveTxtMsgRsp_Type:
+	{
+		FriendChatRecvTxtRspMsg * msg = (FriendChatRecvTxtRspMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::RemoveFriendReq_Type:
+	{
+		RemoveFriendReqMsg * msg = (RemoveFriendReqMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::AddFriendSendReq_Type:
+	{
+		AddFriendSendReqMsg * msg = (AddFriendSendReqMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::AddFriendRecvReq_Type:
+	{
+
+	}break;
+	case E_MsgType::AddFriendRecvRsp_Type:
+	{
+
+	}break;
+	case E_MsgType::AddFriendNotifyReq_Type:
+	{
+
+	}break;
+	case E_MsgType::AddFriendNotifyRsp_Type:
+	{
+
+	}break;
+	case E_MsgType::FriendSendFileMsgReq_Type:
+	{
+
+	}break;
+	case E_MsgType::FriendRecvFileMsgReq_Type:
+	{
+
+	}break;
+	case E_MsgType::FriendRecvFileMsgRsp_Type:
+	{
+
+	}break;
 	default:
 	{
 		LOG_ERR(ms_loger, "Unhandle Msg Type:{} [{} {}]", MsgType(pMsg->GetMsgType()), __FILENAME__, __LINE__);
