@@ -497,6 +497,10 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 		{
 			pSess->SendMsg(pMsg);
 		}
+		else
+		{
+			LOG_ERR(ms_loger, "No Sess For {} [{} {}]", msg->m_strUserName, __FILENAME__, __LINE__);
+		}
 	}break;
 	case E_MsgType::FindFriendReq_Type:
 	{
@@ -1111,7 +1115,7 @@ void CMediumServer::Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSes
 	if (reqMsg.m_nDataIndex <= reqMsg.m_nDataTotalCount)
 	{
 		m_fileUtil.OnWriteData(reqMsg.m_nFileId + 1, reqMsg.m_szData, reqMsg.m_nDataLength);
-		LOG_INFO(ms_loger, "WriteData ", reqMsg.m_nFileId);
+		LOG_INFO(ms_loger, "WriteData {} [{} {}]", reqMsg.m_nFileId,__FILENAME__,__LINE__);
 		FileDataRecvRspMsg rspMsg;
 		{
 			rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -2245,9 +2249,6 @@ void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSes
 				{
 					m_userId_ServerSessMap.erase(rspMsg.m_strUserId);
 					m_userId_ServerSessMap.insert({ rspMsg.m_strUserId,item->second });
-
-					m_userId_ClientSessMap.erase(rspMsg.m_strUserId);
-					m_userId_ClientSessMap.insert({ rspMsg.m_strUserId,pClientSess });
 				}
 
 				//ForwardMap 和 BackMap的对应关系删除
@@ -2256,6 +2257,9 @@ void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSes
 					m_BackSessMap.erase(pClientSess);
 				}
 			}
+
+			m_userId_ClientSessMap.erase(rspMsg.m_strUserId);
+			m_userId_ClientSessMap.insert({ rspMsg.m_strUserId,pClientSess });
 		}
 		//UserId和UserName的对应关系
 		{
