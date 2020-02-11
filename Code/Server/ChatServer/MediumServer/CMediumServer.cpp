@@ -2112,7 +2112,7 @@ UserLogoutRspMsg CChatServer::DoUserLogoutReq(const UserLogoutReqMsg& reqMsg) {
 	T_USER_BEAN bean;
 	UserLogoutRspMsg rspMsg;
 	if (m_util.SelectUserByName(reqMsg.m_strUserName, bean)) {
-		if (bean.m_strF_PASS_WORD == reqMsg.m_strPassword) {
+		if (VerifyPassword(reqMsg.m_strPassword,bean.m_strF_PASS_WORD)) {
 			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 			rspMsg.m_strUserName = reqMsg.m_strUserName;
 		}
