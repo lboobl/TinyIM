@@ -624,10 +624,24 @@ TEST_CASE("HTTP_AddFriend") {
 	RegisterUser(client, g_strUserTwo);
 	UserLoginRspMsg oneLoginRsp =  Do_UserLogin(client, g_strUserOne);
 	UserLoginRspMsg twoLoginRsp = Do_UserLogin(client, g_strUserTwo);
-	FindFriendRspMsg findFriendRsp = Do_FindFriendReq(client, g_strUserOne, g_strUserTwo);
-	SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	FindFriendRspMsg findFriendRsp = Do_FindFriendReq(client, oneLoginRsp.m_strUserId, g_strUserTwo);
+	if (!findFriendRsp.m_friendInfoVec.empty())
+	{
+		SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	}
+	else 
+	{
+		CHECK(false);
+	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
-	GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	if (!findFriendRsp.m_friendInfoVec.empty())
+	{
+		GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	}
+	else
+	{
+		CHECK(false);
+	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	GetAddFriendNotify(client, oneLoginRsp.m_strUserId);
 	RemoveFriend(client, oneLoginRsp.m_strUserId, twoLoginRsp.m_strUserId);
@@ -643,10 +657,17 @@ TEST_CASE("HTTP_SendFriendTxt") {
 	UserLoginRspMsg oneLoginRsp = Do_UserLogin(client, g_strUserOne);
 	UserLoginRspMsg twoLoginRsp = Do_UserLogin(client, g_strUserTwo);
 	FindFriendRspMsg findFriendRsp = Do_FindFriendReq(client, g_strUserOne, g_strUserTwo);
-	SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	if (!findFriendRsp.m_friendInfoVec.empty())
+	{
+		SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
-	GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	if (!findFriendRsp.m_friendInfoVec.empty())
+	{
+		GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
+	
 	GetAddFriendNotify(client, oneLoginRsp.m_strUserId);
 	SendFriendChatTextMsg(client, oneLoginRsp.m_strUserId, twoLoginRsp.m_strUserId,"Friend Chat");
 	std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -664,9 +685,15 @@ TEST_CASE("HTTP_SendFriendFile") {
 	UserLoginRspMsg oneLoginRsp = Do_UserLogin(client, g_strUserOne);
 	UserLoginRspMsg twoLoginRsp = Do_UserLogin(client, g_strUserTwo);
 	FindFriendRspMsg findFriendRsp = Do_FindFriendReq(client, g_strUserOne, g_strUserTwo);
-	SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	if (!findFriendRsp.m_friendInfoVec.empty())
+	{
+		SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
-	GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	if (!findFriendRsp.m_friendInfoVec.empty())
+	{
+		GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
+	}
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	GetAddFriendNotify(client, oneLoginRsp.m_strUserId);
 	SendFriendSendFileReqMsg(client, oneLoginRsp.m_strUserId, twoLoginRsp.m_strUserId, "Friend Chat");
