@@ -609,8 +609,8 @@ TEST_CASE("HTTP_FindFriendReq") {
 	//Register
 	RegisterUser(client, g_strUserOne);
 	RegisterUser(client, g_strUserTwo);
-	UserLogin(client, g_strUserOne);
-	FindFriendReq(client, g_strUserOne, g_strUserTwo);
+	auto rspMsg = Do_UserLogin(client, g_strUserOne);
+	FindFriendReq(client, rspMsg.m_strUserId, g_strUserTwo);
 	UserLogout(client, g_strUserOne);
 	UnRegisterUser(client, g_strUserOne);
 	UnRegisterUser(client, g_strUserTwo);
