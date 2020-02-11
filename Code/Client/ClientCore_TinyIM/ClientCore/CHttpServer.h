@@ -34,7 +34,6 @@ using HTTP_RSP_MAP = std::map<std::string, HTTP_RSP_SECOND>;
 using HTTP_RSP_MAP_PAIR = std::pair<std::string, HTTP_RSP_SECOND>;
 using HTTP_CALL_BACK_FUNC = std::function<bool(const BaseMsg* pMsg)>;
 namespace ClientCore {
-	class CMediumServer;
 	class CHttpServer : public std::enable_shared_from_this<CHttpServer>
 	{
 	public:
@@ -199,7 +198,6 @@ namespace ClientCore {
 		std::string GetHttpParamUserId(std::shared_ptr<HttpServer::Request> request);
 		
 		HttpServer m_httpServer;
-		CMediumServer* m_pServer;
 		HTTP_CALL_BACK_FUNC m_callBack;
 		SnowFlake m_msgIdUtil;
 		NormalRspMsg m_wrongRequestFormatRsp;//请求格式错误的回复

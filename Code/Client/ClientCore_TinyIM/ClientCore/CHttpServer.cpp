@@ -176,8 +176,9 @@ namespace ClientCore
 	{
 		FriendChatRecvTxtReqMsg reqMsg;
 		std::string strUserId = GetHttpParamUserId(request);
-		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
-		if (msgUtil && msgUtil->Get_FriendChatRecvTxtReqMsg(reqMsg.m_chatMsg))
+		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		//Dennis Refectory
+		if (false)
 		{
 			std::string strContent = reqMsg.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
@@ -228,11 +229,15 @@ namespace ClientCore
 		GetFriendChatHistoryReq reqMsg;
 		if (reqMsg.FromString(strReq))
 		{
-			if(m_pServer)
+			if(m_callBack(&reqMsg))
 			{
-				auto rsp = m_pServer->DoFriendChatHistoryReq(reqMsg);
-				std::string strRsp = rsp.ToString();
-				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
+				//auto rsp = m_pServer->DoFriendChatHistoryReq(reqMsg);
+				//std::string strRsp = rsp.ToString();
+				//*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
+			}
+			else
+			{
+				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 			}
 		}
 		else
@@ -255,12 +260,13 @@ namespace ClientCore
 		GetGroupChatHistoryReq reqMsg;
 		if (reqMsg.FromString(strReq))
 		{
-			if(m_pServer)
-			{
-				auto rspMsg = m_pServer->DoFriendChatHistoryReq(reqMsg);
-				std::string strRsp = rspMsg.ToString();
-				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
-			}
+			//TODO
+			//if(m_pServer)
+			//{
+			//	auto rspMsg = m_pServer->DoFriendChatHistoryReq(reqMsg);
+			//	std::string strRsp = rspMsg.ToString();
+			//	*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
+			//}
 		}
 		else
 		{
@@ -282,12 +288,13 @@ namespace ClientCore
 		SearchChatHistoryReq reqMsg;
 		if (reqMsg.FromString(strReq))
 		{
-			if(m_pServer)
-			{
-				auto rspMsg = m_pServer->DoSearchChatHistoryReq(reqMsg);
-				std::string strRsp = rspMsg.ToString();
-				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
-			}
+			//TODO
+			//if(m_pServer)
+			//{
+			//	auto rspMsg = m_pServer->DoSearchChatHistoryReq(reqMsg);
+			//	std::string strRsp = rspMsg.ToString();
+			//	*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
+			//}
 		}
 		else
 		{
@@ -481,7 +488,7 @@ namespace ClientCore
 		if (reqMsg.FromString(strReq))
 		{
 			reqMsg.m_strMsgId = GenerateMsgId();
-			if (m_pServer->HandleSendForward(reqMsg))
+			if (m_callBack(&reqMsg))
 			{
 				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, HTTP_RSP_SECOND(time(nullptr), response)));
 			}
@@ -535,12 +542,10 @@ namespace ClientCore
 	{
 		RecvGroupTextMsgReqMsg reqMsg;
 		std::string strUserId = GetHttpParamUserId(request);
-		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
-		if (msgUtil && msgUtil->Get_RecvGroupTextMsgReqMsg(reqMsg))
+		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		if (m_callBack(&reqMsg))
 		{
-			std::string strContent = reqMsg.ToString();
-			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
-				<< strContent;
+			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 		}
 		else
 		{
@@ -614,9 +619,10 @@ namespace ClientCore
 	void CHttpServer::Get_RecvAddFriendReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 		AddFriendRecvReqMsg reqMsg;
-		std::string strUserId = GetHttpParamUserId(request);
-		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
-		if (msgUtil && msgUtil->Get_AddFriendRecvReqMsg(reqMsg))
+		//std::string strUserId = GetHttpParamUserId(request);
+		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		//TODO
+		if (m_callBack(&reqMsg))
 		{
 			std::string strContent = reqMsg.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
@@ -668,14 +674,15 @@ namespace ClientCore
 		AddFriendRecvRspMsg reqMsg;
 		if (reqMsg.FromString(strReq))
 		{
+			//TODO
 			{
-				auto msgUtil = m_pServer->GetMsgPersisUtil(reqMsg.m_strUserId);
+				/*auto msgUtil = m_pServer->GetMsgPersisUtil(reqMsg.m_strUserId);
 				AddFriendRecvReqMsg reqMsg2;
 				reqMsg2.m_strMsgId = reqMsg.m_strMsgId;
 				if (msgUtil && msgUtil->Remove_AddFriendRecvReqMsg(reqMsg2))
 				{
 
-				}
+				}*/
 			}
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
@@ -702,8 +709,9 @@ namespace ClientCore
 	{
 		AddFriendNotifyReqMsg reqMsg;
 		std::string strUserId = GetHttpParamUserId(request);
-		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
-		if (msgUtil && msgUtil->Get_AddFriendNotifyReqMsg(reqMsg))
+		//TODO
+		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		if (m_callBack(&reqMsg))
 		{
 			std::string strContent = reqMsg.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
@@ -721,7 +729,7 @@ namespace ClientCore
 				{
 					LOG_ERR(ms_loger, "Can find UserID:{} ", reqMsg.m_strUserId);
 				}
-				msgUtil->Remove_AddFriendNotifyReqMsg(reqMsg);
+				//msgUtil->Remove_AddFriendNotifyReqMsg(reqMsg);
 			}
 		}
 		else
@@ -782,8 +790,8 @@ namespace ClientCore
 	{
 		FriendRecvFileMsgReqMsg reqMsg;
 		auto strUserId = GetHttpParamUserId(request);
-		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
-		if (msgUtil && msgUtil->Get_FriendRecvFileMsgReqMsg(reqMsg))
+		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		if (m_callBack(&reqMsg))
 		{
 			std::string strContent = reqMsg.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
@@ -820,7 +828,7 @@ namespace ClientCore
 			}
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n";
 			//m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, response));
-			m_pServer->Handle_RecvFileOnlineRsp(rspMsg);
+			//m_pServer->Handle_RecvFileOnlineRsp(rspMsg);
 		}
 		else
 		{
@@ -1297,8 +1305,8 @@ namespace ClientCore
 	{
 		FriendNotifyFileMsgReqMsg reqMsg;
 		auto strUserId = GetHttpParamUserId(request);
-		auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
-		if (msgUtil && msgUtil->Get_FriendNotifyFileMsgReqMsg(reqMsg))
+		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		if (m_callBack(&reqMsg))
 		{
 			std::string strContent = reqMsg.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
@@ -1310,7 +1318,7 @@ namespace ClientCore
 				{
 					m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 				}
-				msgUtil->Update_FriendNotifyFileMsgReqMsg(reqMsg);
+				//msgUtil->Update_FriendNotifyFileMsgReqMsg(reqMsg);
 			}
 		}
 		else

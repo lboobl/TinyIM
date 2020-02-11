@@ -116,6 +116,10 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	CUdpClient_PTR GetUdpSess(const std::string strUserId);
 
 	CMsgPersistentUtil_SHARED_PTR GetMsgPersisUtil(const std::string strUserId) {
+		if (strUserId.empty())
+		{
+			return nullptr;
+		}
 		auto item = m_UserId_MsgPersistentUtilMap.find(strUserId);
 		if (item != m_UserId_MsgPersistentUtilMap.end())
 		{
