@@ -2130,15 +2130,14 @@ UserLogoutRspMsg CChatServer::DoUserLogoutReq(const UserLogoutReqMsg& reqMsg) {
  */
 AddFriendSendRspMsg CChatServer::DoAddFriendReq(const AddFriendSendReqMsg& reqMsg) {
 	AddFriendSendRspMsg rspMsg;
-	
+	rspMsg.m_strUserId = reqMsg.m_strUserId;
+	rspMsg.m_strFriendId = reqMsg.m_strFriendId;
 	if (reqMsg.m_strUserId == reqMsg.m_strFriendId)
 	{
 		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_ADD_SELF_AS_FRIEND;
 	}
 	else if (m_util.IsFriend(reqMsg.m_strUserId,reqMsg.m_strFriendId))
 	{
-		rspMsg.m_strUserId = reqMsg.m_strUserId;
-		rspMsg.m_strFriendId = reqMsg.m_strFriendId;
 		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 		rspMsg.m_strErrMsg = "Succeed";
 	}
