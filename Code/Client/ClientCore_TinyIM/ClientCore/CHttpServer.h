@@ -98,7 +98,8 @@ namespace ClientCore {
 		void On_MoveFriendToTeamRsp(const MoveFriendToTeamRspMsg& msg);
 
 		void On_RandomUserRsp(const GetRandomUserRspMsg& msg);
-
+		void On_AddFriendNotifyReqMsg(const AddFriendNotifyReqMsg&  msg);
+		void On_AddFriendRecvReqMsg(const AddFriendRecvReqMsg& msg);
 		//Group
 		void On_GetGroupListRsp(const GetGroupListRspMsg& msg);
 		void On_FindGroupRsp(const FindGroupRspMsg& msg);

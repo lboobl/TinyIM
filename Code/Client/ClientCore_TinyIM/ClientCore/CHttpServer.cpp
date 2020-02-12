@@ -18,11 +18,11 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理用户注册请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
-	void CHttpServer::Post_RegisterUser(std::shared_ptr<HttpServer::Response> response,std::shared_ptr<HttpServer::Request> request)
+	void CHttpServer::Post_RegisterUser(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 		std::string  strReq = request->content.string();
 		UserRegisterReqMsg reqMsg;
@@ -48,7 +48,7 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理用户注销请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -77,7 +77,7 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理用户登录的HTTP请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -96,8 +96,8 @@ namespace ClientCore
 			{
 				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 			}
-				
-			
+
+
 			m_userLoginMsgMap.erase(reqMsg.m_strUserName);
 			m_userLoginMsgMap.insert({ reqMsg.m_strUserName,reqMsg });
 		}
@@ -110,9 +110,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理用户登出的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_UserLogout(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -139,9 +139,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理获取随机用户名的请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Get_RandomUserNameReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -168,7 +168,7 @@ namespace ClientCore
 	}
 	/**
 	 * @brief 处理接收到好友文本消息的HTTP请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -193,9 +193,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 回复已经接收到好友文本消息的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_FriendChatRecvTxtRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -219,7 +219,7 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理获取好友聊天记录的请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -229,7 +229,7 @@ namespace ClientCore
 		GetFriendChatHistoryReq reqMsg;
 		if (reqMsg.FromString(strReq))
 		{
-			if(m_callBack(&reqMsg))
+			if (m_callBack(&reqMsg))
 			{
 				//auto rsp = m_pServer->DoFriendChatHistoryReq(reqMsg);
 				//std::string strRsp = rsp.ToString();
@@ -250,7 +250,7 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理获取群组聊天记录的请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -278,7 +278,7 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理查找聊天记录的请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -306,9 +306,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理添加好友的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_AddFriendReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -335,9 +335,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理添加到群组的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_SendAddToGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -364,9 +364,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理查找群组的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_FindGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -392,9 +392,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理创建群组的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_CreateGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -420,9 +420,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理解散群组的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_DestroyGroupReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -448,9 +448,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理发送群组文本消息的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_SendGroupTextMsg(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -477,9 +477,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理好友聊天发送文本消息的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_FriendChatSendTxt(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -505,9 +505,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理查找好友的HTTP请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_FindFriendReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -534,9 +534,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 从HTTP接口获取收到的群组文本消息
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Get_RecvGroupTextMsgReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -556,7 +556,7 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理获取好友列表的请求
-	 * 
+	 *
 	 * @param response HTTP回复
 	 * @param request HTTP请求
 	 */
@@ -570,11 +570,11 @@ namespace ClientCore
 			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
-				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId,HTTP_RSP_SECOND(time(nullptr), response)));
+				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, HTTP_RSP_SECOND(time(nullptr), response)));
 			}
 			else
 			{
-				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n"<<"";
+				*response << "HTTP/1.1 200 OK\r\nContent-Length: " << 0 << "\r\n\r\n" << "";
 			}
 
 		}
@@ -587,9 +587,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 发送已经收到群组文本消息的回复
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_RecvGroupTextMsgRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -612,21 +612,21 @@ namespace ClientCore
 
 	/**
 	 * @brief 获取收到添加好友的邀请
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Get_RecvAddFriendReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 		AddFriendRecvReqMsg reqMsg;
-		//std::string strUserId = GetHttpParamUserId(request);
+		std::string strUserId = GetHttpParamUserId(request);
+		reqMsg.m_strUserId = strUserId;
+		reqMsg.m_strMsgId = GenerateMsgId();
 		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
 		//TODO
+		m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, HTTP_RSP_SECOND(time(nullptr), response)));
 		if (m_callBack(&reqMsg))
 		{
-			std::string strContent = reqMsg.ToString();
-			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
-				<< strContent;
 		}
 		else
 		{
@@ -636,9 +636,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 处理删除好友请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_RemoveFriend(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -664,9 +664,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 发送添加好友邀请的回复
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_RecvAddFriendRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -674,17 +674,6 @@ namespace ClientCore
 		AddFriendRecvRspMsg reqMsg;
 		if (reqMsg.FromString(strReq))
 		{
-			//TODO
-			{
-				/*auto msgUtil = m_pServer->GetMsgPersisUtil(reqMsg.m_strUserId);
-				AddFriendRecvReqMsg reqMsg2;
-				reqMsg2.m_strMsgId = reqMsg.m_strMsgId;
-				if (msgUtil && msgUtil->Remove_AddFriendRecvReqMsg(reqMsg2))
-				{
-
-				}*/
-			}
-			reqMsg.m_strMsgId = GenerateMsgId();
 			if (m_callBack(&reqMsg))
 			{
 				m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
@@ -701,9 +690,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 获取添加好友的通知
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Get_AddFriendNotify(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -711,26 +700,26 @@ namespace ClientCore
 		std::string strUserId = GetHttpParamUserId(request);
 		//TODO
 		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
+		reqMsg.m_strMsgId = GenerateMsgId();
+		reqMsg.m_strUserId = strUserId;
+		m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
 		if (m_callBack(&reqMsg))
 		{
-			std::string strContent = reqMsg.ToString();
-			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
-				<< strContent;
+			
 
-
-			{
-				AddFriendNotifyRspMsg rspMsg;
-				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-				if (m_callBack(&rspMsg))
-				{
-					m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
-				}
-				else
-				{
-					LOG_ERR(ms_loger, "Can find UserID:{} ", reqMsg.m_strUserId);
-				}
-				//msgUtil->Remove_AddFriendNotifyReqMsg(reqMsg);
-			}
+			//{
+			//	AddFriendNotifyRspMsg rspMsg;
+			//	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+			//	if (m_callBack(&rspMsg))
+			//	{
+			//		m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, { time(nullptr),response }));
+			//	}
+			//	else
+			//	{
+			//		LOG_ERR(ms_loger, "Can find UserID:{} [{} {}]", reqMsg.m_strUserId,__FILENAME__,__LINE__);
+			//	}
+			//	//msgUtil->Remove_AddFriendNotifyReqMsg(reqMsg);
+			//}
 		}
 		else
 		{
@@ -740,9 +729,9 @@ namespace ClientCore
 
 	/**
 	 * @brief POST发送文件的请求
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_SendFileOnlineReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -782,9 +771,9 @@ namespace ClientCore
 
 	/**
 	 * @brief 获取接收文件的请求消息
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Get_RecvFileOnlineReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
@@ -806,15 +795,15 @@ namespace ClientCore
 
 	/**
 	 * @brief 发送接收文件的HTTP回复
-	 * 
-	 * @param response 
-	 * @param request 
+	 *
+	 * @param response
+	 * @param request
 	 */
 	void CHttpServer::Post_RecvFileOnlineRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 		std::string  strReq = request->content.string();
 		FriendRecvFileMsgRspMsg rspMsg;
-		
+
 		if (rspMsg.FromString(strReq))
 		{
 			rspMsg.m_nFileId = static_cast<int>(time(nullptr));
@@ -837,11 +826,11 @@ namespace ClientCore
 
 	}
 
-	
+
 	/**
 	 * @brief 相应删除好友的回复消息
-	 * 
-	 * @param msg 
+	 *
+	 * @param msg
 	 */
 	void CHttpServer::On_RemoveFriendRspMsg(const RemoveFriendRspMsg& msg)
 	{
@@ -858,8 +847,8 @@ namespace ClientCore
 
 	/**
 	 * @brief 响应发送群组文本聊天消息的回复，TCP消息转HTTP消息回复
-	 * 
-	 * @param msg 
+	 *
+	 * @param msg
 	 */
 	void CHttpServer::On_SendGroupTextMsgRsp(const SendGroupTextMsgRspMsg& msg)
 	{
@@ -876,8 +865,8 @@ namespace ClientCore
 
 	/**
 	 * @brief 响应用户注册请求的回复，TCP消息转HTTP消息
-	 * 
-	 * @param msg 
+	 *
+	 * @param msg
 	 */
 	void CHttpServer::On_UserRegisterRsp(const UserRegisterRspMsg& msg) {
 		if (!msg.m_strMsgId.empty()) {
@@ -893,8 +882,8 @@ namespace ClientCore
 
 	/**
 	 * @brief 响应添加好友发送回复消息，TCP消息转消息
-	 * 
-	 * @param msg 
+	 *
+	 * @param msg
 	 */
 	void CHttpServer::On_AddFriendSendRspMsg(const AddFriendSendRspMsg& msg)
 	{
@@ -909,6 +898,31 @@ namespace ClientCore
 		}
 	}
 
+	void CHttpServer::On_AddFriendRecvReqMsg(const AddFriendRecvReqMsg& msg)
+	{
+		if (!msg.m_strMsgId.empty()) {
+			auto item = m_httpRspMap.find(msg.m_strMsgId);
+			if (item != m_httpRspMap.end()) {
+				std::string strContent = msg.ToString();
+				(*(item->second.m_response)) << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
+					<< strContent;
+				m_httpRspMap.erase(msg.m_strMsgId);
+			}
+		}
+	}
+
+	void CHttpServer::On_AddFriendNotifyReqMsg(const AddFriendNotifyReqMsg&  msg)
+	{
+		if (!msg.m_strMsgId.empty()) {
+			auto item = m_httpRspMap.find(msg.m_strMsgId);
+			if (item != m_httpRspMap.end()) {
+				std::string strContent = msg.ToString();
+				(*(item->second.m_response)) << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
+					<< strContent;
+				m_httpRspMap.erase(msg.m_strMsgId);
+			}
+		}
+	}
 	/**
 	 * @brief 响应发送好友文本聊天消息的回复，TCP消息转HTTP消息
 	 * 

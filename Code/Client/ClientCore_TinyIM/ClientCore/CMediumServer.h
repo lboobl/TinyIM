@@ -78,7 +78,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
     std::error_code m_ec;
 
     void do_accept();
-	void OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg);
+	void OnHttpRsp(const std::shared_ptr<CClientSess>& pClientSess,std::shared_ptr<TransBaseMsg_t> pMsg);
 
 	void HandleFileDataSendRsp(const FileDataSendRspMsg& rspMsg);
 
@@ -197,6 +197,9 @@ private:
 	std::map<std::string, CMsgPersistentUtil_SHARED_PTR> m_UserId_MsgPersistentUtilMap;
 	std::map<std::string, std::vector<std::shared_ptr<BaseMsg>> > m_RecvWaitMsgMap;
 	std::map<std::string, FriendChatSendTxtReqMsg>  m_SendWaitMsgMap;
+
+	//
+	std::map<std::string, std::string> m_AddFriendMsgIdMap;
 };
 } // namespace MediumServer
 

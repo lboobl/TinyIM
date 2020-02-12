@@ -592,15 +592,61 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 	}break;
 	case E_MsgType::AddFriendRecvReq_Type:
 	{
+		AddFriendRecvReqMsg * msg = (AddFriendRecvReqMsg*)(pMsg);
+		auto pUtil = GetMsgPersisUtil(msg->m_strUserId);
+		if (pUtil)
+		{
+			AddFriendRecvReqMsg newMsg;
+			if (pUtil->Get_AddFriendRecvReqMsg(newMsg))
+			{
+				m_AddFriendMsgIdMap.insert({ msg->m_strMsgId, newMsg.m_strMsgId });
+				{
+					newMsg.m_strMsgId = msg->m_strMsgId;
+					m_httpServer->On_AddFriendRecvReqMsg(newMsg);
+				}
+			}
+		}
 
 	}break;
 	case E_MsgType::AddFriendRecvRsp_Type:
 	{
-
+		AddFriendRecvRspMsg * msg = (AddFriendRecvRspMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			AddFriendRecvRspMsg rspMsg = *msg;
+			if (m_AddFriendMsgIdMap.end() != m_AddFriendMsgIdMap.find(msg->m_strMsgId))
+			{
+				rspMsg.m_strMsgId = m_AddFriendMsgIdMap[msg->m_strMsgId];
+			}
+			m_AddFriendMsgIdMap.erase(msg->m_strMsgId);
+			pSess->SendMsg(&rspMsg);
+		}
 	}break;
 	case E_MsgType::AddFriendNotifyReq_Type:
 	{
-
+		AddFriendNotifyReqMsg* msg = (AddFriendNotifyReqMsg*)(pMsg);
+		auto pUtil = GetMsgPersisUtil(msg->m_strUserId);
+		if(pUtil)
+		{
+			AddFriendNotifyReqMsg newMsg;
+			if (pUtil->Get_AddFriendNotifyReqMsg(newMsg))
+			{
+				{
+					AddFriendNotifyRspMsg rspMsg;
+					rspMsg.m_strMsgId = newMsg.m_strMsgId;
+					auto pSess = GetClientSess(msg->m_strUserId);
+					if (pSess)
+					{
+						pSess->SendMsg(&rspMsg);
+					}
+				}
+				{
+					newMsg.m_strMsgId = msg->m_strMsgId;
+					m_httpServer->On_AddFriendNotifyReqMsg(newMsg);
+				}
+			}
+		}
 	}break;
 	case E_MsgType::AddFriendNotifyRsp_Type:
 	{
@@ -608,7 +654,12 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 	}break;
 	case E_MsgType::FriendSendFileMsgReq_Type:
 	{
-
+		FriendSendFileMsgReqMsg * msg = (FriendSendFileMsgReqMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
 	}break;
 	case E_MsgType::FriendRecvFileMsgReq_Type:
 	{
@@ -616,7 +667,12 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 	}break;
 	case E_MsgType::FriendRecvFileMsgRsp_Type:
 	{
-
+		FriendSendFileMsgReqMsg * msg = (FriendSendFileMsgReqMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
 	}break;
 	default:
 	{
@@ -975,8 +1031,8 @@ void CMediumServer::SendBack(const std::shared_ptr<CClientSess>& pClientSess, co
 	}
 	else
 	{
-		HandleSendBack(pClientSess, msg);
-		OnHttpRsp(pMsg);
+		//HandleSendBack(pClientSess, msg);
+		OnHttpRsp(pClientSess,pMsg);
 	}
 }
 
@@ -1295,7 +1351,7 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const Fil
  * 
  * @param pMsg TCP的回复消息
  */
-void CMediumServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
+void CMediumServer::OnHttpRsp(const std::shared_ptr<CClientSess>& pClientSess,std::shared_ptr<TransBaseMsg_t> pMsg)
 {
 	if (pMsg)
 	{
@@ -1325,6 +1381,7 @@ void CMediumServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
 		{
 			UserLoginRspMsg rspMsg;
 			if (rspMsg.FromString(pMsg->to_string())) {
+				HandleSendBack_UserLoginRsp(pClientSess, rspMsg);
 				if (m_httpServer) {
 					m_httpServer->On_UserLoginRsp(rspMsg);
 				}
@@ -1334,6 +1391,7 @@ void CMediumServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
 		{
 			UserLogoutRspMsg rspMsg;
 			if (rspMsg.FromString(pMsg->to_string())) {
+				HandleSendBack_UserLogoutRsp(pClientSess, rspMsg);
 				if (m_httpServer) {
 					m_httpServer->On_UserLogoutRsp(rspMsg);
 				}
@@ -2326,8 +2384,6 @@ void CMediumServer::HandleSendBack_FileSendDataBeginRsp(const std::shared_ptr<CC
 void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLoginRspMsg rspMsg) {
 	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 	{
-
-
 		m_userStateMap.erase(rspMsg.m_strUserId);
 		m_userStateMap.insert({ rspMsg.m_strUserId,CLIENT_SESS_STATE::SESS_LOGIN_FINISHED });
 		//ForwardMap 和 BackMap的对应关系删除,移动到UserId的Map
