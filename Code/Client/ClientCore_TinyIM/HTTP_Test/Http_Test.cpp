@@ -19,12 +19,12 @@ UserRegisterRspMsg Do_RegisterUser(HttpClient& client, std::string strUser) {
 		reqMsg.m_strNickName = strUser;
 		auto rsp = client.request("POST", "/register_user", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 		CHECK(rspMsg.FromString(strRsp));
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -43,7 +43,7 @@ UserUnRegisterRspMsg Do_UnRegisterUser(HttpClient& client, std::string strUser) 
 		reqMsg.m_strPassword = strUser;
 		auto rsp = client.request("POST", "/un_register_user", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		
 		CHECK(rspMsg.FromString(strRsp));
@@ -51,7 +51,7 @@ UserUnRegisterRspMsg Do_UnRegisterUser(HttpClient& client, std::string strUser) 
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -78,11 +78,11 @@ UserLoginRspMsg Do_UserLogin(HttpClient& client, std::string strUser) {
 
 		auto rsp = client.request("POST", "/user_login", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 		CHECK(rspMsg.FromString(strRsp));
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -106,13 +106,13 @@ UserLogoutRspMsg Do_UserLogout(HttpClient& client, std::string strUser) {
 
 		auto rsp = client.request("POST", "/user_logout", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		
 		CHECK(rspMsg.FromString(strRsp));
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -135,7 +135,7 @@ FindFriendRspMsg Do_FindFriendReq(HttpClient& client, std::string strUser, std::
 
 		auto rsp = client.request("POST", "/find_friend", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		
 		CHECK(rspMsg.FromString(strRsp));
@@ -143,7 +143,7 @@ FindFriendRspMsg Do_FindFriendReq(HttpClient& client, std::string strUser, std::
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 	return rspMsg;
 }
@@ -167,13 +167,13 @@ FindGroupRspMsg Do_FindGroupReq(HttpClient& client, std::string strUser, std::st
 
 		auto rsp = client.request("POST", "/find_group", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		CHECK(rspMsg.FromString(strRsp));
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -198,13 +198,13 @@ AddFriendSendRspMsg Do_SendAddFriendReq(HttpClient& client, std::string strUserI
 
 		auto rsp = client.request("POST", "/add_friend_req", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		CHECK(rspMsg.FromString(strRsp));
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -216,9 +216,9 @@ void SendAddFriendReq(HttpClient& client, std::string strUserId, std::string str
 
 AddFriendRecvReqMsg Do_GetAddFriendRequire(HttpClient& client, std::string strUserId) {
 	AddFriendRecvReqMsg reqMsg;
-	auto rsp = client.request("GET", "/get_add_friend_require", reqMsg.ToString());
+	auto rsp = client.request("GET", "/get_add_friend_require?UserId="+strUserId,"");
 	std::string strRsp = rsp->content.string();
-	std::cout << strRsp << std::endl;
+	std::cout << strRsp << " "<<__LINE__<<std::endl;;
 	if (reqMsg.FromString(strRsp))
 	{
 
@@ -237,7 +237,7 @@ void GetAddFriendRequire(HttpClient& client, std::string strUserId) {
 }
 
 void GetAddFriendNotify(HttpClient& client, std::string strUserId) {
-	auto rsp = client.request("GET", "/get_add_friend_notify","");
+	auto rsp = client.request("GET", "/get_add_friend_notify?UserId="+strUserId,"");
 	std::string strRsp = rsp->content.string();
 	AddFriendNotifyReqMsg reqMsg;
 	CHECK(reqMsg.FromString(strRsp));
@@ -255,13 +255,13 @@ RemoveFriendRspMsg Do_RemoveFriend(HttpClient& client, std::string strUserId, st
 
 		auto rsp = client.request("POST", "/remove_friend", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp <<"  "<<__LINE__<< std::endl;
 
 		CHECK(rspMsg.FromString(strRsp));
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -284,13 +284,13 @@ CreateGroupRspMsg Do_CreateGroupReq(HttpClient& client, std::string strUserId, s
 
 		auto rsp = client.request("POST", "/create_group", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		CHECK(rspMsg.FromString(strRsp));
 	
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -318,7 +318,7 @@ DestroyGroupRspMsg Do_DestroyGroupReq(HttpClient& client, std::string strUser, s
 
 		auto rsp = client.request("POST", "/destroy_group", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		
 		CHECK(rspMsg.FromString(strRsp));
@@ -326,7 +326,7 @@ DestroyGroupRspMsg Do_DestroyGroupReq(HttpClient& client, std::string strUser, s
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -347,7 +347,7 @@ AddToGroupRspMsg Do_AddUserToGroupReq(HttpClient& client, std::string strUser, s
 
 		auto rsp = client.request("POST", "/add_to_group", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 
 		CHECK(rspMsg.FromString(strRsp));
@@ -355,7 +355,7 @@ AddToGroupRspMsg Do_AddUserToGroupReq(HttpClient& client, std::string strUser, s
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -376,7 +376,7 @@ SendGroupTextMsgRspMsg Do_SendGroupTextMsgReq(HttpClient& client, std::string st
 
 		auto rsp = client.request("POST", "/send_group_text_msg", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 
 		CHECK(rspMsg.FromString(strRsp));
@@ -384,7 +384,7 @@ SendGroupTextMsgRspMsg Do_SendGroupTextMsgReq(HttpClient& client, std::string st
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -407,7 +407,7 @@ FriendChatSendTxtRspMsg Do_SendFriendChatTextMsg(HttpClient& client, std::string
 
 		auto rsp = client.request("POST", "/send_friend_chat_text_msg", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 
 		CHECK(rspMsg.FromString(strRsp));
@@ -415,7 +415,7 @@ FriendChatSendTxtRspMsg Do_SendFriendChatTextMsg(HttpClient& client, std::string
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -436,10 +436,10 @@ void Do_SendFriendSendFileReqMsg(HttpClient& client, std::string strUserId, std:
 
 		auto rsp = client.request("POST", "/send_file_online_to_friend_req", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 }
 
@@ -452,11 +452,11 @@ FriendSendFileMsgRspMsg Do_GetFriendSendFileRsp(HttpClient& client, std::string 
 	try {
 		auto rsp = client.request("GET", "/on_send_file_online_to_friend_rsp","");
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 		CHECK(rspMsg.FromString(strRsp));
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -471,14 +471,14 @@ FriendRecvFileMsgReqMsg Do_GetFriendChatRecvFileMsg(HttpClient& client, std::str
 	try {
 		auto rsp = client.request("GET", "/recv_file_online_from_friend_req", "");
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		CHECK(rspMsg.FromString(strRsp));
 		//CHECK_EQ(ERROR_CODE_TYPE::E_CODE_SUCCEED, rspMsg.m_eErrCode);
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -497,12 +497,12 @@ void Do_PostFriendChatRecvFileMsg(HttpClient& client, FriendRecvFileMsgReqMsg re
 		rspMsg.m_strFileName = reqMsg.m_strFileName;
 		auto rsp = client.request("POST", "/on_recv_file_online_from_friend_rsp", rspMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 		//CHECK_EQ(ERROR_CODE_TYPE::E_CODE_SUCCEED, rspMsg.m_eErrCode);
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 }
 
@@ -517,14 +517,14 @@ FriendChatRecvTxtReqMsg Do_GetFriendChatRecvTextMsg(HttpClient& client, std::str
 	try {
 		auto rsp = client.request("GET", "/get_friend_chat_recv_text_msg", "");
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 		CHECK(rspMsg.FromString(strRsp));
 		//CHECK_EQ(ERROR_CODE_TYPE::E_CODE_SUCCEED, rspMsg.m_eErrCode);
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 
 	return rspMsg;
@@ -540,12 +540,12 @@ void Do_PostFriendChatRecvTextMsg(HttpClient& client,FriendChatRecvTxtReqMsg req
 		rspMsg.m_strFriendId = reqMsg.m_chatMsg.m_strReceiverId;
 		auto rsp = client.request("POST", "/on_friend_chat_recv_text_msg", rspMsg.ToString());
 		std::string strRsp = rsp->content.string();
-		std::cout << strRsp << std::endl;
+		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 		//CHECK_EQ(ERROR_CODE_TYPE::E_CODE_SUCCEED, rspMsg.m_eErrCode);
 
 	}
 	catch (const SimpleWeb::system_error& e) {
-		std::cerr << "Client Req Error " << e.what() << std::endl;
+		std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 	}
 }
 
@@ -569,7 +569,7 @@ TEST_CASE("HTTP_UserRegisterReqPro") {
 			reqMsg.m_strNickName = g_strUserOne;
 			auto rsp = client.request("POST", "/register_user", reqMsg.ToString());
 			std::string strRsp = rsp->content.string();
-			std::cout << strRsp << std::endl;
+			std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
 			UserRegisterRspMsg rspMsg;
 			CHECK(rspMsg.FromString(strRsp));
@@ -578,7 +578,7 @@ TEST_CASE("HTTP_UserRegisterReqPro") {
 
 		}
 		catch (const SimpleWeb::system_error& e) {
-			std::cerr << "Client Req Error " << e.what() << std::endl;
+			std::cerr << "Client Req Error " << e.what() << " "<<__LINE__<<std::endl;;
 		}
 	}
 
