@@ -176,16 +176,17 @@ namespace ClientCore
 	{
 		FriendChatRecvTxtReqMsg reqMsg;
 		std::string strUserId = GetHttpParamUserId(request);
+		reqMsg.m_strMsgId = GenerateMsgId();
+		reqMsg.m_chatMsg.m_strReceiverId = strUserId;
 		//auto msgUtil = m_pServer->GetMsgPersisUtil(strUserId);
 		//Dennis Refectory
-		if (false)
+		m_httpRspMap.insert(HTTP_RSP_MAP_PAIR(reqMsg.m_strMsgId, HTTP_RSP_SECOND(time(nullptr), response)));
+		if (m_callBack(&reqMsg))
 		{
-			std::string strContent = reqMsg.ToString();
-			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
-				<< strContent;
 		}
 		else
 		{
+			m_httpRspMap.erase(reqMsg.m_strMsgId);
 			std::string strRsp = m_wrongRequestFormatRsp.ToString();
 			*response << "HTTP/1.1 200 OK\r\nContent-Length: " << strRsp.length() << "\r\n\r\n" << strRsp;
 		}
@@ -1277,6 +1278,19 @@ namespace ClientCore
 		}
 	}
 	
+	void CHttpServer::On_FriendChatRecvTxtReqMsg(const FriendChatRecvTxtReqMsg& msg)
+	{
+		if (!msg.m_strMsgId.empty()) {
+			auto item = m_httpRspMap.find(msg.m_strMsgId);
+			if (item != m_httpRspMap.end()) {
+				std::string strContent = msg.ToString();
+				(*(item->second.m_response)) << "HTTP/1.1 200 OK\r\nContent-Length: " << strContent.length() << "\r\n\r\n"
+					<< strContent;
+				m_httpRspMap.erase(msg.m_strMsgId);
+			}
+		}
+	}
+
 	/**
 	 * @brief 响应解散群组消息，TCP消息转HTTP消息
 	 * 
@@ -1374,6 +1388,18 @@ namespace ClientCore
 		}
 	}
 
+	std::string CHttpServer::GetHttpParamFriendId(std::shared_ptr<HttpServer::Request> request)
+	{
+		auto paramMap = request->parse_query_string();
+		if (0 == paramMap.count("FriendId"))
+		{
+			return "";
+		}
+		else
+		{
+			return paramMap.equal_range("FriendId").first->second;
+		}
+	}
 	/**
 	 * @brief HTTP响应定时消息
 	 * 

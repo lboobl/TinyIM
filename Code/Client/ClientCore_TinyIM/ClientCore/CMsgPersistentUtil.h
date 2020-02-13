@@ -80,6 +80,7 @@ public:
 	CMsgPersistentUtil(const std::string strUserId) {
 		m_strUserId = strUserId;
 	}
+	bool Save_FriendChatRecvTxtReqMsg(const FriendChatMsg_s& msg);
 private:
 	std::string m_strUserId;
 	std::map<std::string, AddFriendRecvReqMsg> m_AddFriendRecvReqMsgMap;

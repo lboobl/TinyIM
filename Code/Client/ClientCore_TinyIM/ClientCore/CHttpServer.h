@@ -100,6 +100,9 @@ namespace ClientCore {
 		void On_RandomUserRsp(const GetRandomUserRspMsg& msg);
 		void On_AddFriendNotifyReqMsg(const AddFriendNotifyReqMsg&  msg);
 		void On_AddFriendRecvReqMsg(const AddFriendRecvReqMsg& msg);
+
+
+		void On_FriendChatRecvTxtReqMsg(const FriendChatRecvTxtReqMsg& msg);
 		//Group
 		void On_GetGroupListRsp(const GetGroupListRspMsg& msg);
 		void On_FindGroupRsp(const FindGroupRspMsg& msg);
@@ -197,7 +200,7 @@ namespace ClientCore {
 		void Init(const int port);
 
 		std::string GetHttpParamUserId(std::shared_ptr<HttpServer::Request> request);
-		
+		std::string GetHttpParamFriendId(std::shared_ptr<HttpServer::Request> request);
 		HttpServer m_httpServer;
 		HTTP_CALL_BACK_FUNC m_callBack;
 		SnowFlake m_msgIdUtil;

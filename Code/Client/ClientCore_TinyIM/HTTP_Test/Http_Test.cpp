@@ -515,7 +515,7 @@ void GetFriendChatRecvFileMsg(HttpClient& client, std::string strUser, std::stri
 FriendChatRecvTxtReqMsg Do_GetFriendChatRecvTextMsg(HttpClient& client, std::string strUser, std::string strFriendId, std::string strChatContext) {
 	FriendChatRecvTxtReqMsg rspMsg;
 	try {
-		auto rsp = client.request("GET", "/get_friend_chat_recv_text_msg", "");
+		auto rsp = client.request("GET", "/get_friend_chat_recv_text_msg?UserId="+strUser, "");
 		std::string strRsp = rsp->content.string();
 		std::cout << strRsp << " "<<__LINE__<<std::endl;;
 
@@ -656,7 +656,7 @@ TEST_CASE("HTTP_SendFriendTxt") {
 	RegisterUser(client, g_strUserTwo);
 	UserLoginRspMsg oneLoginRsp = Do_UserLogin(client, g_strUserOne);
 	UserLoginRspMsg twoLoginRsp = Do_UserLogin(client, g_strUserTwo);
-	FindFriendRspMsg findFriendRsp = Do_FindFriendReq(client, g_strUserOne, g_strUserTwo);
+	FindFriendRspMsg findFriendRsp = Do_FindFriendReq(client, oneLoginRsp.m_strUserId, g_strUserTwo);
 	if (!findFriendRsp.m_friendInfoVec.empty())
 	{
 		SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);

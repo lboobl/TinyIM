@@ -383,24 +383,24 @@ bool CMsgPersistentUtil::Save_FriendChatSendTxtRspMsg(const FriendChatMsg_s& msg
  * @return true 
  * @return false 
  */
-//bool CMsgPersistentUtil::Save_FriendChatRecvTxtReqMsg(const FriendChatRecvTxtReqMsg& msg)
-//{
-//	std::string strSQLTemplate = R"(INSERT INTO T_FRIEND_CHAT_MSG VALUES("{0}","{1}","{2}","{3}","{4}","{5}","UNREAD","{6}"))";
-//	std::string strSql = fmt::format(strSQLTemplate,
-//		msg.m_strMsgId,
-//		ChatType(CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE),
-//		msg.m_strFromId,
-//		msg.m_strToId,
-//		msg.m_strContext,
-//		msg.m_fontInfo.ToString(),
-//		std::to_string(time(nullptr)));
-//	SQLite::Statement*   m_pInsertQuery = new SQLite::Statement(*m_pDb, strSql);
-//	bool bResult = m_pInsertQuery->executeStep();
-//	// Reset the query to be able to use it again later
-//	m_pInsertQuery->reset();
-//
-//	return bResult;
-//}
+bool CMsgPersistentUtil::Save_FriendChatRecvTxtReqMsg(const FriendChatMsg_s& msg)
+{
+	std::string strSQLTemplate = R"(INSERT INTO T_FRIEND_CHAT_MSG VALUES("{0}","{1}","{2}","{3}","{4}","{5}","UNREAD","{6}"))";
+	std::string strSql = fmt::format(strSQLTemplate,
+		msg.m_strChatMsgId,
+		ChatType(CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE),
+		msg.m_strSenderId,
+		msg.m_strReceiverId,
+		msg.m_strContext,
+		msg.m_fontInfo.ToString(),
+		std::to_string(time(nullptr)));
+	SQLite::Statement*   m_pInsertQuery = new SQLite::Statement(*m_pDb, strSql);
+	bool bResult = m_pInsertQuery->executeStep();
+	// Reset the query to be able to use it again later
+	m_pInsertQuery->reset();
+
+	return bResult;
+}
 
 /**
  * @brief 获取好友聊天消息

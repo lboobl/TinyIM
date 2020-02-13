@@ -572,6 +572,18 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 			pSess->SendMsg(pMsg);
 		}
 	}break;
+	case E_MsgType::FriendChatReceiveTxtMsgReq_Type:
+	{
+		FriendChatRecvTxtReqMsg* msg = (FriendChatRecvTxtReqMsg*)(pMsg);
+		auto pUtil = GetMsgPersisUtil(msg->m_chatMsg.m_strReceiverId);
+		if (pUtil)
+		{
+			FriendChatRecvTxtReqMsg reqMsg;
+			pUtil->Get_FriendChatRecvTxtReqMsg(reqMsg.m_chatMsg);
+			reqMsg.m_strMsgId = msg->m_strMsgId;
+			m_httpServer->On_FriendChatRecvTxtReqMsg(reqMsg);
+		}
+	}break;
 	case E_MsgType::RemoveFriendReq_Type:
 	{
 		RemoveFriendReqMsg * msg = (RemoveFriendReqMsg*)(pMsg);
@@ -669,6 +681,15 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 	{
 		FriendSendFileMsgReqMsg * msg = (FriendSendFileMsgReqMsg*)(pMsg);
 		auto pSess = GetClientSess(msg->m_strUserId);
+		if (pSess)
+		{
+			pSess->SendMsg(pMsg);
+		}
+	}break;
+	case E_MsgType::FriendChatSendTxtMsgReq_Type:
+	{
+		FriendChatSendTxtReqMsg * msg = (FriendChatSendTxtReqMsg*)(pMsg);
+		auto pSess = GetClientSess(msg->m_strSenderId);
 		if (pSess)
 		{
 			pSess->SendMsg(pMsg);
@@ -1577,21 +1598,11 @@ void CMediumServer::OnHttpRsp(const std::shared_ptr<CClientSess>& pClientSess,st
 		{
 			FriendChatRecvTxtReqMsg reqMsg;
 			if (reqMsg.FromString(pMsg->to_string())) {
-				//if (m_msgPersisUtil) {
-				//	//m_msgPersisUtil->Save_FriendChatRecvTxtReqMsg(reqMsg.);
-				//}
-				//{
-				//	FriendChatRecvTxtRspMsg rspMsg;
-				//	rspMsg.m_strFriendId = reqMsg.m_chatMsg.m_strSenderId;
-				//	rspMsg.m_strUserId = reqMsg.m_chatMsg.m_strReceiverId;
-				//	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-				//	auto pSess = GetClientSess(rspMsg.m_strUserId);
-				//	if (pSess != nullptr)
-				//	{
-				//		auto pSend = std::make_shared<TransBaseMsg_t>(rspMsg.GetMsgType(), rspMsg.ToString());
-				//		pSess->SendMsg(pSend);
-				//	}
-				//}
+				auto pUtil = GetMsgPersisUtil(reqMsg.m_chatMsg.m_strReceiverId);
+				if (pUtil)
+				{
+					pUtil->Save_FriendChatRecvTxtReqMsg(reqMsg.m_chatMsg);
+				}
 			}
 
 		}break;
