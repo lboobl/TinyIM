@@ -661,20 +661,28 @@ TEST_CASE("HTTP_SendFriendTxt") {
 	{
 		SendAddFriendReq(client, oneLoginRsp.m_strUserId, findFriendRsp.m_friendInfoVec[0].m_strUserId);
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (!findFriendRsp.m_friendInfoVec.empty())
 	{
 		GetAddFriendRequire(client, findFriendRsp.m_friendInfoVec[0].m_strUserId);
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	
 	GetAddFriendNotify(client, oneLoginRsp.m_strUserId);
 	SendFriendChatTextMsg(client, oneLoginRsp.m_strUserId, twoLoginRsp.m_strUserId,"Friend Chat");
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	GetFriendChatRecvTextMsg(client, oneLoginRsp.m_strUserId, twoLoginRsp.m_strUserId, "Friend Chat");
 	RemoveFriend(client, oneLoginRsp.m_strUserId, twoLoginRsp.m_strUserId);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	UserLogout(client, g_strUserOne);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	UserLogout(client, g_strUserTwo);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	UnRegisterUser(client, g_strUserOne);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	UnRegisterUser(client, g_strUserTwo);
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+
 }
 
 TEST_CASE("HTTP_SendFriendFile") {
@@ -727,9 +735,9 @@ TEST_CASE("HTTP_AddToGroup") {
 	UserLogin(client, g_strUserOne);
 	UserLoginRspMsg loginRsp = Do_UserLogin(client, g_strUserOne);
 	CreateGroupReq(client, loginRsp.m_strUserId, g_strGroupOne);
-	FindGroupRspMsg rspMsg = Do_FindGroupReq(client, g_strUserOne, g_strGroupOne);
+	FindGroupRspMsg rspMsg = Do_FindGroupReq(client, loginRsp.m_strUserId, g_strGroupOne);
 	AddUserToGroupReq(client, loginRsp.m_strUserId, rspMsg.m_strGroupName, rspMsg.m_strGroupId);
-	DestroyGroupReq(client, g_strUserOne, g_strGroupOne, rspMsg.m_strGroupId);
+	DestroyGroupReq(client, loginRsp.m_strUserId, g_strGroupOne, rspMsg.m_strGroupId);
 	UserLogout(client, g_strUserOne);
 
 	UnRegisterUser(client, g_strUserOne);

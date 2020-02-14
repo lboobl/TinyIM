@@ -535,6 +535,10 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 		{
 			pSess->SendMsg(pMsg);
 		}
+		else
+		{
+			LOG_ERR(ms_loger, "User:{} No Sess [{} {}]", msg->m_strUserId, __FILENAME__, __LINE__);
+		}
 	}break;
 	case E_MsgType::AddToGroupReq_Type:
 	{
@@ -592,6 +596,10 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 		{
 			pSess->SendMsg(pMsg);
 		}
+		else
+		{
+			LOG_ERR(ms_loger, "User:{} No Sess [{} {}]", msg->m_strUserId, __FILENAME__, __LINE__);
+		}
 	}break;
 	case E_MsgType::AddFriendSendReq_Type:
 	{
@@ -644,15 +652,6 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 			AddFriendNotifyReqMsg newMsg;
 			if (pUtil->Get_AddFriendNotifyReqMsg(newMsg))
 			{
-				{
-					AddFriendNotifyRspMsg rspMsg;
-					rspMsg.m_strMsgId = newMsg.m_strMsgId;
-					auto pSess = GetClientSess(msg->m_strUserId);
-					if (pSess)
-					{
-						pSess->SendMsg(&rspMsg);
-					}
-				}
 				{
 					newMsg.m_strMsgId = msg->m_strMsgId;
 					m_httpServer->On_AddFriendNotifyReqMsg(newMsg);
@@ -1607,6 +1606,11 @@ void CMediumServer::OnHttpRsp(const std::shared_ptr<CClientSess>& pClientSess,st
 				{
 					pUtil->Save_AddFriendNotifyReqMsg(reqMsg);
 				}
+				{
+					AddFriendNotifyRspMsg rspMsg;
+					rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+					pClientSess->SendMsg(&rspMsg);
+				}
 			}
 		}break;
 		case E_MsgType::FriendChatReceiveTxtMsgReq_Type:
@@ -1669,6 +1673,16 @@ void CMediumServer::OnHttpRsp(const std::shared_ptr<CClientSess>& pClientSess,st
 		case E_MsgType::NetRecoverReport_Type:
 		{
 
+		}break;
+		case E_MsgType::UpdateFriendListNotifyReq_Type:
+		{
+			UpdateFriendListNotifyReqMsg reqMsg;
+			if (reqMsg.FromString(pMsg->to_string())) {
+				UpdateFriendListNotifyRspMsg rspMsg;
+				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+				rspMsg.m_strUserId = reqMsg.m_strUserId;
+				pClientSess->SendMsg(&rspMsg);
+			}
 		}break;
 		default:
 		{
@@ -2420,9 +2434,6 @@ void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSes
 			{
 				//对Sess设置UserId和UserName
 				{
-					pClientSess->SetUserId(rspMsg.m_strUserId);
-					pClientSess->SetUserName(rspMsg.m_strUserName);
-
 					item->second->SetUserId(rspMsg.m_strUserId);
 					item->second->SetUserName(rspMsg.m_strUserName);
 				}
@@ -2439,7 +2450,8 @@ void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSes
 					m_BackSessMap.erase(pClientSess);
 				}
 			}
-
+			pClientSess->SetUserId(rspMsg.m_strUserId);
+			pClientSess->SetUserName(rspMsg.m_strUserName);
 			m_userId_ClientSessMap.erase(rspMsg.m_strUserId);
 			m_userId_ClientSessMap.insert({ rspMsg.m_strUserId,pClientSess });
 		}

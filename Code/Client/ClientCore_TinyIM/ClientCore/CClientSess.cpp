@@ -38,7 +38,7 @@ int CClientSess::StartConnect()
 	if (ST_NOT_CONNECT == m_bConnect)
 	{
 		m_bConnect = ST_CONNING;
-		LOG_WARN(ms_loger, "Start Connect To  IP:{} Port:{} [{} {}]", m_serverIp, m_serverPort,__FILENAME__,__LINE__);
+		LOG_INFO(ms_loger, "Start Connect To  IP:{} Port:{} [{} {}]", m_serverIp, m_serverPort,__FILENAME__,__LINE__);
 		tcp::resolver reso(m_ioService);
 		std::string strPort = std::to_string(m_serverPort);
 		auto endpoint_iterator = reso.resolve({m_serverIp, strPort});
@@ -64,7 +64,7 @@ int CClientSess::StartConnect()
 						}
 					}
 					do_read();
-					LOG_WARN(ms_loger, "Connect Success {} [{} {}]",GetConnectInfo(),__FILENAME__,__LINE__);
+					LOG_INFO(ms_loger, "Connect Success {} [{} {}]",GetConnectInfo(),__FILENAME__,__LINE__);
 				}
 				else
 				{
@@ -94,7 +94,7 @@ int CClientSess::StartConnect()
  */
 int CClientSess::StopConnect()
 {
-	LOG_INFO(ms_loger, "Connect Closed IP:{},port:{}", m_serverIp, m_serverPort);
+	LOG_INFO(ms_loger, "Connect Closed IP:{},port:{} [{} {}]", m_serverIp, m_serverPort,__FILENAME__,__LINE__);
 	m_bConnect = ST_NOT_CONNECT;
 	m_socket.close();
 	if (m_queue)
