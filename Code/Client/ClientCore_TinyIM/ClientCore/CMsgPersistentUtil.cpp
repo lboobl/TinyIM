@@ -37,13 +37,16 @@ bool CMsgPersistentUtil::InitDataBase()
 	CFileUtil fileUtil;
 	std::string strDbName = fileUtil.GetCurDir()+m_strUserId + ".db";
 	m_pDb = new SQLite::Database(strDbName.data(),SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-	if (m_pDb->tableExists("T_FRIEND_CHAT_MSG"))
+
+	if (true)
 	{
-		LOG_INFO(ms_logger, "TABLE T_FRIEND_CHAT_MSG is Exist [ {} {} ]", __FILE__, __LINE__);
-	}
-	else
-	{
-		std::string strSQL = R"(CREATE TABLE T_FRIEND_CHAT_MSG(
+		if (m_pDb->tableExists("T_FRIEND_CHAT_MSG"))
+		{
+			LOG_INFO(ms_logger, "TABLE T_FRIEND_CHAT_MSG is Exist [ {} {} ]", __FILE__, __LINE__);
+		}
+		else
+		{
+			std::string strSQL = R"(CREATE TABLE T_FRIEND_CHAT_MSG(
 		F_MSG_ID TEXT,
 		F_MSG_TYPE TEXT,
         F_FROM_ID TEXT,
@@ -52,20 +55,22 @@ bool CMsgPersistentUtil::InitDataBase()
         F_OTHER_INFO TEXT,
 		F_READ_FLAG TEXT,
 		F_CREATE_TIME TEXT))";
-		m_pFriendChatCreate = new SQLite::Statement(*m_pDb, strSQL);
-		m_pFriendChatCreate->executeStep();
-		// Reset the query to be able to use it again later
-		m_pFriendChatCreate->reset();
-	}
+			m_pFriendChatCreate = new SQLite::Statement(*m_pDb, strSQL);
+			m_pFriendChatCreate->executeStep();
+			// Reset the query to be able to use it again later
+
+			m_pFriendChatCreate->reset();
+			m_pFriendChatCreate->clearBindings();
+		}
 
 
-	if (m_pDb->tableExists("T_GROUP_CHAT_MSG"))
-	{
-		LOG_INFO(ms_logger, "TABLE T_GROUP_CHAT_MSG is Exist [ {} {} ]", __FILE__, __LINE__);
-	}
-	else
-	{
-		std::string strSQL = R"(CREATE TABLE T_GROUP_CHAT_MSG(
+		if (m_pDb->tableExists("T_GROUP_CHAT_MSG"))
+		{
+			LOG_INFO(ms_logger, "TABLE T_GROUP_CHAT_MSG is Exist [ {} {} ]", __FILE__, __LINE__);
+		}
+		else
+		{
+			std::string strSQL = R"(CREATE TABLE T_GROUP_CHAT_MSG(
 		F_MSG_ID TEXT,
 		F_MSG_TYPE TEXT,
         F_USER_ID TEXT,
@@ -74,154 +79,157 @@ bool CMsgPersistentUtil::InitDataBase()
         F_OTHER_INFO TEXT,
 		F_READ_FLAG TEXT,
 		F_CREATE_TIME TEXT))";
-		m_pGroupChatCreate = new SQLite::Statement(*m_pDb, strSQL);
-		m_pGroupChatCreate->executeStep();
-		// Reset the query to be able to use it again later
-		m_pGroupChatCreate->reset();
-	}
+			m_pGroupChatCreate = new SQLite::Statement(*m_pDb, strSQL);
+			m_pGroupChatCreate->executeStep();
+			// Reset the query to be able to use it again later
+			m_pGroupChatCreate->reset();
+			m_pGroupChatCreate->clearBindings();
+		}
 
 
-	if (m_pDb->tableExists("T_FILE_HASH"))
-	{
-		LOG_INFO(ms_logger, "TABLE F_FILE_HASH is Exist [ {} {} ]", __FILE__, __LINE__);
-	}
-	else
-	{
-		try {
-			std::string strSQL = R"(CREATE TABLE T_FILE_HASH(
+		if (m_pDb->tableExists("T_FILE_HASH"))
+		{
+			LOG_INFO(ms_logger, "TABLE F_FILE_HASH is Exist [ {} {} ]", __FILE__, __LINE__);
+		}
+		else
+		{
+			try {
+				std::string strSQL = R"(CREATE TABLE T_FILE_HASH(
 			F_FILE_PATH	TEXT,
 			F_FILE_HASH	TEXT))";
-			m_pFileHashCreate = new SQLite::Statement(*m_pDb, strSQL);
-			m_pFileHashCreate->executeStep();
-			// Reset the query to be able to use it again later
-			m_pFileHashCreate->reset();
+				m_pFileHashCreate = new SQLite::Statement(*m_pDb, strSQL);
+				m_pFileHashCreate->executeStep();
+				// Reset the query to be able to use it again later
+				m_pFileHashCreate->reset();
+				m_pFileHashCreate->clearBindings();
+			}
+			catch (SQLite::Exception& ec)
+			{
+				LOG_ERR(ms_logger, "{} {} {} {}", ec.getErrorCode(), ec.getErrorStr(), ec.getExtendedErrorCode(), ec.what());
+			}
+
 		}
-		catch (SQLite::Exception& ec)
+
+		if (nullptr == m_pGroupChatSelect)
 		{
-			LOG_ERR(ms_logger, "{} {} {} {}", ec.getErrorCode(), ec.getErrorStr(), ec.getExtendedErrorCode(), ec.what());
+			std::string strSQL = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_READ_FLAG="UN_READ")";
+
+			m_pGroupChatSelect = new SQLite::Statement(*m_pDb, strSQL);
 		}
 
-	}
-
-	if(nullptr == m_pGroupChatSelect)
-	{
-		std::string strSQL = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_READ_FLAG="UN_READ")";
-
-		m_pGroupChatSelect = new SQLite::Statement(*m_pDb, strSQL);
-	}
-
-	if (nullptr == m_pGroupChatUpdate)
-	{
-		std::string strSqlTemplate = R"(UPDATE T_GROUP_CHAT_MSG SET F_READ_FLAG="READ" WHERE F_MSG_ID=?)";
-		m_pGroupChatUpdate = new SQLite::Statement(*m_pDb, strSqlTemplate);
-	}
-
-	if (nullptr == m_pGroupChatInsert)
-	{
-		std::string strSQLTemplate = R"(INSERT INTO T_GROUP_CHAT_MSG VALUES (?,?,?,?,?,?,?,?) )";
-		m_pGroupChatInsert = new SQLite::Statement(*m_pDb, strSQLTemplate);
-	}
-
-	if (nullptr == m_pGroupChatSelectByWord)
-	{
-		std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_MSG_CONTEXT LIKE "%?%")";
-		m_pGroupChatSelectByWord = new SQLite::Statement(*m_pDb, strSqlTemplate);
-	}
-
-	if (nullptr == m_pFriendChatSelectByWord)
-	{
-		std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE F_MSG_CONTEXT LIKE "%?%")";
-		m_pFriendChatSelectByWord = new SQLite::Statement(*m_pDb, strSqlTemplate);
-	}
-
-	//Group Msg History
-	{
-		if (nullptr == m_pGroupChatSelectRangeFirst)
+		if (nullptr == m_pGroupChatUpdate)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? LIMIT 15)";
-			m_pGroupChatSelectRangeFirst = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			std::string strSqlTemplate = R"(UPDATE T_GROUP_CHAT_MSG SET F_READ_FLAG="READ" WHERE F_MSG_ID=?)";
+			m_pGroupChatUpdate = new SQLite::Statement(*m_pDb, strSqlTemplate);
 		}
 
-		if (nullptr == m_pGroupChatSelectRangeLast)
+		if (nullptr == m_pGroupChatInsert)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM (SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? ORDER BY F_MSG_ID DESC LIMIT 15) )";
-			m_pGroupChatSelectRangeLast = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			std::string strSQLTemplate = R"(INSERT INTO T_GROUP_CHAT_MSG VALUES (?,?,?,?,?,?,?,?) )";
+			m_pGroupChatInsert = new SQLite::Statement(*m_pDb, strSQLTemplate);
 		}
 
-		if (nullptr == m_pGroupChatSelectRangePrev)
+		if (nullptr == m_pGroupChatSelectByWord)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? LIMIT 15)";
-			m_pGroupChatSelectRangePrev = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_MSG_CONTEXT LIKE "%?%")";
+			m_pGroupChatSelectByWord = new SQLite::Statement(*m_pDb, strSqlTemplate);
 		}
 
-		if (nullptr == m_pGroupChatSelectRangeNext)
+		if (nullptr == m_pFriendChatSelectByWord)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? LIMIT 15)";
-			m_pGroupChatSelectRangeNext = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE F_MSG_CONTEXT LIKE "%?%")";
+			m_pFriendChatSelectByWord = new SQLite::Statement(*m_pDb, strSqlTemplate);
 		}
-	}
 
-	{
-		if (nullptr == m_pFriendChatSelectRangeFirst)
+		//Group Msg History
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE (F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?) LIMIT 15)";
-			m_pFriendChatSelectRangeFirst = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			if (nullptr == m_pGroupChatSelectRangeFirst)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? LIMIT 15)";
+				m_pGroupChatSelectRangeFirst = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
+
+			if (nullptr == m_pGroupChatSelectRangeLast)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM (SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? ORDER BY F_MSG_ID DESC LIMIT 15) )";
+				m_pGroupChatSelectRangeLast = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
+
+			if (nullptr == m_pGroupChatSelectRangePrev)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? LIMIT 15)";
+				m_pGroupChatSelectRangePrev = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
+
+			if (nullptr == m_pGroupChatSelectRangeNext)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID=? LIMIT 15)";
+				m_pGroupChatSelectRangeNext = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
 		}
 
-		if (nullptr == m_pFriendChatSelectRangeLast)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM (SELECT * FROM T_FRIEND_CHAT_MSG WHERE (F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?) ORDER BY F_MSG_ID DESC LIMIT 15) ORDER BY F_MSG_ID)";
-			m_pFriendChatSelectRangeLast = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			if (nullptr == m_pFriendChatSelectRangeFirst)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE (F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?) LIMIT 15)";
+				m_pFriendChatSelectRangeFirst = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
+
+			if (nullptr == m_pFriendChatSelectRangeLast)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM (SELECT * FROM T_FRIEND_CHAT_MSG WHERE (F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?) ORDER BY F_MSG_ID DESC LIMIT 15) ORDER BY F_MSG_ID)";
+				m_pFriendChatSelectRangeLast = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
+
+			if (nullptr == m_pFriendChatSelectRangePrev)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE ( ((F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?)) AND F_MSG_ID < ? ) LIMIT 15)";
+				m_pFriendChatSelectRangePrev = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
+
+			if (nullptr == m_pFriendChatSelectRangeNext)
+			{
+				std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE ( ((F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?)) AND F_MSG_ID > ? ) LIMIT 15)";
+				m_pFriendChatSelectRangeNext = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			}
 		}
 
-		if (nullptr == m_pFriendChatSelectRangePrev)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE ( ((F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?)) AND F_MSG_ID < ? ) LIMIT 15)";
-			m_pFriendChatSelectRangePrev = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			if (nullptr == m_pFileHashInsert)
+			{
+				std::string strSQL = R"(INSERT INTO T_FILE_HASH(F_FILE_PATH,F_FILE_HASH) VALUES(?,?))";
+
+				m_pFileHashInsert = new SQLite::Statement(*m_pDb, strSQL);
+			}
+
+			if (nullptr == m_pFileHashSelect)
+			{
+				std::string strSQL = R"(SELECT F_FILE_PATH FROM T_FILE_HASH WHERE F_FILE_HASH=?)";
+
+				m_pFileHashSelect = new SQLite::Statement(*m_pDb, strSQL);
+			}
+
+			if (nullptr == m_pFileHashDelete)
+			{
+				std::string strSQL = R"(DELETE FROM T_FILE_HASH WHERE F_FILE_HASH=?)";
+
+				m_pFileHashDelete = new SQLite::Statement(*m_pDb, strSQL);
+			}
 		}
 
-		if (nullptr == m_pFriendChatSelectRangeNext)
 		{
-			std::string strSqlTemplate = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE ( ((F_FROM_ID=? AND F_TO_ID=?) OR (F_FROM_ID=? AND F_TO_ID=?)) AND F_MSG_ID > ? ) LIMIT 15)";
-			m_pFriendChatSelectRangeNext = new SQLite::Statement(*m_pDb, strSqlTemplate);
+			std::string strSQLTemplate = R"(INSERT INTO T_FRIEND_CHAT_MSG VALUES(?,'E_CHAT_TEXT_TYPE',?,?,?,?,'UNREAD',?))";
+			m_pFriendChatInsert = new SQLite::Statement(*m_pDb, strSQLTemplate);
 		}
-	}
-
-	{
-		if (nullptr == m_pFileHashInsert)
 		{
-			std::string strSQL = R"(INSERT INTO T_FILE_HASH(F_FILE_PATH,F_FILE_HASH) VALUES(?,?))";
-
-			m_pFileHashInsert = new SQLite::Statement(*m_pDb, strSQL);
+			std::string strSqlTemplate = R"(UPDATE T_FRIEND_CHAT_MSG SET F_READ_FLAG="READ" WHERE F_MSG_ID=?)";
+			m_pFriendChatUpdate = new SQLite::Statement(*m_pDb, strSqlTemplate);
 		}
-
-		if (nullptr == m_pFileHashSelect)
 		{
-			std::string strSQL = R"(SELECT F_FILE_PATH FROM T_FILE_HASH WHERE F_FILE_HASH=?)";
+			std::string strSQL = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE F_READ_FLAG="UNREAD";)";
 
-			m_pFileHashSelect = new SQLite::Statement(*m_pDb, strSQL);
+			m_pFriendChatUnReadSelect = new SQLite::Statement(*m_pDb, strSQL);
 		}
-
-		if (nullptr == m_pFileHashDelete)
-		{
-			std::string strSQL = R"(DELETE FROM T_FILE_HASH WHERE F_FILE_HASH=?)";
-
-			m_pFileHashDelete = new SQLite::Statement(*m_pDb, strSQL);
-		}
-	}
-	
-	{
-		std::string strSQLTemplate = R"(INSERT INTO T_FRIEND_CHAT_MSG VALUES(?,'E_CHAT_TEXT_TYPE',?,?,?,?,'UNREAD',?))";
-		m_pFriendChatInsert = new SQLite::Statement(*m_pDb, strSQLTemplate);
-	}
-	{
-		std::string strSqlTemplate = R"(UPDATE T_FRIEND_CHAT_MSG SET F_READ_FLAG="READ" WHERE F_MSG_ID=?)";
-		m_pFriendChatUpdate = new SQLite::Statement(*m_pDb, strSqlTemplate);
-	}
-	{
-		std::string strSQL = R"(SELECT * FROM T_FRIEND_CHAT_MSG WHERE F_READ_FLAG="UNREAD";)";
-
-		m_pFriendChatUnReadSelect = new SQLite::Statement(*m_pDb, strSQL);
 	}
 	return true;
 }
@@ -367,6 +375,7 @@ bool CMsgPersistentUtil::Save_FriendChatSendTxtRspMsg(const FriendChatMsg_s& msg
 		m_pFriendChatInsert->bind(6, msg.m_strMsgTime);
 		m_pFriendChatInsert->exec();
 		m_pFriendChatInsert->reset();
+		m_pFriendChatInsert->clearBindings();
 		bResult = true;
 	}
 	catch (std::exception& ex)
@@ -398,7 +407,7 @@ bool CMsgPersistentUtil::Save_FriendChatRecvTxtReqMsg(const FriendChatMsg_s& msg
 	bool bResult = m_pInsertQuery->executeStep();
 	// Reset the query to be able to use it again later
 	m_pInsertQuery->reset();
-
+	m_pInsertQuery->clearBindings();
 	return bResult;
 }
 
@@ -423,6 +432,7 @@ bool CMsgPersistentUtil::Get_FriendChatRecvTxtReqMsg(FriendChatMsg_s& msg)
 			msg.m_strContext = m_pFriendChatUnReadSelect->getColumn(4).getString();
 		}
 		m_pFriendChatUnReadSelect->reset();
+		m_pFriendChatUnReadSelect->clearBindings();
 	}
 	catch (std::exception ex)
 	{
@@ -446,6 +456,7 @@ bool CMsgPersistentUtil::Update_FriendChatRecvTxtReqMsg(const FriendChatMsg_s& m
 		m_pFriendChatUpdate->bind(1, msg.m_strChatMsgId);
 		bResult = m_pFriendChatUpdate->executeStep();
 		m_pFriendChatUpdate->reset();
+		m_pFriendChatUpdate->clearBindings();
 	}
 	catch (std::exception ex)
 	{
@@ -477,6 +488,8 @@ bool CMsgPersistentUtil::Save_RecvGroupTextMsgReqMsg(const SendGroupTextMsgRspMs
 			msg.m_strMsgTime);
 		int nNb = m_pGroupChatInsert->exec();
 		m_pGroupChatInsert->reset();
+		m_pGroupChatInsert->clearBindings();
+
 		if (nNb != 0)
 		{
 			return true;
@@ -518,6 +531,8 @@ bool CMsgPersistentUtil::Save_RecvGroupTextMsgReqMsg(const RecvGroupTextMsgReqMs
 			msg.m_strMsgTime);
 		int nNb = m_pGroupChatInsert->exec();
 		m_pGroupChatInsert->reset();
+		m_pGroupChatInsert->clearBindings();
+
 		if (nNb != 0)
 		{
 			return true;
@@ -562,6 +577,8 @@ bool CMsgPersistentUtil::Get_RecvGroupTextMsgReqMsg(RecvGroupTextMsgReqMsg& msg)
 	}
 	// Reset the query to be able to use it again later
 	m_pGroupChatSelect->reset();
+	m_pGroupChatSelect->clearBindings();
+
 	return bResult;
 }
 
@@ -577,6 +594,7 @@ bool CMsgPersistentUtil::Update_RecvGroupTextMsgReqMsg(const RecvGroupTextMsgReq
 	SQLite::bind(*m_pGroupChatUpdate, msg.m_strMsgId);
 	int nResult = m_pGroupChatUpdate->exec();
 	m_pGroupChatUpdate->reset();
+	m_pGroupChatUpdate->clearBindings();
 	return nResult != 0;
 }
 
@@ -820,6 +838,7 @@ std::vector<FriendChatMsg_s> CMsgPersistentUtil::Get_FriendChatHistoryFirst(cons
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pFriendChatSelectRangeFirst->getQuery());
 	}
 	m_pFriendChatSelectRangeFirst->reset();
+	m_pFriendChatSelectRangeFirst->clearBindings();
 	return result;
 }
 
@@ -842,6 +861,8 @@ std::vector<SendGroupTextMsgRspMsg>  CMsgPersistentUtil::Get_GroupChatHistoryFir
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pGroupChatSelectRangeFirst->getQuery());
 	}
 	m_pGroupChatSelectRangeFirst->reset();
+	m_pGroupChatSelectRangeFirst->clearBindings();
+
 	return result;
 }
 
@@ -868,6 +889,7 @@ std::vector<FriendChatMsg_s> CMsgPersistentUtil::Get_FriendChatHistoryLast(const
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pFriendChatSelectRangeLast->getQuery());
 	}
 	m_pFriendChatSelectRangeLast->reset();
+	m_pFriendChatSelectRangeLast->clearBindings();
 	return result;
 }
 
@@ -891,6 +913,8 @@ std::vector<SendGroupTextMsgRspMsg>  CMsgPersistentUtil::Get_GroupChatHistoryLas
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pGroupChatSelectRangeLast->getQuery());
 	}
 	m_pGroupChatSelectRangeFirst->reset();
+	m_pGroupChatSelectRangeFirst->clearBindings();
+
 	return result;
 }
 
@@ -918,6 +942,8 @@ std::vector<FriendChatMsg_s> CMsgPersistentUtil::Get_FriendChatHistoryPrev(const
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pFriendChatSelectRangePrev->getQuery());
 	}
 	m_pFriendChatSelectRangePrev->reset();
+	m_pFriendChatSelectRangePrev->clearBindings();
+
 	return result;
 }
 
@@ -941,6 +967,8 @@ std::vector<SendGroupTextMsgRspMsg>  CMsgPersistentUtil::Get_GroupChatHistoryPre
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pGroupChatSelectRangePrev->getQuery());
 	}
 	m_pGroupChatSelectRangePrev->reset();
+	m_pGroupChatSelectRangePrev->clearBindings();
+
 	return result;
 	//return Get_GroupChatHistoryCore(m_pGroupChatSelectRangePrev);
 }
@@ -969,6 +997,8 @@ std::vector<FriendChatMsg_s> CMsgPersistentUtil::Get_FriendChatHistoryNext(const
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pFriendChatSelectRangeNext->getQuery());
 	}
 	m_pFriendChatSelectRangeNext->reset();
+	m_pFriendChatSelectRangeNext->clearBindings();
+
 	return result;
 }
 
@@ -992,6 +1022,8 @@ std::vector<SendGroupTextMsgRspMsg>  CMsgPersistentUtil::Get_GroupChatHistoryNex
 		LOG_ERR(ms_logger, " EC: {} EC message:{} SQL:{}", ec.getErrorCode(), ec.getErrorStr(), m_pGroupChatSelectRangeNext->getQuery());
 	}
 	m_pGroupChatSelectRangeNext->reset();
+	m_pGroupChatSelectRangeNext->clearBindings();
+
 	return result;
 }
 
@@ -1061,6 +1093,8 @@ bool CMsgPersistentUtil::Save_FileHash(const std::string strFileName, const std:
 		strFileHash);
 	m_pFileHashInsert->exec();
 	m_pFileHashInsert->reset();
+	m_pFileHashInsert->clearBindings();
+
 	return true;
 }
 
@@ -1080,6 +1114,7 @@ std::string CMsgPersistentUtil::Get_FileByHash(const std::string strFileHash)
 		break;
 	}
 	m_pFileHashSelect->reset();
+	m_pFileHashSelect->clearBindings();
 	return strFile;
 }
 
@@ -1100,5 +1135,47 @@ bool CMsgPersistentUtil::Delete_FileByHash(const std::string strFileHash)
 
 	}
 	m_pFileHashDelete->reset();
+	m_pFileHashDelete->clearBindings();
+
+	return true;
+}
+
+#define SAFE_FREE_PTR(x) if(x){ x->clearBindings(); delete x;x=nullptr;}
+
+bool CMsgPersistentUtil::CloseDataBase()
+{
+	SAFE_FREE_PTR(m_pFriendChatCreate)
+	SAFE_FREE_PTR(m_pFriendChatInsert)
+	SAFE_FREE_PTR(m_pFriendChatUpdate)
+	SAFE_FREE_PTR(m_pFriendChatUnReadSelect)
+
+	SAFE_FREE_PTR(m_pGroupChatCreate)
+	SAFE_FREE_PTR(m_pGroupChatInsert)
+	SAFE_FREE_PTR(m_pGroupChatSelect)
+	SAFE_FREE_PTR(m_pGroupChatUpdate)
+
+	SAFE_FREE_PTR(m_pGroupChatSelectRangeFirst)
+	SAFE_FREE_PTR(m_pGroupChatSelectRangeLast)
+	SAFE_FREE_PTR(m_pGroupChatSelectRangePrev)
+	SAFE_FREE_PTR(m_pGroupChatSelectRangeNext)
+
+	SAFE_FREE_PTR(m_pFriendChatSelectRangeFirst)
+	SAFE_FREE_PTR(m_pFriendChatSelectRangeLast)
+	SAFE_FREE_PTR(m_pFriendChatSelectRangePrev)
+	SAFE_FREE_PTR(m_pFriendChatSelectRangeNext)
+
+	SAFE_FREE_PTR(m_pFriendChatSelectByWord)
+	SAFE_FREE_PTR(m_pGroupChatSelectByWord)
+
+	SAFE_FREE_PTR(m_pFileHashCreate)
+	SAFE_FREE_PTR(m_pFileHashInsert)
+	SAFE_FREE_PTR(m_pFileHashSelect)
+	SAFE_FREE_PTR(m_pFileHashDelete)
+
+	if (m_pDb)
+	{	
+		delete m_pDb;
+		m_pDb = nullptr;
+	}
 	return true;
 }

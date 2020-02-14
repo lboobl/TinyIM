@@ -662,7 +662,8 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 	}break;
 	case E_MsgType::AddFriendNotifyRsp_Type:
 	{
-
+		AddFriendNotifyRspMsg * msg = (AddFriendNotifyRspMsg*)(pMsg);
+		
 	}break;
 	case E_MsgType::FriendSendFileMsgReq_Type:
 	{
@@ -1393,6 +1394,20 @@ void CMediumServer::OnHttpRsp(const std::shared_ptr<CClientSess>& pClientSess,st
 		{
 			UserUnRegisterRspMsg rspMsg;
 			if (rspMsg.FromString(pMsg->to_string())) {
+				{
+					std::string strUserId = GetUserId(rspMsg.m_strUserName);
+					if (!strUserId.empty())
+					{
+						auto pUtil = GetMsgPersisUtil(strUserId);
+						if (pUtil)
+						{
+							m_UserId_MsgPersistentUtilMap.erase(strUserId);
+							pUtil->CloseDataBase();
+						}
+						CFileUtil::RemoveFile(strUserId + ".db");
+						CFileUtil::RemoveFolder(strUserId);
+					}
+				}
 				if (m_httpServer) {
 					m_httpServer->On_UserUnRegisterRsp(rspMsg);
 				}
@@ -2491,9 +2506,12 @@ void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSes
  */
 void CMediumServer::HandleSendBack_UserLogoutRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLogoutRspMsg rspMsg) {
 	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED) {
-		m_userId_ClientSessMap.erase(rspMsg.m_strUserName);
-		m_userStateMap.erase(pClientSess->UserId());
-		m_userStateMap.insert({ pClientSess->UserId(),CLIENT_SESS_STATE::SESS_UN_LOGIN });
+		std::string strUserId = GetUserId(rspMsg.m_strUserName);
+		m_userId_ClientSessMap.erase(strUserId);
+		m_userStateMap.erase(strUserId);
+		m_userStateMap.insert({ strUserId,CLIENT_SESS_STATE::SESS_UN_LOGIN });
+		m_userUdpSessMap.erase(strUserId);
+		pClientSess->StopConnect();
 	}
 }
 
