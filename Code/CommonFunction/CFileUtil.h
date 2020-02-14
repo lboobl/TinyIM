@@ -17,12 +17,12 @@
 class CFileUtil
 {
 public:
-	bool IsFileExist(const std::string strFileName);
-	bool RemoveFile(const std::string strFileName);
+	static bool IsFileExist(const std::string strFileName);
+	static bool RemoveFile(const std::string strFileName);
 
-	bool IsFolder(const std::string strFolder);
-	bool CreateFolder(const std::string strFolder);
-	bool RemoveFolder(const std::string strFolder);
+	static bool IsFolder(const std::string strFolder);
+	static bool CreateFolder(const std::string strFolder);
+	static bool RemoveFolder(const std::string strFolder);
 
 	bool CreateFileByName(const int nFileId,const std::string FileName);
 	bool GetFileSize(int& nFileSize, const std::string strFileName);
