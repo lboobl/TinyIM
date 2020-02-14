@@ -119,8 +119,8 @@ void CChatServer::HandleUserKeepAliveReq(const std::shared_ptr<CServerSess> pSes
 		rspMsg.m_strClientId = reqMsg.m_strClientId;
 		pSess->SendMsg(&rspMsg);
 
-		OnAddFriendNotifyReqMsg(pSess->UserId());
-		OnAddFriendRecvReqMsg(pSess->UserId());
+		//OnAddFriendNotifyReqMsg(pSess->UserId());
+		//OnAddFriendRecvReqMsg(pSess->UserId());
 	}
 }
 
@@ -951,8 +951,8 @@ void CChatServer::HandleUserKeepAliveReq(const std::shared_ptr<CServerSess> pSes
 		(!pSess->UserId().empty()))
 	{
 		OnUserStateCheck(pSess->UserId());
-		OnAddFriendRecvReqMsg(pSess->UserId());
-		OnAddFriendNotifyReqMsg(pSess->UserId());
+		//OnAddFriendRecvReqMsg(pSess->UserId());
+		//OnAddFriendNotifyReqMsg(pSess->UserId());
 	}
 }
 /**
@@ -1766,8 +1766,6 @@ void CChatServer::HandleRemoveFriendReq(const std::shared_ptr<CServerSess>& pSes
 	RemoveFriendRspMsg rspMsg = DoRemoveFriendReq(reqMsg);
 	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 	rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
-	rspMsg.m_strUserId = reqMsg.m_strUserId;
-	rspMsg.m_strFriendId = reqMsg.m_strFriendId;
 	if (pSess)
 	{
 		pSess->SendMsg(&rspMsg);
