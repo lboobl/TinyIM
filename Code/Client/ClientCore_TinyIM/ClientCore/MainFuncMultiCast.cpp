@@ -54,13 +54,13 @@ void RunProgram(ParseParamResult result)
 	}
 	/*ClientCore::CClientSess::ms_loger = logger;*/
 	ClientCore::CServerSess::ms_loger = logger;
-	ClientCore::CMediumServer::ms_loger = logger;
+	ClientCore::CMultiCastCoreServer::ms_loger = logger;
 	ClientCore::CHttpServer::ms_loger = logger;
 	ClientCore::CUdpClient::ms_loger = logger;
 	//MediumServer::CClientSessManager::ms_loger = logger;
 
 	
-	auto server = std::make_shared<ClientCore::CMediumServer>(IoService);
+	auto server = std::make_shared<ClientCore::CMultiCastCoreServer>(IoService);
 	LOG_INFO(logger, "starting Server [{} {}] ", __FILENAME__, __LINE__);
 
 	std::error_code ec;

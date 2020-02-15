@@ -828,7 +828,10 @@ void CMediumServer::do_accept()
 
 
 				   //
-				   auto serverSess = std::make_shared<CServerSess>(std::move(m_socket), this);
+				   auto pSelf = shared_from_this();
+				   auto serverSess = std::make_shared<CServerSess>(std::move(m_socket), [this, pSelf](CServerSess_SHARED_PTR pSess, const TransBaseMsg_t& pMsg)->void {
+					   HandleSendForward(pSess, pMsg);
+				   });
 				   serverSess->Start();
 
 				   //m_GuiSessList.push_back(serverSess);

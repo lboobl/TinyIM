@@ -1,5 +1,5 @@
 ﻿/**
- * @file CMediumServer.h
+ * @file CMultiCastCoreServer.h
  * @author DennisMi (https://www.dennisthink.com/)
  * @brief 总控类
  * @version 0.1
@@ -32,7 +32,7 @@
 namespace ClientCore
 {
 using tcp = asio::ip::tcp;
-class CMediumServer : public std::enable_shared_from_this<CMediumServer>
+class CMultiCastCoreServer : public std::enable_shared_from_this<CMultiCastCoreServer>
 {
   protected:
     asio::io_service &m_ioService;
@@ -124,7 +124,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	}
 
 	std::string GetUserId(const std::string strUserName);
-    CMediumServer(asio::io_service &io_service)
+    CMultiCastCoreServer(asio::io_service &io_service)
         : m_ioService(io_service), m_socket(io_service), m_acceptor(io_service)
     {
         if (!m_timer)

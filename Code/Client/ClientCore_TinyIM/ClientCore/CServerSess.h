@@ -19,7 +19,6 @@
 using tcp=asio::ip::tcp;
 namespace ClientCore
 {
-class CMediumServer;
 /**
  * @brief 用于接收客户端连接的Sess
  * 
@@ -27,13 +26,22 @@ class CMediumServer;
 class CServerSess : public std::enable_shared_from_this<CServerSess>
 {
 public:
+	using SESS_CALL_BACK = std::function<void(std::shared_ptr<CServerSess> pSess, const TransBaseMsg_t& pMsg)>;
+	CServerSess(tcp::socket socket, SESS_CALL_BACK&& callBack) : m_callBack(callBack),m_socket(std::move(socket)),m_bConnect(true) {
+		{
+		
+			m_connectInfo.clear();
+			m_connectInfo = m_connectInfo + m_socket.remote_endpoint().address().to_v4().to_string() + ":" + std::to_string(m_socket.remote_endpoint().port());
+			m_connectInfo += "--->";
+			m_connectInfo = m_connectInfo + m_socket.local_endpoint().address().to_v4().to_string() + ":" + std::to_string(m_socket.local_endpoint().port());
+		}
+	}
 	static std::shared_ptr<spdlog::logger> ms_loger;
 private:
     //套接字
     tcp::socket m_socket;
-    
+	SESS_CALL_BACK m_callBack;
     //需要告知
-    CMediumServer* m_server;
 
     //是否已连接
 	bool m_bConnect = false;
@@ -89,14 +97,7 @@ public:
 //	}
 
 	void StopConnect();
-    CServerSess(tcp::socket socket, CMediumServer* server) : m_socket(std::move(socket)),m_server(server),m_bConnect(true) { 
-		{
-			m_connectInfo.clear();
-			m_connectInfo = m_connectInfo + m_socket.remote_endpoint().address().to_v4().to_string() + ":" + std::to_string(m_socket.remote_endpoint().port());
-			m_connectInfo += "--->";
-			m_connectInfo = m_connectInfo + m_socket.local_endpoint().address().to_v4().to_string() + ":" + std::to_string(m_socket.local_endpoint().port());
-		}
-	}
+   
 
 	void SetUserId(const std::string strUserId) {
 		m_strUserId = strUserId;

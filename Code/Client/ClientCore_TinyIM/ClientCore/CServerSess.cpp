@@ -69,10 +69,7 @@ void CServerSess::StopConnect()
 void CServerSess::handle_message(const TransBaseMsg_t& hdr)
 {
 	LOG_INFO(ms_loger, "Recv From GUI: MsgType:{}  Msg:{}  [{} {}]",MsgType(hdr.GetType()),hdr.to_string(),__FILENAME__, __LINE__);
-	if (m_server)
-	{
-		m_server->SendFoward(shared_from_this(),hdr);
-	}
+	m_callBack(shared_from_this(), hdr);
 }
 
 /**

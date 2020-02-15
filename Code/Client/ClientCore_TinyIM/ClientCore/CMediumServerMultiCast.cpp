@@ -1,5 +1,5 @@
 ﻿/**
- * @file CMediumServer.cpp
+ * @file CMultiCastCoreServer.cpp
  * @author DennisMi (https://www.dennisthink.com/)
  * @brief 
  * @version 0.1
@@ -18,7 +18,7 @@
 #include "CNetUtil.h"
 namespace ClientCore
 {
-std::shared_ptr<spdlog::logger> CMediumServer::ms_loger;
+std::shared_ptr<spdlog::logger> CMultiCastCoreServer::ms_loger;
 
 /**
  * @brief 加载配置文件
@@ -26,7 +26,7 @@ std::shared_ptr<spdlog::logger> CMediumServer::ms_loger;
  * @param cfg 配置文件的json
  * @param ec 发生的异常
  */
-void CMediumServer::loadConfig(const json11::Json &cfg, std::error_code& ec) 
+void CMultiCastCoreServer::loadConfig(const json11::Json &cfg, std::error_code& ec) 
 {
 	auto serverCfg = cfg["server"];
 	LOG_INFO(ms_loger,"loadConfig [{} {}]",__FILENAME__,__LINE__);
@@ -77,7 +77,7 @@ void CMediumServer::loadConfig(const json11::Json &cfg, std::error_code& ec)
  * @param endPt 远端的UDP地址
  * @param reqMsg P2P开始回复消息
  */
-void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint /*endPt*/, const UdpP2pStartRspMsg& reqMsg)
+void CMultiCastCoreServer::Handle_UdpMsg(const asio::ip::udp::endpoint /*endPt*/, const UdpP2pStartRspMsg& reqMsg)
 {
 	if (m_userKeepAliveMap.find(reqMsg.m_strUserId) != m_userKeepAliveMap.end())
 	{
@@ -103,7 +103,7 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint /*endPt*/, const
  * @param endPt 发送UDP消息的地址
  * @param reqMsg P2P开始消息
  */
-void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const UdpP2pStartReqMsg& reqMsg)
+void CMultiCastCoreServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const UdpP2pStartReqMsg& reqMsg)
 {
 	UdpP2pStartRspMsg rspMsg;
 	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -123,7 +123,7 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const Udp
  * @param endPt 发送UDP消息的远端地址
  * @param Msg 心跳回复消息
  */
-void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const KeepAliveRspMsg& Msg)
+void CMultiCastCoreServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const KeepAliveRspMsg& Msg)
 {
 	//if (m_userKeepAliveMap.find(Msg.m_strClientId) == m_userKeepAliveMap.end())
 	{
@@ -150,7 +150,7 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const Kee
  * @param endPt UDP消息的发送者地址
  * @param reqMsg 文件数据发送请求消息
  */
-void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const FileDataSendReqMsg& reqMsg)
+void CMultiCastCoreServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const FileDataSendReqMsg& reqMsg)
 {
 	if (reqMsg.m_nDataIndex <= reqMsg.m_nDataTotalCount)
 	{
@@ -199,14 +199,14 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const Fil
  * @param pClientSess 收到消息的Sess
  * @param rspMsg 文件数据回复消息
  */
-//void CMediumServer::HandleSendBack_FileDataSendRsp(const std::shared_ptr<CClientSess>& pClientSess,const FileDataSendRspMsg& rspMsg)
+//void CMultiCastCoreServer::HandleSendBack_FileDataSendRsp(const std::shared_ptr<CClientSess>& pClientSess,const FileDataSendRspMsg& rspMsg)
 //{
 //	auto pMsg = DoSendBackFileDataSendRsp(rspMsg);
 //	pClientSess->SendMsg(pMsg);
 //}
 
 
-void CMediumServer::DispatchUdpMultiCastSenderMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
+void CMultiCastCoreServer::DispatchUdpMultiCastSenderMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
 {
 	switch (pMsg->GetType())
 	{
@@ -241,7 +241,7 @@ void CMediumServer::DispatchUdpMultiCastSenderMsg(const asio::ip::udp::endpoint 
 	}
 }
 
-void CMediumServer::DispatchUdpMultiCastReciverMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
+void CMultiCastCoreServer::DispatchUdpMultiCastReciverMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
 {
 	switch (pMsg->GetType())
 	{
@@ -293,7 +293,7 @@ void CMediumServer::DispatchUdpMultiCastReciverMsg(const asio::ip::udp::endpoint
 }
 
 
-std::vector<std::string> CMediumServer::GetLocalAllIp()
+std::vector<std::string> CMultiCastCoreServer::GetLocalAllIp()
 {
 	std::vector<std::string> result;
 	asio::ip::tcp::resolver resolver(m_ioService);
@@ -317,7 +317,7 @@ std::vector<std::string> CMediumServer::GetLocalAllIp()
  * @param rspMsg 文件数据发送的回复消息
  * @return TransBaseMsg_S_PTR 待发送的消息
  */
-TransBaseMsg_S_PTR CMediumServer::DoSendBackFileDataSendRsp(const FileDataSendRspMsg& rspMsg)
+TransBaseMsg_S_PTR CMultiCastCoreServer::DoSendBackFileDataSendRsp(const FileDataSendRspMsg& rspMsg)
 {
 	if (rspMsg.m_nDataIndex < rspMsg.m_nDataTotalCount)
 	{
@@ -358,7 +358,7 @@ TransBaseMsg_S_PTR CMediumServer::DoSendBackFileDataSendRsp(const FileDataSendRs
  * @param endPt UDP消息的来源地址
  * @param rspMsg 文件数据发送回复消息
  */
-void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt,const FileDataSendRspMsg& rspMsg)
+void CMultiCastCoreServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt,const FileDataSendRspMsg& rspMsg)
 {
 	if (rspMsg.m_nDataIndex < rspMsg.m_nDataTotalCount)
 	{
@@ -431,7 +431,7 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt,const File
  * @param endPt 远端UDP的地址
  * @param pMsg 从UDP收到的消息
  */
-void CMediumServer::DispatchUdpMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
+void CMultiCastCoreServer::DispatchUdpMsg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
 {
 	if (pMsg)
 	{
@@ -492,7 +492,7 @@ void CMediumServer::DispatchUdpMsg(const asio::ip::udp::endpoint endPt, TransBas
  * 
  * @param callback 
  */
-void CMediumServer::start(const std::function<void(const std::error_code &)> &callback)
+void CMultiCastCoreServer::start(const std::function<void(const std::error_code &)> &callback)
 {
 	if (!m_serverCfg.Valid())
 	{
@@ -586,7 +586,7 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 		}
 	}
 }
-bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
+bool CMultiCastCoreServer::HandleHttpMsg(const BaseMsg* pMsg)
 {
 	return false;
 }
@@ -594,7 +594,7 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
  * @brief 定时检查UDP的P2P 连接
  * 
  */
-void CMediumServer::CheckFriendP2PConnect()
+void CMultiCastCoreServer::CheckFriendP2PConnect()
 {
 	if (m_userFriendListMap.empty())
 	{
@@ -650,7 +650,7 @@ void CMediumServer::CheckFriendP2PConnect()
  * @return true 处理成功
  * @return false 处理失败
  */
-//bool CMediumServer::HandleSendBack_GetFriendListRsp(const std::shared_ptr<CClientSess>& pClientSess, const GetFriendListRspMsg& msg)
+//bool CMultiCastCoreServer::HandleSendBack_GetFriendListRsp(const std::shared_ptr<CClientSess>& pClientSess, const GetFriendListRspMsg& msg)
 //{
 //	//if(m_userFriendListMap.find(pClientSess->UserId()) == m_userFriendListMap.end())
 //	//{
@@ -671,7 +671,7 @@ void CMediumServer::CheckFriendP2PConnect()
  * @brief 检查所有的socket连接
  * 
  */
-void CMediumServer::CheckAllConnect()
+void CMultiCastCoreServer::CheckAllConnect()
 {
 	if (m_timeCount % 30 == 0)
 	{
@@ -691,7 +691,7 @@ void CMediumServer::CheckAllConnect()
 	}
 }
 
-void CMediumServer::CheckMultiCast()
+void CMultiCastCoreServer::CheckMultiCast()
 {
 	static int nRecvCount = 0;
 	UdpMultiCastReqMsg reqMsg;
@@ -721,9 +721,9 @@ void CMediumServer::CheckMultiCast()
  * @brief 接受来自客户端的连接
  * 
  */
-void CMediumServer::do_accept() 
+void CMultiCastCoreServer::do_accept() 
 {
-		LOG_INFO(ms_loger,"CMediumServer do_accept [{} {}]", __FILENAME__, __LINE__);
+		LOG_INFO(ms_loger,"CMultiCastCoreServer do_accept [{} {}]", __FILENAME__, __LINE__);
         m_acceptor.async_accept(m_socket, [this](std::error_code ec) {
             if (!ec)
 			{
@@ -732,16 +732,14 @@ void CMediumServer::do_accept()
 
 			   if (!m_clientCfgVec.empty() )
 			   {
-				   ////
-				   //auto clientSess = std::make_shared<CClientSess>(m_ioService, 
-					  //                                             m_clientCfgVec[0].m_strServerIp, 
-					  //                                             m_clientCfgVec[0].m_nPort, this);
 
-				   //clientSess->StartConnect();
 
 
 				   //
-				   auto serverSess = std::make_shared<CServerSess>(std::move(m_socket), this);
+				   auto pSelf = shared_from_this();
+				   auto serverSess = std::make_shared<CServerSess>(std::move(m_socket), [this, pSelf](CServerSess_SHARED_PTR pSess, const TransBaseMsg_t& pMsg)->void {
+					   HandleSendForward(pSess, pMsg);
+				   });
 				   serverSess->Start();
 
 				   //m_GuiSessList.push_back(serverSess);
@@ -762,7 +760,7 @@ void CMediumServer::do_accept()
  * @param strUserName 用户名
  * @return std::string 用户ID
  */
-std::string CMediumServer::GetUserId(const std::string strUserName)
+std::string CMultiCastCoreServer::GetUserId(const std::string strUserName)
 {
 	auto item = m_userName_UserIdMap.find(strUserName);
 	if (item != m_userName_UserIdMap.end())
@@ -780,7 +778,7 @@ std::string CMediumServer::GetUserId(const std::string strUserName)
  * @param strUserName 用户名或者用户ID
  * @return CClientSess_SHARED_PTR 
  */
-//CClientSess_SHARED_PTR CMediumServer::GetClientSess(const std::string strUserId) {
+//CClientSess_SHARED_PTR CMultiCastCoreServer::GetClientSess(const std::string strUserId) {
 //	auto item = m_userId_ClientSessMap.find(strUserId);
 //	if (item != m_userId_ClientSessMap.end())
 //	{
@@ -797,7 +795,7 @@ std::string CMediumServer::GetUserId(const std::string strUserName)
  * 
  * @return CClientSess_SHARED_PTR 到服务器的TCP连接
  */
-	//CClientSess_SHARED_PTR CMediumServer::CreateClientSess()
+	//CClientSess_SHARED_PTR CMultiCastCoreServer::CreateClientSess()
 	//{
 	//	auto pReturn = m_freeClientSess;
 	//	m_freeClientSess = std::make_shared<CClientSess>(m_ioService,
@@ -808,7 +806,7 @@ std::string CMediumServer::GetUserId(const std::string strUserName)
 	//	return pReturn;
 	//}
 
-	//CClientSess_SHARED_PTR CMediumServer::CreateClientSess(const std::string strUserName)
+	//CClientSess_SHARED_PTR CMultiCastCoreServer::CreateClientSess(const std::string strUserName)
 	//{
 	//	if (strUserName.empty())
 	//	{
@@ -828,7 +826,7 @@ std::string CMediumServer::GetUserId(const std::string strUserName)
  * @brief 检查待发送消息
  * 
  */
-void CMediumServer::CheckWaitMsgVec()
+void CMultiCastCoreServer::CheckWaitMsgVec()
 {
 	decltype(m_RecvWaitMsgMap) notSendMap;
 	if (m_timeCount % 10 == 0)
@@ -856,7 +854,7 @@ void CMediumServer::CheckWaitMsgVec()
  * @brief 响应定时器的任务，一些需要定时处理的任务，可以写成一个函数，在此函数中调用
  * 
  */
-void CMediumServer::OnTimer()
+void CMultiCastCoreServer::OnTimer()
 {
 	if (m_httpServer)
 	{
@@ -884,7 +882,7 @@ void CMediumServer::OnTimer()
  * 
  * @param nSeconds 定时的秒数
  */
-void CMediumServer::SetTimer(int nSeconds)
+void CMultiCastCoreServer::SetTimer(int nSeconds)
 {
 	if (m_timeCount % 30 == 0)
 	{
@@ -924,7 +922,7 @@ void CMediumServer::SetTimer(int nSeconds)
  * 
  * @param rspMsg 
  */
-void CMediumServer::HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg)
+void CMultiCastCoreServer::HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg)
 {
 	LOG_ERR(ms_loger,"{}",rspMsg.ToString());
 }
@@ -934,7 +932,7 @@ void CMediumServer::HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg
  * 
  * @return std::string 
  */
-std::string CMediumServer::getServerIpPort()
+std::string CMultiCastCoreServer::getServerIpPort()
 {
 	return m_serverCfg.to_string();
 }
@@ -944,7 +942,7 @@ std::string CMediumServer::getServerIpPort()
  * 
  * @param msg 消息
  */
-//void CMediumServer::SendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg)
+//void CMultiCastCoreServer::SendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg)
 //{
 //
 //	auto pMsg = std::make_shared<TransBaseMsg_t>(msg.GetType(), msg.to_string());
@@ -976,7 +974,7 @@ std::string CMediumServer::getServerIpPort()
  * 
  * @param msg 文件校验请求消息
  */
-void CMediumServer::HandleFileVerifyReq(const FileVerifyReqMsg& msg)
+void CMultiCastCoreServer::HandleFileVerifyReq(const FileVerifyReqMsg& msg)
 {
 	FileVerifyRspMsg rspMsg;
 	m_fileUtil.OnCloseFile(msg.m_nFileId + 1);
@@ -1090,7 +1088,7 @@ void CMediumServer::HandleFileVerifyReq(const FileVerifyReqMsg& msg)
  * @param pClientSess 用户会话
  * @param rspMsg 文件校验回复消息
  */
-//void CMediumServer::HandleSendBack_FileVerifyRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileVerifyRspMsg& rspMsg)
+//void CMultiCastCoreServer::HandleSendBack_FileVerifyRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileVerifyRspMsg& rspMsg)
 //{
 //	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 //	{
@@ -1107,7 +1105,7 @@ void CMediumServer::HandleFileVerifyReq(const FileVerifyReqMsg& msg)
  * 
  * @param notifyMsg 文件接收结果通知消息
  */
-void CMediumServer::HandleFriendNotifyFileMsgReq(const FriendNotifyFileMsgReqMsg& notifyMsg)
+void CMultiCastCoreServer::HandleFriendNotifyFileMsgReq(const FriendNotifyFileMsgReqMsg& notifyMsg)
 {
 	LOG_ERR(ms_loger,"{}",notifyMsg.ToString());
 	//离线
@@ -1201,7 +1199,7 @@ void CMediumServer::HandleFriendNotifyFileMsgReq(const FriendNotifyFileMsgReqMsg
  * @param pClientSess 用户会话
  * @param reqMsg 文件数据接收请求消息
  */
-//void CMediumServer::Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSess, const FileDataRecvReqMsg& reqMsg)
+//void CMultiCastCoreServer::Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSess, const FileDataRecvReqMsg& reqMsg)
 //{
 //	if (reqMsg.m_nDataIndex <= reqMsg.m_nDataTotalCount)
 //	{
@@ -1232,7 +1230,7 @@ void CMediumServer::HandleFriendNotifyFileMsgReq(const FriendNotifyFileMsgReqMsg
  * @param endPt 消息发送者的地址
  * @param reqMsg 文件数据接收消息
  */
-void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const FileDataRecvReqMsg& reqMsg)
+void CMultiCastCoreServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const FileDataRecvReqMsg& reqMsg)
 {
 	if (reqMsg.m_nDataIndex <= reqMsg.m_nDataTotalCount)
 	{
@@ -1288,7 +1286,7 @@ void CMediumServer::Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const Fil
  * 
  * @param pMsg TCP的回复消息
  */
-void CMediumServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
+void CMultiCastCoreServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
 {
 	if (pMsg)
 	{
@@ -1588,7 +1586,7 @@ void CMediumServer::OnHttpRsp(std::shared_ptr<TransBaseMsg_t> pMsg)
  * 
  * @param rspMsg 好友文件请求回复消息
  */
-void CMediumServer::Handle_RecvFileOnlineRsp(const FriendRecvFileMsgRspMsg& rspMsg)
+void CMultiCastCoreServer::Handle_RecvFileOnlineRsp(const FriendRecvFileMsgRspMsg& rspMsg)
 {
 	if (rspMsg.m_eOption == E_FRIEND_OPTION::E_AGREE_ADD)
 	{
@@ -1602,7 +1600,7 @@ void CMediumServer::Handle_RecvFileOnlineRsp(const FriendRecvFileMsgRspMsg& rspM
  * @param pServerSess GUI的socket会话
  * @param reqMsg 获取好友聊天记录的请求消息
  */
-void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& reqMsg)
+void CMultiCastCoreServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& reqMsg)
 {
 	GetFriendChatHistoryRsp rspMsg;
 	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -1631,7 +1629,7 @@ void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
  * @param pServerSess GUI的socket会话
  * @param reqMsg 获取群组聊天记录的请求消息
  */
-void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& reqMsg)
+void CMultiCastCoreServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& reqMsg)
 {
 	GetGroupChatHistoryRsp rspMsg;
 	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -1660,7 +1658,7 @@ void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
  * @param pServerSess GUI客户端会话
  * @param reqMsg 发送文件数据开始消息
  */
-void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& reqMsg)
+void CMultiCastCoreServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& reqMsg)
 {
 	reqMsg.m_strFileHash = m_fileUtil.CalcHash(reqMsg.m_strFileName);
 	{
@@ -1718,7 +1716,7 @@ void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
  * @return true 成功
  * @return false 失败
  */
-bool CMediumServer::HandleSendForward(FriendChatSendTxtReqMsg& reqMsg)
+bool CMultiCastCoreServer::HandleSendForward(FriendChatSendTxtReqMsg& reqMsg)
 {
 	ChatMsgElemVec msgVec = MsgElemVec(reqMsg.m_strContext);
 	ChatMsgElemVec newVec;
@@ -1792,7 +1790,7 @@ bool CMediumServer::HandleSendForward(FriendChatSendTxtReqMsg& reqMsg)
  * @param pServerSess GUI客户端的Sess
  * @param reqMsg 好友聊天请求消息
  */
-void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& reqMsg)
+void CMultiCastCoreServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& reqMsg)
 {
 	if(pServerSess)
 	{
@@ -1808,7 +1806,7 @@ void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
  * @return true 成功处理,不需要发送到远端
  * @return false 没有处理,需要发送到远端处理
  */
-bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg)
+bool CMultiCastCoreServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg)
 {
 	{
 		if (msg.GetType() == E_MsgType::GetFriendChatHistroyReq_Type)
@@ -1853,7 +1851,7 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
  * @param strUserId 用户ID
  * @return CServerSess_SHARED_PTR 
  */
-CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
+CServerSess_SHARED_PTR CMultiCastCoreServer::Get_GUI_Sess(const std::string strUserId)
 {
 	auto item = m_userId_ServerSessMap.find(strUserId);
 	if (item != m_userId_ServerSessMap.end())
@@ -1890,7 +1888,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接
  * @param reqMsg 收到的好友聊天消息
  */
-//void CMediumServer::HandleSendBack_FriendChatRecvTxtReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatRecvTxtReqMsg reqMsg)
+//void CMultiCastCoreServer::HandleSendBack_FriendChatRecvTxtReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatRecvTxtReqMsg reqMsg)
 //{
 //	{
 //		bool bWaitImage = false;
@@ -2001,7 +1999,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接
  * @param rspMsg 好友聊天消息的回复
  */
-//void CMediumServer::HandleSendBack_FriendChatSendTxtRsp(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatSendTxtRspMsg rspMsg)
+//void CMultiCastCoreServer::HandleSendBack_FriendChatSendTxtRsp(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatSendTxtRspMsg rspMsg)
 //{
 //	FriendChatSendTxtRspMsg newRspMsg;
 //	//Create NewRspMsg
@@ -2062,7 +2060,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接
  * @param reqMsg 发送文件数据开始消息
  */
-//void CMediumServer::HandleSendBack_FileSendDataBeginReq(const std::shared_ptr<CClientSess>& pClientSess, const FileSendDataBeginReq reqMsg)
+//void CMultiCastCoreServer::HandleSendBack_FileSendDataBeginReq(const std::shared_ptr<CClientSess>& pClientSess, const FileSendDataBeginReq reqMsg)
 //{
 //	FileSendDataBeginRsp rspMsg;
 //	std::string strFileName;
@@ -2165,7 +2163,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 客户端连接
  * @param rspMsg 文件下载回复消息
  */
-//void CMediumServer::HandleSendBack_FileDownLoadRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileDownLoadRspMsg rspMsg)
+//void CMultiCastCoreServer::HandleSendBack_FileDownLoadRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileDownLoadRspMsg rspMsg)
 //{
 //	if(rspMsg.m_errCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 //	{
@@ -2264,7 +2262,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接会话
  * @param rspMsg 发送文件数据开始回复消息
  */
-//void CMediumServer::HandleSendBack_FileSendDataBeginRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileSendDataBeginRsp rspMsg)
+//void CMultiCastCoreServer::HandleSendBack_FileSendDataBeginRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileSendDataBeginRsp rspMsg)
 //{
 //	if (rspMsg.m_errCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 //	{
@@ -2312,7 +2310,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接会话
  * @param rspMsg 登录回复消息
  */
-//void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLoginRspMsg rspMsg) {
+//void CMultiCastCoreServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLoginRspMsg rspMsg) {
 //	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 //	{
 //
@@ -2411,7 +2409,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接
  * @param rspMsg 用户退出登录回复消息
  */
-//void CMediumServer::HandleSendBack_UserLogoutRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLogoutRspMsg rspMsg) {
+//void CMultiCastCoreServer::HandleSendBack_UserLogoutRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLogoutRspMsg rspMsg) {
 //	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED) {
 //		m_userId_ClientSessMap.erase(rspMsg.m_strUserName);
 //		m_userStateMap.erase(pClientSess->UserId());
@@ -2425,7 +2423,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * 
  * @param pServerSess 客户端连接会话
  */
-//void CMediumServer::ServerSessClose(const CServerSess_SHARED_PTR pServerSess)
+//void CMultiCastCoreServer::ServerSessClose(const CServerSess_SHARED_PTR pServerSess)
 //{
 //	auto itemForwad = m_ForwardSessMap.find(pServerSess);
 //	if (itemForwad != m_ForwardSessMap.end()) {
@@ -2458,7 +2456,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * 
  * @param pClientSess 和服务器的连接
  */
-//void CMediumServer::HandleSendBack_NetFailed(const std::shared_ptr<CClientSess>& pClientSess)
+//void CMultiCastCoreServer::HandleSendBack_NetFailed(const std::shared_ptr<CClientSess>& pClientSess)
 //{
 //	auto item = m_userStateMap.find(pClientSess->UserId());
 //	if (item != m_userStateMap.end())
@@ -2479,7 +2477,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
 //	}
 //}
 //
-//void CMediumServer::HandleSendBack_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg)
+//void CMultiCastCoreServer::HandleSendBack_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg)
 //{
 //	/*FriendRecvFileMsgRspMsg rspMsg;
 //	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -2500,7 +2498,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pClientSess 和服务器的连接
  * @param rspMsg UDP地址回复消息
  */
-//void CMediumServer::HandleSendBack_QueryUserUdpAddrRsp(const std::shared_ptr<CClientSess>& pClientSess, const QueryUserUdpAddrRspMsg rspMsg)
+//void CMultiCastCoreServer::HandleSendBack_QueryUserUdpAddrRsp(const std::shared_ptr<CClientSess>& pClientSess, const QueryUserUdpAddrRspMsg rspMsg)
 //{
 //	if(pClientSess)
 //	{
@@ -2540,7 +2538,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @return false 处理失败
  */
 
-//bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg)
+//bool CMultiCastCoreServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg)
 //{
 //	switch (msg.GetType())
 //	{
@@ -2752,7 +2750,7 @@ CServerSess_SHARED_PTR CMediumServer::Get_GUI_Sess(const std::string strUserId)
  * @param pServerSess 连接客户端的会话
  * @param msg 消息
  */
-void CMediumServer::SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg)
+void CMultiCastCoreServer::SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg)
 {
 	if (HandleSendForward(pServerSess, msg))
 	{
@@ -2790,7 +2788,7 @@ void CMediumServer::SendFoward(const std::shared_ptr<CServerSess>& pServerSess,c
  * @param reqMsg 获取好友聊天记录的请求
  * @return GetFriendChatHistoryRsp 获取好友聊天记录的回复
  */
-GetFriendChatHistoryRsp CMediumServer::DoFriendChatHistoryReq(const GetFriendChatHistoryReq& reqMsg)
+GetFriendChatHistoryRsp CMultiCastCoreServer::DoFriendChatHistoryReq(const GetFriendChatHistoryReq& reqMsg)
 {
 	GetFriendChatHistoryRsp result;
 
@@ -2823,7 +2821,7 @@ GetFriendChatHistoryRsp CMediumServer::DoFriendChatHistoryReq(const GetFriendCha
  * @param reqMsg 获取群组聊天记录的请求消息
  * @return GetGroupChatHistoryRsp 群组聊天记录的回复消息
  */
-GetGroupChatHistoryRsp CMediumServer::DoFriendChatHistoryReq(const GetGroupChatHistoryReq& reqMsg)
+GetGroupChatHistoryRsp CMultiCastCoreServer::DoFriendChatHistoryReq(const GetGroupChatHistoryReq& reqMsg)
 {
 	GetGroupChatHistoryRsp result;
 	auto pMsgUtil = GetMsgPersisUtil(reqMsg.m_strUserId);
@@ -2851,7 +2849,7 @@ GetGroupChatHistoryRsp CMediumServer::DoFriendChatHistoryReq(const GetGroupChatH
  * @param reqMsg 聊天记录查找请求消息
  * @return SearchChatHistoryRsp 聊天记录查找回复消息
  */
-SearchChatHistoryRsp CMediumServer::DoSearchChatHistoryReq(const SearchChatHistoryReq& reqMsg)
+SearchChatHistoryRsp CMultiCastCoreServer::DoSearchChatHistoryReq(const SearchChatHistoryReq& reqMsg)
 {
 	SearchChatHistoryRsp result;
 	auto pMsgUtil = GetMsgPersisUtil(reqMsg.m_strUserId);
@@ -2877,7 +2875,7 @@ SearchChatHistoryRsp CMediumServer::DoSearchChatHistoryReq(const SearchChatHisto
  * 
  * @return CUdpClient_PTR 
  */
-CUdpClient_PTR CMediumServer::CreateUdpSess()
+CUdpClient_PTR CMultiCastCoreServer::CreateUdpSess()
 {
 	auto pSelf = shared_from_this();
 	auto pSess = std::make_shared<CUdpClient>(m_ioService, m_udpCfg.m_strServerIp,m_udpCfg.m_nPort, [this, pSelf](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg) {
@@ -2893,7 +2891,7 @@ CUdpClient_PTR CMediumServer::CreateUdpSess()
  * @param strUserId 用户ID
  * @return CUdpClient_PTR UDP链接
  */
-CUdpClient_PTR CMediumServer::GetUdpSess(const std::string strUserId) {
+CUdpClient_PTR CMultiCastCoreServer::GetUdpSess(const std::string strUserId) {
 	auto item = m_userUdpSessMap.find(strUserId);
 	if (item != m_userUdpSessMap.end()) {
 		return item->second;
