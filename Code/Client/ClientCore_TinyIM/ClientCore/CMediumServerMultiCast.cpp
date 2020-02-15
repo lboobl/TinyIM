@@ -588,6 +588,17 @@ void CMultiCastCoreServer::start(const std::function<void(const std::error_code 
 }
 bool CMultiCastCoreServer::HandleHttpMsg(const BaseMsg* pMsg)
 {
+	switch (pMsg->GetMsgType())
+	{
+	case E_MsgType::UserRegisterReq_Type:
+	{
+
+	}break;
+	default:
+	{
+
+	}break;
+	}
 	return false;
 }
 /**
@@ -729,25 +740,13 @@ void CMultiCastCoreServer::do_accept()
 			{
 			   LOG_INFO(ms_loger,"Server accept Successed [{} {}]",__FILENAME__, __LINE__);
                
-
 			   if (!m_clientCfgVec.empty() )
 			   {
-
-
-
-				   //
 				   auto pSelf = shared_from_this();
 				   auto serverSess = std::make_shared<CServerSess>(std::move(m_socket), [this, pSelf](CServerSess_SHARED_PTR pSess, const TransBaseMsg_t& pMsg)->void {
 					   HandleSendForward(pSess, pMsg);
 				   });
 				   serverSess->Start();
-
-				   //m_GuiSessList.push_back(serverSess);
-				   //m_ConnectSessList.push_back(clientSess);
-				   //
-				   //m_ForwardSessMap.insert(std::pair<CServerSess_SHARED_PTR, CClientSess_SHARED_PTR>(serverSess, clientSess));
-				   //m_BackSessMap.insert(std::pair<CClientSess_SHARED_PTR,CServerSess_SHARED_PTR>(clientSess, serverSess));
-
 			   }
 			}
             do_accept();
@@ -1842,7 +1841,88 @@ bool CMultiCastCoreServer::HandleSendForward(const std::shared_ptr<CServerSess>&
 			return true;
 		}
 	}
+	switch(msg.GetType())
+	{
+	case E_MsgType::UserLoginReq_Type:
+	{
+		UserLoginReqMsg reqMsg;
+		if (reqMsg.FromString(msg.to_string())) {
+			UserLoginRspMsg rspMsg;
+			{
+				rspMsg.m_strUserName = reqMsg.m_strUserName;
+				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+				rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+				pServerSess->SendMsg(&rspMsg);
+			}
+		}
+	}break;
+	case E_MsgType::UserRegisterReq_Type:
+	{
+		UserRegisterReqMsg reqMsg;
+		if (reqMsg.FromString(msg.to_string())) {
+			UserRegisterRspMsg rspMsg;
+			{
+				rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+				rspMsg.m_strUserName = reqMsg.m_strUserName;
+			}
+			pServerSess->SendMsg(&rspMsg);
+		}
+	}break;
+	case E_MsgType::GetFriendListReq_Type:
+	{
+		GetFriendListReqMsg reqMsg;
+		if (reqMsg.FromString(msg.to_string())) {
+			GetFriendListRspMsg rspMsg;
+			{
+				rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+				rspMsg.m_strUserId = reqMsg.m_strUserId;
+				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+			}
+			pServerSess->SendMsg(&rspMsg);
+		}
+	}break;
+	case E_MsgType::FriendChatSendTxtMsgReq_Type:
+	{
+		FriendChatSendTxtReqMsg reqMsg;
+		if (reqMsg.FromString(msg.to_string())) {
+			FriendChatSendTxtRspMsg rspMsg;
+			{
+				rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+				rspMsg.m_chatMsg.m_strChatMsgId = reqMsg.m_strMsgId;
+				rspMsg.m_chatMsg.m_fontInfo = reqMsg.m_fontInfo;
+				rspMsg.m_chatMsg.m_strContext = reqMsg.m_strContext;
+				rspMsg.m_chatMsg.m_strSenderId = reqMsg.m_strSenderId;
+				rspMsg.m_chatMsg.m_strReceiverId = reqMsg.m_strReceiverId;
+			}
+			pServerSess->SendMsg(&rspMsg);
+			if (m_nGetFriendList == 0)
+			{
+				m_nGetFriendList.store(10);
+			}
+			DoGetFriendList();
+		}
+	}break;
+	case E_MsgType::AddFriendSendReq_Type:
+	{
+	}break;
+	}
 	return false;
+}
+
+void CMultiCastCoreServer::DoGetFriendList()
+{
+	if (m_nGetFriendList != 0)
+	{
+		UdpMultiCastReqMsg reqMsg;
+		reqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
+		reqMsg.m_strUserId = "1234";
+		for (auto item : m_udpSenderVec)
+		{
+			item->SendMultiCastMsg(reqMsg);
+		}
+		m_nGetFriendList--;
+	}
 }
 
 /**

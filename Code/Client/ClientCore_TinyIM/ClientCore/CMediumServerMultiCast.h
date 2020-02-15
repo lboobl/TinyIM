@@ -29,6 +29,7 @@
 #include "planform.h"
 #include "CMsgPersistentUtil.h"
 #include "CFileUtil.h"
+#include <atomic>
 namespace ClientCore
 {
 using tcp = asio::ip::tcp;
@@ -127,6 +128,7 @@ class CMultiCastCoreServer : public std::enable_shared_from_this<CMultiCastCoreS
     CMultiCastCoreServer(asio::io_service &io_service)
         : m_ioService(io_service), m_socket(io_service), m_acceptor(io_service)
     {
+		m_nGetFriendList.store(0);
         if (!m_timer)
         {
             m_timer = std::make_shared<asio::high_resolution_timer>(m_ioService);
@@ -193,6 +195,8 @@ private:
 	std::map<std::string, FriendChatSendTxtReqMsg>  m_SendWaitMsgMap;
 	std::vector<CUdpMultiCastReciver_PTR> m_udpReciverVec;
 	std::vector<CUdpMultiCastSender_PTR> m_udpSenderVec;
+	std::atomic_int m_nGetFriendList;
+	void DoGetFriendList();
 };
 } // namespace MediumServer
 
