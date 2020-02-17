@@ -133,7 +133,6 @@ class CMultiCastCoreServer : public std::enable_shared_from_this<CMultiCastCoreS
         {
             m_timer = std::make_shared<asio::high_resolution_timer>(m_ioService);
         }
-
 		m_timeCount = 0;
 		m_nNoSessTimeCount = 0;
     }
@@ -153,6 +152,15 @@ private:
 	std::vector<std::string> GetLocalAllIp();
 	CServerSess_SHARED_PTR Get_GUI_Sess(const std::string strUserId);
 	bool HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg);
+	UserRegisterRspMsg DoUserRegisterReq(const UserRegisterReqMsg& reqMsg);
+	UserUnRegisterRspMsg  DoUserUnRegisterReq(const UserUnRegisterReqMsg& reqMsg);
+	UserLoginRspMsg DoUserLoginReq(const UserLoginReqMsg& reqMsg);
+	UserLogoutRspMsg DoUserLogoutReq(const UserLogoutReqMsg& reqMsg);
+	AddFriendSendRspMsg DoUserAddFriendReq(const AddFriendSendReqMsg& reqMsg);
+	AddFriendRecvReqMsg DoUserAddFriendRecvReq(const AddFriendRecvReqMsg& reqMsg);
+	FindFriendRspMsg DoFindFriendReq(const FindFriendReqMsg& reqMsg);
+	AddFriendNotifyReqMsg DoAddFriendNotifyReq(const AddFriendNotifyReqMsg& reqMsg);
+
 	/*bool HandleSendBack(const std::shared_ptr<CClientSess>& pClientSess, const TransBaseMsg_t& msg);
 	bool HandleSendBack_GetFriendListRsp(const std::shared_ptr<CClientSess>& pClientSess, const GetFriendListRspMsg& msg);
 	void HandleSendBack_FriendChatRecvTxtReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendChatRecvTxtReqMsg reqMsg);

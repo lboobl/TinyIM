@@ -532,7 +532,21 @@ void CMultiCastCoreServer::start(const std::function<void(const std::error_code 
 		SetTimer(1);
 		do_accept();
 		LOG_INFO(ms_loger, "Http Server On :{} [{} {} ]", m_httpCfg.m_nPort,__FILENAME__,__LINE__);
-		m_httpServer->Start(m_httpCfg.m_nPort);
+		{
+			std::weak_ptr<CMultiCastCoreServer> pSelf = shared_from_this();
+			m_httpServer = std::make_shared<CHttpServer>(m_ioService, [this, pSelf](const BaseMsg* pMsg)->bool {
+				if (pSelf.lock())
+				{
+					return HandleHttpMsg(pMsg);
+				}
+				else
+				{
+					return false;
+				}
+			});
+			m_httpServer->Start(m_httpCfg.m_nPort);
+
+		}
 		//if (!m_clientCfgVec.empty())
 		//{
 		//	m_freeClientSess = std::make_shared<CClientSess>(m_ioService,
@@ -578,12 +592,6 @@ void CMultiCastCoreServer::start(const std::function<void(const std::error_code 
 				pSender->StartConnect();
 			}
 		}
-		{
-			auto pSelf = shared_from_this();
-			m_httpServer = std::make_shared<CHttpServer>(m_ioService, [this,pSelf](const BaseMsg* reqMsg)->bool {
-				return HandleHttpMsg(reqMsg);
-			});
-		}
 	}
 }
 bool CMultiCastCoreServer::HandleHttpMsg(const BaseMsg* pMsg)
@@ -592,14 +600,83 @@ bool CMultiCastCoreServer::HandleHttpMsg(const BaseMsg* pMsg)
 	{
 	case E_MsgType::UserRegisterReq_Type:
 	{
-
+		UserRegisterReqMsg * reqMsg = (UserRegisterReqMsg*)(pMsg);
+		auto rspMsg = DoUserRegisterReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_UserRegisterRsp(rspMsg);
+		}
+	}break;
+	case E_MsgType::UserUnRegisterReq_Type:
+	{
+		UserUnRegisterReqMsg * reqMsg = (UserUnRegisterReqMsg*)(pMsg);
+		auto rspMsg = DoUserUnRegisterReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_UserUnRegisterRsp(rspMsg);
+		}
+	}break;
+	case E_MsgType::UserLoginReq_Type:
+	{
+		UserLoginReqMsg * reqMsg = (UserLoginReqMsg*)(pMsg);
+		auto rspMsg = DoUserLoginReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_UserLoginRsp(rspMsg);
+		}
+	}break;
+	case E_MsgType::UserLogoutReq_Type:
+	{
+		UserLogoutReqMsg * reqMsg = (UserLogoutReqMsg*)(pMsg);
+		auto rspMsg = DoUserLogoutReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_UserLogoutRsp(rspMsg);
+		}
+	}break;
+	case E_MsgType::FindFriendReq_Type:
+	{
+		FindFriendReqMsg * reqMsg = (FindFriendReqMsg*)(pMsg);
+		auto rspMsg = DoFindFriendReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_FindFriendRsp(rspMsg);
+		}
+	}break;
+	case E_MsgType::AddFriendNotifyReq_Type:
+	{
+		AddFriendNotifyReqMsg * reqMsg = (AddFriendNotifyReqMsg*)(pMsg);
+		auto rspMsg = DoAddFriendNotifyReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_AddFriendNotifyReqMsg(rspMsg);
+		}
+	}break;
+	case E_MsgType::AddFriendSendReq_Type:
+	{
+		AddFriendSendReqMsg * reqMsg = (AddFriendSendReqMsg*)(pMsg);
+		auto rspMsg = DoUserAddFriendReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_AddFriendSendRspMsg(rspMsg);
+		}
+	}break;
+	case E_MsgType::AddFriendRecvReq_Type:
+	{
+		AddFriendRecvReqMsg * reqMsg = (AddFriendRecvReqMsg*)(pMsg);
+		auto rspMsg = DoUserAddFriendRecvReq(*reqMsg);
+		if (m_httpServer)
+		{
+			m_httpServer->On_AddFriendRecvReqMsg(rspMsg);
+		}
 	}break;
 	default:
 	{
-
+		LOG_ERR(ms_loger, "UnHandle User Msg:{} [{} {}]", MsgType(pMsg->GetMsgType()), __FILENAME__, __LINE__);
+		return false;
 	}break;
 	}
-	return false;
+	return true;
 }
 /**
  * @brief 定时检查UDP的P2P 连接
@@ -872,8 +949,9 @@ void CMultiCastCoreServer::OnTimer()
 			m_nNoSessTimeCount++;
 			LOG_ERR(ms_loger, "No Sess Count {} [ {} {} ]", m_timeCount, __FILENAME__, __LINE__);
 		}*/
+		CheckMultiCast();
 	}
-	CheckMultiCast();
+
 }
 
 /**
@@ -2981,4 +3059,103 @@ CUdpClient_PTR CMultiCastCoreServer::GetUdpSess(const std::string strUserId) {
 		return nullptr;
 	}
 }
+
+UserRegisterRspMsg CMultiCastCoreServer::DoUserRegisterReq(const UserRegisterReqMsg& reqMsg)
+{
+	UserRegisterRspMsg rspMsg;
+	{
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserName = reqMsg.m_strUserName;
+		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+		rspMsg.m_strErrMsg = ErrMsg(rspMsg.m_eErrCode);
+	}
+	return rspMsg;
+}
+
+UserUnRegisterRspMsg  CMultiCastCoreServer::DoUserUnRegisterReq(const UserUnRegisterReqMsg& reqMsg)
+{
+	UserUnRegisterRspMsg rspMsg;
+	{
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserName = reqMsg.m_strUserName;
+		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+		rspMsg.m_strErrMsg = ErrMsg(rspMsg.m_eErrCode);
+	}
+	return rspMsg;
+}
+
+UserLoginRspMsg CMultiCastCoreServer::DoUserLoginReq(const UserLoginReqMsg& reqMsg)
+{
+	UserLoginRspMsg rspMsg;
+	{
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserId = reqMsg.m_strUserName;
+		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+		rspMsg.m_strErrMsg = ErrMsg(rspMsg.m_eErrCode);
+		rspMsg.m_strUserName = reqMsg.m_strUserName;
+	}
+	return rspMsg;
+}
+
+UserLogoutRspMsg CMultiCastCoreServer::DoUserLogoutReq(const UserLogoutReqMsg& reqMsg)
+{
+	UserLogoutRspMsg rspMsg;
+	{
+		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+		rspMsg.m_strErrMsg = ErrMsg(rspMsg.m_eErrCode);
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserName = reqMsg.m_strUserName;
+	}
+	return rspMsg;
+}
+
+AddFriendSendRspMsg CMultiCastCoreServer::DoUserAddFriendReq(const AddFriendSendReqMsg& reqMsg)
+{
+	AddFriendSendRspMsg rspMsg;
+	{
+		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+		rspMsg.m_strErrMsg = ErrMsg(rspMsg.m_eErrCode);
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserId = reqMsg.m_strUserId;
+		rspMsg.m_strFriendId = reqMsg.m_strFriendId;
+	}
+	return rspMsg;
+}
+
+AddFriendRecvReqMsg CMultiCastCoreServer::DoUserAddFriendRecvReq(const AddFriendRecvReqMsg& reqMsg)
+{
+	AddFriendRecvReqMsg rspMsg;
+	{
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserId = reqMsg.m_strUserId;
+		rspMsg.m_strFriendId = reqMsg.m_strFriendId;
+	}
+	return rspMsg;
+}
+ 
+
+FindFriendRspMsg CMultiCastCoreServer::DoFindFriendReq(const FindFriendReqMsg& reqMsg)
+{
+	FindFriendRspMsg rspMsg;
+	{
+		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
+		rspMsg.m_errMsg = ErrMsg(rspMsg.m_eErrCode);
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_strUserId = reqMsg.m_strUserId;
+	}
+	return rspMsg;
+}
+
+AddFriendNotifyReqMsg CMultiCastCoreServer::DoAddFriendNotifyReq(const AddFriendNotifyReqMsg& reqMsg)
+{
+	AddFriendNotifyReqMsg rspMsg;
+	{
+		rspMsg.m_strUserId = reqMsg.m_strUserId;
+		rspMsg.m_strFriendId = reqMsg.m_strFriendId;
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_option = E_FRIEND_OPTION::E_AGREE_ADD;
+	}
+	return rspMsg;
+}
+
 }
