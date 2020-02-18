@@ -865,8 +865,7 @@ void CChatServer::OnUserStateCheck(const std::string strUserId)
 {
 	auto stateItem = m_clientStateMap.find(strUserId);
 	auto item = m_userIdUdpAddrMap.find(strUserId);
-	if (stateItem != m_clientStateMap.end() && 
-		item != m_userIdUdpAddrMap.end())
+	if (stateItem != m_clientStateMap.end())
 	{
 		T_USER_CHAT_MSG chatMsg;
 		if (stateItem->second == CLIENT_SESS_STATE::SESS_IDLE_STATE) {
