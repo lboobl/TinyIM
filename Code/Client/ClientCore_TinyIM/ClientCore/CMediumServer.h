@@ -105,7 +105,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	void Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const UdpP2pStartReqMsg& reqMsg);
 	void Handle_UdpMsg(const asio::ip::udp::endpoint endPt, const UdpP2pStartRspMsg& reqMsg);
 
-	bool HandleSendForward(FriendChatSendTxtReqMsg& reqMsg);
+	bool DoSF_FriendChatSendTxtReq(FriendChatSendTxtReqMsg& reqMsg);
 	void CheckAllConnect();
 	void CheckFriendP2PConnect();
 
@@ -174,12 +174,12 @@ private:
 
 
 	bool HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg);
-	void HandleSF_GetFriendChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& msg);
-	void HandleSF_GetGroupChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& msg);
-	void HandleSF_FileSendDataBeginReq(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& msg);
-	void HandleSF_FriendChatSendTxtReqMsg(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& msg);
-	void HandleSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg);
-	void HandleSF_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess);
+	void HSF_GetFriendChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& msg);
+	void HSF_GetGroupChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& msg);
+	void HSF_FileSendDataBeginReq(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& msg);
+	void HSF_FriendChatSendTxtReqMsg(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& msg);
+	void HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg);
+	void HSF_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess);
 
 	void Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSess, const FileDataRecvReqMsg& reqMsg);
 

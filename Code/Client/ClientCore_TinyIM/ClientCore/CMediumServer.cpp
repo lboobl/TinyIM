@@ -1718,7 +1718,7 @@ void CMediumServer::Handle_RecvFileOnlineRsp(const FriendRecvFileMsgRspMsg& rspM
  * @param pServerSess GUI的socket会话
  * @param reqMsg 获取好友聊天记录的请求消息
  */
-void CMediumServer::HandleSF_GetFriendChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& reqMsg)
+void CMediumServer::HSF_GetFriendChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& reqMsg)
 {
 	GetFriendChatHistoryRsp rspMsg;
 	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -1747,7 +1747,7 @@ void CMediumServer::HandleSF_GetFriendChatHistoryReq(const std::shared_ptr<CServ
  * @param pServerSess GUI的socket会话
  * @param reqMsg 获取群组聊天记录的请求消息
  */
-void CMediumServer::HandleSF_GetGroupChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& reqMsg)
+void CMediumServer::HSF_GetGroupChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetGroupChatHistoryReq& reqMsg)
 {
 	GetGroupChatHistoryRsp rspMsg;
 	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -1776,7 +1776,7 @@ void CMediumServer::HandleSF_GetGroupChatHistoryReq(const std::shared_ptr<CServe
  * @param pServerSess GUI客户端会话
  * @param reqMsg 发送文件数据开始消息
  */
-void CMediumServer::HandleSF_FileSendDataBeginReq(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& reqMsg)
+void CMediumServer::HSF_FileSendDataBeginReq(const std::shared_ptr<CServerSess>& pServerSess,FileSendDataBeginReq& reqMsg)
 {
 	reqMsg.m_strFileHash = m_fileUtil.CalcHash(reqMsg.m_strFileName);
 	{
@@ -1834,7 +1834,7 @@ void CMediumServer::HandleSF_FileSendDataBeginReq(const std::shared_ptr<CServerS
  * @return true 成功
  * @return false 失败
  */
-bool CMediumServer::HandleSendForward(FriendChatSendTxtReqMsg& reqMsg)
+bool CMediumServer::DoSF_FriendChatSendTxtReq(FriendChatSendTxtReqMsg& reqMsg)
 {
 	ChatMsgElemVec msgVec = MsgElemVec(reqMsg.m_strContext);
 	ChatMsgElemVec newVec;
@@ -1908,15 +1908,15 @@ bool CMediumServer::HandleSendForward(FriendChatSendTxtReqMsg& reqMsg)
  * @param pServerSess GUI客户端的Sess
  * @param reqMsg 好友聊天请求消息
  */
-void CMediumServer::HandleSF_FriendChatSendTxtReqMsg(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& reqMsg)
+void CMediumServer::HSF_FriendChatSendTxtReqMsg(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& reqMsg)
 {
 	if(pServerSess)
 	{
-		HandleSendForward(reqMsg);
+		DoSF_FriendChatSendTxtReq(reqMsg);
 	}
 }
 
-void CMediumServer::HandleSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg)
+void CMediumServer::HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg)
 {
 	{
 		auto item = m_ForwardSessMap.find(pServerSess);
@@ -1955,7 +1955,7 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 		{
 			GetFriendChatHistoryReq reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
-				HandleSF_GetFriendChatHistoryReq(pServerSess, reqMsg);
+				HSF_GetFriendChatHistoryReq(pServerSess, reqMsg);
 			}
 			return true;
 		}
@@ -1963,7 +1963,7 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 		{
 			GetGroupChatHistoryReq reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
-				HandleSF_GetGroupChatHistoryReq(pServerSess, reqMsg);
+				HSF_GetGroupChatHistoryReq(pServerSess, reqMsg);
 			}
 			return true;
 		}
@@ -1971,7 +1971,7 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 		{
 			FileSendDataBeginReq reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
-				HandleSF_FileSendDataBeginReq(pServerSess, reqMsg);
+				HSF_FileSendDataBeginReq(pServerSess, reqMsg);
 			}
 			return true;
 		}
@@ -1979,7 +1979,7 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 		{
 			FriendChatSendTxtReqMsg reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
-				HandleSF_FriendChatSendTxtReqMsg(pServerSess, reqMsg);
+				HSF_FriendChatSendTxtReqMsg(pServerSess, reqMsg);
 			}
 			return true;
 		}
@@ -1988,19 +1988,19 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 			UserLoginReqMsg reqMsg;
 			if (reqMsg.FromString(msg.to_string()))
 			{
-				HandleSF_UserLoginReq(pServerSess, reqMsg);
+				HSF_UserLoginReq(pServerSess, reqMsg);
 			}
 		}
 		if (msg.GetType() == E_MsgType::NetFailedReport_Type)
 		{
-			HandleSF_NetFailedReq(pServerSess);
+			HSF_NetFailedReq(pServerSess);
 		}
 	}
 	return false;
 }
 
 
-void CMediumServer::HandleSF_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess)
+void CMediumServer::HSF_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess)
 {
 	auto item = m_userLoginMsgMap.find(pServerSess->UserName());
 	if (item != m_userLoginMsgMap.end())
