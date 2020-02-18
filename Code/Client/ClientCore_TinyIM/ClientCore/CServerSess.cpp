@@ -58,6 +58,9 @@ void CServerSess::StopConnect()
 		m_server->ServerSessClose(shared_from_this());
 	}
 #endif
+	NetFailedReportMsg reqMsg;
+	TransBaseMsg_t baseMsg(reqMsg.GetMsgType(), reqMsg.ToString());
+	m_callBack(shared_from_this(), baseMsg);
 	m_socket.close();
 	m_bConnect = false;
 }

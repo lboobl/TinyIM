@@ -183,7 +183,8 @@ private:
 	void HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg);
 	void HandleFriendChatRecvTextMsgRsp(const FriendChatRecvTxtReqMsg& reqMsg);
 	
-	
+	void HandleSendForward_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg);
+	void HandleSendForward_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess);
 	std::map<std::string, std::string> m_userName_UserIdMap;
 	std::map<std::string, CLIENT_SESS_STATE>  m_userStateMap;
 	std::map<std::string, UserLoginReqMsg> m_userLoginMsgMap;
@@ -200,6 +201,8 @@ private:
 
 	//
 	std::map<std::string, std::string> m_AddFriendMsgIdMap;
+
+	std::map<CClientSess_SHARED_PTR, time_t> m_reConnectSessMap;
 };
 } // namespace MediumServer
 

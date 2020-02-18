@@ -802,6 +802,10 @@ void CMediumServer::CheckAllConnect()
 		}
 		CheckFriendP2PConnect();
 	}
+	for (auto& item : m_reConnectSessMap)
+	{
+		item.first->StartConnect();
+	}
 }
 
 /**
@@ -1912,6 +1916,30 @@ void CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 	}
 }
 
+void CMediumServer::HandleSendForward_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg)
+{
+	{
+		auto item = m_ForwardSessMap.find(pServerSess);
+		if (item != m_ForwardSessMap.end())
+		{
+			auto pSess = item->second;
+			if (pSess->IsConnect())
+			{
+				pSess->SendMsg(&reqMsg);
+			}
+		}
+	}
+
+	{
+		auto item = m_userLoginMsgMap.find(reqMsg.m_strUserName);
+		if (item != m_userLoginMsgMap.end())
+		{
+			m_userLoginMsgMap.erase(reqMsg.m_strUserName);
+		}
+		m_userLoginMsgMap.insert({ reqMsg.m_strUserName,reqMsg });
+
+	}
+}
 /**
  * @brief 来自GUI客户端的部分消息,不需要发送到远端的服务器,在此函数进行处理
  * 
@@ -1955,8 +1983,39 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 			}
 			return true;
 		}
+		if (msg.GetType() == E_MsgType::UserLoginReq_Type)
+		{
+			UserLoginReqMsg reqMsg;
+			if (reqMsg.FromString(msg.to_string()))
+			{
+				HandleSendForward_UserLoginReq(pServerSess, reqMsg);
+			}
+		}
+		if (msg.GetType() == E_MsgType::NetFailedReport_Type)
+		{
+			HandleSendForward_NetFailedReq(pServerSess);
+		}
 	}
 	return false;
+}
+
+
+void CMediumServer::HandleSendForward_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess)
+{
+	auto item = m_userLoginMsgMap.find(pServerSess->UserName());
+	if (item != m_userLoginMsgMap.end())
+	{
+		UserLogoutReqMsg reqMsg;
+		reqMsg.m_eOsType = item->second.m_eOsType;
+		reqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
+		reqMsg.m_strPassword = reqMsg.m_strPassword;
+		reqMsg.m_strUserName = reqMsg.m_strUserName;
+		auto pClientSess = GetClientSess(GetUserId(reqMsg.m_strUserName));
+		if (pClientSess)
+		{
+			pClientSess->SendMsg(&reqMsg);
+		}
+	}
 }
 
 /**
@@ -2503,11 +2562,30 @@ void CMediumServer::HandleSendBack_UserLoginRsp(const std::shared_ptr<CClientSes
 			}
 		}
 
+		//获取好友请求
 		{
 			GetFriendListReqMsg reqMsg;
 			reqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
 			reqMsg.m_strUserId = rspMsg.m_strUserId;
 			pClientSess->SendMsg(&reqMsg);
+		}
+
+		{
+			auto pGuiSess = Get_GUI_Sess(rspMsg.m_strUserId);
+			if (pGuiSess)
+			{
+				pGuiSess->SendMsg(&rspMsg);
+			}
+		}
+		
+		//移除重连情况
+		{
+			auto item = m_reConnectSessMap.find(pClientSess);
+			if (item != m_reConnectSessMap.end())
+			{
+				LOG_WARN(ms_loger, "UserName:{} UserId:{} ReConnect Use: {} seconds[{} {}]", pClientSess->UserName(), pClientSess->UserId(), time(nullptr) - item->second, __FILENAME__, __LINE__);
+			}
+			m_reConnectSessMap.erase(pClientSess);
 		}
 	}
 
@@ -2580,14 +2658,7 @@ void CMediumServer::HandleSendBack_NetFailed(const std::shared_ptr<CClientSess>&
 			m_userStateMap.insert({ pClientSess->UserId(),CLIENT_SESS_STATE::SESS_LOGIN_SEND });
 		}
 	}
-	m_userId_ClientSessMap.erase(pClientSess->UserId());
-
-	auto pSess = GetClientSess(pClientSess->UserId());
-	if (nullptr != pSess)
-	{
-		pSess->SetUserId(pClientSess->UserId());
-		pSess->SetUserName(pClientSess->UserName());
-	}
+	m_reConnectSessMap.insert({ pClientSess, time(nullptr) });
 }
 
 void CMediumServer::HandleSendBack_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg)
@@ -2742,17 +2813,11 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 		}
 	}break;
 	case E_MsgType::NetRecoverReport_Type: {
-		auto loginReq = m_httpServer->GetUserLoginReq(pClientSess->UserName());
-		auto item = m_userStateMap.find(pClientSess->UserId());
-		if (item != m_userStateMap.end())
+		auto item = m_userLoginMsgMap.find(pClientSess->UserName());
+		if (item != m_userLoginMsgMap.end())
 		{
-			if (item->second == CLIENT_SESS_STATE::SESS_LOGIN_SEND)
-			{
-				auto pSendMsg = std::make_shared<TransBaseMsg_t>(loginReq.GetMsgType(), loginReq.ToString());
-				pClientSess->SendMsg(pSendMsg);
-			}
-		}
-		return true;
+			pClientSess->SendMsg(&(item->second));
+		}return true;
 	}break;
 	case E_MsgType::KeepAliveRsp_Type:
 	{
