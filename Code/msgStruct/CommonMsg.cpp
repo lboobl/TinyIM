@@ -229,7 +229,7 @@ NetFailedReportMsg::NetFailedReportMsg()
 }
 NetFailedReportMsg::NetFailedReportMsg(const std::string& clientId)
 {
-    m_type = E_MsgType::KeepAliveReq_Type;
+    m_type = E_MsgType::NetFailedReport_Type;
     m_strClientId = clientId;
 }
 
