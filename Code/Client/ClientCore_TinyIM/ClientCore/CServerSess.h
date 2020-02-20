@@ -116,10 +116,14 @@ public:
 	}
     
     virtual ~CServerSess(){
+		if (IsConnected())
+		{
+			StopConnect();
+		}
     }
     
     void Start() {
-		LOG_INFO(ms_loger,"Start Receive Socket ");
+		LOG_INFO(ms_loger,"Start Receive Socket [{} {}]",__FILENAME__,__LINE__);
         m_recvpos=0;
         do_read();
     }
