@@ -1927,6 +1927,10 @@ void CMediumServer::HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServer
 			{
 				pSess->SendMsg(&reqMsg);
 			}
+			else
+			{
+				pSess->StartConnect();
+			}
 		}
 	}
 
@@ -1937,7 +1941,6 @@ void CMediumServer::HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServer
 			m_userLoginMsgMap.erase(reqMsg.m_strUserName);
 		}
 		m_userLoginMsgMap.insert({ reqMsg.m_strUserName,reqMsg });
-
 	}
 }
 /**
@@ -1950,71 +1953,101 @@ void CMediumServer::HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServer
  */
 bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg)
 {
+	switch(msg.GetType())
 	{
-		if (msg.GetType() == E_MsgType::GetFriendChatHistroyReq_Type)
+		case E_MsgType::GetFriendChatHistroyReq_Type:
 		{
 			GetFriendChatHistoryReq reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
 				HSF_GetFriendChatHistoryReq(pServerSess, reqMsg);
 			}
-			return true;
-		}
-		if (msg.GetType() == E_MsgType::GetGroupChatHistoryReq_Type)
+		}break;
+		case E_MsgType::GetGroupChatHistoryReq_Type:
 		{
 			GetGroupChatHistoryReq reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
 				HSF_GetGroupChatHistoryReq(pServerSess, reqMsg);
 			}
 			return true;
-		}
-		if (msg.GetType() == E_MsgType::FileSendDataBeginReq_Type)
+		}break;
+		case E_MsgType::FileSendDataBeginReq_Type:
 		{
 			FileSendDataBeginReq reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
 				HSF_FileSendDataBeginReq(pServerSess, reqMsg);
 			}
-			return true;
-		}
-		if (msg.GetType() == E_MsgType::FriendChatSendTxtMsgReq_Type)
+		}break;
+		case E_MsgType::FriendChatSendTxtMsgReq_Type:
 		{
 			FriendChatSendTxtReqMsg reqMsg;
 			if (reqMsg.FromString(msg.to_string())) {
 				HSF_FriendChatSendTxtReqMsg(pServerSess, reqMsg);
 			}
-			return true;
-		}
-		if (msg.GetType() == E_MsgType::UserLoginReq_Type)
+		}break;
+		case E_MsgType::UserLoginReq_Type:
 		{
 			UserLoginReqMsg reqMsg;
 			if (reqMsg.FromString(msg.to_string()))
 			{
 				HSF_UserLoginReq(pServerSess, reqMsg);
 			}
-		}
-		if (msg.GetType() == E_MsgType::NetFailedReport_Type)
+		}break;
+		case E_MsgType::NetFailedReport_Type:
 		{
 			HSF_NetFailedReq(pServerSess);
-		}
+		}break;
+		default:
+		{
+			//对于原始消息，原封不动的转发
+			auto item = m_ForwardSessMap.find(pServerSess);
+			if (item != m_ForwardSessMap.end())
+			{
+				auto pMsg = std::make_shared<TransBaseMsg_t>(msg.GetType(), msg.to_string());
+				item->second->SendMsg(pMsg);
+			}
+			else
+			{
+				auto pClientSess = GetClientSess(pServerSess->UserId());
+				if (pClientSess)
+				{
+					auto pMsg = std::make_shared<TransBaseMsg_t>(msg.GetType(), msg.to_string());
+					pClientSess->SendMsg(pMsg);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}break;
 	}
-	return false;
+	return true;
 }
 
 
 void CMediumServer::HSF_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess)
 {
+	LOG_WARN(ms_loger, "GUI User:{} Is OffLine [{} {}]",pServerSess->UserId(), __FILENAME__, __LINE__);
 	auto item = m_userLoginMsgMap.find(pServerSess->UserName());
 	if (item != m_userLoginMsgMap.end())
 	{
 		UserLogoutReqMsg reqMsg;
 		reqMsg.m_eOsType = item->second.m_eOsType;
 		reqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
-		reqMsg.m_strPassword = reqMsg.m_strPassword;
-		reqMsg.m_strUserName = reqMsg.m_strUserName;
-		auto pClientSess = GetClientSess(GetUserId(reqMsg.m_strUserName));
+		reqMsg.m_strPassword = item->second.m_strPassword;
+		reqMsg.m_strUserName = item->second.m_strUserName;
+		auto pClientSess = GetClientSess(pServerSess->UserId());
 		if (pClientSess)
 		{
 			pClientSess->SendMsg(&reqMsg);
 		}
+		else
+		{
+			LOG_ERR(ms_loger, "UserId:{} No Client Sess [{} {}]", pServerSess->UserId(), __FILENAME__, __LINE__);
+		}
+	}
+	else
+	{
+		LOG_ERR(ms_loger, "UserName:{} No Login Req [{} {}]", pServerSess->UserId(), __FILENAME__, __LINE__);
 	}
 }
 
@@ -2599,12 +2632,30 @@ void CMediumServer::HSB_UserLoginRsp(const std::shared_ptr<CClientSess>& pClient
  */
 void CMediumServer::HSB_UserLogoutRsp(const std::shared_ptr<CClientSess>& pClientSess, const UserLogoutRspMsg rspMsg) {
 	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED) {
+		LOG_ERR(ms_loger, "User: {} Handle User Logout Err [{} {}]", rspMsg.m_strUserName, __FILENAME__, __LINE__);
+
+		m_userLoginMsgMap.erase(rspMsg.m_strUserName);
 		std::string strUserId = GetUserId(rspMsg.m_strUserName);
 		m_userId_ClientSessMap.erase(strUserId);
 		m_userStateMap.erase(strUserId);
-		m_userStateMap.insert({ strUserId,CLIENT_SESS_STATE::SESS_UN_LOGIN });
+		m_userStateMap.insert({ strUserId,CLIENT_SESS_STATE::SESS_LOGOUT });
 		m_userUdpSessMap.erase(strUserId);
+
+		{
+			auto item = m_BackSessMap.find(pClientSess);
+			if (item != m_BackSessMap.end())
+			{
+				m_ForwardSessMap.erase(item->second);
+				m_BackSessMap.erase(pClientSess);
+				item->second->StopConnect();
+			}
+		}
+
 		pClientSess->StopConnect();
+	}
+	else
+	{
+		LOG_ERR(ms_loger, "User: {} Handle User Logout Err [{} {}]", rspMsg.m_strUserName, __FILENAME__, __LINE__);
 	}
 }
 
@@ -2656,9 +2707,21 @@ void CMediumServer::HSB_NetFailed(const std::shared_ptr<CClientSess>& pClientSes
 		{
 			m_userStateMap.erase(pClientSess->UserId());
 			m_userStateMap.insert({ pClientSess->UserId(),CLIENT_SESS_STATE::SESS_LOGIN_SEND });
+			m_reConnectSessMap.insert({ pClientSess, time(nullptr) });
+			LOG_ERR(ms_loger, "[{} {}]", __FILENAME__, __LINE__);
+
+		}
+		else if(item->second == CLIENT_SESS_STATE::SESS_LOGOUT)
+		{
+			m_reConnectSessMap.erase(pClientSess);
+			pClientSess->StopConnect();
+			LOG_ERR(ms_loger, "[{} {}]", __FILENAME__, __LINE__);
 		}
 	}
-	m_reConnectSessMap.insert({ pClientSess, time(nullptr) });
+	else
+	{
+		LOG_ERR(ms_loger, "[{} {}]", __FILENAME__, __LINE__);
+	}
 }
 
 void CMediumServer::HSB_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg)
@@ -2813,11 +2876,16 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 		}
 	}break;
 	case E_MsgType::NetRecoverReport_Type: {
-		auto item = m_userLoginMsgMap.find(pClientSess->UserName());
-		if (item != m_userLoginMsgMap.end())
-		{
-			pClientSess->SendMsg(&(item->second));
-		}return true;
+		//auto stateItem = m_userStateMap.find(pClientSess->UserId());
+		//if(stateItem != m_userStateMap.end()){
+		//	if (stateItem->second == CLIENT_SESS_STATE::SESS_LOGIN_FINISHED) {
+		//		auto item = m_userLoginMsgMap.find(pClientSess->UserName());
+		//		if (item != m_userLoginMsgMap.end())
+		//		{
+		//			pClientSess->SendMsg(&(item->second));
+		//		}return true;
+		//	}
+		//}
 	}break;
 	case E_MsgType::KeepAliveRsp_Type:
 	{
@@ -2932,33 +3000,14 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
  */
 void CMediumServer::SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg)
 {
-	if (HandleSendForward(pServerSess, msg))
-	{
+	//if (HandleSendForward(pServerSess, msg))
+	//{
 
-	}
-	else
-	{
-		//对于原始消息，原封不动的转发
-		auto item = m_ForwardSessMap.find(pServerSess);
-		if (item != m_ForwardSessMap.end())
-		{
-			auto pMsg = std::make_shared<TransBaseMsg_t>(msg.GetType(), msg.to_string());
-			item->second->SendMsg(pMsg);
-		}
-		else
-		{
-			auto pClientSess = GetClientSess(pServerSess->UserId());
-			if (pClientSess)
-			{
-				auto pMsg = std::make_shared<TransBaseMsg_t>(msg.GetType(), msg.to_string());
-				pClientSess->SendMsg(pMsg);
-			}
-			else
-			{
-
-			}
-		}
-	}
+	//}
+	//else
+	//{
+	//	
+	//}
 }
 
 

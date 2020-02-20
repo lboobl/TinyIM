@@ -70,7 +70,7 @@ public:
 	
 
     CClientSess(asio::io_service& ioService,std::string& strIp,int port, CMediumServer* queue);
-
+	virtual ~CClientSess();
     int StartConnect();
     int StopConnect();
 	bool IsConnect(){return m_bConnect == ST_CONN_FINISHED;}
@@ -102,7 +102,7 @@ private:
 	
 	void handleKeepAliveRsp(const KeepAliveRspMsg& rspMsg);
 
-
+	void OnSocketError();
 	std::string m_strUserName;
 	std::string m_strUserId;
 };

@@ -97,15 +97,18 @@ int CClientSess::StopConnect()
 	LOG_INFO(ms_loger, "Connect Closed IP:{},port:{} [{} {}]", m_serverIp, m_serverPort,__FILENAME__,__LINE__);
 	m_bConnect = ST_NOT_CONNECT;
 	m_socket.close();
+	
+	return 0;
+}
+void CClientSess::OnSocketError()
+{
 	if (m_queue)
 	{
 		NetFailedReportMsg reqMsg;
 		TransBaseMsg_t transMsg(reqMsg.GetMsgType(), reqMsg.ToString());
 		m_queue->SendBack(shared_from_this(), transMsg);
 	}
-	return 0;
 }
-
 /**
  * @brief
  * 处理消息的总入口，在此处根据消息类型，完成消息的分发,需要增加新消息的，在此处增加分发代码
@@ -153,7 +156,7 @@ int CClientSess::do_read()
 			}
 			else
 			{
-				StopConnect();
+				OnSocketError();
 			}
 		});
 	}
@@ -167,6 +170,14 @@ bool CClientSess::SendMsg(const BaseMsg* pMsg)
 {
 	auto pSend = std::make_shared<TransBaseMsg_t>(pMsg->GetMsgType(), pMsg->ToString());
 	return SendMsg(pSend);
+}
+
+CClientSess::~CClientSess()
+{
+	if (IsConnect())
+	{
+		StopConnect();
+	}
 }
 /**
  * @brief 发送消息到对端
@@ -183,10 +194,10 @@ bool CClientSess::SendMsg(std::shared_ptr<TransBaseMsg_t> pMsg)
 		asio::async_write(
 			m_socket, asio::buffer(pMsg->GetData(), pMsg->GetSize()),
 			[this, self, pMsg](std::error_code ec, std::size_t /*length*/) mutable {
-				if (ec )
+				if (ec)
 				{
 					LOG_ERR(ms_loger, "[{}] TCP Send: {} Msg:{}{} [{} {}]", UserId(), GetConnectInfo(), MsgType(pMsg->GetType()), pMsg->to_string(), __FILENAME__, __LINE__);
-					StopConnect();
+					OnSocketError();
 				}
 				else
 				{
