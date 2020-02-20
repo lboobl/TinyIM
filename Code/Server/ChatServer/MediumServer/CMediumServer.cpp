@@ -707,6 +707,25 @@ bool CChatServer::OnUserReceiveMsg(const std::string strUserId) {
 	}
 }
 
+void CChatServer::CloseSess(const std::shared_ptr<CServerSess>& pSess)
+{
+	LOG_INFO(ms_loger, "User:{} is Closed [{} {} ]", pSess->UserId(), __FILENAME__, __LINE__);
+	auto item = m_UserSessVec.find(pSess->UserId());
+	if (item != m_UserSessVec.end() &&
+		item->second == pSess)
+	{
+		m_UserSessVec.erase(pSess->UserId());
+	}
+	else
+	{
+		LOG_ERR(ms_loger, "User:{} is Closed [{} {} ]", pSess->UserId(), __FILENAME__, __LINE__);
+	}
+	m_clientStateMap.erase(pSess->UserId());
+	m_clientStateMap.insert({ pSess->UserId(),CLIENT_SESS_STATE::SESS_IDLE_STATE });
+	m_util.UpdateUserOnlineState(pSess->UserId(), CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_OFFLINE);
+	m_userIdUdpAddrMap.erase(pSess->UserId());
+}
+
 
 /**
  * @brief 响应会话关闭
@@ -714,17 +733,8 @@ bool CChatServer::OnUserReceiveMsg(const std::string strUserId) {
  * @param pSess 断开的TCP会话
  */
 void CChatServer::OnSessClose(const std::shared_ptr<CServerSess>& pSess) {
-	auto item = m_UserSessVec.find(pSess->UserId());
-	if (item != m_UserSessVec.end() &&
-		item->second == pSess)
-	{
-		LOG_INFO(ms_loger, "User:{} is Closed [{} {} ]", pSess->UserId(), __FILENAME__, __LINE__);
-		m_UserSessVec.erase(pSess->UserId());
-	}
-	m_clientStateMap.erase(pSess->UserId());
-	m_clientStateMap.insert({ pSess->UserId(),CLIENT_SESS_STATE::SESS_IDLE_STATE });
-	m_util.UpdateUserOnlineState(pSess->UserId(), CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_OFFLINE);
-	m_userIdUdpAddrMap.erase(pSess->UserId());
+	NotifyUserFriends(pSess->UserId());
+	CloseSess(pSess);
 }
 
 /**
@@ -968,7 +978,7 @@ void CChatServer::HandleUserLogoutReq(const std::shared_ptr<CServerSess>& pSess,
 	{
 		pSess->SendMsg(&rspMsg);
 		NotifyUserFriends(pSess->UserId());
-		OnSessClose(pSess);
+		CloseSess(pSess);
 	}
 
 }

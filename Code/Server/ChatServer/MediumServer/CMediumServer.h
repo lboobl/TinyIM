@@ -146,6 +146,7 @@ private:
 	std::string GenerateSalt();
 	std::string GetSaltFromPasswd(const std::string strPasswd);
 	std::string GeneratePassword(const std::string orgPassWord);
+	void CloseSess(const std::shared_ptr<CServerSess>& pSess);
 	bool VerifyPassword(const std::string orgPassword, const std::string dataBasePassword);
    
     SnowFlake m_MsgID_Util; //消息的唯一生成器

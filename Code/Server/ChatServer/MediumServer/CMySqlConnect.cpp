@@ -242,6 +242,32 @@ bool CMySqlConnect::CreateTable()
 				
 			}
 		}
+		//T_GROUP_CHAT
+		{
+			std::string strSql = u8R"( CREATE TABLE `T_GROUP_CHAT_MSG`  (
+  `F_INDEX` int(255) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `F_MSG_ID` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '消息ID,由程序生成 ',
+  `F_MSG_TYPE` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '消息类型',
+  `F_SENDER_ID` char(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '消息发送者ID,外键链接到T_USER的F_USER_ID',
+  `F_GROUP_ID` char(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '群组ID，外键链接到T_GROUP的F_GROUP_ID',
+  `F_MSG_CONTEXT` blob COMMENT '消息内容',
+  `F_OTHER_INFO` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `F_CREATE_TIME` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`F_INDEX`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;)";
+			int res = mysql_query(m_mysql, strSql.c_str());//查询
+			int errCode = mysql_errno(m_mysql);
+			std::string errMsg = mysql_error(m_mysql);
+			if (!res)
+			{
+				LOG_INFO(m_loger, "CREATE TABLE T_GROUP_CHAT_MSG SUCCEED {} {} [{} {}]", errCode, errMsg, __FILENAME__, __LINE__);
+			}
+			else
+			{
+				LOG_INFO(m_loger, "TABLE T_GROUP_CHAT_MSG has Exists {} {} [{} {}]", errCode, errMsg, __FILENAME__, __LINE__);
+
+			}
+		}
 
 
 		//T_USER
