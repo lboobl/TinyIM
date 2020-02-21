@@ -150,7 +150,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 		MessageBox(NULL, _T("文件丢失"), _T("TinyIM"), 0);
 		return 0;
 	}
-	ShellExecute(NULL, _T("open"), _T("ClientCore.exe"), _T("TinyIM"), _T(""), SW_HIDE);
+	ShellExecute(NULL, _T("open"), _T("ClientCore.exe"), _T(""), _T(""), SW_HIDE);
 	CMsgProto::Initialize();
 	SYSTEMTIME st = {0};
 	::GetLocalTime(&st);

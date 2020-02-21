@@ -196,7 +196,7 @@ void CMsgProto::Init() {
  * 
  */
 void CMsgProto::OnTimeOut() {
-		if (m_startTime % 5 == 0 && 
+		if (m_startTime % 30 == 0 && 
 			(GetStatus() != E_UI_ONLINE_STATUS::STATUS_OFFLINE)) {
 			SendKeepAliveReq();
 		}
