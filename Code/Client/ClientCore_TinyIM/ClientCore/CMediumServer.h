@@ -180,6 +180,7 @@ private:
 	void HSF_FriendChatSendTxtReqMsg(const std::shared_ptr<CServerSess>& pServerSess,FriendChatSendTxtReqMsg& msg);
 	void HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg);
 	void HSF_NetFailedReq(const std::shared_ptr<CServerSess>& pServerSess);
+	void HSF_SendGroupTextMsgReqMsg(const std::shared_ptr<CServerSess>& pServerSess, SendGroupTextMsgReqMsg& reqMsg);
 
 	void Handle_TcpMsg(const std::shared_ptr<CClientSess>& pClientSess, const FileDataRecvReqMsg& reqMsg);
 
@@ -200,7 +201,10 @@ private:
 	int m_nNoSessTimeCount;
 	std::map<std::string, CMsgPersistentUtil_SHARED_PTR> m_UserId_MsgPersistentUtilMap;
 	std::map<std::string, std::vector<std::shared_ptr<BaseMsg>> > m_RecvWaitMsgMap;
+	
 	std::map<std::string, FriendChatSendTxtReqMsg>  m_SendWaitMsgMap;
+	
+	std::map<std::string, SendGroupTextMsgReqMsg>  m_groupSendWaitMsgMap;
 
 	//
 	std::map<std::string, std::string> m_AddFriendMsgIdMap;

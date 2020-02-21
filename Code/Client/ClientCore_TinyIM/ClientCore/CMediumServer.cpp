@@ -1916,6 +1916,71 @@ void CMediumServer::HSF_FriendChatSendTxtReqMsg(const std::shared_ptr<CServerSes
 	}
 }
 
+void CMediumServer::HSF_SendGroupTextMsgReqMsg(const std::shared_ptr<CServerSess>& pServerSess, SendGroupTextMsgReqMsg& reqMsg)
+{
+	ChatMsgElemVec msgVec = MsgElemVec(reqMsg.m_strContext);
+	ChatMsgElemVec newVec;
+	std::string strFileHash;
+	bool bHaveImage = false;
+	for (const auto item : msgVec)
+	{
+		if (item.m_eType == CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE)
+		{
+			bHaveImage = true;
+			FileSendDataBeginReq beginReqMsg;
+			{
+				beginReqMsg.m_nFileId = rand();
+				beginReqMsg.m_strMsgId = m_httpServer->GenerateMsgId();
+				beginReqMsg.m_strFileName = m_fileUtil.GetFileNameFromPath(item.m_strImageName);
+				beginReqMsg.m_strUserId = reqMsg.m_strSenderId;
+				beginReqMsg.m_strFriendId = reqMsg.m_strGroupId;
+				beginReqMsg.m_strFileHash = m_fileUtil.CalcHash(item.m_strImageName);
+				strFileHash = beginReqMsg.m_strFileHash;
+				std::string strNewFileName = m_fileUtil.GetCurDir() + reqMsg.m_strSenderId + "\\" + beginReqMsg.m_strFileName;
+				if (m_fileUtil.UtilCopy(item.m_strImageName, strNewFileName))
+				{
+
+				}
+				else
+				{
+					LOG_ERR(ms_loger, "CopyFile Failed {} {}", item.m_strImageName, strNewFileName);
+				}
+				auto item = m_userId_ClientSessMap.find(reqMsg.m_strSenderId);
+				if (item != m_userId_ClientSessMap.end())
+				{
+					auto pMsg = std::make_shared<TransBaseMsg_t>(beginReqMsg.GetMsgType(), beginReqMsg.ToString());
+					item->second->SendMsg(pMsg);
+				}
+			}
+			ChatMsgElem elem;
+			elem.m_eType = CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE;
+			elem.m_strImageName = beginReqMsg.m_strFileName;
+			newVec.push_back(elem);
+		}
+		else
+		{
+			newVec.push_back(item);
+		}
+	}
+
+
+
+	if (bHaveImage)
+	{
+		reqMsg.m_strContext = MsgElemVec(newVec);
+		m_groupSendWaitMsgMap.insert({ strFileHash,reqMsg });
+	}
+	else
+	{
+		auto item = m_userId_ClientSessMap.find(reqMsg.m_strSenderId);
+		if (item != m_userId_ClientSessMap.end())
+		{
+			auto pMsg = std::make_shared<TransBaseMsg_t>(reqMsg.GetMsgType(), reqMsg.ToString());
+			item->second->SendMsg(pMsg);
+		}
+	}
+}
+
 void CMediumServer::HSF_UserLoginReq(const std::shared_ptr<CServerSess>& pServerSess, UserLoginReqMsg& reqMsg)
 {
 	{
@@ -1995,6 +2060,14 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 		case E_MsgType::NetFailedReport_Type:
 		{
 			HSF_NetFailedReq(pServerSess);
+		}break;
+		case E_MsgType::SendGroupTextMsgReq_Type:
+		{
+			SendGroupTextMsgReqMsg reqMsg;
+			if (reqMsg.FromString(msg.to_string())) 
+			{
+				HSF_SendGroupTextMsgReqMsg(pServerSess, reqMsg);
+			}
 		}break;
 		default:
 		{
@@ -2992,23 +3065,7 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 	}
 	return false;
 }
-/**
- * @brief 将消息转发到远端的服务器
- * 
- * @param pServerSess 连接客户端的会话
- * @param msg 消息
- */
-void CMediumServer::SendFoward(const std::shared_ptr<CServerSess>& pServerSess,const TransBaseMsg_t& msg)
-{
-	//if (HandleSendForward(pServerSess, msg))
-	//{
 
-	//}
-	//else
-	//{
-	//	
-	//}
-}
 
 
 /**
