@@ -1722,7 +1722,7 @@ LRESULT CMainDlg::OnTabCtrlDropDown(LPNMHDR pnmh)
 	//显示昵称和账户、显示昵称、显示账户三个子菜单项
 	
 	//显示清爽资料菜单项
-	PopupMenu.CheckMenuItem(ID_32914, (m_userCfg.IsEnableSimpleProfile()?MF_CHECKED:MF_UNCHECKED)|MF_BYCOMMAND);
+	//PopupMenu.CheckMenuItem(ID_32914, (m_userCfg.IsEnableSimpleProfile()?MF_CHECKED:MF_UNCHECKED)|MF_BYCOMMAND);
 	
 	
 	PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_VERTICAL, 

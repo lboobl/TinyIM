@@ -321,12 +321,8 @@
 #define IDC_EDIT_IMG_PORT               1186
 #define IDC_BTN_SEND_FILE               1187
 #define Flamingo_BUILD_VERSION          1526
-#define ID_32774                        32774
-#define ID_32780                        32780
-#define ID_32781                        32781
-#define ID_32782                        32782
-#define ID_32783                        32783
-#define ID_32784                        32784
+
+
 #define ID_MENU_IM_ONLINE               32785
 #define ID_MENU_QME                     32786
 #define ID_MENU_AWAY                    32787
@@ -334,237 +330,76 @@
 #define ID_MENU_MUTE                    32789
 #define ID_MENU_INVISIBLE               32790
 #define ID_MENU_IM_OFFLINE              32791
-#define ID_32792                        32792
-#define ID_32793                        32793
-#define ID_32794                        32794
-#define ID_32795                        32795
-#define ID_1_32796                      32796
-#define ID_1_32797                      32797
+
+
 #define ID_MENU_SHOW_MAIN_PANEL         32798
 #define ID_MENU_EXIT                    32799
 
-#define ID_32814                        32814
-#define ID_32815                        32815
-#define ID_32816                        32816
-#define ID_32817                        32817
-#define ID_32818                        32818
-#define ID_32819                        32819
-#define ID_32825                        32825
+#define ID_REMOVE_FRIEND                32814
+#define ID_MOVE_TO_BLACK                32815
+
+
 #define ID_Menu                         32826
-#define ID_32829                        32829
-#define ID_32831                        32831
-#define ID_32832                        32832
-#define ID_32833                        32833
-#define ID_32834                        32834
-#define ID_32835                        32835
-#define ID_32836                        32836
-#define ID_32837                        32837
-#define ID_32838                        32838
-#define ID_32839                        32839
-#define ID_32840                        32840
-#define ID_32841                        32841
-#define ID_32842                        32842
-#define ID_32843                        32843
-#define ID_32844                        32844
-#define ID_32845                        32845
-#define ID_32846                        32846
-#define ID_32847                        32847
-#define ID_32848                        32848
-#define ID_32849                        32849
-#define ID_32850                        32850
-#define ID_32851                        32851
+//#define ID_32829                        32829
+#define ID_SCREEN_SHOT                  32831
+#define ID_SCREEN_CARTOON               32832
+#define ID_SCREEN_VIDEO                 32833
+#define ID_SCREEN_SHOW_EDIT_TOOL_BAR    32834
+#define ID_SCREEN_HIDE_CURRENT_WND      32835
+#define ID_SCREEN_CARTOON_SETTING       32836
+
+#define ID_CHAT_MSG_HISTORY             32840
+#define ID_IMAGE_ZOOM_IN                32841
+#define ID_IMAGE_ZOOM_OUT               32842
+
+#define ID_CHAT_MSG_MANAGER             32851
 #define ID_BUDDY_DLG_PRESS_ENTER_MENU   32852
 #define ID_BUDDY_DLG_PRESS_CTRL_ENTER_MENU 32853
-#define ID_32854                        32854
-#define ID_32855                        32855
-#define ID_32856                        32856
-#define ID_32857                        32857
-#define ID_32858                        32858
-#define ID_32859                        32859
-#define ID_32860                        32860
-#define ID_32861                        32861
-#define ID_32862                        32862
-#define ID_32863                        32863
-#define ID_32864                        32864
-#define ID_32865                        32865
-#define ID_32866                        32866
-#define ID_32867                        32867
-#define ID_32868                        32868
-#define ID_32869                        32869
-#define ID_32870                        32870
-#define ID_32871                        32871
-#define ID_32872                        32872
-#define ID_32873                        32873
-#define ID_32874                        32874
-#define ID_32875                        32875
-#define ID_32876                        32876
-#define ID_32877                        32877
-#define ID_32878                        32878
-#define ID_32879                        32879
-#define ID_32880                        32880
-#define ID_32881                        32881
-#define ID_32882                        32882
-#define ID_32883                        32883
-#define ID_32884                        32884
-#define ID_32885                        32885
-#define ID_32886                        32886
-#define ID_32887                        32887
-#define ID_32888                        32888
-#define ID_32889                        32889
-#define ID_32890                        32890
-#define ID_32891                        32891
-#define ID_32892                        32892
-#define ID_32893                        32893
-#define ID_32894                        32894
-#define ID_32895                        32895
-#define ID_32896                        32896
-#define ID_32897                        32897
-#define ID_32898                        32898
-#define ID_32899                        32899
-#define ID_32900                        32900
+
+#define ID_GROUP_MEMBER_MANAGE                        32876
+#define ID_GROUP_CHANGE_OWNER                        32877
+#define ID_GROUP_DESTROY                        32878
+
+#define ID_GROUP_SCREEN_SHUT                        32880
+#define ID_GROUP_SCREEN_CARTOON                        32881
+#define ID_GROUP_SCREEN_VIDEO                        32882
+#define ID_GROUP_SCREEN_SHOW_EDIT_TOOL_BAR                        32883
+#define ID_GROUP_SCREEN_HIDE_CURRENT_WND                        32884
+#define ID_GROUP_SCREEN_VIDEO_SETTING                        32885
+
+#define ID_GROUP_SHOW_CHAT_MSG                        32888
+#define ID_GROUP_ZOOM_IN                        32889
+#define ID_GROUP_ZOOM_OUT                        32890
+
 #define ID_GROUP_CHAT_DLG_PRESS_ENTER_MENU 32901
 #define ID_GROUP_CHAT_DLG_PRESS_CTRL_ENTER_MENU 32902
-#define ID_32903                        32903
-#define ID_32904                        32904
-#define ID_32905                        32905
-#define ID_32906                        32906
-#define ID_32907                        32907
-#define ID_32908                        32908
-#define ID_32909                        32909
-#define ID_32910                        32910
-#define ID_32911                        32911
-#define ID_32912                        32912
-#define ID_32913                        32913
-#define ID_32914                        32914
-#define ID_32915                        32915
-#define ID_32916                        32916
-#define ID_32917                        32917
-#define ID_32918                        32918
-#define ID_32919                        32919
-#define ID_32920                        32920
-#define ID_32921                        32921
-#define ID_32922                        32922
-#define ID_32923                        32923
-#define ID_32924                        32924
-#define ID_32925                        32925
-#define ID_32926                        32926
-#define ID_32927                        32927
-#define ID_32928                        32928
-#define ID_32929                        32929
-#define ID_32930                        32930
-#define ID_32931                        32931
-#define ID_32932                        32932
-#define ID_32933                        32933
-#define ID_32934                        32934
-#define ID_32935                        32935
-#define ID_32936                        32936
-#define ID_32937                        32937
-#define ID_32938                        32938
-#define ID_32939                        32939
-#define ID_32940                        32940
-#define ID_32941                        32941
-#define ID_32942                        32942
-#define ID_32943                        32943
-#define ID_32944                        32944
-#define ID_32945                        32945
-#define ID_32946                        32946
-#define ID_32947                        32947
-#define ID_32948                        32948
-#define ID_32949                        32949
-#define ID_32950                        32950
-#define ID_32951                        32951
-#define ID_32952                        32952
-#define ID_32953                        32953
-#define ID_32954                        32954
-#define ID_32955                        32955
-#define ID_32956                        32956
-#define ID_32957                        32957
-#define ID_32958                        32958
-#define ID_32959                        32959
-#define ID_32960                        32960
-#define ID_32961                        32961
-#define ID_32962                        32962
-#define ID_32963                        32963
-#define ID_32964                        32964
-#define ID_32965                        32965
-#define ID_32966                        32966
-#define ID_32967                        32967
-#define ID_32968                        32968
-#define ID_32969                        32969
-#define ID_32970                        32970
-#define ID_32971                        32971
-#define ID_32972                        32972
-#define ID_32973                        32973
-#define ID_32974                        32974
-#define ID_32975                        32975
-#define ID_32976                        32976
+
+#define IDM_CREATE_GROUP                        32962
+#define IDM_CREATE_GROUP_LIST                        32963
+
 #define ID_Menu32977                    32977
-#define ID_32978                        32978
-#define ID_32979                        32979
-#define ID_32980                        32980
-#define ID_32981                        32981
-#define ID_32982                        32982
-#define ID_32983                        32983
-#define ID_32984                        32984
-#define ID_32985                        32985
-#define ID_32986                        32986
-#define ID_32987                        32987
-#define ID_32988                        32988
-#define ID_32989                        32989
-#define ID_32990                        32990
+
 #define ID_Menu32991                    32991
-#define ID_32992                        32992
-#define ID_32993                        32993
-#define ID_32994                        32994
-#define ID_32995                        32995
-#define ID_32996                        32996
-#define ID_32997                        32997
-#define ID_32998                        32998
-#define ID_32999                        32999
-#define ID_33000                        33000
-#define ID_33001                        33001
-#define ID_33002                        33002
-#define ID_33003                        33003
-#define ID_33004                        33004
-#define ID_33005                        33005
+
 #define ID_MENU_LOCK                    33007
 #define ID_MENU_GROUP_HOME_PAGE         33008
 #define ID_MENU_BIG_HEAD_PIC            33011
 #define ID_MENU_SMALL_HEAD_PIC          33012
 #define ID_MENU_STD_HEAD_PIC            33013
 #define ID_MENU_SHOW_BIG_HEAD_PIC_IN_SEL 33014
-#define ID_33015                        33015
-#define ID_33016                        33016
+
 #define ID_MENU_VIEW_INFO               33017
 #define ID_MENU_SEND_MSG                33018
-#define ID_33019                        33019
-#define ID_33020                        33020
-#define ID_33021                        33021
-#define ID_33022                        33022
-#define ID_33023                        33023
-#define ID_33024                        33024
-#define ID_33025                        33025
-#define ID_33026                        33026
-#define ID_33027                        33027
-#define ID_33028                        33028
-#define ID_33029                        33029
-#define ID_33030                        33030
-#define ID_33031                        33031
-#define ID_33032                        33032
+
 #define ID_MENU_CUT                     33033
 #define ID_MENU_COPY                    33034
 #define ID_MENU_PASTE                   33035
 #define ID_MENU_SELECT_ALL              33036
 #define ID_MENU_CLEAR                   33037
-#define ID_33038                        33038
-#define ID_33039                        33039
-#define ID_33040                        33040
+
 #define ID_MENU_SAVE_AS                 33041
 #define ID_MENU_FONT                    33042
-#define ID_33043                        33043
-#define ID_33044                        33044
-#define ID_33045                        33045
-#define ID_33046                        33046
+
 #define ID_MENU_ZOOM_RATIO_400          33047
 #define ID_MENU_ZOOM_RATIO_200          33048
 #define ID_MENU_ZOOM_RATIO_150          33049
@@ -572,11 +407,7 @@
 #define ID_MENU_ZOOM_RATIO_100          33051
 #define ID_MENU_ZOOM_RATIO_75           33052
 #define ID_MENU_ZOOM_RATIO_50           33053
-#define ID_33055                        33055
-#define ID_33056                        33056
-#define ID_33057                        33057
-#define ID_33058                        33058
-#define ID_33059                        33059
+
 #define IDM_SEND_MSG                    33060
 #define IDM_VIEW                        33061
 #define IDM_VIEW_BUDDY_INFO             33062
@@ -586,9 +417,8 @@
 #define IDM_SYS_SET                     33064
 #define ID_MESSAGE                      33065
 #define IDM_SYSTEM_SET                  33065
-#define ID_33066                        33066
-#define ID_33067                        33067
-#define ID_33068                        33068
+
+
 #define IDM_EXPORT_MSG_LOG              33069
 #define IDM_FIND_IN_MSG_LOG             33070
 #define IDM_CLEAR_MSG_LOG               33071
@@ -597,18 +427,14 @@
 #define IDM_SEND_DIRECTORY              33074
 #define IDM_SEND_FILE_SETTINGS          33075
 #define IDM_DELETE_SELECT_MSG_LOG       33076
-#define ID_33076                        33076
-#define ID_33077                        33077
-#define IDM_                            33078
+
 #define ID_Menu33079                    33079
 #define IDM_MUTE                        33080
-#define ID_33081                        33081
+
 #define IDM_DESTROY_AFTER_READ          33082
 #define IDM_AUTO_REPLY                  33083
 #define IDM_SYSTEM_SETTINGS             33084
-#define ID_33085                        33085
-#define ID_33086                        33086
-#define ID_33087                        33087
+
 #define IDM_DELETE_RECENT_ITEM          33088
 #define IDM_SEND_MSG_FROM_RECENT_LIST   33089
 #define IDM_CLEAR_RECENT_LIST           33090
@@ -621,27 +447,21 @@
 #define ID_33096                        33096
 #define IDM_SEND_GROUP_MSG              33097
 #define IDM_MODIFY_BUDDY_MARK_NAME      33098
-#define ID_33099                        33099
-#define ID_33100                        33100
+
+
 #define IDM_ADD_TEAM                    33101
 #define IDM_DELETE_TEAM                 33102
 #define IDM_MODIFY_TEAM_NAME            33103
-#define ID_33104                        33104
-#define ID_33105                        33105
-#define ID_33106                        33106
+
 #define IDM_VIEW_BUDDY_INFO_FROM_RECENT_LIST 33107
-#define ID_33108                        33108
+
 #define IDM_MOVE_ITEM                   33109
-#define ID_33110                        33110
-#define ID_33111                        33111
-#define ID_33112                        33112
-#define ID_33113                        33113
+
 #define IDM_MODIFY_PASS_WORD            33114
 #define ID_SPLITTER_CTRL                33115
-#define ID_33116                        33116
+
 #define IDM_CREATE_NEW_GROUP            33117
-#define ID_33118                        33118
-#define ID_33119                        33119
+
 #define IDM_OPEN_FILE                   33120
 #define IDM_OPEN_DIRECTORY              33121
 #define IDM_DELETE_FRIEND               33122

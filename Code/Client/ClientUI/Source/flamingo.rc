@@ -742,25 +742,25 @@ BEGIN
     END
     POPUP "举报"
     BEGIN
-        MENUITEM "删除好友",                        ID_32814
-        MENUITEM "移至黑名单",                       ID_32815
+        MENUITEM "删除好友",                         ID_REMOVE_FRIEND
+        MENUITEM "移至黑名单",                       ID_MOVE_TO_BLACK
     END
     POPUP "屏幕截图"
     BEGIN
-        MENUITEM "屏幕截图 Ctrl + Alt + A",         ID_32831
-        MENUITEM "录制视频动画",                      ID_32832
-        MENUITEM "捕抓视频图像",                      ID_32833
-        MENUITEM "显示截图编辑工具栏",                   ID_32834, CHECKED
-        MENUITEM "截图时隐藏当前窗口",                   ID_32835, CHECKED
-        MENUITEM "录制动画设置",                      ID_32836
+        MENUITEM "屏幕截图 Ctrl + Alt + A",         ID_SCREEN_SHOT
+        MENUITEM "录制视频动画",                      ID_SCREEN_CARTOON
+        MENUITEM "捕抓视频图像",						 ID_SCREEN_VIDEO
+        MENUITEM "显示截图编辑工具栏",					 ID_SCREEN_SHOW_EDIT_TOOL_BAR, CHECKED
+        MENUITEM "截图时隐藏当前窗口",					 ID_SCREEN_HIDE_CURRENT_WND, CHECKED
+        MENUITEM "录制动画设置",					  ID_SCREEN_CARTOON_SETTING
     END
     POPUP "消息记录"
     BEGIN
-        MENUITEM "显示消息记录",                      ID_32839
+        MENUITEM "显示消息记录",                      ID_CHAT_MSG_HISTORY
         POPUP "显示比例"
         BEGIN
-            MENUITEM "放大 Ctrl+滚轮",                  ID_32841
-            MENUITEM "缩小",                          ID_32842
+            MENUITEM "放大 Ctrl+滚轮",                  ID_IMAGE_ZOOM_IN
+            MENUITEM "缩小",                          ID_IMAGE_ZOOM_OUT
             MENUITEM SEPARATOR
             MENUITEM "400%",                        ID_MENU_ZOOM_RATIO_400
             MENUITEM "200%",                        ID_MENU_ZOOM_RATIO_200
@@ -772,7 +772,7 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "清屏",                          ID_MENU_CLEAR
-        MENUITEM "消息管理器",                       ID_32851
+        MENUITEM "消息管理器",					  ID_CHAT_MSG_MANAGER
     END
     POPUP "发送"
     BEGIN
@@ -832,61 +832,30 @@ END
 
 ID_MENU_GROUP_CHAT MENUEX
 BEGIN
-    POPUP "群社区",                            65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "访问群社区",                       ID_32856,MFT_STRING,MFS_ENABLED
-        MENUITEM "发表新文章",                       ID_32857,MFT_STRING,MFS_ENABLED
-        MENUITEM "上传新照片",                       ID_32858,MFT_STRING,MFS_ENABLED
-        MENUITEM "查看通讯录",                       ID_32859,MFT_STRING,MFS_ENABLED
-        MENUITEM "群聊天记录",                       ID_32860,MFT_STRING,MFS_ENABLED
-    END
     POPUP "群设置",                            65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "查看/修改群资料",                    ID_32861,MFT_STRING,MFS_ENABLED
-        MENUITEM "更新群信息",                       ID_32862,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
-        MENUITEM "修改我的群名片",                     ID_32863,MFT_STRING,MFS_ENABLED
-        MENUITEM "更换群图标",                       ID_32864,MFT_STRING,MFS_ENABLED
-        POPUP "群消息设置",                          65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "自动弹出消息",                      ID_32866,MFT_STRING,MFS_ENABLED
-            MENUITEM "接收并提示消息",                     ID_32867,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "接收不提示消息",                     ID_32868,MFT_STRING,MFS_ENABLED
-            MENUITEM "不提示消息只显示数目",                  ID_32869,MFT_STRING,MFS_ENABLED
-            MENUITEM "完全阻止群内消息",                    ID_32870,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "屏蔽群内图片",                      ID_32871,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "设置屏蔽时关注内容",                   ID_32872,MFT_STRING,MFS_GRAYED
-        END
-        POPUP "视图设置",                           65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "显示侧边",                        ID_32874,MFT_STRING,MFS_CHECKED
-            MENUITEM "本窗口总在最前",                     ID_32875,MFT_STRING,MFS_ENABLED
-        END
-        MENUITEM MFT_SEPARATOR
-        MENUITEM "成员管理",                        ID_32876,MFT_STRING,MFS_ENABLED
-        MENUITEM "转让该群",                        ID_32877,MFT_STRING,MFS_ENABLED
-        MENUITEM "升级该群",                        ID_32878,MFT_STRING,MFS_ENABLED
-        MENUITEM "解散该群",                        ID_32879,MFT_STRING,MFS_ENABLED
+        MENUITEM "成员管理",						ID_GROUP_MEMBER_MANAGE,MFT_STRING,MFS_ENABLED
+        MENUITEM "转让该群",						ID_GROUP_CHANGE_OWNER,MFT_STRING,MFS_ENABLED
+        MENUITEM "解散该群",						ID_GROUP_DESTROY,MFT_STRING,MFS_ENABLED
     END
     POPUP "屏幕截图",                           65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "屏幕截图 Ctrl + Alt + A",         ID_32880,MFT_STRING,MFS_ENABLED
-        MENUITEM "录制视频动画",                      ID_32881,MFT_STRING,MFS_ENABLED
-        MENUITEM "捕获视频图像",                      ID_32882,MFT_STRING,MFS_ENABLED
+        MENUITEM "屏幕截图 Ctrl + Alt + A", ID_GROUP_SCREEN_SHUT,MFT_STRING,MFS_ENABLED
+        MENUITEM "录制视频动画", ID_GROUP_SCREEN_CARTOON,MFT_STRING,MFS_ENABLED
+        MENUITEM "捕获视频图像", ID_GROUP_SCREEN_VIDEO,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
-        MENUITEM "显示截图编辑工具栏",                   ID_32883,MFT_STRING,MFS_ENABLED
-        MENUITEM "截图时隐藏当前窗口",                   ID_32884,MFT_STRING,MFS_ENABLED
-        MENUITEM "录制动画设置",                      ID_32885,MFT_STRING,MFS_ENABLED
+        MENUITEM "显示截图编辑工具栏", ID_GROUP_SCREEN_SHOW_EDIT_TOOL_BAR,MFT_STRING,MFS_ENABLED
+        MENUITEM "截图时隐藏当前窗口", ID_GROUP_SCREEN_HIDE_CURRENT_WND,MFT_STRING,MFS_ENABLED
+        MENUITEM "录制动画设置", ID_GROUP_SCREEN_VIDEO_SETTING,MFT_STRING,MFS_ENABLED
     END
     POPUP "消息记录",                           65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "显示消息记录",                      ID_32888,MFT_STRING,MFS_ENABLED
+        MENUITEM "显示消息记录", ID_GROUP_SHOW_CHAT_MSG,MFT_STRING,MFS_ENABLED
         POPUP "显示比例",                           65535,MFT_STRING,MFS_ENABLED
         BEGIN
-            MENUITEM "放大 Ctrl+滚轮",                  ID_32890,MFT_STRING,MFS_ENABLED
-            MENUITEM "缩小",                          ID_32891,MFT_STRING,MFS_ENABLED
+            MENUITEM "放大 Ctrl+滚轮",				ID_GROUP_ZOOM_IN,MFT_STRING,MFS_ENABLED
+            MENUITEM "缩小",						ID_GROUP_ZOOM_OUT,MFT_STRING,MFS_ENABLED
             MENUITEM MFT_SEPARATOR
             MENUITEM "400%",                        ID_MENU_ZOOM_RATIO_400,MFT_STRING,MFS_ENABLED
             MENUITEM "200%",                        ID_MENU_ZOOM_RATIO_200,MFT_STRING,MFS_ENABLED
@@ -898,7 +867,6 @@ BEGIN
         END
         MENUITEM MFT_SEPARATOR
         MENUITEM "清屏",                          ID_MENU_CLEAR,MFT_STRING,MFS_ENABLED
-        MENUITEM "消息管理器",                       ID_32900,MFT_STRING,MFS_ENABLED
     END
     POPUP "发送",                             65535,MFT_STRING,MFS_ENABLED
     BEGIN
@@ -967,24 +935,13 @@ BEGIN
         MENUITEM "我在线上",                        ID_MENU_IM_ONLINE
         MENUITEM "离线",                          ID_MENU_IM_OFFLINE
         MENUITEM SEPARATOR
-        MENUITEM "锁定 Flamingo ",                ID_MENU_LOCK
+        MENUITEM "锁定 TinyIM ",                ID_MENU_LOCK
         MENUITEM SEPARATOR
         MENUITEM "关闭所有声音",                      ID_MENU_MUTE
         MENUITEM SEPARATOR
         MENUITEM "打开主面板 Ctrl+Alt+D",            ID_MENU_SHOW_MAIN_PANEL
         MENUITEM SEPARATOR
         MENUITEM "退出",                          ID_MENU_EXIT
-    END
-    POPUP "最近联系人"
-    BEGIN
-        POPUP "排序显示"
-        BEGIN
-            MENUITEM "按时间排序",                       ID_32974, CHECKED
-            MENUITEM "按在线情况排序",                     ID_32975
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "漫游最近联系人列表",                   ID_32976
-        MENUITEM "清空最近联系人列表",                   IDM_CLEAR_RECENT_LIST
     END
     POPUP "联系人"
     BEGIN
@@ -994,9 +951,9 @@ BEGIN
     END
     POPUP "群/讨论组"
     BEGIN
-        MENUITEM "创建一个群",                       ID_32962
+        MENUITEM "创建一个群",							IDM_CREATE_GROUP
         MENUITEM SEPARATOR
-        MENUITEM "添加群分组",                       ID_32963
+        MENUITEM "添加群分组",							IDM_CREATE_GROUP_LIST
     END
     POPUP "好友右键菜单"
     BEGIN
