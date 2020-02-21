@@ -57,6 +57,8 @@ private:
 	//Group Begin
 	void GetGroupList();
 	void SendGroupMsg();
+	void SendGroupFace();
+	void SendGroupImage();
 	void GetRecvGroupMsg();
 
 

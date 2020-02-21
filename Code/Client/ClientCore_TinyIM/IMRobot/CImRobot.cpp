@@ -139,6 +139,8 @@ void CIMRobot::Run()
 		{
 			GetGroupList();
 			SendGroupMsg();
+			SendGroupFace();
+			SendGroupImage();
 			GetRecvGroupMsg();
 		}
 		
@@ -863,13 +865,50 @@ void CIMRobot::SendGroupMsg()
 {
 	SendGroupTextMsgRspMsg rspMsg;
 	SendGroupTextMsgReqMsg reqMsg;
+	ChatMsgElemVec elemVec;
+	{
+		ChatMsgElem imageElem;
+		imageElem.m_eType = CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE;
+		imageElem.m_strContext = m_strUserId + " Send Group Msg To ";
+		elemVec.push_back(imageElem);
+	}
 	for (const auto item : m_strGroupVec)
 	{
 		try {
 			reqMsg.m_strMsgId = "33333333";
 			reqMsg.m_strSenderId = m_strUserId;
 			reqMsg.m_strGroupId = item;
-			reqMsg.m_strContext = m_strUserId + " Send Msg To " + item;
+			reqMsg.m_strContext = MsgElemVec(elemVec);
+
+
+			auto rsp = g_httpClient->request("POST", "/send_group_text_msg", reqMsg.ToString());
+			std::string strRsp = rsp->content.string();
+			std::cout << strRsp << std::endl;
+
+		}
+		catch (const SimpleWeb::system_error& e) {
+			std::cerr << "Client Req Error " << e.what() << std::endl;
+		}
+	}
+}
+void CIMRobot::SendGroupFace()
+{
+	SendGroupTextMsgRspMsg rspMsg;
+	SendGroupTextMsgReqMsg reqMsg;
+	ChatMsgElemVec elemVec;
+	{
+		ChatMsgElem imageElem;
+		imageElem.m_eType = CHAT_MSG_TYPE::E_CHAT_EMOJI_TYPE;
+		imageElem.m_nFaceId=2;
+		elemVec.push_back(imageElem);
+	}
+	for (const auto item : m_strGroupVec)
+	{
+		try {
+			reqMsg.m_strMsgId = "33333333";
+			reqMsg.m_strSenderId = m_strUserId;
+			reqMsg.m_strGroupId = item;
+			reqMsg.m_strContext = MsgElemVec(elemVec);
 
 
 			auto rsp = g_httpClient->request("POST", "/send_group_text_msg", reqMsg.ToString());
@@ -883,6 +922,36 @@ void CIMRobot::SendGroupMsg()
 	}
 }
 
+void CIMRobot::SendGroupImage()
+{
+	SendGroupTextMsgRspMsg rspMsg;
+	SendGroupTextMsgReqMsg reqMsg;
+	ChatMsgElemVec elemVec;
+	{
+		ChatMsgElem imageElem;
+		imageElem.m_eType = CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE;
+		imageElem.m_strImageName = R"(C:\Users\Public\Pictures\Sample Pictures\Desert.jpg)";
+		elemVec.push_back(imageElem);
+	}
+	for (const auto item : m_strGroupVec)
+	{
+		try {
+			reqMsg.m_strMsgId = "33333333";
+			reqMsg.m_strSenderId = m_strUserId;
+			reqMsg.m_strGroupId = item;
+			reqMsg.m_strContext = MsgElemVec(elemVec);
+
+
+			auto rsp = g_httpClient->request("POST", "/send_group_text_msg", reqMsg.ToString());
+			std::string strRsp = rsp->content.string();
+			std::cout << strRsp << std::endl;
+
+		}
+		catch (const SimpleWeb::system_error& e) {
+			std::cerr << "Client Req Error " << e.what() << std::endl;
+		}
+	}
+}
 /**
  * @brief 获取接收到的群组消息
  * 

@@ -554,6 +554,39 @@ void GetFriendChatRecvTextMsg(HttpClient& client, std::string strUser, std::stri
 	Do_PostFriendChatRecvTextMsg(client, reqMsg);
 }
 
+SendGroupTextMsgRspMsg Do_SendGroupImage(HttpClient& client, std::string strUserId, std::string strGroupId, std::string strChatContext)
+{
+	SendGroupTextMsgRspMsg rspMsg;
+	SendGroupTextMsgReqMsg reqMsg;
+	ChatMsgElemVec elemVec;
+	{
+		ChatMsgElem imageElem;
+		imageElem.m_eType = CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE;
+		imageElem.m_strImageName = R"(C:\Users\Public\Pictures\Sample Pictures\Desert.jpg)";
+		elemVec.push_back(imageElem);
+	}
+	try {
+		reqMsg.m_strMsgId = "33333333";
+		reqMsg.m_strSenderId = strUserId;
+		reqMsg.m_strGroupId = strGroupId;
+		reqMsg.m_strContext = MsgElemVec(elemVec);
+
+
+		auto rsp = client.request("POST", "/send_group_text_msg", reqMsg.ToString());
+		std::string strRsp = rsp->content.string();
+		std::cout << strRsp << __LINE__ <<std::endl;
+		rspMsg.FromString(strRsp);
+	}
+	catch (const SimpleWeb::system_error& e) {
+		std::cerr << "Client Req Error " << e.what() << std::endl;
+	}
+	return rspMsg;
+}
+
+void SendGroupImageMsg(HttpClient& client, std::string strUserId, std::string strGroupId)
+{
+	Do_SendGroupImage(client, strUserId, strGroupId,"");
+}
 TEST_CASE("HTTP_UserRegisterReqPro") {
 	HttpClient client("127.0.0.1:8000");
 	//Register
@@ -757,6 +790,25 @@ TEST_CASE("HTTP_SendGroupMsg") {
 	FindGroupRspMsg rspMsg = Do_FindGroupReq(client, userOneLoginRsp.m_strUserId, g_strGroupOne);
 	AddUserToGroupReq(client, userTwoLoginRsp.m_strUserId, rspMsg.m_strGroupName, rspMsg.m_strGroupId);
 	SendGroupTextMsgReq(client, userOneLoginRsp.m_strUserId, rspMsg.m_strGroupId, "HTTP_SendGroupMsg");
+	DestroyGroupReq(client, userOneLoginRsp.m_strUserId, g_strGroupOne, rspMsg.m_strGroupId);
+	UserLogout(client, g_strUserOne);
+	UserLogout(client, g_strUserTwo);
+	UnRegisterUser(client, g_strUserOne);
+	UnRegisterUser(client, g_strUserTwo);
+}
+
+TEST_CASE("HTTP_SendGroupMsgImage") {
+	HttpClient client("127.0.0.1:8000");
+	//Register
+	RegisterUser(client, g_strUserOne);
+	RegisterUser(client, g_strUserTwo);
+	UserLoginRspMsg userOneLoginRsp = Do_UserLogin(client, g_strUserOne);
+	UserLoginRspMsg userTwoLoginRsp = Do_UserLogin(client, g_strUserTwo);
+
+	CreateGroupReq(client, userOneLoginRsp.m_strUserId, g_strGroupOne);
+	FindGroupRspMsg rspMsg = Do_FindGroupReq(client, userOneLoginRsp.m_strUserId, g_strGroupOne);
+	AddUserToGroupReq(client, userTwoLoginRsp.m_strUserId, rspMsg.m_strGroupName, rspMsg.m_strGroupId);
+	SendGroupImageMsg(client, userTwoLoginRsp.m_strUserId, rspMsg.m_strGroupId);
 	DestroyGroupReq(client, userOneLoginRsp.m_strUserId, g_strGroupOne, rspMsg.m_strGroupId);
 	UserLogout(client, g_strUserOne);
 	UserLogout(client, g_strUserTwo);
