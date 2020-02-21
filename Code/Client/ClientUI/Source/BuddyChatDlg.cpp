@@ -13,7 +13,6 @@
 #include "net/IUProtocolData.h"
 #include "Proto.h"
 #include "BuddyChatDlg.h"
-//#include "MessageLogger.h"
 #include "UI_USER_INFO.h"
 #include "Time.h"
 #include "ChatDlgCommon.h"
@@ -62,8 +61,6 @@ CBuddyChatDlg::CBuddyChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 
 	m_nMsgLogIndexInToolbar = -1;
 
-	//m_nUTalkNumber = 0;
-	//m_nUserNumber = 0;
 	m_strBuddyName = _T("好友昵称");
 
 
@@ -636,189 +633,6 @@ void CBuddyChatDlg::OnMove(CPoint ptPos)
  */
 void CBuddyChatDlg::OnSize(UINT nType, CSize size)
 {
-	{
-
-		//这个函数有点臃肿，大体思路是：
-		//如果用户通过拖拽发送框调整了窗口尺寸，则恢复后的窗口各控件的位置设置为调整后的位置
-		//反之，各控件使用默认位置
-		//if (!m_bMsgLogWindowVisible && !m_bFileTransferVisible)
-		//{
-		//	if (m_tbTop.IsWindow())
-		//	{
-		//		m_tbTop.MoveWindow(3, 70, size.cx-5, 32, TRUE);
-		//	}
-
-		//	if(m_staPicUploadProgress.IsWindow())
-		//		m_staPicUploadProgress.MoveWindow(10, size.cy-25, 380, 25, FALSE);
-		//	
-		//	if (m_btnClose.IsWindow())
-		//		m_btnClose.MoveWindow(size.cx-190, size.cy-30, 77, 25, TRUE);
-
-		//	if (m_btnSend.IsWindow())
-		//		m_btnSend.MoveWindow(size.cx-110, size.cy-30, 77, 25, TRUE);
-
-		//	if (m_btnArrow.IsWindow())
-		//		m_btnArrow.MoveWindow(size.cx-33, size.cy-30, 28, 25, TRUE);
-
-
-		//	if (m_richRecv.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//		{
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-8, m_rtRichRecv.bottom-m_rtRichRecv.top-32);
-		//			else if((m_FontSelDlg.IsWindow()&&!m_FontSelDlg.IsWindowVisible()) || !m_FontSelDlg.IsWindow())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-8, m_rtRichRecv.bottom-m_rtRichRecv.top);
-
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_FontSelDlg.MoveWindow(2, m_rtRichRecv.bottom-32, size.cx-20, 32, TRUE);
-		//		}
-		//		else
-		//		{
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-8, size.cy-305, TRUE);
-		//			else if((m_FontSelDlg.IsWindow()&&!m_FontSelDlg.IsWindowVisible()) || !m_FontSelDlg.IsWindow())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-8, size.cy-273, TRUE);
-
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_FontSelDlg.MoveWindow(2, size.cy-197, size.cx-20, 32, TRUE);
-		//		}
-		//	}
-
-		//	if (m_tbMid.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//			m_tbMid.MoveWindow(3, m_rtMidToolBar.top, size.cx-5, 31, TRUE);
-		//		else
-		//			m_tbMid.MoveWindow(3, size.cy-167, size.cx-5, 31, TRUE);
-		//		//消息记录按钮始终靠边
-		//		m_tbMid.SetItemMargin(m_nMsgLogIndexInToolbar, size.cx-240, 0);
-		//	}
-		//	
-		//	if(m_SplitterCtrl.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//			m_SplitterCtrl.MoveWindow(6, m_rtSplitter.top, size.cx-8, 5, TRUE);
-		//		else
-		//			m_SplitterCtrl.MoveWindow(6, size.cy-135, size.cx-8, 5, TRUE);
-		//	}
-
-
-		//	if (m_richSend.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//			m_richSend.MoveWindow(6, m_rtRichSend.top, size.cx-8, size.cy-m_rtRichSend.top-35, FALSE);
-		//		else
-		//			m_richSend.MoveWindow(6, size.cy-130, size.cx-8, 95, FALSE);
-		//	}
-
-		//}
-		//else
-		//{	
-		//	if(m_staPicUploadProgress.IsWindow())
-		//		m_staPicUploadProgress.MoveWindow(10, size.cy-25, 380, 25, TRUE);
-		//	
-		//	if (m_btnClose.IsWindow())
-		//		m_btnClose.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH-190, size.cy-30, 77, 25, TRUE);
-
-		//	if (m_btnSend.IsWindow())
-		//		m_btnSend.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH-110, size.cy-30, 77, 25, TRUE);
-
-		//	if (m_btnArrow.IsWindow())
-		//		m_btnArrow.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH-33, size.cy-30, 28, 25, TRUE);
-		//	
-		//	//聊天记录翻页四个按钮
-		//	if (m_btnFirstMsgLog.IsWindow())
-		//		m_btnFirstMsgLog.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+110, size.cy-30, 28, 25, TRUE);
-
-		//	if (m_btnPrevMsgLog.IsWindow())
-		//		m_btnPrevMsgLog.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+140, size.cy-30, 28, 25, TRUE);
-
-		//	if (m_staMsgLogPage.IsWindow())
-		//		m_staMsgLogPage.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+180, size.cy-24, 60, 25, TRUE);
-
-		//	if (m_btnNextMsgLog.IsWindow())
-		//		m_btnNextMsgLog.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+240, size.cy-30, 28, 25, TRUE);
-
-		//	if (m_btnLastMsgLog.IsWindow())
-		//		m_btnLastMsgLog.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+270, size.cy-30, 28, 25, TRUE);
-
-		//	if (m_tbTop.IsWindow())
-		//		m_tbTop.MoveWindow(3, 70, size.cx-RIGHT_CHAT_WINDOW_WIDTH-5, 32, TRUE);
-
-		//	if (m_richRecv.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//		{		
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, m_rtRichRecv.bottom-m_rtRichRecv.top-32);	
-		//			else if((m_FontSelDlg.IsWindow()&&!m_FontSelDlg.IsWindowVisible()) || !m_FontSelDlg.IsWindow())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, m_rtRichRecv.bottom-m_rtRichRecv.top);
-
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_FontSelDlg.MoveWindow(2, m_rtRichRecv.bottom-32, size.cx-RIGHT_CHAT_WINDOW_WIDTH-20, 32);
-		//
-		//		}
-		//		else
-		//		{	
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, size.cy-305);	
-		//			else if((m_FontSelDlg.IsWindow()&&!m_FontSelDlg.IsWindowVisible()) || !m_FontSelDlg.IsWindow())
-		//				m_richRecv.MoveWindow(6, 106, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, size.cy-273);
-
-		//			if (m_FontSelDlg.IsWindow() && m_FontSelDlg.IsWindowVisible())
-		//				m_FontSelDlg.MoveWindow(2, size.cy-RIGHT_CHAT_WINDOW_WIDTH-197, size.cx-20, 32, TRUE);
-		//		}
-		//	}
-
-		//	if (m_tbMid.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//			m_tbMid.MoveWindow(3, m_rtMidToolBar.top, size.cx-RIGHT_CHAT_WINDOW_WIDTH-5, 31, TRUE);
-		//		else
-		//			m_tbMid.MoveWindow(3, size.cy-167, size.cx-RIGHT_CHAT_WINDOW_WIDTH-5, 31, TRUE);
-		//		//消息记录按钮始终靠边
-		//		m_tbMid.SetItemMargin(m_nMsgLogIndexInToolbar, size.cx-RIGHT_CHAT_WINDOW_WIDTH-240, 0);
-		//	}
-
-		//	if(m_SplitterCtrl.IsWindow())
-		//	{
-		//		if(m_bDraged)
-		//			m_SplitterCtrl.MoveWindow(6, m_rtSplitter.top, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, 5, TRUE);
-		//		else
-		//			m_SplitterCtrl.MoveWindow(6, size.cy-135, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, 5, TRUE);
-		//	}
-
-		//	if (m_richSend.IsWindow()) 
-		//	{
-		//		if(m_bDraged)
-		//			m_richSend.MoveWindow(6, m_rtRichSend.top, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, size.cy-m_rtRichSend.top-35, TRUE);
-		//		else
-		//			m_richSend.MoveWindow(6, size.cy-130, size.cx-RIGHT_CHAT_WINDOW_WIDTH-8, 95, TRUE);
-		//	}
-
-		//	if(m_TabMgr.IsWindow())
-		//	{
-		//		//CRect rcTabMgr(CHATDLG_WIDTH-1, 69, CHATDLG_WIDTH+RIGHT_CHAT_WINDOW_WIDTH-2, 101);
-		//		m_TabMgr.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH, 69, RIGHT_CHAT_WINDOW_WIDTH-2, 32);
-		//	}
-		//	
-		//	if (m_richMsgLog.IsWindow())
-		//	{
-		//		m_richMsgLog.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+4, 106, RIGHT_CHAT_WINDOW_WIDTH-6, size.cy-140);	
-		//	}
-
-		//	if(m_bFileTransferVisible)
-		//	{
-		//		if (m_FileTransferCtrl.IsWindow())
-		//		{
-		//			m_FileTransferCtrl.MoveWindow(size.cx-RIGHT_CHAT_WINDOW_WIDTH+4, 106, RIGHT_CHAT_WINDOW_WIDTH-6, size.cy-140);	
-		//		}
-		//	}
-		//	
-		//}
-	}
-
 	OnSizeShowHistory();
 	ResizeImageInRecvRichEdit();
 
@@ -1345,17 +1159,6 @@ void CBuddyChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 			{
 				m_pSess->GetChatHistoryReq(m_strFriendId, "", HISTORY_DIRECTION::E_PREV_MSG);
 			}
-			//if(m_nMsgLogCurrentPageIndex == 1)
-			//{
-			//	return;
-			//}
-			//m_nMsgLogRecordOffset -= 10;
-			//--m_nMsgLogCurrentPageIndex;
-			//if(m_nMsgLogRecordOffset <= 0)
-			//{
-			//	m_nMsgLogRecordOffset = 1;
-			//	m_nMsgLogCurrentPageIndex = 1;
-			//}
 		}break;
 
 	//消息记录下一条消息
@@ -1365,17 +1168,6 @@ void CBuddyChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 			{
 				m_pSess->GetChatHistoryReq(m_strFriendId, "", HISTORY_DIRECTION::E_NEXT_MSG);
 			}
-			/*if(m_nMsgLogCurrentPageIndex == nPageCount)
-			{
-				return;
-			}
-			m_nMsgLogRecordOffset += 10;
-			++m_nMsgLogCurrentPageIndex;
-			if(m_nMsgLogCurrentPageIndex > nPageCount)
-			{
-				m_nMsgLogRecordOffset -= 10;
-				--m_nMsgLogCurrentPageIndex;
-			}*/
 		}break;
 
 	//消息记录最后一条消息
@@ -1385,29 +1177,9 @@ void CBuddyChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 			{
 				m_pSess->GetChatHistoryReq(m_strFriendId, "", HISTORY_DIRECTION::E_NEXT_MSG);
 			}
-			/*if(m_nMsgLogCurrentPageIndex == nPageCount)
-			{
-				return;
-			}	
-			while(TRUE)
-			{
-				m_nMsgLogRecordOffset += 10;
-				++m_nMsgLogCurrentPageIndex;
-				if(m_nMsgLogCurrentPageIndex > nPageCount)
-				{
-					m_nMsgLogRecordOffset -= 10;
-					--m_nMsgLogCurrentPageIndex;
-					break;
-				}
-			}*/
 		}
 		break;
 	}
-	
-	//AtlTrace(_T("Offset: %d, PageIndex: %d, TotalPage: %d\n"), m_nMsgLogRecordOffset, m_nMsgLogCurrentPageIndex, nPageCount);
-	//CString strPageInfo;
-	//strPageInfo.Format(_T("%d/%d"), m_nMsgLogCurrentPageIndex, nPageCount);
-	//m_staMsgLogPage.SetWindowText(strPageInfo);
 	m_staMsgLogPage.Invalidate(FALSE);
 
 	OpenMsgLogBrowser();
@@ -1424,7 +1196,6 @@ void CBuddyChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 void CBuddyChatDlg::OnPressEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_bPressEnterToSendMessage = TRUE;
-	//m_userConfig.EnablePressEnterToSend(m_bPressEnterToSendMessage);
 }
 
 
@@ -1438,7 +1209,6 @@ void CBuddyChatDlg::OnPressEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndC
 void CBuddyChatDlg::OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_bPressEnterToSendMessage = FALSE;
-	//m_userConfig.EnablePressEnterToSend(m_bPressEnterToSendMessage);
 }
 
 
@@ -2028,34 +1798,6 @@ void CBuddyChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
  */
 void CBuddyChatDlg::OnMenu_ExportMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
-	//导出消息记录，导出为word、txt文件
-	//导出为word用于后期字体图片表情导出
-	/*WString strText;
-	RichEdit_GetText(m_richMsgLog.m_hWnd, strText);
-	TCHAR	cFileName[MAX_PATH] = {0};
-	BOOL	bOpenFileDialog = FALSE;
-	LPCTSTR lpszDefExt = NULL;
-	LPCTSTR lpszFileName = _T("未命名");
-	LPCTSTR lpszFilter = _T("Microsoft Office(*.doc)\0*.doc\0Microsoft Office(*.docx)\0*.docx\0金山WPS(*.wps)\0*.wps\0\0");
-	DWORD	dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR | OFN_EXTENSIONDIFFERENT;
-	HWND	hWndParent = m_hWnd;
-
-	CFileDialog fileDlg(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, hWndParent);
-	fileDlg.m_ofn.lpstrTitle = _T("保存文件");
-	if (fileDlg.DoModal() == IDOK)
-	{
-		CString strSavePath = fileDlg.m_ofn.lpstrFile;
-		CString strExtName = (_T(".") + Hootina::CPath::GetExtension(strSavePath)).c_str();
-		CTinyImFile file;
-		if(!file.Open(strSavePath, TRUE))
-		{
-			return;
-		}	
-
-		char* pBuffer = new char[strText.size() / 2 + 1];
-        EncodeUtil::UnicodeToAnsi(strText.c_str(), pBuffer, strlen(pBuffer) * 2);
-		file.Write(pBuffer, strlen(pBuffer));
-	}*/
 }
 
 /**
@@ -2088,13 +1830,9 @@ void CBuddyChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow
 	m_richMsgLog.SetReadOnly(FALSE);
 	m_richMsgLog.Cut();
 	INPUT Input={0};
-	// Backspace down
-	//Input.type = INPUT_KEYBOARD;
-	//Input.mi.dwFlags = KEYBDINPUT;
-	//SendInput(1,&Input,sizeof(INPUT));
+
 	::SendMessage(m_richMsgLog.m_hWnd, WM_KEYDOWN, VK_BACK, 0);
 	m_richMsgLog.SetReadOnly(TRUE);
-	//m_richSend.PasteSpecial(CF_TEXT);
 
 	//判断剪贴板的数据格式是否可以处理。
 	if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
@@ -2121,9 +1859,6 @@ void CBuddyChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow
 		}
 	}
 	::CloseClipboard();
-	//用sql语句去删除SQLite数据库中对应的消息记录
-
-	//UINT nMsgLogID = m_MsgLogger.DelBuddyMsgLogByText(lpStr);
 }
 
 
@@ -2144,10 +1879,6 @@ void CBuddyChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl
 	m_richMsgLog.SetWindowText(_T(""));
 	m_richRecv.SetWindowText(_T(""));
 	m_staMsgLogPage.SetWindowText(_T("0/0"));
-	//WString strChatMsgDBPath = m_lpFMGClient->GetMsgLogFullName();
-	//::DeleteFile(strChatMsgDBPath.c_str());
-	//UINT nUTalkNum = m_lpFMGClient;
-	//m_MsgLogger.DelBuddyMsgLog(m_nUTalkUin);
 }
 
 void CBuddyChatDlg::SendFileOnLine(CString strFileName)
@@ -2595,13 +2326,6 @@ BOOL CBuddyChatDlg::SendOfflineFile(PCTSTR pszFileName)
 			return FALSE;
 		}
 
-	/*	UINT64 nFileSize = IUGetFileSize2(pszFileName);*/
-		//if(nFileSize > (UINT64)MAX_OFFLINE_FILE_SIZE)
-		//{
-		//	::MessageBox(m_hWnd, _T("离线文件暂且不支持大小超过2G的文件。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-		//	return FALSE;
-		//}
-
 		CString strSavePath(pszFileName);
 		CString strExtName(Hootina::CPath::GetExtension(strSavePath).c_str());
 
@@ -2609,17 +2333,7 @@ BOOL CBuddyChatDlg::SendOfflineFile(PCTSTR pszFileName)
 		strFileTypeThumbs += _T("\\Skins\\Skin0\\fileTypeThumbs\\");
 		strFileTypeThumbs += strExtName;
 		strFileTypeThumbs += _T(".png");
-		//m_SendFileThumbPicture.SetBitmap(strFileTypeThumbs);
 
-		////根据当前是否打开判断是否发送消息
-		//if (!m_bMsgLogWindowVisible)
-		//{
-		//	::SendMessage(m_btnMsgLog.m_hWnd, BM_CLICK, 0, 0);
-		//	m_bMsgLogWindowVisible = TRUE;
-		//}
-		//::SendMessage(m_btnMsgLog.m_hWnd, BM_CLICK, 0, 0);
-		//TODO: 奇怪为什么对于大文件，总是不能激活文件输出Tab，因而导致文件传输按钮无法响应点击。
-		//if(m_bMsgLogWindowVisible)
 		m_richMsgLog.ShowWindow(SW_HIDE);
 		DisplayFileTransfer(TRUE);
 
@@ -2682,13 +2396,6 @@ BOOL CBuddyChatDlg::RecvOfflineFile(PCTSTR lpszDownloadName, PCTSTR pszFileName,
 		strFileTypeThumbs.Format(_T("%sSkins\\Skin0\\fileTypeThumbs\\unknown.png"), g_szHomePath);
 	}	
 
-	//根据当前是否打开判断是否发送消息
-	//if (!m_bMsgLogWindowVisible)
-	//{
-	//	::SendMessage(m_btnMsgLog.m_hWnd, BM_CLICK, 0, 0);
-	//	m_bMsgLogWindowVisible = TRUE;
-	//}
-	//::SendMessage(m_btnMsgLog.m_hWnd, BM_CLICK, 0, 0);
 	if(!m_bMsgLogWindowVisible)
 	{
 		m_richMsgLog.ShowWindow(SW_HIDE);
@@ -2856,17 +2563,7 @@ void CBuddyChatDlg::OnFileRecvReqMsg(C_WND_MSG_FileRecvReq * pMsg)
 			}
 		}
 		OnSizeShowHistory();
-		//ShowFileTransferCtrl(TRUE);
-		//OpenMsgLogBrowser();
-
-		//CString strContext;
-		//strContext.Format(_T("%s 发送 %s 给 %s"), strSendName, strFileName, strToName);
-		//MessageBox(strContext, _T("接收文件请求"));
 	}
-	//{
-	//	auto pSess = CMsgProto::GetInstance();
-	//	pSess->SendFriendRecvFileRsp(*pMsg, E_FRIEND_OPTION::E_AGREE_ADD);
-	//}
 }
 
 void CBuddyChatDlg::OnFileSendRspMsg(C_WND_MSG_FileSendRsp * pMsg)
@@ -2992,12 +2689,6 @@ BOOL CBuddyChatDlg::OnRichEdit_RBtnDown(MSG* pMsg)
  */
 C_UI_BuddyInfo* CBuddyChatDlg::GetBuddyInfoPtr()
 {
-	/*if (m_lpFMGClient != NULL)
-	{
-		C_UI_BuddyList* lpBuddyList = m_lpFMGClient->GetBuddyList();
-		if (lpBuddyList != NULL)
-			return lpBuddyList->GetBuddy(m_nUTalkUin);
-	}*/
 	return NULL;
 }
 
@@ -3085,35 +2776,7 @@ void CBuddyChatDlg::UpdateBuddySignCtrl()
  */
 BOOL CBuddyChatDlg::InitTopToolBar()
 {
-	int nIndex = 0;
-	//int nIndex = m_tbTop.AddItem(101, STBI_STYLE_DROPDOWN);
-	//m_tbTop.SetItemSize(nIndex, 52, 40, 42, 10);
-	//m_tbTop.SetItemPadding(nIndex, 1);
-	//m_tbTop.SetItemToolTipText(nIndex, _T("开始视频会话"));
-	//m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbTop.SetItemLeftBgPic(nIndex, _T("aio_toolbar_leftnormal.png"), 
-	//	_T("aio_toolbar_leftdown.png"), CRect(0,0,0,0));
-	//m_tbTop.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"), 
-	//	_T("aio_toolbar_rightdown.png"), CRect(0,0,0,0));
-	//m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\video.png"));
-
-	//nIndex = m_tbTop.AddItem(102, STBI_STYLE_DROPDOWN);
-	//m_tbTop.SetItemSize(nIndex, 52, 40, 42, 10);
-	//m_tbTop.SetItemPadding(nIndex, 1);
-	//m_tbTop.SetItemToolTipText(nIndex, _T("开始语音会话"));
-	//m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbTop.SetItemLeftBgPic(nIndex, _T("aio_toolbar_leftnormal.png"), 
-	//	_T("aio_toolbar_leftdown.png"), CRect(0,0,0,0));
-	//m_tbTop.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"), 
-	//	_T("aio_toolbar_rightdown.png"), CRect(0,0,0,0));
-	//m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\audio.png"));
-
-	
-	
+	int nIndex = 0;	
 	{
 		nIndex = m_tbTop.AddItem(IDC_BTN_SEND_FILE, STBI_STYLE_DROPDOWN);
 		m_tbTop.SetItemSize(nIndex, 38, 28, 28, 10);
@@ -3127,53 +2790,11 @@ BOOL CBuddyChatDlg::InitTopToolBar()
 			_T("aio_toolbar_rightdown.png"), CRect(0, 0, 0, 0));
 		m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
 		m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\sendfile.png"));
-		/*
-		nIndex = m_tbTop.AddItem(ID_BUDDY_DLG_REMOTE_DESKTOP_BTN, STBI_STYLE_BUTTON);
-		m_tbTop.SetItemSize(nIndex, 38, 28, 28, 10);
-		m_tbTop.SetItemPadding(nIndex, 2);
-		m_tbTop.SetItemToolTipText(nIndex, _T("远程桌面"));
-		m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
-			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
-		m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\remote_desktop.png"));
-		*/
 	}
-	//nIndex = m_tbTop.AddItem(105, STBI_STYLE_BUTTON);
-	//m_tbTop.SetItemSize(nIndex, 36, 40);
-	//m_tbTop.SetItemPadding(nIndex, 2);
-	//m_tbTop.SetItemToolTipText(nIndex, _T("创建讨论组"));
-	//m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\create_disc_group.png"));
 
-	//nIndex = m_tbTop.AddItem(106, STBI_STYLE_WHOLEDROPDOWN);
-	//m_tbTop.SetItemSize(nIndex, 44, 40, 34, 10);
-	//m_tbTop.SetItemPadding(nIndex, 2);
-	//m_tbTop.SetItemToolTipText(nIndex, _T("举报"));
-	//m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\report.png"));
-
-	//nIndex = m_tbTop.AddItem(107, STBI_STYLE_WHOLEDROPDOWN);
-	//m_tbTop.SetItemSize(nIndex, 44, 40, 34, 10);
-	//m_tbTop.SetItemPadding(nIndex, 2);
-	//m_tbTop.SetItemToolTipText(nIndex, _T("应用"));
-	//m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\app.png"));
-
-	//nIndex = m_tbTop.AddItem(108, STBI_STYLE_BUTTON);
-	//m_tbTop.SetItemSize(nIndex, 36, 40);
-	//m_tbTop.SetItemPadding(nIndex, 2);
-	//m_tbTop.SetItemToolTipText(nIndex, _T("远程协助"));
-	//m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\remote_assistance.png"));
 
 	m_tbTop.SetLeftTop(0, 0);
 	m_tbTop.SetTransparent(TRUE, m_SkinDlg.GetBgDC());
-	//m_tbTop.SetBgPic(_T("BuddyTopToolBar\\buddyChatDlg_tbTopBg.png"), CRect(0, 0, 0, 0));
 
 	CRect rcTopToolBar(3, 70, CHAT_DLG_WIDTH-3, 102);
 	m_tbTop.Create(m_hWnd, rcTopToolBar, NULL, WS_CHILD|WS_VISIBLE, NULL, ID_TOOL_BAR_TOP);
@@ -3221,29 +2842,6 @@ BOOL CBuddyChatDlg::InitMidToolBar()
 	}
 
 
-
-	//nIndex = m_tbMid.AddItem(205, STBI_STYLE_BUTTON);
-	//m_tbMid.SetItemSize(nIndex, 24, 20);
-	//m_tbMid.SetItemPadding(nIndex, 1);
-	//m_tbMid.SetItemToolTipText(nIndex, _T("选择动一下表情"));
-	//m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_flirtationface.png"));
-
-	//nIndex = m_tbMid.AddItem(206, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
-	//m_tbMid.SetItemSize(nIndex, 24, 20);
-	//m_tbMid.SetItemPadding(nIndex, 2);
-	//m_tbMid.SetItemToolTipText(nIndex, _T("多功能辅助输入"));
-	//m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\UTalkIme.png"));
-
-	//nIndex = m_tbMid.AddItem(207, STBI_STYLE_SEPARTOR);
-	//m_tbMid.SetItemSize(nIndex, 4, 27);
-	//m_tbMid.SetItemPadding(nIndex, 1);
-	//m_tbMid.SetItemSepartorPic(nIndex, _T("aio_qzonecutline_normal.png"));
-
-
 	nIndex = m_tbMid.AddItem(ID_BUDDY_DLG_IMAGE, STBI_STYLE_BUTTON);
 	m_tbMid.SetItemSize(nIndex, 30, 27);
 	m_tbMid.SetItemPadding(nIndex, 1);
@@ -3264,30 +2862,7 @@ BOOL CBuddyChatDlg::InitMidToolBar()
 		m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
 			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
 	}
-	//m_tbMid.SetItemLeftBgPic(nIndex, _T("aio_toolbar_leftnormal.png"), 
-	//	_T("aio_toolbar_leftdown.png"), CRect(1,0,0,0));
-	//m_tbMid.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"), 
-	//	_T("aio_toolbar_rightdown.png"), CRect(0,0,1,0));
-	//m_tbMid.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_cut.png"));
 
-	//nIndex = m_tbMid.AddItem(212, STBI_STYLE_DROPDOWN);
-	//m_tbMid.SetItemSize(nIndex, 31, 20, 23, 8);
-	//m_tbMid.SetItemPadding(nIndex, 2);
-	//m_tbMid.SetItemToolTipText(nIndex, _T("划词搜索"));
-	//m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-	//	_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbMid.SetItemLeftBgPic(nIndex, _T("aio_toolbar_leftnormal.png"), 
-	//	_T("aio_toolbar_leftdown.png"), CRect(1,0,0,0));
-	//m_tbMid.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"), 
-	//	_T("aio_toolbar_rightdown.png"), CRect(0,0,1,0));
-	//m_tbMid.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\SoSo.png"));
-
-	//nIndex = m_tbMid.AddItem(213, STBI_STYLE_SEPARTOR);
-	//m_tbMid.SetItemSize(nIndex, 4, 27);
-	//m_tbMid.SetItemPadding(nIndex, 1);
-	//m_tbMid.SetItemSepartorPic(nIndex, _T("aio_qzonecutline_normal.png"));
 	{
 		nIndex = m_tbMid.AddItem(ID_BUDDY_DLG_SHOW_LOG_MSG_BTN, STBI_STYLE_BUTTON);
 		m_nMsgLogIndexInToolbar = nIndex;
@@ -3298,12 +2873,6 @@ BOOL CBuddyChatDlg::InitMidToolBar()
 		m_tbMid.SetItemToolTipText(nIndex, _T("点击查看消息记录"));
 		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_msglog.png"));
 	}
-	//m_tbMid.SetItemLeftBgPic(nIndex, _T("MidToolBar\\aio_quickbar_msglog.png"), _T("MidToolBar\\aio_quickbar_msglog.png"), CRect(3,3,3,3));
-	//m_tbMid.SetItemLeftBgPic(nIndex, _T("Button\\btn_msglog_down.png"), _T("Button\\btn_msglog_down.png"), CRect(1,0,0,0));
-	//m_tbMid.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"), 
-	//	_T("aio_toolbar_rightdown.png"), CRect(0,0,1,0));
-	//m_tbMid.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//}
 
 	m_tbMid.SetLeftTop(2, 2);
 	m_tbMid.SetBgPic(_T("MidToolBar\\bg.png"), CRect(0,0,0,0));
@@ -3461,18 +3030,6 @@ void CBuddyChatDlg::InitFileTransferCtrl()
 	ShowFileTransferCtrl(FALSE);
 }
 
-//LRESULT CBuddyChatDlg::OnSendFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam)
-//{
-//
-//}
-//LRESULT CBuddyChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
-//{
-//
-//}
-//LRESULT CBuddyChatDlg::OnRecvFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam)
-//{
-//
-//}
 
 void CBuddyChatDlg::OnSendFileProcess(C_WND_MSG_FileProcessMsg* pMsg)
 {
@@ -3572,21 +3129,7 @@ void CBuddyChatDlg::DestroyFileTransferCtrl()
 LRESULT CBuddyChatDlg::OnTabCtrlDropDown(LPNMHDR pnmh)
 {
 	int nCurSel = m_RightTabCtrl.GetCurSel();
-	//switch (nCurSel)
-	//{
-	//case 0:
-	//	::SendMessage(m_btnMsgLog.m_hWnd, BM_CLICK, 0, 0);
-	//	InvalidateRect(NULL, TRUE);
-	//	break;
 
-	//case 1:
-	//	m_richMsgLog.ShowWindow(SW_HIDE);
-	//	ShowFileTransferCtrl(TRUE);
-	//	break;
-
-	//default:
-	//	break;
-	//}
 
 	return 1;
 }
@@ -3657,9 +3200,6 @@ LRESULT CBuddyChatDlg::OnClickTabMgr(LPNMHDR pnmh)
 		//关闭消息记录窗口
 		else if(pTwi->nClickType == CLICK_TYPE_CLOSE)
 		{
-			//m_TabMgr.RemoveItem(m_richMsgLog.m_hWnd);
-			//m_richMsgLog.ShowWindow(SW_HIDE);
-			//ShowMsgLogButtons(FALSE);
 			PostMessage(WM_COMMAND, ID_BUDDY_DLG_SHOW_LOG_MSG_BTN, 0);
 		}
 	}
@@ -3724,9 +3264,7 @@ LRESULT CBuddyChatDlg::OnBtn_FileTransfer(LPNMHDR pnmh)
 		if(pNMHDREx->nTargetType == RECV_TYPE)
 		{
 			CString strRecvFileResultMsgText;
-			//strRecvFileResultMsgText.Format(_T("%s取消了接收文件[%s]。"), m_lpFMGClient->m_UserMgr.m_UserInfo.m_strNickName.c_str(), strFileName);
-            //m_lpFMGClient->SendBuddyMsg(m_LoginUserId, m_strUserName.GetString(), m_UserId, m_strBuddyName.GetString(), time(NULL), strRecvFileResultMsgText.GetString(), m_hWnd);
-			
+
 			CString strInfo;
 			strInfo.Format(_T("                                            ☆您取消了接受文件[%s]。☆\r\n"), strFileName);
 			RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
@@ -4271,23 +3809,23 @@ BOOL CBuddyChatDlg::_RichEdit_InsertFace(HWND hWnd, LPCTSTR lpszFileName, int nF
 //处理系统表情ID
 BOOL CBuddyChatDlg::HandleSysFaceId(HWND hRichEditWnd, LPCTSTR& p, CString& strText)
 {
-	int nFaceId = GetBetweenInt(p+2, _T("[\""), _T("\"]"), -1);
-	CFaceInfo* lpFaceInfo = m_lpFaceList->GetFaceInfoById(nFaceId);
-	if (lpFaceInfo != NULL)
-	{
-		if (!strText.IsEmpty())
-		{
-			_RichEdit_ReplaceSel(hRichEditWnd, strText); 
-			strText = _T("");
-		}
+	//int nFaceId = GetBetweenInt(p+2, _T("[\""), _T("\"]"), -1);
+	//CFaceInfo* lpFaceInfo = m_lpFaceList->GetFaceInfoById(nFaceId);
+	//if (lpFaceInfo != NULL)
+	//{
+	//	if (!strText.IsEmpty())
+	//	{
+	//		_RichEdit_ReplaceSel(hRichEditWnd, strText); 
+	//		strText = _T("");
+	//	}
 
-		_RichEdit_InsertFace(hRichEditWnd, lpFaceInfo->m_strFileName.c_str(), 
-			lpFaceInfo->m_nId, lpFaceInfo->m_nIndex);
+	//	_RichEdit_InsertFace(hRichEditWnd, lpFaceInfo->m_strFileName.c_str(), 
+	//		lpFaceInfo->m_nId, lpFaceInfo->m_nIndex);
 
-		p = _tcsstr(p+2, _T("\"]"));
-		p++;
-		return TRUE;
-	}
+	//	p = _tcsstr(p+2, _T("\"]"));
+	//	p++;
+	//	return TRUE;
+	//}
 	return FALSE;
 }
 
@@ -4302,7 +3840,7 @@ BOOL CBuddyChatDlg::HandleSysFaceId(HWND hRichEditWnd, LPCTSTR& p, CString& strT
  */
 BOOL CBuddyChatDlg::HandleSysFaceIndex(HWND hRichEditWnd, LPCTSTR& p, CString& strText)
 {
-	int nFaceIndex = GetBetweenInt(p+2, _T("[\""), _T("\"]"), -1);
+	/*int nFaceIndex = GetBetweenInt(p+2, _T("[\""), _T("\"]"), -1);
 	CFaceInfo* lpFaceInfo = m_lpFaceList->GetFaceInfoByIndex(nFaceIndex);
 	if (lpFaceInfo != NULL)
 	{
@@ -4318,31 +3856,31 @@ BOOL CBuddyChatDlg::HandleSysFaceIndex(HWND hRichEditWnd, LPCTSTR& p, CString& s
 		p = _tcsstr(p+2, _T("\"]"));
 		p++;
 		return TRUE;
-	}
+	}*/
 	return FALSE;
 }
 
 //处理客户图片
 BOOL CBuddyChatDlg::HandleCustomPic(HWND hRichEditWnd, LPCTSTR& p, CString& strText)
 {
-	CString strFileName = GetBetweenString(p+2, _T("[\""), _T("\"]")).c_str();
-	if (!strFileName.IsEmpty())
-	{
-		if (!strText.IsEmpty())
-		{
-			_RichEdit_ReplaceSel(hRichEditWnd, strText); 
-			strText = _T("");
-		}
+	//CString strFileName = GetBetweenString(p+2, _T("[\""), _T("\"]")).c_str();
+	//if (!strFileName.IsEmpty())
+	//{
+	//	if (!strText.IsEmpty())
+	//	{
+	//		_RichEdit_ReplaceSel(hRichEditWnd, strText); 
+	//		strText = _T("");
+	//	}
 
-		//if (::PathIsRelative(strFileName))
-		//	strFileName = m_lpFMGClient->GetChatPicFullName(strFileName).c_str();
+	//	//if (::PathIsRelative(strFileName))
+	//	//	strFileName = m_lpFMGClient->GetChatPicFullName(strFileName).c_str();
 
-		_RichEdit_InsertFace(hRichEditWnd, strFileName, -1, -1);
+	//	_RichEdit_InsertFace(hRichEditWnd, strFileName, -1, -1);
 
-		p = _tcsstr(p+2, _T("\"]"));
-		p++;
-		return TRUE;
-	}
+	//	p = _tcsstr(p+2, _T("\"]"));
+	//	p++;
+	//	return TRUE;
+	//}
 	return FALSE;
 }
 
@@ -4364,40 +3902,39 @@ void CBuddyChatDlg::AddMsgToSendEdit(LPCTSTR lpText)
  */
 void CBuddyChatDlg::InsertAutoReplyContent()
 {
-	//TODO 
-	RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\r\n"));
-	CString strAutoReplyContent;
-	//(m_userConfig.GetAutoReplyContent());
-	if(strAutoReplyContent == "")
-	{
-		strAutoReplyContent = _T("[自动回复]您好，我现在有事不在，稍候再联系您。");
-	}	
-	else
-	{
-		strAutoReplyContent.Insert(0, _T("[自动回复]"));
-	}	
+	////TODO 
+	//RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\r\n"));
+	//CString strAutoReplyContent;
+	////(m_userConfig.GetAutoReplyContent());
+	//if(strAutoReplyContent == "")
+	//{
+	//	strAutoReplyContent = _T("[自动回复]您好，我现在有事不在，稍候再联系您。");
+	//}	
+	//else
+	//{
+	//	strAutoReplyContent.Insert(0, _T("[自动回复]"));
+	//}	
 
-	TCHAR szTime[32] = {0};
-	time_t nAutoReplyTime = time(NULL);
-	FormatTime(nAutoReplyTime, _T("%H:%M:%S"), szTime, ARRAYSIZE(szTime));
+	//TCHAR szTime[32] = {0};
+	//time_t nAutoReplyTime = time(NULL);
+	//FormatTime(nAutoReplyTime, _T("%H:%M:%S"), szTime, ARRAYSIZE(szTime));
 
-	CString strText;
-	strText.Format(_T("%s  %s\r\n"), m_strUserName, szTime);
+	//CString strText;
+	//strText.Format(_T("%s  %s\r\n"), m_strUserName, szTime);
 
-	RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
-	RichEdit_ReplaceSel(m_richRecv.m_hWnd, strText, _T("宋体"), 10, RGB(0, 0, 255), FALSE, FALSE, FALSE, FALSE, 0);
-	
-	C_UI_FontInfo fontInfo = m_FontSelDlg.GetFontInfo();
-	RichEdit_ReplaceSel(m_richRecv.m_hWnd, strAutoReplyContent, _T("微软雅黑"), fontInfo.m_nSize, fontInfo.m_clrText, fontInfo.m_bBold, fontInfo.m_bItalic, fontInfo.m_bUnderLine, FALSE, 300);
-	//字体信息格式是：/0["字体名,字号,颜色,粗体,斜体,下划线"]
-	TCHAR szFontInfo[1024] = {0};
-	TCHAR szColor[32] = {0};
-	RGBToHexStr(fontInfo.m_clrText, szColor, ARRAYSIZE(szColor));
-	LPCTSTR lpFontFmt = _T("/o[\"%s,%d,%s,%d,%d,%d\"]");
-	wsprintf(szFontInfo, lpFontFmt, fontInfo.m_strName.c_str(), fontInfo.m_nSize, szColor, fontInfo.m_bBold, fontInfo.m_bItalic, fontInfo.m_bUnderLine);
+	//RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+	//RichEdit_ReplaceSel(m_richRecv.m_hWnd, strText, _T("宋体"), 10, RGB(0, 0, 255), FALSE, FALSE, FALSE, FALSE, 0);
+	//
+	//C_UI_FontInfo fontInfo = m_FontSelDlg.GetFontInfo();
+	//RichEdit_ReplaceSel(m_richRecv.m_hWnd, strAutoReplyContent, _T("微软雅黑"), fontInfo.m_nSize, fontInfo.m_clrText, fontInfo.m_bBold, fontInfo.m_bItalic, fontInfo.m_bUnderLine, FALSE, 300);
+	////字体信息格式是：/0["字体名,字号,颜色,粗体,斜体,下划线"]
+	//TCHAR szFontInfo[1024] = {0};
+	//TCHAR szColor[32] = {0};
+	//RGBToHexStr(fontInfo.m_clrText, szColor, ARRAYSIZE(szColor));
+	//LPCTSTR lpFontFmt = _T("/o[\"%s,%d,%s,%d,%d,%d\"]");
+	//wsprintf(szFontInfo, lpFontFmt, fontInfo.m_strName.c_str(), fontInfo.m_nSize, szColor, fontInfo.m_bBold, fontInfo.m_bItalic, fontInfo.m_bUnderLine);
 
-	strAutoReplyContent += szFontInfo;
-    //m_lpFMGClient->SendBuddyMsg(m_LoginUserId, m_strUserName.GetString(), m_UserId, m_strBuddyName.GetString(), nAutoReplyTime, strAutoReplyContent.GetString(), m_hWnd);
+	//strAutoReplyContent += szFontInfo;
 }
 
 
@@ -4408,33 +3945,8 @@ void CBuddyChatDlg::InsertAutoReplyContent()
  */
 void CBuddyChatDlg::OpenMsgLogBrowser()
 {
-	/*
-	CString strMsgFile = m_lpFMGClient->GetMsgLogFullName().c_str();
-	strMsgFile.Replace(_T("\\"), _T("/"));
-	m_MsgLogger.SetMsgLogFileName(strMsgFile);
-
-	CString strChatPicDir = m_lpFMGClient->GetChatPicFolder().c_str();
-	strChatPicDir.Replace(_T("\\"), _T("/"));
-
-	
-	std::vector<BUDDY_MSG_LOG*> arrMsgLog;
-	UINT nRows = 10;
-	UINT nOffset = 0;
-	if(m_nMsgLogRecordOffset > 1)
-		nOffset = m_nMsgLogRecordOffset-1;
-	//从消息记录文件中获取消息记录
-	long cntArrMsgLog = m_MsgLogger.ReadBuddyMsgLog(m_nUTalkUin, nOffset, nRows, arrMsgLog);
-	
-	m_richMsgLog.SetWindowText(_T(""));
-	//添加到消息记录富文本控件中*/
 	if (m_pSess)
 	{
-		/*CBuddyChatUiMsgVector msgVec = m_pSess->GetBuddyMsgList(m_strFriendId);
-		for (const auto item : msgVec)
-		{
-			OnRecvLogMsg(item);
-		}*/
-		//m_pSess->GetChatHistoryReq(m_strFriendId, "", HISTORY_DIRECTION::E_LAST_MSG);
 		m_richMsgLog.SetWindowText(_T(""));
 		m_richMsgLog.Invalidate(TRUE);
 

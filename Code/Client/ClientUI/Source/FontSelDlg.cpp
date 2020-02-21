@@ -5,80 +5,6 @@
 static C_UI_FontInfo g_fontInfo;		// 字体信息
 TCHAR g_cHotKey = _T('D');	// 提取消息热键
 
-// 这里为图方便，所以将这两个函数放这里
-
-//// 加载杂项配置
-//BOOL LoadMiscConfig(LPCTSTR lpszFileName)
-//{
-//	CXmlDocument xmlDoc;
-//	CXmlNode xmlNode;
-//
-//	BOOL bRet = xmlDoc.Load(lpszFileName);
-//	if (!bRet)
-//		return FALSE;
-//
-//	bRet = xmlDoc.SelectSingleNode(_T("/Misc/FontInfo"), xmlNode);
-//	if (bRet)
-//	{
-//		g_fontInfo.m_strName = xmlNode.GetAttribute(_T("Name"));
-//		g_fontInfo.m_nSize = xmlNode.GetAttributeInt(_T("Size"));
-//		WString strColor = xmlNode.GetAttribute(_T("Color"));
-//		g_fontInfo.m_clrText = HexStrToRGB(strColor.c_str());
-//		g_fontInfo.m_bBold = xmlNode.GetAttributeInt(_T("Bold"));
-//		g_fontInfo.m_bItalic = xmlNode.GetAttributeInt(_T("Italic"));
-//		g_fontInfo.m_bUnderLine = xmlNode.GetAttributeInt(_T("UnderLine"));
-//	}
-//
-//	bRet = xmlDoc.SelectSingleNode(_T("/Misc/HotKey"), xmlNode);
-//	if (bRet)
-//	{
-//		WString strHotKey = xmlNode.GetText();
-//		g_cHotKey = toupper(strHotKey.at(0));
-//	}
-//
-//	xmlNode.Release();
-//	xmlDoc.Release();
-//
-//	return TRUE;
-//}
-
-
-
-//// 保存杂项配置
-//BOOL SaveMiscConfig(LPCTSTR lpszFileName)
-//{
-//	unsigned char cUtf8Header[3] = {0xEF,0xBB,0xBF};
-//	const wchar_t* lpFontFmt = _T("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Misc>\r\n<!--字体信息-->\r\n<FontInfo Name=\"%s\" Size=\"%d\" Color=\"%s\" Bold=\"%d\" Italic=\"%d\" UnderLine=\"%d\"></FontInfo>\r\n<!--提取消息热键，目前只支持Ctrl+Alt+某键-->\r\n<HotKey>%c</HotKey>\r\n</Misc>\r\n");
-//
-//	if (NULL == lpszFileName)
-//		return FALSE;
-//
-//	FILE* fp = _tfopen(lpszFileName, _T("wb"));
-//	if (NULL == fp)
-//		return FALSE;
-//
-//	wchar_t szColor[32] = {0};
-//	RGBToHexStr(g_fontInfo.m_clrText, szColor, sizeof(szColor)/sizeof(WCHAR));
-//
-//	wchar_t szBuf[4096] = {0};
-//	wsprintf(szBuf, lpFontFmt, g_fontInfo.m_strName.c_str(), g_fontInfo.m_nSize, 
-//		szColor, g_fontInfo.m_bBold, g_fontInfo.m_bItalic, g_fontInfo.m_bUnderLine, g_cHotKey);
-//
-//	char* lpBuf = EncodeUtil::UnicodeToUtf8(szBuf);
-//	if (NULL == lpBuf)
-//	{
-//		fclose(fp);
-//		return FALSE;
-//	}
-//
-//	fwrite(cUtf8Header, 3, 1, fp);
-//	fwrite(lpBuf, strlen(lpBuf), 1, fp);
-//	fclose(fp);
-//
-//	delete []lpBuf;
-//
-//	return TRUE;
-//}
 
 CFontSelDlg::CFontSelDlg(void):m_userConfig(CUserConfig::GetInstance())
 {
@@ -251,13 +177,8 @@ BOOL CFontSelDlg::InitFontClassToolBar()
 		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
 	m_tbFontClass.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_sysfont_tab_button.png"));
 
-	//nIndex = m_tbFontClass.AddItem(102, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
-	//m_tbFontClass.SetItemSize(nIndex, 20, 20);
 	m_tbFontClass.SetItemPadding(nIndex, 8);
-	//m_tbFontClass.SetItemToolTipText(nIndex, _T("会员炫彩字"));
-	//m_tbFontClass.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-		//_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	//m_tbFontClass.SetItemIconPic(nIndex, _T("MidToolBar\\SetFontTabButton.png"));
+
 
 	nIndex = m_tbFontClass.AddItem(103, STBI_STYLE_SEPARTOR);
 	m_tbFontClass.SetItemSize(nIndex, 2, 20);

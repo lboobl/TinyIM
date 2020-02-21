@@ -342,19 +342,7 @@
 #define ID_1_32797                      32797
 #define ID_MENU_SHOW_MAIN_PANEL         32798
 #define ID_MENU_EXIT                    32799
-#define ID_32800                        32800
-#define ID_32801                        32801
-#define ID_32802                        32802
-#define ID_32803                        32803
-#define ID_32804                        32804
-#define ID_32805                        32805
-#define ID_32806                        32806
-#define ID_32807                        32807
-#define ID_32808                        32808
-#define ID_32809                        32809
-#define ID_32810                        32810
-#define ID_32811                        32811
-#define ID_32812                        32812
+
 #define ID_32814                        32814
 #define ID_32815                        32815
 #define ID_32816                        32816

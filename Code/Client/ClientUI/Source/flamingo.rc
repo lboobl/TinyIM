@@ -732,41 +732,18 @@ END
 
 ID_MENU_BUDDY_CHAT MENU
 BEGIN
-    POPUP "视频会话"
-    BEGIN
-        MENUITEM "开始视频会话",                      ID_32804
-        MENUITEM "给对方播放影音文件",                   ID_32805
-        MENUITEM "视频设置",                        ID_32806
-        MENUITEM "语音测试向导",                      ID_32807
-    END
-    POPUP "语音会话"
-    BEGIN
-        MENUITEM "开始语音会话",                      ID_32808
-        MENUITEM "发起多人语音",                      ID_32809
-        MENUITEM "语音设置",                        ID_32810
-        MENUITEM "语音测试向导",                      ID_32811
-        MENUITEM "发送语音消息",                      ID_32812
-    END
     POPUP "传送文件"
     BEGIN
         MENUITEM "发送文件在线文件(UDP中转)",             IDM_SEND_FILE
         MENUITEM "发送离线文件",                      IDM_SEND_OFF_LINE_FILE
         MENUITEM "发送文件夹",                       IDM_SEND_DIRECTORY, GRAYED
         MENUITEM "传文件设置",                       IDM_SEND_FILE_SETTINGS, GRAYED
-        MENUITEM "发送在线文件(P2P)",			     IDM_SEND_FILE_P2P
+        MENUITEM "发送在线文件(P2P)",                 IDM_SEND_FILE_P2P
     END
     POPUP "举报"
     BEGIN
         MENUITEM "删除好友",                        ID_32814
         MENUITEM "移至黑名单",                       ID_32815
-    END
-    POPUP "应用"
-    BEGIN
-        MENUITEM "搜索",                          ID_32816
-        MENUITEM "发送邮件",                        ID_32817
-        MENUITEM "给他推荐好友",                      ID_32818
-        MENUITEM "手机免费聊UTalk",                  ID_32825
-        MENUITEM "换肤",                          ID_32829
     END
     POPUP "屏幕截图"
     BEGIN
@@ -776,11 +753,6 @@ BEGIN
         MENUITEM "显示截图编辑工具栏",                   ID_32834, CHECKED
         MENUITEM "截图时隐藏当前窗口",                   ID_32835, CHECKED
         MENUITEM "录制动画设置",                      ID_32836
-    END
-    POPUP "划词搜索"
-    BEGIN
-        MENUITEM "划词搜索 双击Ctrl键",                ID_32837
-        MENUITEM "热词搜索提示",                      ID_32838, CHECKED
     END
     POPUP "消息记录"
     BEGIN
@@ -908,11 +880,6 @@ BEGIN
         MENUITEM "截图时隐藏当前窗口",                   ID_32884,MFT_STRING,MFS_ENABLED
         MENUITEM "录制动画设置",                      ID_32885,MFT_STRING,MFS_ENABLED
     END
-    POPUP "划词搜索",                           65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "划词搜索 双击Ctrl键",                ID_32886,MFT_STRING,MFS_ENABLED
-        MENUITEM "热词搜索提示",                      ID_32887,MFT_STRING,MFS_CHECKED
-    END
     POPUP "消息记录",                           65535,MFT_STRING,MFS_ENABLED
     BEGIN
         MENUITEM "显示消息记录",                      ID_32888,MFT_STRING,MFS_ENABLED
@@ -1016,62 +983,17 @@ BEGIN
             MENUITEM "按在线情况排序",                     ID_32975
         END
         MENUITEM SEPARATOR
-        MENUITEM "漫游最近联系人列表",                   ID_32976, GRAYED
+        MENUITEM "漫游最近联系人列表",                   ID_32976
         MENUITEM "清空最近联系人列表",                   IDM_CLEAR_RECENT_LIST
     END
     POPUP "联系人"
     BEGIN
-        POPUP "头像显示"
-        BEGIN
-            MENUITEM "大头像",                         ID_MENU_BIG_HEAD_PIC, CHECKED
-            MENUITEM "小头像",                         ID_MENU_SMALL_HEAD_PIC
-            MENUITEM "标准头像",                        ID_MENU_STD_HEAD_PIC
-            MENUITEM SEPARATOR
-            MENUITEM "选中时显示大头像",                    ID_MENU_SHOW_BIG_HEAD_PIC_IN_SEL
-            MENUITEM SEPARATOR
-            MENUITEM "显示我的头像",                      ID_32909, CHECKED
-        END
-        POPUP "名称显示"
-        BEGIN
-            MENUITEM "显示昵称和账号",                     ID_32911, CHECKED
-            MENUITEM "显示昵称",                        ID_32912
-            MENUITEM "显示账号",                        ID_32913
-            MENUITEM SEPARATOR
-            MENUITEM "不显示个性签名",                     ID_32914
-        END
-        MENUITEM SEPARATOR
-        POPUP "排序显示"
-        BEGIN
-            MENUITEM "按昵称排序",                       ID_32920, CHECKED
-            MENUITEM "按账户名排序",                      ID_32921
-        END
         MENUITEM "刷新好友列表",                      IDM_REFRESH_BUDDY_LIST
         MENUITEM SEPARATOR
         MENUITEM "显示在线联系人",                     IDM_SHOW_ONLINE_BUDDY_ONLY
     END
     POPUP "群/讨论组"
     BEGIN
-        POPUP "图标显示"
-        BEGIN
-            MENUITEM "大图标",                         ID_MENU_BIG_HEAD_PIC
-            MENUITEM "小图标",                         ID_MENU_SMALL_HEAD_PIC, CHECKED
-            MENUITEM "标准图标",                        ID_MENU_STD_HEAD_PIC
-            MENUITEM SEPARATOR
-            MENUITEM "选中时显示大图标",                    ID_MENU_SHOW_BIG_HEAD_PIC_IN_SEL, CHECKED
-        END
-        MENUITEM SEPARATOR
-        POPUP "所有群消息设置"
-        BEGIN
-            MENUITEM "使用群自身的消息设置",                  ID_32953
-            MENUITEM SEPARATOR
-            MENUITEM "所有群接收并提示消息",                  ID_32954
-            MENUITEM "所有群接收不显示消息",                  ID_32955
-            MENUITEM "所有群不提示消息只显示数目",               ID_32956
-            MENUITEM SEPARATOR
-            MENUITEM "所有群阻止一切群内消息",                 ID_32957
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "查找添加群",                       ID_32961
         MENUITEM "创建一个群",                       ID_32962
         MENUITEM SEPARATOR
         MENUITEM "添加群分组",                       ID_32963
@@ -1086,7 +1008,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "删除好友",                        IDM_DELETE_FRIEND
         MENUITEM SEPARATOR
-        MENUITEM "移动联系人至",                      65535
+        MENUITEM "移动联系人至",                      0
     END
     POPUP "主菜单"
     BEGIN
@@ -1254,7 +1176,7 @@ BEGIN
             VALUE "FileDescription", "TinyIM"
             VALUE "FileVersion", "0.1.0.0"
             VALUE "InternalName", "TinyIM"
-            VALUE "LegalCopyright", "Copyright 2019"
+            VALUE "LegalCopyright", "Copyright 2020"
             VALUE "LegalTrademarks", "dennisthink.com"
             VALUE "OriginalFilename", "TinyIM.exe"
             VALUE "ProductName", "TinyIM"
@@ -1275,7 +1197,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAIN_FRAME          "Flamingo"
+    IDR_MAIN_FRAME          "TinyIM"
 END
 
 STRINGTABLE

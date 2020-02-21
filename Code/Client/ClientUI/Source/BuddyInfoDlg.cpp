@@ -3,7 +3,6 @@
 #include "ChangePicHeadDlg.h"
 #include "UI_USER_INFO.h"
 #include <assert.h>
-//#include "FlamingoClient.h"
 #include "Utils.h"
 #include "CustomMsgDef.h"
 

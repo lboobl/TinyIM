@@ -1,7 +1,7 @@
 ﻿/**
  * @file AddFriendConfirmDlg.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief 添加好友确认对话框
  * @version 0.1
  * @date 2019-08-07
  * 
@@ -16,7 +16,6 @@
 // CAddFriendConfirmDlg实现代码
 CAddFriendConfirmDlg::CAddFriendConfirmDlg()
 {
-	//m_pFMGClient = NULL;
 	m_bShowAgreeButton = TRUE;
 	m_bShowRefuseButton = TRUE;
 	m_bShowOKButton = FALSE;
