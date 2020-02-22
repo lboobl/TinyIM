@@ -2376,7 +2376,7 @@ void CChatServer::HandleSendGroupTextReq(const std::shared_ptr<CServerSess>& pSe
 		pSess->SendMsg(&rspMsg);
 	}
 
-	OnDispatchGroupMsg(reqMsg.m_strGroupId);
+	OnDispatchGroupMsg(reqMsg.m_chatMsg.m_strGroupId);
 }
 
 /**
@@ -2482,8 +2482,6 @@ void CChatServer::Handle_UdpFileDataSendReqMsg(const asio::ip::udp::endpoint sen
  */
 void CChatServer::HandleFileVerifyReq(const std::shared_ptr<CServerSess>& pSess, const FileVerifyReqMsg& req)
 {
-
-	
 	{
 		auto item = m_fileTranModeMap.find(req.m_nFileId);
 		if (item != m_fileTranModeMap.end()) {
@@ -2517,6 +2515,11 @@ void CChatServer::HandleFileVerifyReq(const std::shared_ptr<CServerSess>& pSess,
 		std::string strNewFileName = GetFilePathByUserIdAndFileName(req.m_strFriendId, req.m_strFileName);
 		std::string strFileHash = m_fileUtil.CalcHash(strFileName);
 		FileVerifyRspMsg rspMsg;
+		rspMsg.m_strMsgId = req.m_strMsgId;
+		rspMsg.m_strFileName = req.m_strFileName;
+		rspMsg.m_strUserId = req.m_strUserId;
+		rspMsg.m_strFriendId = req.m_strFriendId;
+		rspMsg.m_nFileId = req.m_nFileId;
 		if (strFileHash == req.m_strFileHash)
 		{
 			T_FILE_HASH_BEAN bean;
@@ -2527,17 +2530,10 @@ void CChatServer::HandleFileVerifyReq(const std::shared_ptr<CServerSess>& pSess,
 			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 			m_fileUtil.UtilCopy(strFileName, strNewFileName);
 			rspMsg.m_strFileHash = strFileHash;
-			
 			//判断离线文件消息，插入聊天消息
-			
 		}
 		else
 		{
-			rspMsg.m_strMsgId = req.m_strMsgId;
-			rspMsg.m_strFileName = req.m_strFileName;
-			rspMsg.m_strUserId = req.m_strUserId;
-			rspMsg.m_strFriendId = req.m_strFriendId;
-			rspMsg.m_nFileId = req.m_nFileId;
 			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_FILE_SEND_FAILED;
 		}
 		pSess->SendMsg(&rspMsg);
@@ -2827,13 +2823,13 @@ bool CChatServer::OnUserRecvGroupMsg(const std::string strUser, const T_GROUP_CH
 		if (CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE == msg.m_eChatMsgType)
 		{
 			RecvGroupTextMsgReqMsg reqMsg;
-			reqMsg.m_strGroupId = msg.m_strF_GROUP_ID;
+			reqMsg.m_chatMsg.m_strGroupId = msg.m_strF_GROUP_ID;
 			reqMsg.m_strUserId = strUser;
-			reqMsg.m_strSenderId = msg.m_strF_SENDER_ID;
-			reqMsg.m_strContext = msg.m_strF_MSG_CONTEXT;
-			reqMsg.m_strMsgId = msg.m_strF_MSG_ID;
-			reqMsg.m_stFontInfo.FromString(msg.m_strF_OTHER_INFO);
-			reqMsg.m_strMsgTime = msg.m_strF_CREATE_TIME;
+			reqMsg.m_chatMsg.m_strSenderId = msg.m_strF_SENDER_ID;
+			reqMsg.m_chatMsg.m_strContext = msg.m_strF_MSG_CONTEXT;
+			reqMsg.m_chatMsg.m_strChatMsgId = msg.m_strF_MSG_ID;
+			reqMsg.m_chatMsg.m_fontInfo.FromString(msg.m_strF_OTHER_INFO);
+			reqMsg.m_chatMsg.m_strMsgTime = msg.m_strF_CREATE_TIME;
 			item->second->SendMsg(&reqMsg);
 			return true;
 		}
@@ -2859,9 +2855,8 @@ bool CChatServer::OnUserRecvGroupMsg(const std::string strUser,const std::string
 	if (item != m_UserSessVec.end())
 	{
 		RecvGroupTextMsgReqMsg reqMsg;
-		reqMsg.m_strGroupId = strGroupId;
-		reqMsg.m_strSenderId = strSender;
-		reqMsg.m_strContext = strMsg;
+		reqMsg.m_chatMsg.m_strGroupId = strGroupId;
+		reqMsg.m_strUserId = strSender;
 		reqMsg.m_strMsgId = strMsgId;
 		item->second->SendMsg(&reqMsg);
 		return true;
@@ -2879,21 +2874,18 @@ SendGroupTextMsgRspMsg CChatServer::DoSendGroupTextMsgReqMsg(const SendGroupText
 {
 	SendGroupTextMsgRspMsg rspMsg;
 	T_GROUP_CHAT_MSG chatMsg;
-	chatMsg.m_strF_GROUP_ID = reqMsg.m_strGroupId;
-	chatMsg.m_strF_SENDER_ID = reqMsg.m_strSenderId;
-	chatMsg.m_strF_MSG_CONTEXT = reqMsg.m_strContext;
+	chatMsg.m_strF_GROUP_ID = reqMsg.m_chatMsg.m_strGroupId;
+	chatMsg.m_strF_SENDER_ID = reqMsg.m_chatMsg.m_strSenderId;
+	chatMsg.m_strF_MSG_CONTEXT = reqMsg.m_chatMsg.m_strContext;
 	chatMsg.m_strF_MSG_ID = std::to_string(m_MsgID_Util.nextId());
 	chatMsg.m_eChatMsgType = CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE;
-	chatMsg.m_strF_OTHER_INFO = reqMsg.m_stFontInfo.ToString();
+	chatMsg.m_strF_OTHER_INFO = reqMsg.m_chatMsg.m_fontInfo.ToString();
 	if (m_util.InsertGroupChatText(chatMsg))
 	{
 		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
-		rspMsg.m_strSenderId = reqMsg.m_strSenderId;
-		rspMsg.m_strGroupId = reqMsg.m_strGroupId;
-		rspMsg.m_strMsgId = chatMsg.m_strF_MSG_ID;
-		rspMsg.m_strContext = reqMsg.m_strContext;
-		rspMsg.m_fontInfo = reqMsg.m_stFontInfo;
-		rspMsg.m_strMsgTime = CTimeUtil::GetYMD_HMS_Time();
+		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+		rspMsg.m_chatMsg = reqMsg.m_chatMsg;
+		rspMsg.m_chatMsg.m_strChatMsgId = chatMsg.m_strF_MSG_ID;
 	}
 	else
 	{
