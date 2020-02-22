@@ -480,12 +480,12 @@ bool CMsgPersistentUtil::Save_RecvGroupTextMsgReqMsg(const SendGroupTextMsgRspMs
 		SQLite::bind(*m_pGroupChatInsert,
 			msg.m_strMsgId,
 			ChatType(CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE),
-			msg.m_strSenderId,
-			msg.m_strGroupId,
-			msg.m_strContext,
+			msg.m_chatMsg.m_strSenderId,
+			msg.m_chatMsg.m_strGroupId,
+			msg.m_chatMsg.m_strContext,
 			"OTHER_INFO",
 			"READ",
-			msg.m_strMsgTime);
+			msg.m_chatMsg.m_strMsgTime);
 		int nNb = m_pGroupChatInsert->exec();
 		m_pGroupChatInsert->reset();
 		m_pGroupChatInsert->clearBindings();
@@ -523,12 +523,12 @@ bool CMsgPersistentUtil::Save_RecvGroupTextMsgReqMsg(const RecvGroupTextMsgReqMs
 		SQLite::bind(*m_pGroupChatInsert,
 			msg.m_strMsgId,
 			ChatType(CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE),
-			msg.m_strSenderId,
-			msg.m_strGroupId,
-			msg.m_strContext,
-			msg.m_stFontInfo.ToString(),
+			msg.m_chatMsg.m_strSenderId,
+			msg.m_chatMsg.m_strGroupId,
+			msg.m_chatMsg.m_strContext,
+			msg.m_chatMsg.m_fontInfo.ToString(),
 			"UN_READ",
-			msg.m_strMsgTime);
+			msg.m_chatMsg.m_strMsgTime);
 		int nNb = m_pGroupChatInsert->exec();
 		m_pGroupChatInsert->reset();
 		m_pGroupChatInsert->clearBindings();
@@ -566,9 +566,9 @@ bool CMsgPersistentUtil::Get_RecvGroupTextMsgReqMsg(RecvGroupTextMsgReqMsg& msg)
 	if (bResult)
 	{
 		msg.m_strMsgId = m_pGroupChatSelect->getColumn(0).getString();
-		msg.m_strGroupId = m_pGroupChatSelect->getColumn(2).getString();
-		msg.m_strSenderId = m_pGroupChatSelect->getColumn(3).getString();
-		msg.m_strContext = m_pGroupChatSelect->getColumn(4).getString();
+		msg.m_chatMsg.m_strGroupId = m_pGroupChatSelect->getColumn(2).getString();
+		msg.m_chatMsg.m_strSenderId = m_pGroupChatSelect->getColumn(3).getString();
+		msg.m_chatMsg.m_strContext = m_pGroupChatSelect->getColumn(4).getString();
 	}
 	if (!bResult)
 	{
@@ -804,11 +804,11 @@ std::vector<SendGroupTextMsgRspMsg> CMsgPersistentUtil::Get_SearchGroupChatMsg(c
 	{
 		//int nColumCount = m_pGroupChatSelectByWord->getColumnCount();
 		rspMsg.m_strMsgId = m_pGroupChatSelectByWord->getColumn(0).getString();
-		rspMsg.m_strSenderId = m_pGroupChatSelectByWord->getColumn(2).getString();
-		rspMsg.m_strGroupId = m_pGroupChatSelectByWord->getColumn(3).getString();
-		rspMsg.m_strContext = m_pGroupChatSelectByWord->getColumn(4).getString();
-		rspMsg.m_fontInfo.FromString(m_pGroupChatSelectByWord->getColumn(5).getString());
-		rspMsg.m_strMsgTime = m_pGroupChatSelectByWord->getColumn(6).getString();
+		rspMsg.m_chatMsg.m_strSenderId = m_pGroupChatSelectByWord->getColumn(2).getString();
+		rspMsg.m_chatMsg.m_strGroupId = m_pGroupChatSelectByWord->getColumn(3).getString();
+		rspMsg.m_chatMsg.m_strContext = m_pGroupChatSelectByWord->getColumn(4).getString();
+		rspMsg.m_chatMsg.m_fontInfo.FromString(m_pGroupChatSelectByWord->getColumn(5).getString());
+		rspMsg.m_chatMsg.m_strMsgTime = m_pGroupChatSelectByWord->getColumn(6).getString();
 
 		result.push_back(rspMsg);
 	}
@@ -1066,11 +1066,11 @@ std::vector<SendGroupTextMsgRspMsg>  CMsgPersistentUtil::Get_GroupChatHistoryCor
 	{
 		//int nColumCount = pState->getColumnCount();
 		rspMsg.m_strMsgId = pState->getColumn(0).getString();
-		rspMsg.m_strSenderId = pState->getColumn(2).getString();
-		rspMsg.m_strGroupId = pState->getColumn(3).getString();
-		rspMsg.m_strContext = pState->getColumn(4).getString();
-		rspMsg.m_fontInfo.FromString(pState->getColumn(5).getString());
-		rspMsg.m_strMsgTime = pState->getColumn(7).getString();
+		rspMsg.m_chatMsg.m_strSenderId = pState->getColumn(2).getString();
+		rspMsg.m_chatMsg.m_strGroupId = pState->getColumn(3).getString();
+		rspMsg.m_chatMsg.m_strContext = pState->getColumn(4).getString();
+		rspMsg.m_chatMsg.m_fontInfo.FromString(pState->getColumn(5).getString());
+		rspMsg.m_chatMsg.m_strMsgTime = pState->getColumn(7).getString();
 
 		result.push_back(rspMsg);
 	}

@@ -876,9 +876,9 @@ void CIMRobot::SendGroupMsg()
 	{
 		try {
 			reqMsg.m_strMsgId = "33333333";
-			reqMsg.m_strSenderId = m_strUserId;
-			reqMsg.m_strGroupId = item;
-			reqMsg.m_strContext = MsgElemVec(elemVec);
+			reqMsg.m_chatMsg.m_strSenderId = m_strUserId;
+			reqMsg.m_chatMsg.m_strGroupId = item;
+			reqMsg.m_chatMsg.m_strContext = MsgElemVec(elemVec);
 
 
 			auto rsp = g_httpClient->request("POST", "/send_group_text_msg", reqMsg.ToString());
@@ -906,9 +906,9 @@ void CIMRobot::SendGroupFace()
 	{
 		try {
 			reqMsg.m_strMsgId = "33333333";
-			reqMsg.m_strSenderId = m_strUserId;
-			reqMsg.m_strGroupId = item;
-			reqMsg.m_strContext = MsgElemVec(elemVec);
+			reqMsg.m_chatMsg.m_strSenderId = m_strUserId;
+			reqMsg.m_chatMsg.m_strGroupId = item;
+			reqMsg.m_chatMsg.m_strContext = MsgElemVec(elemVec);
 
 
 			auto rsp = g_httpClient->request("POST", "/send_group_text_msg", reqMsg.ToString());
@@ -937,9 +937,9 @@ void CIMRobot::SendGroupImage()
 	{
 		try {
 			reqMsg.m_strMsgId = "33333333";
-			reqMsg.m_strSenderId = m_strUserId;
-			reqMsg.m_strGroupId = item;
-			reqMsg.m_strContext = MsgElemVec(elemVec);
+			reqMsg.m_chatMsg.m_strSenderId = m_strUserId;
+			reqMsg.m_chatMsg.m_strGroupId = item;
+			reqMsg.m_chatMsg.m_strContext = MsgElemVec(elemVec);
 
 
 			auto rsp = g_httpClient->request("POST", "/send_group_text_msg", reqMsg.ToString());

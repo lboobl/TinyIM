@@ -369,9 +369,9 @@ SendGroupTextMsgRspMsg Do_SendGroupTextMsgReq(HttpClient& client, std::string st
 	try {
 		SendGroupTextMsgReqMsg reqMsg;
 		reqMsg.m_strMsgId = "33333333";
-		reqMsg.m_strSenderId = strUserId;
-		reqMsg.m_strGroupId = strGroupId;
-		reqMsg.m_strContext = strChatContext;
+		reqMsg.m_chatMsg.m_strGroupId = strGroupId;
+		reqMsg.m_chatMsg.m_strSenderId = strUserId;
+		reqMsg.m_chatMsg.m_strContext = strChatContext;
 
 
 		auto rsp = client.request("POST", "/send_group_text_msg", reqMsg.ToString());
@@ -567,9 +567,9 @@ SendGroupTextMsgRspMsg Do_SendGroupImage(HttpClient& client, std::string strUser
 	}
 	try {
 		reqMsg.m_strMsgId = "33333333";
-		reqMsg.m_strSenderId = strUserId;
-		reqMsg.m_strGroupId = strGroupId;
-		reqMsg.m_strContext = MsgElemVec(elemVec);
+		reqMsg.m_chatMsg.m_strSenderId = strUserId;
+		reqMsg.m_chatMsg.m_strGroupId = strGroupId;
+		reqMsg.m_chatMsg.m_strContext = MsgElemVec(elemVec);
 
 
 		auto rsp = client.request("POST", "/send_group_text_msg", reqMsg.ToString());

@@ -143,9 +143,9 @@ TEST_CASE("GroupChatRecvTextMsgInsert") {
 	CHECK(util.InitDataBase());
 	RecvGroupTextMsgReqMsg reqMsg;
 	reqMsg.m_strMsgId = MsgId();
-	reqMsg.m_strGroupId = UserId();
-	reqMsg.m_strSenderId = UserId();
-	reqMsg.m_strContext = ChatMsgContext();
+	reqMsg.m_chatMsg.m_strGroupId = UserId();
+	reqMsg.m_chatMsg.m_strSenderId = UserId();
+	reqMsg.m_chatMsg.m_strContext = ChatMsgContext();
 	CHECK(util.Save_RecvGroupTextMsgReqMsg(reqMsg));
 	RecvGroupTextMsgReqMsg recvMsg;
 	CHECK(util.Get_RecvGroupTextMsgReqMsg(recvMsg));

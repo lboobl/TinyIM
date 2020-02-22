@@ -66,6 +66,8 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 
 	std::map<std::string, std::string> m_userId_UserNameMap;
 	std::map<std::string, FriendChatRecvTxtReqMsg> m_waitImageMsgMap;
+	std::map<std::string, RecvGroupTextMsgReqMsg> m_groupWaitImageMsgMap;
+
     std::shared_ptr<asio::high_resolution_timer> m_timer = nullptr;
 
 	std::shared_ptr<CHttpServer> m_httpServer;
@@ -171,6 +173,8 @@ private:
 	void HSB_FileDataSendRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileDataSendRspMsg& rspMsg);
 	void HSB_FileVerifyRsp(const std::shared_ptr<CClientSess>& pClientSess, const FileVerifyRspMsg& rspMsg);
 	void HSB_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg);
+	void HSB_RecvGroupTextMsgReqMsg(const std::shared_ptr<CClientSess>& pClientSess, const RecvGroupTextMsgReqMsg& reqMsg);
+	void HSB_SendGroupTextMsgRspMsg(const std::shared_ptr<CClientSess>& pClientSess, const SendGroupTextMsgRspMsg& rspMsg);
 
 
 	bool HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg);
