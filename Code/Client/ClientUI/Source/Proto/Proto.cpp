@@ -510,13 +510,13 @@ void CMsgProto::HandleRecvGroupTextMsgReq(const std::shared_ptr<TransBaseMsg_t> 
 		{
 			{
 				C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
-				pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(reqMsg.m_strSenderId));
-				pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(reqMsg.m_strSenderId);
-				pResult->m_strContext = EncodeUtil::AnsiToUnicode(reqMsg.m_strContext);
-				pResult->m_strGroupId = reqMsg.m_strGroupId;
+				pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(reqMsg.m_chatMsg.m_strSenderId));
+				pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(reqMsg.m_chatMsg.m_strSenderId);
+				pResult->m_strContext = EncodeUtil::AnsiToUnicode(reqMsg.m_chatMsg.m_strContext);
+				pResult->m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
 				pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
-				pResult->m_stFontInfo = CoreToUi(reqMsg.m_stFontInfo);
-				pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(reqMsg.m_strMsgTime);
+				pResult->m_stFontInfo = CoreToUi(reqMsg.m_chatMsg.m_fontInfo);
+				pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(reqMsg.m_chatMsg.m_strMsgTime);
 				auto item = m_msgMap.find(reqMsg.GetMsgType());
 				if (item != m_msgMap.end())
 				{
@@ -527,8 +527,7 @@ void CMsgProto::HandleRecvGroupTextMsgReq(const std::shared_ptr<TransBaseMsg_t> 
 		{
 			RecvGroupTextMsgRspMsg rspMsg;
 			rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-			rspMsg.m_strGroupId = reqMsg.m_strGroupId;
-			rspMsg.m_strSenderId = reqMsg.m_strSenderId;
+			rspMsg.m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
 			rspMsg.m_strUserId = m_strUserId;
 			auto pSess = SourceServer::CSessManager::GetManager();
 			TransBaseMsg_t trans(rspMsg.GetMsgType(), rspMsg.ToString());
@@ -1187,20 +1186,20 @@ void CMsgProto::HandleFileSendDataRsp(const std::shared_ptr<TransBaseMsg_t> pOrg
  * @return true 
  * @return false 
  */
-bool CMsgProto::SendChatTxtMsg(const std::string strFriendName, const std::string strContext, const C_UI_FontInfo font)
-{
-	auto pSess = SourceServer::CSessManager::GetManager();
-	{
-		FriendChatSendTxtReqMsg reqMsg;
-		reqMsg.m_strSenderId = m_strUserId;
-		reqMsg.m_strReceiverId = strFriendName;
-		reqMsg.m_strContext = strContext;
-		reqMsg.m_fontInfo = UiToCore(font);
-	
-		TransBaseMsg_t trans(reqMsg.GetMsgType(), reqMsg.ToString());
-		return pSess->SendMsg(&trans);
-	}
-}
+//bool CMsgProto::SendChatTxtMsg(const std::string strFriendName, const std::string strContext, const C_UI_FontInfo font)
+//{
+//	auto pSess = SourceServer::CSessManager::GetManager();
+//	{
+//		FriendChatSendTxtReqMsg reqMsg;
+//		reqMsg.m_strSenderId = m_strUserId;
+//		reqMsg.m_strReceiverId = strFriendName;
+//		reqMsg.m_strContext = strContext;
+//		reqMsg.m_fontInfo = UiToCore(font);
+//	
+//		TransBaseMsg_t trans(reqMsg.GetMsgType(), reqMsg.ToString());
+//		return pSess->SendMsg(&trans);
+//	}
+//}
 ChatMsgElemVec UiToCore(const RichEditMsgList& richMsg)
 {
 	ChatMsgElemVec result;
@@ -1312,12 +1311,12 @@ void CMsgProto::HandleGetGroupChatHistory(const std::shared_ptr<TransBaseMsg_t> 
 			auto WndItem = m_msgMap.find(rspMsg.GetMsgType());
 			C_UI_GroupMessage * pResult = new C_UI_GroupMessage();
 			pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(m_strUserId));
-			pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(item.m_strSenderId);
-			pResult->m_strContext = EncodeUtil::AnsiToUnicode(item.m_strContext);
+			pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(item.m_chatMsg.m_strSenderId);
+			pResult->m_strContext = EncodeUtil::AnsiToUnicode(item.m_chatMsg.m_strContext);
 			pResult->m_strGroupId = rspMsg.m_strGroupId;
 			pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
-			pResult->m_stFontInfo = CoreToUi(item.m_fontInfo);
-			pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(item.m_strMsgTime);
+			pResult->m_stFontInfo = CoreToUi(item.m_chatMsg.m_fontInfo);
+			pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(item.m_chatMsg.m_strMsgTime);
 			auto item = m_msgMap.find(rspMsg.GetMsgType());
 			if (item != m_msgMap.end())
 			{
@@ -1826,13 +1825,13 @@ bool CMsgProto::SendGetGroupList()
  * @return true 
  * @return false 
  */
-bool CMsgProto::SendGroupChatTextMsg(const std::string strGroupId, const std::string strContext, const C_UI_FontInfo font)
+bool CMsgProto::SendGroupChatTextMsg(const std::string strGroupId, RichEditMsgList msgList, const C_UI_FontInfo font)
 {
 	SendGroupTextMsgReqMsg reqMsg;
-	reqMsg.m_strSenderId = m_strUserId;
-	reqMsg.m_strGroupId = strGroupId;
-	reqMsg.m_strContext = strContext;
-	reqMsg.m_stFontInfo = UiToCore(font);
+	reqMsg.m_chatMsg.m_strSenderId = m_strUserId;
+	reqMsg.m_chatMsg.m_strGroupId = strGroupId;
+	reqMsg.m_chatMsg.m_strContext = MsgElemVec(UiToCore(msgList));
+	reqMsg.m_chatMsg.m_fontInfo = UiToCore(font);
 	auto pSess = SourceServer::CSessManager::GetManager();
 	TransBaseMsg_t trans(reqMsg.GetMsgType(), reqMsg.ToString());
 	return pSess->SendMsg(&trans);
@@ -1924,12 +1923,12 @@ void CMsgProto::HandleSendGroupTextRspMsg(const std::shared_ptr<TransBaseMsg_t> 
 	{
 		C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
 		pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(m_strUserId));
-		pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(rspMsg.m_strSenderId);
-		pResult->m_strContext = EncodeUtil::AnsiToUnicode(rspMsg.m_strContext);
-		pResult->m_strGroupId = rspMsg.m_strGroupId;
+		pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(rspMsg.m_chatMsg.m_strSenderId);
+		pResult->m_strContext = EncodeUtil::Utf8ToUnicode(rspMsg.m_chatMsg.m_strContext);
+		pResult->m_strGroupId = rspMsg.m_chatMsg.m_strGroupId;
 		pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
-		pResult->m_stFontInfo = CoreToUi(rspMsg.m_fontInfo);
-		pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(rspMsg.m_strMsgTime);
+		pResult->m_stFontInfo = CoreToUi(rspMsg.m_chatMsg.m_fontInfo);
+		pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(rspMsg.m_chatMsg.m_strMsgTime);
 		auto item = m_msgMap.find(rspMsg.GetMsgType());
 		if (item != m_msgMap.end())
 		{

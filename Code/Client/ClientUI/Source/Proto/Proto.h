@@ -101,8 +101,7 @@ public:
 	bool SendDestroyGroupReq(const std::string strUserName, const std::string strGroupId);
 
 	bool SendGetGroupList();
-	
-	bool SendGroupChatTextMsg(const std::string strGroupId, const std::string strContext,const C_UI_FontInfo font);
+	bool SendGroupChatTextMsg(const std::string strGroupId, RichEditMsgList msgList, const C_UI_FontInfo font);
 	
 	
 

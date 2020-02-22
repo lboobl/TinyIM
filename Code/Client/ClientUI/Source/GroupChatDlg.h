@@ -323,7 +323,7 @@ private:
 	RECT					m_rtSplitter; 
 	RECT					m_rtRichSend; //发送富文本控件矩形区域
 
-	void SendGroupTextMsg_Core(WString strContext);
+	//void SendGroupTextMsg_Core(WString strContext);
 	void OnSizeShowMsgHistory();
 };
 
