@@ -171,6 +171,20 @@ std::string CFileUtil::GetFileNameFromPath(const std::string strFullPath)
 	std::string filename = strFullPath.substr(iPos, strFullPath.length() - iPos);
 	return filename;
 }
+
+std::string CFileUtil::GetFileNameExtension(const std::string strFullPath)
+{
+	std::string::size_type iPos = strFullPath.find_last_of('.');
+	if (iPos != std::string::npos)
+	{
+		std::string filename = strFullPath.substr(iPos, strFullPath.length() - iPos);
+		return filename;
+	}
+	else
+	{
+		return "";
+	}
+}
 /**
  * @brief 根据文件ID关闭文件
  * 

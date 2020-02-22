@@ -1423,10 +1423,7 @@ class SendGroupTextMsgReqMsg :public BaseMsg
 {
 public:
 	std::string m_strMsgId;//消息ID
-	std::string m_strSenderId;//发送者ID
-	std::string m_strGroupId;//群组ID
-	std::string m_strContext;//消息内容
-	FontInfo_s m_stFontInfo;//字体信息
+	GroupChatMsg_s m_chatMsg;
 public:
 	SendGroupTextMsgReqMsg();
 
@@ -1447,12 +1444,7 @@ public:
 	ERROR_CODE_TYPE m_eErrCode;//错误码
 	std::string m_errMsg;//错误信息
 	std::string m_strMsgId;//消息ID
-	std::string m_strSenderId;//发送者ID
-	std::string m_strGroupId;//群组ID
-
-	std::string m_strContext;  //信息内容
-	FontInfo_s  m_fontInfo;  //字体信息
-	std::string m_strMsgTime;  //消息接收时间
+	GroupChatMsg_s m_chatMsg;
 public:
 	SendGroupTextMsgRspMsg();
 
@@ -1472,11 +1464,7 @@ class RecvGroupTextMsgReqMsg :public BaseMsg
 public:
 	std::string m_strMsgId;//消息ID
 	std::string m_strUserId;//用户ID
-	std::string m_strSenderId;//发送者ID
-	std::string m_strGroupId;//群组ID
-	std::string m_strContext;//消息内容
-	FontInfo_s  m_stFontInfo;//字体信息
-	std::string m_strMsgTime;//消息时间
+	GroupChatMsg_s m_chatMsg;
 public:
 	RecvGroupTextMsgReqMsg();
 
@@ -1495,8 +1483,8 @@ class RecvGroupTextMsgRspMsg :public BaseMsg
 public:
 	std::string m_strMsgId;//消息ID
 	std::string m_strUserId;//用户ID
-	std::string m_strSenderId;//接收者ID
 	std::string m_strGroupId;//群组ID
+	std::string m_strChatMsgId;
 public:
 	RecvGroupTextMsgRspMsg();
 

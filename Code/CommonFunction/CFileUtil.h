@@ -23,7 +23,6 @@ public:
 	static bool IsFolder(const std::string strFolder);
 	static bool CreateFolder(const std::string strFolder);
 	static bool RemoveFolder(const std::string strFolder);
-
 	bool CreateFileByName(const int nFileId,const std::string FileName);
 	bool GetFileSize(int& nFileSize, const std::string strFileName);
 	bool OpenReadFile(const int nFileId, const std::string strFileName);
@@ -33,6 +32,7 @@ public:
 	bool OnReadData(const int nFileId,char * pData,int& nReadLen,const int nMaxDataLen);
 	bool OnCloseFile(const int nFileId);
 	bool UtilCopy(const std::string strSrcName, const std::string strDstName);
+	static std::string GetFileNameExtension(const std::string strFullPath);
 	std::string CalcHash(const std::string strFileName);
 	std::string GetFileNameFromPath(const std::string strFullPath);
 	std::string GetCurDir();
