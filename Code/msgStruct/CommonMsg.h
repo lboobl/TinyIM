@@ -2325,6 +2325,30 @@ public:
 	virtual std::string ToString() const override;
 	virtual bool FromString(const std::string& strJson) override;
 };
+
+class NotifyGroupMsgReqMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strGroupId;//好友ID
+public:
+	NotifyGroupMsgReqMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class NotifyGroupMsgRspMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strGroupId;//好友ID
+public:
+	NotifyGroupMsgRspMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
 /**
  * @brief 服务器配置
  * 

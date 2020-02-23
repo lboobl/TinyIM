@@ -362,6 +362,9 @@ NetSpeedTestRsp_Type,
 
 UdpMultiCastReq_Type,
 UdpMultiCastRsp_Type,
+
+NotifyGroupMsgReq_Type,
+NotifyGroupMsgRsp_Type,
 };
 
 //客户端会话状态

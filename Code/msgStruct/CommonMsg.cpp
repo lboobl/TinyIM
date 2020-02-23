@@ -5385,7 +5385,7 @@ bool RecvGroupTextMsgReqMsg::FromString(const std::string &strJson)
 
 	if (json["ChatMsg"].is_object())
 	{
-		GroupChatMsg(json["GroupMsg"], m_chatMsg);
+		GroupChatMsg(json["ChatMsg"], m_chatMsg);
 	}
 	else
 	{
@@ -9177,6 +9177,118 @@ bool UdpMultiCastRspMsg::FromString(const std::string &strJson)
 	if (json["FriendId"].is_string())
 	{
 		m_strFriendId = json["FriendId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+NotifyGroupMsgReqMsg::NotifyGroupMsgReqMsg()
+{
+	m_type = E_MsgType::NotifyGroupMsgReq_Type;
+}
+
+std::string NotifyGroupMsgReqMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"GroupId",m_strGroupId},
+		});
+
+	return clientObj.dump();
+}
+
+bool NotifyGroupMsgReqMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["GroupId"].is_string())
+	{
+		m_strGroupId = json["GroupId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+NotifyGroupMsgRspMsg::NotifyGroupMsgRspMsg()
+{
+	m_type = E_MsgType::NotifyGroupMsgRsp_Type;
+}
+
+std::string NotifyGroupMsgRspMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"GroupId",m_strGroupId},
+		});
+
+	return clientObj.dump();
+}
+
+bool NotifyGroupMsgRspMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["GroupId"].is_string())
+	{
+		m_strGroupId = json["GroupId"].string_value();
 	}
 	else
 	{
