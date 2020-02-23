@@ -2283,57 +2283,57 @@ void CMediumServer::HSB_FriendChatRecvTxtReq(const std::shared_ptr<CClientSess>&
 }
 void CMediumServer::HSB_SendGroupTextMsgRspMsg(const std::shared_ptr<CClientSess>& pClientSess, const SendGroupTextMsgRspMsg& rspMsg)
 {
-	SendGroupTextMsgRspMsg newRspMsg;
-	//Create NewRspMsg
-	{
-		ChatMsgElemVec oldVec = MsgElemVec(rspMsg.m_chatMsg.m_strContext);
-		ChatMsgElemVec newVec;
-		for (const auto item : oldVec)
-		{
-			if (item.m_eType == CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE)
-			{
-				std::string strImageName = m_fileUtil.GetCurDir() + rspMsg.m_chatMsg.m_strSenderId + "\\" + item.m_strImageName;
-				ChatMsgElem elem;
-				elem.m_eType = item.m_eType;
-				elem.m_strImageName = strImageName;
-				newVec.push_back(elem);
-			}
-			else
-			{
-				newVec.push_back(item);
-			}
-		}
-		newRspMsg = rspMsg;
-		newRspMsg.m_chatMsg.m_strContext = MsgElemVec(newVec);
-	}
+	//SendGroupTextMsgRspMsg newRspMsg;
+	////Create NewRspMsg
+	//{
+	//	ChatMsgElemVec oldVec = MsgElemVec(rspMsg.m_chatMsg.m_strContext);
+	//	ChatMsgElemVec newVec;
+	//	for (const auto item : oldVec)
+	//	{
+	//		if (item.m_eType == CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE)
+	//		{
+	//			std::string strImageName = m_fileUtil.GetCurDir() + rspMsg.m_chatMsg.m_strSenderId + "\\" + item.m_strImageName;
+	//			ChatMsgElem elem;
+	//			elem.m_eType = item.m_eType;
+	//			elem.m_strImageName = strImageName;
+	//			newVec.push_back(elem);
+	//		}
+	//		else
+	//		{
+	//			newVec.push_back(item);
+	//		}
+	//	}
+	//	newRspMsg = rspMsg;
+	//	newRspMsg.m_chatMsg.m_strContext = MsgElemVec(newVec);
+	//}
 
-	//Send To GUI
-	{
-		auto pGuiSess = Get_GUI_Sess(pClientSess->UserId());
-		if (pGuiSess)
-		{
-			pGuiSess->SendMsg(&newRspMsg);
-		}
-	}
+	////Send To GUI
+	//{
+	//	auto pGuiSess = Get_GUI_Sess(pClientSess->UserId());
+	//	if (pGuiSess)
+	//	{
+	//		pGuiSess->SendMsg(&newRspMsg);
+	//	}
+	//}
 
-	//Save To DataBase
-	{
-		try {
-			auto pMsgUtil = GetMsgPersisUtil(newRspMsg.m_chatMsg.m_strSenderId);
-			if (pMsgUtil)
-			{
-				pMsgUtil->Save_RecvGroupTextMsgReqMsg(newRspMsg);
-			}
-			else
-			{
-				LOG_ERR(ms_loger, "UserId {} No Msg Util [{} {}] ", newRspMsg.m_chatMsg.m_strSenderId, __FILENAME__, __LINE__);
-			}
-		}
-		catch (std::exception ex)
-		{
-			LOG_ERR(ms_loger, "Ex:{} [{} {}]", ex.what(), __FILENAME__, __LINE__);
-		}
-	}
+	////Save To DataBase
+	//{
+	//	try {
+	//		auto pMsgUtil = GetMsgPersisUtil(newRspMsg.m_chatMsg.m_strSenderId);
+	//		if (pMsgUtil)
+	//		{
+	//			pMsgUtil->Save_RecvGroupTextMsgReqMsg(newRspMsg);
+	//		}
+	//		else
+	//		{
+	//			LOG_ERR(ms_loger, "UserId {} No Msg Util [{} {}] ", newRspMsg.m_chatMsg.m_strSenderId, __FILENAME__, __LINE__);
+	//		}
+	//	}
+	//	catch (std::exception ex)
+	//	{
+	//		LOG_ERR(ms_loger, "Ex:{} [{} {}]", ex.what(), __FILENAME__, __LINE__);
+	//	}
+	//}
 }
 
 
