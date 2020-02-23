@@ -1832,6 +1832,7 @@ bool CMsgProto::SendGroupChatTextMsg(const std::string strGroupId, RichEditMsgLi
 	reqMsg.m_chatMsg.m_strGroupId = strGroupId;
 	reqMsg.m_chatMsg.m_strContext = MsgElemVec(UiToCore(msgList));
 	reqMsg.m_chatMsg.m_fontInfo = UiToCore(font);
+	reqMsg.m_strMsgId = "1111111";
 	auto pSess = SourceServer::CSessManager::GetManager();
 	TransBaseMsg_t trans(reqMsg.GetMsgType(), reqMsg.ToString());
 	return pSess->SendMsg(&trans);

@@ -3070,7 +3070,7 @@ void CGroupChatDlg::OnRecvToHandle(const HWND recvHandle,C_UI_GroupMessage* pGro
 
 		//处理内容部分
 		{
-			std::string strJson = EncodeUtil::UnicodeToAnsi(pGroupMsg->m_strContext);
+			std::string strJson = EncodeUtil::UnicodeToUtf8(pGroupMsg->m_strContext);
 			RichEditMsgList msgList = CoreToUi(MsgElemVec(strJson));
 			RichEdit_SetSel(recvHandle, -1, -1);
 			for (const auto item : msgList)

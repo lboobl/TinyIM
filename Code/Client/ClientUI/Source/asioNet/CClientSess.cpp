@@ -252,7 +252,7 @@ void CClientSess::send_msg(std::shared_ptr<TransBaseMsg_t> msg)
 		}
 		else
 		{
-			//INFO(ms_loger, "Send Succeed:{}  {}", MsgType(msg->GetType()), msg->to_string());
+			INFO(ms_loger, "Send Succeed:{}  {} [{} {}]", MsgType(msg->GetType()), msg->to_string(),__FILENAME__,__LINE__);
 		}
 	});
 }

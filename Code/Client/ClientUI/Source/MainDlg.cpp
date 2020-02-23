@@ -6616,6 +6616,7 @@ void CMainDlg::InitMsgTypeMap()
 		m_netProto->AddMap(E_MsgType::NetRecoverReport_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::GetGroupListRsp_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::RecvGroupTextMsgReq_Type, m_hWnd);
+		m_netProto->AddMap(E_MsgType::SendGroupTextMsgRsp_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::FriendSendFileMsgRsp_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::FriendRecvFileMsgReq_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::FriendNotifyFileMsgReq_Type, m_hWnd);
