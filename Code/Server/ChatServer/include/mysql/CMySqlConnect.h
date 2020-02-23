@@ -109,6 +109,8 @@ public:
 	bool SelectGroupRelation(const std::string strGroupId, std::vector<T_GROUP_RELATION_BEAN>& memBeans);
 	
 	bool SelectGroupUsers(const std::string strGroupId, std::vector<std::string> groupUsers);
+
+	bool SelectGroupUserLastId(const std::string strUserId, const std::string strGroupId, std::string& strLastReadId);
 	// 群组成员基本操作 end
 
 	// 群聊消息基本操作 Begin

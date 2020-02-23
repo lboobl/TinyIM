@@ -2072,6 +2072,7 @@ bool CMySqlConnect::SelectGroupChatText(T_GROUP_CHAT_MSG& chatMsg)
 {
 	MYSQL_RES *result;
 	MYSQL_ROW sql_row;
+	bool bResult = false;
 	int res = 0;
 	constexpr char strTemplate2[] = "SELECT F_MSG_ID,\
 F_MSG_TYPE,\
@@ -2096,6 +2097,7 @@ FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID='{0}' AND F_MSG_ID > '{1}' LIMIT 1;";
 				chatMsg.m_strF_MSG_CONTEXT = sql_row[3];
 				chatMsg.m_strF_OTHER_INFO = sql_row[4];
 				chatMsg.m_strF_CREATE_TIME = sql_row[5];
+				bResult = true;
 				break;
 			}
 		}
@@ -2108,9 +2110,45 @@ FROM T_GROUP_CHAT_MSG WHERE F_GROUP_ID='{0}' AND F_MSG_ID > '{1}' LIMIT 1;";
 	{
 		mysql_free_result(result);
 	}
-	return true;
+	return bResult;
 }
 
+bool CMySqlConnect::SelectGroupUserLastId(const std::string strUserId, const std::string strGroupId, std::string& strLastReadId)
+{
+	//MYSQL_RES *result;
+	//MYSQL_ROW sql_row;
+	//int res = 0;
+	//constexpr char strTemplate2[] = "SELECT F_GROUP_ID,F_ROLE_TYPE,F_LAST_READ_MSG_ID FROM T_GROUP_RELATION WHERE F_USER_ID='{0}';";
+	//std::string strSql = fmt::format(strTemplate2, strUserName);
+	//LOG_INFO(m_loger, "SQL:{} [{}  {} ]", strSql, __FILENAME__, __LINE__);
+	//res = mysql_query(m_mysql, strSql.c_str());
+	//if (!res)
+	//{
+	//	result = mysql_store_result(m_mysql);
+	//	if (result)
+	//	{
+	//		T_GROUP_RELATION_BEAN bean;
+	//		bean.m_strF_USER_ID = strUserName;
+	//		while ((sql_row = mysql_fetch_row(result)))
+	//		{
+	//			bean.m_strF_GROUP_ID = sql_row[0];
+	//			bean.m_eRole = MemberRole(sql_row[1]);
+	//			bean.m_strF_LAST_READ_MSG_ID = sql_row[2];
+	//			memBeans.push_back(bean);
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	return false;
+	//}
+	//if (result != NULL)
+	//{
+	//	mysql_free_result(result);
+	//}
+	//return true;
+	return false;
+}
 
 /**
  * @brief 插入群组聊天文本消息

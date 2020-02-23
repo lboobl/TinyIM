@@ -37,6 +37,25 @@ struct SendFileInfo_st
 };
 using FILE_ID_RSP_MSG_MAP = std::map<int, FileDataSendRspMsg>;
 using USER_FILE_DATA_RSP_MAP=std::map<std::string, FILE_ID_RSP_MSG_MAP>;
+struct UserIdGroupId_st
+{
+	std::string m_strUserId;
+	std::string m_strGroupId;
+	bool operator <(const UserIdGroupId_st& other) const
+	{
+		if (m_strUserId < other.m_strUserId)
+		{
+			return true;
+		}
+
+		if ((m_strUserId >= other.m_strUserId) && (m_strGroupId < other.m_strGroupId))
+		{
+			return true;
+		}
+
+		return false;
+	}
+};
 namespace ChatServer
 {
 
@@ -129,8 +148,7 @@ public:
 
 	bool OnUserRecvGroupMsg(const std::string strUser);
 
-	bool OnUserRecvGroupMsg(const std::string strUser,const std::string strMsgId, const std::string strGroupId, const std::string strSender, const std::string strMsg);
-	bool OnUserRecvGroupMsg(const std::string strUser,const T_GROUP_CHAT_MSG& msg);
+	bool DoUserRecvGroupMsg(const std::string strUser,const T_GROUP_CHAT_MSG& msg);
 	void OnDispatchGroupMsg(const std::string strGroupId);
 
 	void OnUserStateCheck(const std::string strUserId);
@@ -154,7 +172,8 @@ private:
   
     std::map<std::string, std::shared_ptr<CServerSess>> m_UserSessVec;  //保存UserId和Sess的对应关系
 	std::map<std::string, CLIENT_SESS_STATE> m_clientStateMap;          //保存客户端的状态
-
+	
+	
 	std::map<std::string, std::shared_ptr<CServerSess>> m_KickOffSessMap;  //保存UserId和Sess的对应关系
 
 	std::shared_ptr<CUdpServer> m_udpServer;
@@ -261,6 +280,11 @@ private:
 	void HandleAddFriendNotifyRsp(const AddFriendNotifyRspMsg& rspMsg);
 	void HandleUserKickOffRsp(const UserKickOffRspMsg& reqMsg);
 
+private:
+	void CheckGroupUserState(const UserIdGroupId_st& keyValue);
+	CLIENT_SESS_STATE GetGroupUserState(const UserIdGroupId_st& keyValue);
+	bool SetGroupUserState(const UserIdGroupId_st& keyValue, const CLIENT_SESS_STATE& state);
+	std::map<UserIdGroupId_st, CLIENT_SESS_STATE> m_groupStateMap;
 
 
 public:

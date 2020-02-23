@@ -2346,21 +2346,52 @@ bool CChatServer::OnUserRecvGroupMsg(const std::string strUser)
 	std::vector<T_GROUP_RELATION_BEAN> userGroups;
 	if (m_util.SelectUserGroupRelation(strUser, userGroups)) {
 		for (auto item : userGroups) {
-			T_GROUP_CHAT_MSG msgBean;
-			msgBean.m_strF_GROUP_ID = item.m_strF_GROUP_ID;
-			msgBean.m_strF_MSG_ID = item.m_strF_LAST_READ_MSG_ID;
-			if (m_util.SelectGroupChatText(msgBean))
+			UserIdGroupId_st keyValue;
+			keyValue.m_strGroupId = item.m_strF_GROUP_ID;
+			keyValue.m_strUserId = strUser;
+			if (CLIENT_SESS_STATE::SESS_IDLE_STATE == GetGroupUserState(keyValue))
 			{
-				if (CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE == msgBean.m_eChatMsgType)
+				T_GROUP_CHAT_MSG msgBean;
+				msgBean.m_strF_GROUP_ID = item.m_strF_GROUP_ID;
+				msgBean.m_strF_MSG_ID = item.m_strF_LAST_READ_MSG_ID;
+				if (m_util.SelectGroupChatText(msgBean))
 				{
-					OnUserRecvGroupMsg(item.m_strF_USER_ID, msgBean);
+					if (CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE == msgBean.m_eChatMsgType)
+					{
+						if (DoUserRecvGroupMsg(item.m_strF_USER_ID, msgBean))
+						{
+							SetGroupUserState(keyValue, CLIENT_SESS_STATE::SESS_GROUP_MSG_SEND_RECV_STATE);
+						}
+					}
 				}
 			}
 		}
 	}
 	return false;
 }
+CLIENT_SESS_STATE CChatServer::GetGroupUserState(const UserIdGroupId_st& keyValue)
+{
+	auto item = m_groupStateMap.find(keyValue);
+	if (item != m_groupStateMap.end())
+	{
+		return item->second;
+	}
+	else
+	{
+		return CLIENT_SESS_STATE::SESS_IDLE_STATE;
+	}
+}
+void CChatServer::CheckGroupUserState(const UserIdGroupId_st& keyValue)
+{
 
+}
+
+bool CChatServer::SetGroupUserState(const UserIdGroupId_st& keyValue, const CLIENT_SESS_STATE& state)
+{
+	m_groupStateMap.erase(keyValue);
+	m_groupStateMap.insert({ keyValue, state });
+	return true;
+}
 /**
  * @brief 处理群聊文本消息
  * 
@@ -2370,11 +2401,6 @@ bool CChatServer::OnUserRecvGroupMsg(const std::string strUser)
 void CChatServer::HandleSendGroupTextReq(const std::shared_ptr<CServerSess>& pSess, const SendGroupTextMsgReqMsg& reqMsg)
 {
 	SendGroupTextMsgRspMsg rspMsg = DoSendGroupTextMsgReqMsg(reqMsg);
-	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-	if (pSess)
-	{
-		pSess->SendMsg(&rspMsg);
-	}
 
 	OnDispatchGroupMsg(reqMsg.m_chatMsg.m_strGroupId);
 }
@@ -2815,7 +2841,7 @@ void CChatServer::OnDispatchGroupMsg(const std::string strGroupId)
  * @return true 成功
  * @return false 失败
  */
-bool CChatServer::OnUserRecvGroupMsg(const std::string strUser, const T_GROUP_CHAT_MSG& msg)
+bool CChatServer::DoUserRecvGroupMsg(const std::string strUser, const T_GROUP_CHAT_MSG& msg)
 {
 	auto item = m_UserSessVec.find(strUser);
 	if (item != m_UserSessVec.end())
@@ -2830,6 +2856,7 @@ bool CChatServer::OnUserRecvGroupMsg(const std::string strUser, const T_GROUP_CH
 			reqMsg.m_chatMsg.m_strChatMsgId = msg.m_strF_MSG_ID;
 			reqMsg.m_chatMsg.m_fontInfo.FromString(msg.m_strF_OTHER_INFO);
 			reqMsg.m_chatMsg.m_strMsgTime = msg.m_strF_CREATE_TIME;
+			reqMsg.m_strMsgId = std::to_string(m_MsgID_Util.nextId());
 			item->second->SendMsg(&reqMsg);
 			return true;
 		}
@@ -2849,20 +2876,20 @@ bool CChatServer::OnUserRecvGroupMsg(const std::string strUser, const T_GROUP_CH
  * @return true 发送成功
  * @return false 发送失败
  */
-bool CChatServer::OnUserRecvGroupMsg(const std::string strUser,const std::string strMsgId, const std::string strGroupId, const std::string strSender, const std::string strMsg)
-{
-	auto item = m_UserSessVec.find(strUser);
-	if (item != m_UserSessVec.end())
-	{
-		RecvGroupTextMsgReqMsg reqMsg;
-		reqMsg.m_chatMsg.m_strGroupId = strGroupId;
-		reqMsg.m_strUserId = strSender;
-		reqMsg.m_strMsgId = strMsgId;
-		item->second->SendMsg(&reqMsg);
-		return true;
-	}
-	return false;
-}
+//bool CChatServer::OnUserRecvGroupMsg(const std::string strUser,const std::string strMsgId, const std::string strGroupId, const std::string strSender, const std::string strMsg)
+//{
+//	auto item = m_UserSessVec.find(strUser);
+//	if (item != m_UserSessVec.end())
+//	{
+//		RecvGroupTextMsgReqMsg reqMsg;
+//		reqMsg.m_chatMsg.m_strGroupId = strGroupId;
+//		reqMsg.m_strUserId = strSender;
+//		reqMsg.m_strMsgId = strMsgId;
+//		item->second->SendMsg(&reqMsg);
+//		return true;
+//	}
+//	return false;
+//}
 
 /**
  * @brief 处理用户发送的群组文本聊天消息请求
@@ -2885,7 +2912,23 @@ SendGroupTextMsgRspMsg CChatServer::DoSendGroupTextMsgReqMsg(const SendGroupText
 		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 		rspMsg.m_chatMsg = reqMsg.m_chatMsg;
-		rspMsg.m_chatMsg.m_strChatMsgId = chatMsg.m_strF_MSG_ID;
+		/*rspMsg.m_chatMsg.m_strChatMsgId = chatMsg.m_strF_MSG_ID;
+		rspMsg.m_chatMsg.m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
+		rspMsg.m_chatMsg.m_strMsgTime = CTimeUtil::GetYMD_HMS_Time();
+		rspMsg.m_chatMsg.m_strSenderId = reqMsg.m_chatMsg.m_strSenderId;
+
+		T_GROUP_RELATION_BEAN relationBean;
+		relationBean.m_strF_USER_ID = chatMsg.m_strF_SENDER_ID;
+		relationBean.m_strF_LAST_READ_MSG_ID = chatMsg.m_strF_MSG_ID;
+		relationBean.m_strF_GROUP_ID = chatMsg.m_strF_GROUP_ID;
+		if (m_util.UpdateGroupRelationLastReadId(relationBean))
+		{
+
+		}
+		else
+		{
+			LOG_ERR(ms_loger,"Update Last Read ID failed {} {} [{} {}]", relationBean.m_strF_USER_ID, relationBean.m_strF_GROUP_ID,__FILENAME__,__LINE__);
+		}*/
 	}
 	else
 	{
@@ -2914,16 +2957,25 @@ void CChatServer::HandleRecvGroupTextMsgRspMsg(const std::shared_ptr<CServerSess
 
 	}
 
-
-	T_GROUP_CHAT_MSG msgBean;
-	msgBean.m_strF_GROUP_ID = reqMsg.m_strGroupId;
-	msgBean.m_strF_MSG_ID = reqMsg.m_strMsgId;
-	if (m_util.SelectGroupChatText(msgBean))
+	UserIdGroupId_st keyValue;
+	keyValue.m_strUserId = pSess->UserId();
+	keyValue.m_strGroupId = reqMsg.m_strGroupId;
+	if (CLIENT_SESS_STATE::SESS_GROUP_MSG_SEND_RECV_STATE == GetGroupUserState(keyValue))
 	{
-		if (CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE == msgBean.m_eChatMsgType)
+		T_GROUP_CHAT_MSG msgBean;
+		msgBean.m_strF_GROUP_ID = reqMsg.m_strGroupId;
+		msgBean.m_strF_MSG_ID = reqMsg.m_strMsgId;
+		if (m_util.SelectGroupChatText(msgBean))
 		{
-			OnUserRecvGroupMsg(pSess->UserId(), msgBean);
-			//OnUserRecvGroupMsg(reqMsg.m_strSenderId, msgBean.m_strF_MSG_ID, msgBean.m_strF_GROUP_ID, msgBean.m_strF_SENDER_ID, msgBean.m_strF_MSG_CONTEXT);
+			if (CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE == msgBean.m_eChatMsgType)
+			{
+				DoUserRecvGroupMsg(pSess->UserId(), msgBean);
+				//OnUserRecvGroupMsg(reqMsg.m_strSenderId, msgBean.m_strF_MSG_ID, msgBean.m_strF_GROUP_ID, msgBean.m_strF_SENDER_ID, msgBean.m_strF_MSG_CONTEXT);
+			}
+		}
+		else
+		{
+			SetGroupUserState(keyValue, CLIENT_SESS_STATE::SESS_IDLE_STATE);
 		}
 	}
 }
