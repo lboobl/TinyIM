@@ -1824,7 +1824,7 @@ LRESULT CMainDlg::OnGroupListDblClk(LPNMHDR pnmh)
 
 
 /**
- * @brief 群组聊天右击
+ * @brief 群组聊天右击，显示群组聊天对应的弹出菜单
  * 
  * @param pnmh 
  * @return LRESULT 

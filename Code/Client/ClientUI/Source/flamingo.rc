@@ -924,29 +924,11 @@ BEGIN
         MENUITEM "我在线上",                        ID_MENU_IM_ONLINE
         MENUITEM "离线",                          ID_MENU_IM_OFFLINE
     END
-    POPUP "联系人"
-    BEGIN
-        MENUITEM "刷新好友列表",                      IDM_REFRESH_BUDDY_LIST
-        MENUITEM SEPARATOR
-        MENUITEM "显示在线联系人",                     IDM_SHOW_ONLINE_BUDDY_ONLY
-    END
     POPUP "群/讨论组"
     BEGIN
         MENUITEM "创建一个群",                       IDM_CREATE_GROUP
         MENUITEM SEPARATOR
         MENUITEM "添加群分组",                       IDM_CREATE_GROUP_LIST
-    END
-    POPUP "好友右键菜单"
-    BEGIN
-        MENUITEM "发送即时消息",                      IDM_SEND_MSG
-        MENUITEM SEPARATOR
-        MENUITEM "查看用户资料",                      IDM_VIEW_BUDDY_INFO
-        MENUITEM SEPARATOR
-        MENUITEM "修改备注姓名",                      IDM_MODIFY_BUDDY_MARK_NAME
-        MENUITEM SEPARATOR
-        MENUITEM "删除好友",                        IDM_DELETE_FRIEND
-        MENUITEM SEPARATOR
-        MENUITEM "移动联系人至",                      0
     END
     POPUP "主菜单"
     BEGIN
@@ -969,12 +951,6 @@ BEGIN
         MENUITEM "查看用户资料",                      IDM_VIEW_BUDDY_INFO_FROM_RECENT_LIST
         MENUITEM SEPARATOR
         MENUITEM "从会话列表移除",                     IDM_DELETE_RECENT_ITEM
-    END
-    POPUP "好友列表空白处右键菜单"
-    BEGIN
-        MENUITEM "添加分组",                        IDM_ADD_TEAM
-        MENUITEM SEPARATOR
-        MENUITEM "刷新好友列表",                      IDM_REFRESH_BUDDY_LIST
     END
 END
 
