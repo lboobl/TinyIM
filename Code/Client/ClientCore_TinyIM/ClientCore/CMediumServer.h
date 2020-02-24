@@ -175,7 +175,7 @@ private:
 	void HSB_FriendRecvFileMsgReq(const std::shared_ptr<CClientSess>& pClientSess, const FriendRecvFileMsgReqMsg reqMsg);
 	void HSB_RecvGroupTextMsgReqMsg(const std::shared_ptr<CClientSess>& pClientSess, const RecvGroupTextMsgReqMsg& reqMsg);
 	void HSB_SendGroupTextMsgRspMsg(const std::shared_ptr<CClientSess>& pClientSess, const SendGroupTextMsgRspMsg& rspMsg);
-
+	void HSB_NotifyGroupMsgReqMsg(const std::shared_ptr<CClientSess>& pClientSess, const NotifyGroupMsgReqMsg& reqMsg);
 
 	bool HandleSendForward(const std::shared_ptr<CServerSess>& pServerSess, const TransBaseMsg_t& msg);
 	void HSF_GetFriendChatHistoryReq(const std::shared_ptr<CServerSess>& pServerSess, const GetFriendChatHistoryReq& msg);
