@@ -506,32 +506,20 @@ void CMsgProto::HandleRecvGroupTextMsgReq(const std::shared_ptr<TransBaseMsg_t> 
 {
 	RecvGroupTextMsgReqMsg reqMsg;
 	if (reqMsg.FromString(pOrgMsg->to_string())) {
-
 		{
+			C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
+			pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(reqMsg.m_chatMsg.m_strSenderId));
+			pResult->m_strSenderId = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strSenderId);
+			pResult->m_strContext = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strContext);
+			pResult->m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
+			pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
+			pResult->m_stFontInfo = CoreToUi(reqMsg.m_chatMsg.m_fontInfo);
+			pResult->m_strMsgTime = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strMsgTime);
+			auto item = m_msgMap.find(reqMsg.GetMsgType());
+			if (item != m_msgMap.end())
 			{
-				C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
-				pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(reqMsg.m_chatMsg.m_strSenderId));
-				pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(reqMsg.m_chatMsg.m_strSenderId);
-				pResult->m_strContext = EncodeUtil::AnsiToUnicode(reqMsg.m_chatMsg.m_strContext);
-				pResult->m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
-				pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
-				pResult->m_stFontInfo = CoreToUi(reqMsg.m_chatMsg.m_fontInfo);
-				pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(reqMsg.m_chatMsg.m_strMsgTime);
-				auto item = m_msgMap.find(reqMsg.GetMsgType());
-				if (item != m_msgMap.end())
-				{
-					::PostMessage(item->second, FMG_MSG_RECV_GROUP_MSG, 0, (LPARAM)(pResult));
-				}
+				::PostMessage(item->second, FMG_MSG_RECV_GROUP_MSG, 0, (LPARAM)(pResult));
 			}
-		}
-		{
-			RecvGroupTextMsgRspMsg rspMsg;
-			rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-			rspMsg.m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
-			rspMsg.m_strUserId = m_strUserId;
-			auto pSess = SourceServer::CSessManager::GetManager();
-			TransBaseMsg_t trans(rspMsg.GetMsgType(), rspMsg.ToString());
-			pSess->SendMsg(&trans);
 		}
 	}
 }
@@ -1211,7 +1199,7 @@ ChatMsgElemVec UiToCore(const RichEditMsgList& richMsg)
 		{
 			ChatMsgElem elem;
 			elem.m_eType = CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE;
-			elem.m_strContext = EncodeUtil::UnicodeToAnsi(item.m_strContext);
+			elem.m_strContext = EncodeUtil::UnicodeToUtf8(item.m_strContext);
 			result.push_back(elem);
 		}break;
 		case E_RichEditType::FACE:
@@ -1225,7 +1213,7 @@ ChatMsgElemVec UiToCore(const RichEditMsgList& richMsg)
 		{
 			ChatMsgElem elem;
 			elem.m_eType = CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE;
-			elem.m_strImageName = EncodeUtil::UnicodeToAnsi(item.m_strImageName);
+			elem.m_strImageName = EncodeUtil::UnicodeToUtf8(item.m_strImageName);
 			result.push_back(elem);
 		}break;
 		default:
@@ -1249,7 +1237,7 @@ RichEditMsgList CoreToUi(const ChatMsgElemVec& coreMsgVec)
 		{
 			RichEditMsg_st elem;
 			elem.m_eType = E_RichEditType::TEXT;
-			elem.m_strContext = EncodeUtil::AnsiToUnicode(item.m_strContext);
+			elem.m_strContext = EncodeUtil::Utf8ToUnicode(item.m_strContext);
 			result.push_back(elem);
 		}break;
 		case CHAT_MSG_TYPE::E_CHAT_EMOJI_TYPE:
@@ -1263,7 +1251,7 @@ RichEditMsgList CoreToUi(const ChatMsgElemVec& coreMsgVec)
 		{
 			RichEditMsg_st elem;
 			elem.m_eType = E_RichEditType::IMAGE;
-			elem.m_strImageName = EncodeUtil::AnsiToUnicode(item.m_strImageName);
+			elem.m_strImageName = EncodeUtil::Utf8ToUnicode(item.m_strImageName);
 			result.push_back(elem);
 		}break;
 		default:

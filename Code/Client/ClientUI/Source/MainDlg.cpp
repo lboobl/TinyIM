@@ -1948,27 +1948,29 @@ LRESULT CMainDlg::OnTabCtrlSelChange(LPNMHDR pnmh)
 	switch (nCurSel)
 	{
 	case 0:
+	{
 		m_RecentListCtrl.ShowWindow(SW_SHOW);
 		m_BuddyListCtrl.ShowWindow(SW_HIDE);
 		m_GroupListCtrl.ShowWindow(SW_HIDE);
 		m_RecentListCtrl.SetBuddyTeamExpand(0, TRUE);
 		//m_RecentListCtrl.SetBuddyListCtrlType(BUDDY_LIST_TYPE_RECENT);
 		m_RecentListCtrl.SetFocus();
-		break;
+	}break;
 
 	case 1:
+	{
 		m_RecentListCtrl.ShowWindow(SW_HIDE);
 		m_BuddyListCtrl.ShowWindow(SW_SHOW);
 		m_GroupListCtrl.ShowWindow(SW_HIDE);
 		m_BuddyListCtrl.SetFocus();
-		break;
-
+	}break;
 	case 2:
+	{	
 		m_RecentListCtrl.ShowWindow(SW_HIDE);
-		m_BuddyListCtrl.ShowWindow(SW_HIDE);	
+		m_BuddyListCtrl.ShowWindow(SW_HIDE);
 		m_GroupListCtrl.ShowWindow(SW_SHOW);
 		m_GroupListCtrl.SetFocus();
-		break;
+	}break;
 	}
 
 	m_nCurSelIndexInMainTab = nCurSel;
@@ -2028,7 +2030,7 @@ void CMainDlg::OnBtn_Cancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 	//m_FMGClient.CancelLogin();
 	CloseDialog(IDCANCEL);
 	CString strMainExe = g_szHomePath;
-	strMainExe.Format(_T("%sFlamingo.exe"), g_szHomePath);
+	strMainExe.Format(_T("%TinyIM.exe"), g_szHomePath);
 	if((int)::ShellExecute(NULL, NULL, strMainExe.GetString(), NULL, NULL, SW_SHOW) <= 32)
 	{
 		::MessageBox(NULL, _T("显示登录对话框失败！"), g_strAppTitle.c_str(), MB_OK|MB_ICONERROR);
