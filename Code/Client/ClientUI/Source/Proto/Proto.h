@@ -93,7 +93,7 @@ public:
 
 	bool SendAddTeamReq(const std::string strTeamName);
 	bool SendRemoveTeamReq(const std::string strTeamId);
-	bool MoveFriendToTeam(const std::string strUserName, const std::string strFriendName, const std::string strSrcTeamId, const std::string strDstTeamId);
+	bool MoveFriendToTeam(const std::string strFriendName, const std::string strSrcTeamId, const std::string strDstTeamId);
 	bool GetChatHistoryReq(const std::string strFriendId, const std::string strChatMsgId, const HISTORY_DIRECTION eDirection);
 	//Group
 	bool SendCreateGroupReq(const std::string strUserName, const std::string strGroupName);

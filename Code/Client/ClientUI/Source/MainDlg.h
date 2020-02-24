@@ -460,6 +460,13 @@ private:
 
 	CSkinButton				m_btnMainMenu;									//主界面菜单按钮
 	CSkinMenu				m_SkinMenu;										//左下角带头像的菜单
+
+	//系统托盘区相关的变量 Begin
+	CSkinMenu               m_TrayMenuNormal;                               //托盘区按钮普通状态
+	CSkinMenu               m_TrayMenuLock;								    //托盘区按钮的锁定状态
+	bool                    m_bShowTrayMenu; //是否显示托盘区菜单
+	//系统托盘区相关的变量 End
+	
 	CSkinButton				m_btnMultiChat;									//群发按钮
 	CSkinButton				m_btnFind;										//查找好友按钮
 	CSkinEdit				m_edtSign;                                      //个性签名展示
@@ -479,7 +486,15 @@ private:
 	CSkinTabCtrl			m_TabCtrl;		                                 //主界面的Tab页控件
 
 	CRecentListCtrl			m_RecentListCtrl;//最近聊天列表
+	
+    //主界面好友列表相关变量 Begin
 	CBuddyListCtrl			m_BuddyListCtrl;//好友列表
+	CSkinMenu               m_BuddySelectedMenu;//好友选中时的右键菜单
+	CSkinMenu               m_BuddyEmptyAreaMenu;//好友列表空白区右键菜单
+	CSkinMenu               m_BuddyGroupSelectMenu;//好友分组选中时的弹出菜单
+	//主界面好友列表相关变量 End
+
+
 	CBuddyListCtrl			m_GroupListCtrl;//群组列表
 
 	CSkinPictureBox			m_picLogining;//登录中的图片

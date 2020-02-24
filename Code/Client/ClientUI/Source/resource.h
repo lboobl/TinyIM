@@ -85,6 +85,18 @@
 #define IDD_DIALOG2                     252
 #define IDD_REMOTE_DESKTOP              252
 #define IDD_MESSAGE_BOX                 253
+#define ID_MENU_TRAY_NORMAL             253
+#define ID_MENU_TRAY_LOCK               254
+#define ID_MENU_GROUP_LIST_EMTPY_AREA_RIGHT 256
+#define ID_MENU_GROUP_SELECT_RIGHT_MENU 257
+#define IDR_MENU_GROUP_SELECTED         258
+#define ID_MENU_BUDDY_GROUP_SELECT      259
+#define IDR_MENU1                       260
+#define IDR_MENU2                       261
+#define IDR_MENU3                       262
+#define ID_MENU_BUDDY_EMPTY_POP         263
+#define IDR_MENU4                       264
+#define IDR_MENU_BUDDY_SELECT           264
 #define ID_BUDDY_DLG_SAVE_AS_BTN        302
 #define ID_GROUP_CHAT_DLG_SAVE_AS_BTN   302
 #define ID_GROUP_CHAT_DLG_MSG_PROMPT_BTN 303
@@ -321,8 +333,6 @@
 #define IDC_EDIT_IMG_PORT               1186
 #define IDC_BTN_SEND_FILE               1187
 #define Flamingo_BUILD_VERSION          1526
-
-
 #define ID_MENU_IM_ONLINE               32785
 #define ID_MENU_QME                     32786
 #define ID_MENU_AWAY                    32787
@@ -330,76 +340,56 @@
 #define ID_MENU_MUTE                    32789
 #define ID_MENU_INVISIBLE               32790
 #define ID_MENU_IM_OFFLINE              32791
-
-
 #define ID_MENU_SHOW_MAIN_PANEL         32798
 #define ID_MENU_EXIT                    32799
-
 #define ID_REMOVE_FRIEND                32814
 #define ID_MOVE_TO_BLACK                32815
-
-
 #define ID_Menu                         32826
-//#define ID_32829                        32829
 #define ID_SCREEN_SHOT                  32831
 #define ID_SCREEN_CARTOON               32832
 #define ID_SCREEN_VIDEO                 32833
 #define ID_SCREEN_SHOW_EDIT_TOOL_BAR    32834
 #define ID_SCREEN_HIDE_CURRENT_WND      32835
 #define ID_SCREEN_CARTOON_SETTING       32836
-
 #define ID_CHAT_MSG_HISTORY             32840
 #define ID_IMAGE_ZOOM_IN                32841
 #define ID_IMAGE_ZOOM_OUT               32842
-
 #define ID_CHAT_MSG_MANAGER             32851
 #define ID_BUDDY_DLG_PRESS_ENTER_MENU   32852
 #define ID_BUDDY_DLG_PRESS_CTRL_ENTER_MENU 32853
-
-#define ID_GROUP_MEMBER_MANAGE                        32876
-#define ID_GROUP_CHANGE_OWNER                        32877
-#define ID_GROUP_DESTROY                        32878
-
-#define ID_GROUP_SCREEN_SHUT                        32880
-#define ID_GROUP_SCREEN_CARTOON                        32881
-#define ID_GROUP_SCREEN_VIDEO                        32882
-#define ID_GROUP_SCREEN_SHOW_EDIT_TOOL_BAR                        32883
-#define ID_GROUP_SCREEN_HIDE_CURRENT_WND                        32884
-#define ID_GROUP_SCREEN_VIDEO_SETTING                        32885
-
-#define ID_GROUP_SHOW_CHAT_MSG                        32888
-#define ID_GROUP_ZOOM_IN                        32889
-#define ID_GROUP_ZOOM_OUT                        32890
-
+#define ID_GROUP_MEMBER_MANAGE          32876
+#define ID_GROUP_CHANGE_OWNER           32877
+#define ID_GROUP_DESTROY                32878
+#define ID_GROUP_SCREEN_SHUT            32880
+#define ID_GROUP_SCREEN_CARTOON         32881
+#define ID_GROUP_SCREEN_VIDEO           32882
+#define ID_GROUP_SCREEN_SHOW_EDIT_TOOL_BAR 32883
+#define ID_GROUP_SCREEN_HIDE_CURRENT_WND 32884
+#define ID_GROUP_SCREEN_VIDEO_SETTING   32885
+#define ID_GROUP_SHOW_CHAT_MSG          32888
+#define ID_GROUP_ZOOM_IN                32889
+#define ID_GROUP_ZOOM_OUT               32890
 #define ID_GROUP_CHAT_DLG_PRESS_ENTER_MENU 32901
 #define ID_GROUP_CHAT_DLG_PRESS_CTRL_ENTER_MENU 32902
-
-#define IDM_CREATE_GROUP                        32962
-#define IDM_CREATE_GROUP_LIST                        32963
-
+#define IDM_CREATE_GROUP                32962
+#define IDM_CREATE_GROUP_LIST           32963
 #define ID_Menu32977                    32977
-
 #define ID_Menu32991                    32991
-
 #define ID_MENU_LOCK                    33007
 #define ID_MENU_GROUP_HOME_PAGE         33008
 #define ID_MENU_BIG_HEAD_PIC            33011
 #define ID_MENU_SMALL_HEAD_PIC          33012
 #define ID_MENU_STD_HEAD_PIC            33013
 #define ID_MENU_SHOW_BIG_HEAD_PIC_IN_SEL 33014
-
 #define ID_MENU_VIEW_INFO               33017
 #define ID_MENU_SEND_MSG                33018
-
 #define ID_MENU_CUT                     33033
 #define ID_MENU_COPY                    33034
 #define ID_MENU_PASTE                   33035
 #define ID_MENU_SELECT_ALL              33036
 #define ID_MENU_CLEAR                   33037
-
 #define ID_MENU_SAVE_AS                 33041
 #define ID_MENU_FONT                    33042
-
 #define ID_MENU_ZOOM_RATIO_400          33047
 #define ID_MENU_ZOOM_RATIO_200          33048
 #define ID_MENU_ZOOM_RATIO_150          33049
@@ -407,7 +397,6 @@
 #define ID_MENU_ZOOM_RATIO_100          33051
 #define ID_MENU_ZOOM_RATIO_75           33052
 #define ID_MENU_ZOOM_RATIO_50           33053
-
 #define IDM_SEND_MSG                    33060
 #define IDM_VIEW                        33061
 #define IDM_VIEW_BUDDY_INFO             33062
@@ -417,8 +406,6 @@
 #define IDM_SYS_SET                     33064
 #define ID_MESSAGE                      33065
 #define IDM_SYSTEM_SET                  33065
-
-
 #define IDM_EXPORT_MSG_LOG              33069
 #define IDM_FIND_IN_MSG_LOG             33070
 #define IDM_CLEAR_MSG_LOG               33071
@@ -427,14 +414,11 @@
 #define IDM_SEND_DIRECTORY              33074
 #define IDM_SEND_FILE_SETTINGS          33075
 #define IDM_DELETE_SELECT_MSG_LOG       33076
-
 #define ID_Menu33079                    33079
 #define IDM_MUTE                        33080
-
 #define IDM_DESTROY_AFTER_READ          33082
 #define IDM_AUTO_REPLY                  33083
 #define IDM_SYSTEM_SETTINGS             33084
-
 #define IDM_DELETE_RECENT_ITEM          33088
 #define IDM_SEND_MSG_FROM_RECENT_LIST   33089
 #define IDM_CLEAR_RECENT_LIST           33090
@@ -447,21 +431,14 @@
 #define ID_33096                        33096
 #define IDM_SEND_GROUP_MSG              33097
 #define IDM_MODIFY_BUDDY_MARK_NAME      33098
-
-
 #define IDM_ADD_TEAM                    33101
 #define IDM_DELETE_TEAM                 33102
 #define IDM_MODIFY_TEAM_NAME            33103
-
 #define IDM_VIEW_BUDDY_INFO_FROM_RECENT_LIST 33107
-
 #define IDM_MOVE_ITEM                   33109
-
 #define IDM_MODIFY_PASS_WORD            33114
 #define ID_SPLITTER_CTRL                33115
-
 #define IDM_CREATE_NEW_GROUP            33117
-
 #define IDM_OPEN_FILE                   33120
 #define IDM_OPEN_DIRECTORY              33121
 #define IDM_DELETE_FRIEND               33122
@@ -472,7 +449,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        253
+#define _APS_NEXT_RESOURCE_VALUE        265
 #define _APS_NEXT_COMMAND_VALUE         33124
 #define _APS_NEXT_CONTROL_VALUE         1300
 #define _APS_NEXT_SYMED_VALUE           101

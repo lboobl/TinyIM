@@ -1686,7 +1686,7 @@ bool CMsgProto::SendRemoveTeamReq(const std::string strTeamId)
  * @return true 
  * @return false 
  */
-bool CMsgProto::MoveFriendToTeam(const std::string strUserName, const std::string strFriendName, const std::string strSrcTeamId, const std::string strDstTeamId)
+bool CMsgProto::MoveFriendToTeam(const std::string strFriendName, const std::string strSrcTeamId, const std::string strDstTeamId)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
 	{

@@ -115,6 +115,9 @@ CMainDlg::CMainDlg(void) :m_userMgr(CUserMgr::GetInstance()), m_userCfg(CUserCon
 	m_nLoginTryTimes = 0;
 
 	InitNetConnect();
+
+	//
+	m_bShowTrayMenu = false;
 }
 
 bool CMainDlg::InitNetConnect()
@@ -868,7 +871,7 @@ BOOL CMainDlg::InitRecentListCtrl()
  */
 BOOL CMainDlg::InitUI()
 {
-	m_SkinDlg.SetBgPic(_T("main_panel_bg.png"), CRect(2, 280, 2, 127));	
+	m_SkinDlg.SetBgPic(_T("main_panel_bg.png"), CRect(2, 280, 2, 127));
 	m_SkinDlg.SetBgColor(RGB(255, 255, 255));
 	m_SkinDlg.SetMinSysBtnPic(_T("SysBtn\\btn_mini_normal.png"), _T("SysBtn\\btn_mini_highlight.png"), _T("SysBtn\\btn_mini_down.png"));
 	m_SkinDlg.SetCloseSysBtnPic(_T("SysBtn\\btn_close_normal.png"), _T("SysBtn\\btn_close_highlight.png"), _T("SysBtn\\btn_close_down.png"));
@@ -877,13 +880,13 @@ BOOL CMainDlg::InitUI()
 
 
 	HDC hDlgBgDC = m_SkinDlg.GetBgDC();
-	
+
 	CRect rcClient;
 	GetClientRect(&rcClient);
 
 	m_btnMainMenu.SetButtonType(SKIN_PUSH_BUTTON);
 	m_btnMainMenu.SetTransparent(TRUE, hDlgBgDC);
-	m_btnMainMenu.SetBgPic(_T("menu_btn_normal.png"), 
+	m_btnMainMenu.SetBgPic(_T("menu_btn_normal.png"),
 		_T("menu_btn_highlight.png"), _T("menu_btn_highlight.png"), _T("menu_btn_normal.png"));
 	m_btnMainMenu.SubclassWindow(GetDlgItem(ID_BTN_MAIN_MENU));
 	m_btnMainMenu.MoveWindow(6, rcClient.Height() - 28, 22, 20, TRUE);
@@ -891,7 +894,7 @@ BOOL CMainDlg::InitUI()
 
 	m_btnMultiChat.SetButtonType(SKIN_PUSH_BUTTON);
 	m_btnMultiChat.SetTransparent(TRUE, hDlgBgDC);
-	m_btnMultiChat.SetBgPic(_T("multichat_btn_normal.png"), 
+	m_btnMultiChat.SetBgPic(_T("multichat_btn_normal.png"),
 		_T("multichat_btn_highlight.png"), _T("multichat_btn_highlight.png"), _T("multichat_btn_normal.png"));
 	m_btnMultiChat.SubclassWindow(GetDlgItem(ID_BTN_MULTI_CHAT));
 
@@ -908,32 +911,20 @@ BOOL CMainDlg::InitUI()
 	//m_btnSystemSet.MoveWindow(28 + 6, rcClient.Height() - 28, 22, 20, TRUE);
 	//m_btnSystemSet.SetToolTipText(_T("打开系统设置"));
 
-	//m_btnMsgMgr.SetButtonType(SKIN_ICON_BUTTON);
-	//m_btnMsgMgr.SetTransparent(TRUE, hDlgBgDC);
-	//m_btnMsgMgr.SetBgPic(NULL, _T("allbtn_highlight.png"), _T("allbtn_down.png"), NULL);
-	//m_btnMsgMgr.SetIconPic(_T("message.png"));
-	//m_btnMsgMgr.SubclassWindow(GetDlgItem(ID_BTN_MSG_MGR));
-	//m_btnMsgMgr.MoveWindow(72, rcClient.Height()-30, 22, 22, TRUE);
-	//m_btnMsgMgr.SetToolTipText(_T("打开消息管理器"));
 
-	//m_btnSafe.SetButtonType(SKIN_ICON_BUTTON);
-	//m_btnSafe.SetTransparent(TRUE, hDlgBgDC);
-	//m_btnSafe.SetBgPic(NULL, _T("allbtn_highlight2.png"), _T("allbtn_down2.png"), NULL);
-	//m_btnSafe.SetIconPic(_T("UTalkSafe.png"));
-	//m_btnSafe.SubclassWindow(GetDlgItem(ID_BTN_SAFE));
-	//m_btnSafe.MoveWindow(94, rcClient.Height()-30, 62, 22, TRUE);
-	//m_btnSafe.SetToolTipText(_T("打开安全概况"));
+
+
 
 	//m_btnFind.SetButtonType(SKIN_FIND_BUTTON);
 	m_btnFind.SetTransparent(TRUE, hDlgBgDC);
 	m_btnFind.SetBgPic(_T("添加好友_默认状态.png"), _T("添加好友_鼠标状态.png"), _T("添加好友_鼠标状态.png"), _T("添加好友_鼠标状态.png"));
 	//m_btnFind.SetIconPic(_T("find.png"));
 	m_btnFind.SubclassWindow(GetDlgItem(ID_BTN_FIND));
-	m_btnFind.MoveWindow(rcClient.right - 60, rcClient.bottom-29, 50, 20, FALSE);
+	m_btnFind.MoveWindow(rcClient.right - 60, rcClient.bottom - 29, 50, 20, FALSE);
 	m_btnFind.SetWindowText(_T("     查找"));
 	m_btnFind.SetToolTipText(_T("查找联系人和群组"));
 
-	
+
 	//更新用户头像
 	//TODO :用户头像是48*48大小的，这个地方的图片太大了
 	{
@@ -970,15 +961,17 @@ BOOL CMainDlg::InitUI()
 		m_btnSign.SetToolTipText(_T("这家伙很懒,什么都没有留下1。"));
 	}
 
-	HFONT hFontSign = CGDIFactory::GetFont(19); 
+	HFONT hFontSign = CGDIFactory::GetFont(19);
 	m_btnSign.SetFont(hFontSign);
-	m_edtSign.SetBgNormalPic(_T("SignEditBg.png"), CRect(1,1,1,1));
+	m_edtSign.SetBgNormalPic(_T("SignEditBg.png"), CRect(1, 1, 1, 1));
 	m_edtSign.SubclassWindow(GetDlgItem(ID_EDIT_SIGN));
-	m_edtSign.MoveWindow(80, 60, rcClient.Width()-102, 22, TRUE);
+	m_edtSign.MoveWindow(80, 60, rcClient.Width() - 102, 22, TRUE);
 	m_edtSign.ShowWindow(SW_HIDE);
 	m_edtSign.SetFont(hFontSign);
 
-	m_SkinMenu.SetBgPic(_T("Menu\\menu_left_bg.png"), _T("Menu\\menu_right_bg.png"));
+	//Load Menu
+	{
+		m_SkinMenu.SetBgPic(_T("Menu\\menu_left_bg.png"), _T("Menu\\menu_right_bg.png"));
 	m_SkinMenu.SetSelectedPic(_T("Menu\\menu_selected.png"));
 	m_SkinMenu.SetSepartorPic(_T("Menu\\menu_separtor.png"));
 	m_SkinMenu.SetArrowPic(_T("Menu\\menu_arrow.png"));
@@ -987,13 +980,13 @@ BOOL CMainDlg::InitUI()
 	m_SkinMenu.SetSelTextColor(RGB(254, 254, 254));
 	m_SkinMenu.LoadMenu(ID_MENU_MAIN_PANEL);
 
-	DWORD dwMenuIDs[] = {ID_MENU_IM_ONLINE, ID_MENU_QME, ID_MENU_AWAY, 
-		ID_MENU_BUSY, ID_MENU_MUTE, ID_MENU_INVISIBLE, ID_MENU_IM_OFFLINE, 
-		ID_MENU_LOCK, ID_MENU_GROUP_HOME_PAGE};
-	CString strFileNames[] = {_T("Status\\imonline.png"), _T("Status\\Qme.png"), 
-		_T("Status\\away.png"), _T("Status\\busy.png"), _T("Status\\mute.png"), 
+	DWORD dwMenuIDs[] = { ID_MENU_IM_ONLINE, ID_MENU_QME, ID_MENU_AWAY,
+		ID_MENU_BUSY, ID_MENU_MUTE, ID_MENU_INVISIBLE, ID_MENU_IM_OFFLINE,
+		ID_MENU_LOCK, ID_MENU_GROUP_HOME_PAGE };
+	CString strFileNames[] = { _T("Status\\imonline.png"), _T("Status\\Qme.png"),
+		_T("Status\\away.png"), _T("Status\\busy.png"), _T("Status\\mute.png"),
 		_T("Status\\invisible.png"), _T("Status\\imoffline.png"), _T("lock20.png"),
-		_T("groupmainpage.png")};
+		_T("groupmainpage.png") };
 
 	CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_STATUS_SUBMENU_INDEX);
 	for (int i = 0; i < 9; i++)
@@ -1015,7 +1008,20 @@ BOOL CMainDlg::InitUI()
 	PopupMenu.SetIcon(0, TRUE, _T("modehead.png"), _T("modehead.png"));
 	PopupMenu = m_SkinMenu.GetSubMenu(6);
 	PopupMenu.SetIcon(0, TRUE, _T("modehead.png"), _T("modehead.png"));
+	//托盘区右键菜单
+	{
+		m_TrayMenuNormal.LoadMenu(ID_MENU_TRAY_NORMAL);
+		m_TrayMenuLock.LoadMenu(ID_MENU_TRAY_LOCK);
+	}
 
+	//好友列表部分的相关右键菜单
+	{
+		m_BuddyEmptyAreaMenu.LoadMenu(ID_MENU_BUDDY_EMPTY_POP);
+		m_BuddyGroupSelectMenu.LoadMenu(ID_MENU_BUDDY_GROUP_SELECT);
+		m_BuddySelectedMenu.LoadMenu(IDR_MENU_BUDDY_SELECT);
+		//m_BuddySelectedMenu.LoadMenu(ID_MENU_BUDDY)
+	}
+}
 	//PopupMenu = m_SkinMenu.GetSubMenu(0);
 
 	//m_btnStatus.SetButtonType(SKIN_MENU_BUTTON);
@@ -1369,7 +1375,7 @@ bool CMainDlg::StartLogin(BOOL bAutoLogin/* = FALSE*/)
 	{
 		ShowWindow(SW_HIDE);
 		LoadAppIcon(GetStatus());
-		m_TrayIcon.AddIcon(m_hWnd, WM_TRAYICON_NOTIFY, 1, m_hAppIcon, _T("Flamingo未登录"));
+		m_TrayIcon.AddIcon(m_hWnd, WM_TRAYICON_NOTIFY, 1, m_hAppIcon, _T("TinyIM未登录"));
 
 		//ShowWindow(SW_HIDE);
 		//ShowWindow(SW_SHOW);
@@ -1427,18 +1433,15 @@ LRESULT CMainDlg::OnTrayIconNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP:
 	{
 		OnTrayIcon_LButtunUp();
-	}
-		break;
+	}break;
 	case WM_RBUTTONUP:
 	{
 		OnTrayIcon_RButtunUp();
-	}
-		break;
+	}break;
 	case WM_MOUSEHOVER:
 	{
 		OnTrayIcon_MouseHover();
-	}
-		break;
+	}break;
 	case WM_MOUSELEAVE:
 	{
 		OnTrayIcon_MouseLeave();
@@ -1768,9 +1771,10 @@ LRESULT CMainDlg::OnBuddyListRButtonUp(LPNMHDR pnmh)
 	//::SetForegroundWindow(m_hWnd);
     BLNMHDREx* hdr = (BLNMHDREx*)pnmh;
 	CSkinMenu PopupMenu;
+	//选中好友的状态
 	if(hdr->nPostionFlag == POSITION_ON_ITEM)
 	{
-		PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_BUDDYLIST_CONTEXT_SUBMENU_INDEX);
+		PopupMenu = m_BuddySelectedMenu.GetSubMenu(0);
 		if (GetFriendList())
 		{
 			PopupMenu.EnableMenuItem(IDM_MOVE_ITEM, MF_ENABLED|MF_BYCOMMAND);
@@ -1782,13 +1786,15 @@ LRESULT CMainDlg::OnBuddyListRButtonUp(LPNMHDR pnmh)
 			PopupMenu.EnableMenuItem(8, MF_GRAYED|MF_BYPOSITION);
 		}
 	}
+	//选中好友分组的状态
 	else if(hdr->nPostionFlag == POSITION_ON_TEAM)
 	{
-		PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_BUDDYLIST_TEAM_CONTEXT_SUBMENU_INDEX);
+		PopupMenu = m_BuddyGroupSelectMenu.GetSubMenu(0);
 	}
+	//好友列表的空白部分
 	else if(hdr->nPostionFlag == POSITION_ON_BLANK)
 	{
-		PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_BUDDYLIST_BLANK_CONTEXT_SUBMENU_INDEX);
+		PopupMenu = m_BuddyEmptyAreaMenu.GetSubMenu(0);
 	}
 
 	PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
@@ -1989,8 +1995,6 @@ LRESULT CMainDlg::OnTabCtrlSelChange(LPNMHDR pnmh)
 void CMainDlg::OnRefreshBuddyList(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	GetFriendList();
-	//m_FMGClient.StartGetUserInfoTask(USER_INFO_TYPE_SELF);
-	//m_FMGClient.GetFriendList();
 }
 
 
@@ -2136,7 +2140,6 @@ void CMainDlg::OnMenu_Status(UINT uNotifyCode, int nID, CWindow wndCtl)
 
     if (nNewStatus == E_UI_ONLINE_STATUS::STATUS_OFFLINE)
     {
-       // m_FMGClient.GoOffline();
         //重连标志清零
         m_nMainPanelStatus = MAINPANEL_STATUS_USERGOOFFLINE;
     }
@@ -2144,7 +2147,6 @@ void CMainDlg::OnMenu_Status(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{	
 		//m_FMGClient.GoOnline();
 	}
-	//StatusMenuBtn_SetIconPic(m_btnStatus, nNewStatus);	
 }
 
 /**
@@ -2254,8 +2256,8 @@ void CMainDlg::OnBuddyListModifyTeamName(UINT uNotifyCode, int nID, CWindow wndC
  */
 void CMainDlg::OnMoveBuddyToTeam(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
-	int nTeamIndex;
-	int nIndex;
+	int nTeamIndex=-1;
+	int nIndex=-1;
 	m_BuddyListCtrl.GetCurSelIndex(nTeamIndex, nIndex);
 	if (nTeamIndex < 0 || nIndex < 0)
 	{
@@ -2268,36 +2270,8 @@ void CMainDlg::OnMoveBuddyToTeam(UINT uNotifyCode, int nID, CWindow wndCtl)
 
 	if (m_netProto)
 	{
-		m_netProto->MoveFriendToTeam("", strFriendId, strOldTeamId, strNewTeamId);
+		m_netProto->MoveFriendToTeam(strFriendId, strOldTeamId, strNewTeamId);
 	}
-
-	/*C_UI_BuddyInfo* pBuddyInfo = NULL;
-	C_UI_BuddyTeamInfo* pTeamInfo = m_userMgr.m_BuddyList.GetBuddyTeamByIndex(nTeamIndex);
-	if (pTeamInfo == NULL)
-	{
-		return;
-	}
-    CString strOldTeamName;
-	//获取原分组名
-	for(auto iter=pTeamInfo->m_arrBuddyInfo.begin(); iter!=pTeamInfo->m_arrBuddyInfo.end(); ++iter)
-	{
-		//if((*iter)->m_uUserID == uUserID)
-		//{
-  //          strOldTeamName = pTeamInfo->m_strName.c_str();
-		//	break;
-		//}
-	}
-	
-	//获取目标分组名
-	long nTargetIndex = nID-TEAM_MENU_ITEM_BASE;
-	C_UI_BuddyTeamInfo* pTargetTeamInfo = m_userMgr.m_BuddyList.GetBuddyTeamByIndex(nTargetIndex);
-	if (pTargetTeamInfo == NULL)
-	{
-		return;
-	}
-    CString strNewTeamName = pTargetTeamInfo->m_strName.c_str();
-	*/
-    //m_FMGClient.MoveFriendToOtherTeam(uUserID, strOldTeamName, strNewTeamName);
 }
 
 /**
@@ -5579,6 +5553,10 @@ void CMainDlg::OnTrayIcon_LButtunUp()
 
 	//先将任务栏图标恢复成正常状态
 	SetTrayIconOnLine();
+	if (m_bShowTrayMenu)
+	{
+		m_bShowTrayMenu = false;
+	}
 }
 
 /**
@@ -5592,22 +5570,20 @@ void CMainDlg::OnTrayIcon_RButtunUp()
 		m_MsgTipDlg.DestroyWindow();
 	}
 
-	int nPos = MAIN_PANEL_TRAYICON_SUBMENU_INDEX;		//登录前的托盘菜单索引
-	
-	{
-		if(m_bPanelLocked)
-			nPos = MAIN_PANEL_LOCK_SUBMENU_INDEX;		//面板锁定时的托盘菜单索引
-		else
-			nPos = MAIN_PANEL_TRAYICON_SUBMENU2_INDEX;		//正常主面板的托盘菜单索引
-	}
-
-
 	CPoint pt;
 	GetCursorPos(&pt);
 
 	::SetForegroundWindow(m_hWnd);
 
-	CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(nPos);
+	CSkinMenu PopupMenu;
+	if (m_bPanelLocked)
+	{
+		PopupMenu = m_TrayMenuLock.GetSubMenu(0);
+	}
+	else
+	{
+		PopupMenu = m_TrayMenuNormal.GetSubMenu(0);
+	}
     //根据是否已经静音，修改“关闭所有声音”选项
 	if (m_userCfg.IsEnableMute())
 	{
@@ -5618,9 +5594,9 @@ void CMainDlg::OnTrayIcon_RButtunUp()
 		PopupMenu.ModifyMenu(ID_MENU_MUTE, MF_BYCOMMAND | MF_STRING /*| MF_POPUP*/, ID_MENU_MUTE, _T("关闭所有声音"));
 	}
 	PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
-
+	m_bShowTrayMenu = true;
 	// BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
-	::PostMessage(m_hWnd, WM_NULL, 0, 0);
+	//::PostMessage(m_hWnd, WM_NULL, 0, 0);
 }
 
 
@@ -5630,7 +5606,12 @@ void CMainDlg::OnTrayIcon_RButtunUp()
  */
 void CMainDlg::OnTrayIcon_MouseHover()
 {
+	if (m_bShowTrayMenu)
+	{
+
+	}
 	//if (m_dwMsgTimerId != NULL)
+	else
 	{
 		//C_UI_MessageList* lpMsgList = NULL;// m_FMGClient.GetMessageList();
 		//if (lpMsgList != NULL && lpMsgList->GetMsgSenderCount() > 0)
@@ -5675,22 +5656,29 @@ void CMainDlg::OnTrayIcon_MouseHover()
  */
 void CMainDlg::OnTrayIcon_MouseLeave()
 {
-	if (m_MsgTipDlg.IsWindow())
+	if (m_bShowTrayMenu)
 	{
-		CRect rcWindow;
-		m_MsgTipDlg.GetWindowRect(&rcWindow);
 
-		POINT pt = {0};
-		::GetCursorPos(&pt);
+	}
+	else
+	{
+		if (m_MsgTipDlg.IsWindow())
+		{
+			CRect rcWindow;
+			m_MsgTipDlg.GetWindowRect(&rcWindow);
 
-		if (!::PtInRect(&rcWindow, pt) && !::PtInRect(&m_rcTrayIconRect, pt))
-		{
-			m_MsgTipDlg.DestroyWindow();
-			//m_MsgTipDlg.ShowWindow(SW_HIDE);
-		}
-		else
-		{
-			m_MsgTipDlg.StartTrackMouseLeave();
+			POINT pt = { 0 };
+			::GetCursorPos(&pt);
+
+			if (!::PtInRect(&rcWindow, pt) && !::PtInRect(&m_rcTrayIconRect, pt))
+			{
+				m_MsgTipDlg.DestroyWindow();
+				//m_MsgTipDlg.ShowWindow(SW_HIDE);
+			}
+			else
+			{
+				m_MsgTipDlg.StartTrackMouseLeave();
+			}
 		}
 	}
 	//::OutputDebugString(_T("WM_MOUSELEAVE\n"));
