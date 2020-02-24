@@ -148,7 +148,7 @@ public:
 
 	bool OnUserRecvGroupMsg(const std::string strUser);
 
-	bool DoUserRecvGroupMsg(const std::string strUser,const T_GROUP_CHAT_MSG& msg);
+	bool DoUserRecvGroupMsg(const std::shared_ptr<CServerSess>& pSess, const T_GROUP_CHAT_MSG& msg);
 	void OnDispatchGroupMsg(const std::string strGroupId);
 
 	void OnUserStateCheck(const std::string strUserId);
@@ -262,6 +262,8 @@ private:
 
 	void HandleSendGroupTextReq(const std::shared_ptr<CServerSess>& pSess, const SendGroupTextMsgReqMsg& reqMsg);
 
+	void HandleNotifyGroupMsgRsp(const std::shared_ptr<CServerSess>& pSess, const NotifyGroupMsgRspMsg& reqMsg);
+
 	void HandleRecvGroupTextMsgRspMsg(const std::shared_ptr<CServerSess>& pSess, const RecvGroupTextMsgRspMsg& reqMsg);
 	void HandleQuitGroupReqMsg(const std::shared_ptr<CServerSess>& pSess, const QuitFromGroupReqMsg& reqMsg);
 	void HandleFriendUnReadNotifyRspMsg(const std::shared_ptr<CServerSess>& pSess, const FriendUnReadNotifyRspMsg& rspMsg);
@@ -280,10 +282,14 @@ private:
 	void HandleAddFriendNotifyRsp(const AddFriendNotifyRspMsg& rspMsg);
 	void HandleUserKickOffRsp(const UserKickOffRspMsg& reqMsg);
 
+	void SendGroupMsgToUser(const std::shared_ptr<CServerSess>& pSess, const std::string strGroupId,const std::string strLastReadId);
+	void NotifyUserRecvGroupMsg(const std::shared_ptr<CServerSess>& pSess, const std::string strGroupId);
+	std::shared_ptr<CServerSess> GetClientSess(const std::string strUserId);
 private:
-	void CheckGroupUserState(const UserIdGroupId_st& keyValue);
 	CLIENT_SESS_STATE GetGroupUserState(const UserIdGroupId_st& keyValue);
 	bool SetGroupUserState(const UserIdGroupId_st& keyValue, const CLIENT_SESS_STATE& state);
+	void RemoveGroupUserState(const UserIdGroupId_st& keyValue);
+	void RemoveUserAllGroupState(const std::string strUserId);
 	std::map<UserIdGroupId_st, CLIENT_SESS_STATE> m_groupStateMap;
 
 
