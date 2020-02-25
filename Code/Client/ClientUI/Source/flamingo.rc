@@ -1043,6 +1043,18 @@ BEGIN
     END
 END
 
+IDR_MENU_MAIN_BOARD MENU
+BEGIN
+    POPUP "主菜单"
+    BEGIN
+        MENUITEM "系统设置",                        IDM_SYSTEM_SETTINGS
+        MENUITEM SEPARATOR
+        MENUITEM "修改密码",                        IDM_MODIFY_PASS_WORD
+        MENUITEM SEPARATOR
+        MENUITEM "关于",                          ID_TOOL
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

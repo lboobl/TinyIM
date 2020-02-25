@@ -495,12 +495,17 @@ private:
 	//主界面好友列表相关变量 End
 
 
-	//主界面群组列表相关变量 Begin
+	//群组列表相关变量 Begin
 	CBuddyListCtrl			m_GroupListCtrl;//群组列表
 	CSkinMenu               m_GroupSelectedMenu;//群组选中时的右键菜单
 	CSkinMenu               m_GroupEmptyAreaMenu;//群组列表空白区右键菜单
 	CSkinMenu               m_GroupGroupSelectMenu;//群组分组选中时的右键菜单
-	//主界面群组列表相关变量 End
+	//群组列表相关变量 End
+
+
+	//主界面
+	CSkinMenu               m_MainBoardMenu;
+	
 	CSkinPictureBox			m_picLogining;//登录中的图片
 	CSkinStatic				m_staUTalkNum;
 	CSkinStatic				m_staLogining;

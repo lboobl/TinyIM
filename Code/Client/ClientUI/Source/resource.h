@@ -97,7 +97,8 @@
 #define ID_MENU_GROUP_GROUP_SELECTED    265
 #define ID_MENU_TRAY_LOCK               266
 #define ID_MENU_GROUP_SELECT            268
-
+#define IDR_MENU4                       290
+#define IDR_MENU_MAIN_BOARD             290
 #define ID_BUDDY_DLG_SAVE_AS_BTN        302
 #define ID_GROUP_CHAT_DLG_SAVE_AS_BTN   302
 #define ID_GROUP_CHAT_DLG_MSG_PROMPT_BTN 303
@@ -450,7 +451,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        290
+#define _APS_NEXT_RESOURCE_VALUE        291
 #define _APS_NEXT_COMMAND_VALUE         33124
 #define _APS_NEXT_CONTROL_VALUE         1300
 #define _APS_NEXT_SYMED_VALUE           101

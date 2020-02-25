@@ -37,7 +37,17 @@ const long GROUP_DLG_TOOL_BAR_HEIGHT = 36;//工具栏高度
 const long GROUP_DLG_NOTICE_HEIGHT = 180; //公告的高度
 const double GROUP_DLG_RECV_EDIT_PERCENT = 0.7; //左侧区域接收部分占比
 const long GROUP_DLG_STATIC_TEXT_HEIGHT = 20;
+
+
+const int MAX_TEAM_COUNT = 20 ;//最大好友分组和群分组数
+
+const int MAX_SIGN_LENGTH= 127;//个性签名最长字符数
+
+const int HOT_KEY_SHOW_MSG = 1001;//消息提取热键的ID
 //Dennis End
+
+
+
 const long GROUP_MEMBER_LIST_WIDTH = 200;//群组成员列表控件宽度
 const long GROUP_CHAT_DLG_EXTEND_WIDTH = 1043;//扩展历史消息后的宽度
 const long GROUP_DLG_MSG_LOG_WIDTH = 373;//群组历史消息宽度
