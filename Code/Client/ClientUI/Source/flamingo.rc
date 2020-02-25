@@ -924,12 +924,6 @@ BEGIN
         MENUITEM "我在线上",                        ID_MENU_IM_ONLINE
         MENUITEM "离线",                          ID_MENU_IM_OFFLINE
     END
-    POPUP "群/讨论组"
-    BEGIN
-        MENUITEM "创建一个群",                       IDM_CREATE_GROUP
-        MENUITEM SEPARATOR
-        MENUITEM "添加群分组",                       IDM_CREATE_GROUP_LIST
-    END
     POPUP "主菜单"
     BEGIN
         MENUITEM "系统设置",                        IDM_SYSTEM_SETTINGS
@@ -990,8 +984,7 @@ BEGIN
     END
 END
 
-
-IDR_MENU_GROUP_SELECTED MENU
+ID_MENU_GROUP_SELECTED MENU
 BEGIN
     POPUP "群组右键菜单"
     BEGIN
@@ -1013,9 +1006,6 @@ BEGIN
         MENUITEM "修改分组名",                       33103
     END
 END
-
-
-
 
 ID_MENU_BUDDY_EMPTY_POP MENU
 BEGIN
@@ -1040,6 +1030,16 @@ BEGIN
         MENUITEM "删除好友",                        IDM_DELETE_FRIEND
         MENUITEM SEPARATOR
         MENUITEM "移动联系人至",                      0
+    END
+END
+
+ID_MENU_GROUP_GROUP_SELECTED MENU
+BEGIN
+    POPUP "群/讨论组"
+    BEGIN
+        MENUITEM "创建一个群",                       IDM_CREATE_GROUP
+        MENUITEM SEPARATOR
+        MENUITEM "添加群分组",                       IDM_CREATE_GROUP_LIST
     END
 END
 

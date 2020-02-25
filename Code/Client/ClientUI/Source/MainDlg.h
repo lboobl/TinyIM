@@ -115,7 +115,7 @@ public:
 		NOTIFY_HANDLER_EX(ID_TAB_CTRL_MAIN, TCN_SELCHANGE, OnTabCtrlSelChange)
 		NOTIFY_HANDLER_EX(ID_LIST_CTRL_BUDDY, NM_DBLCLK, OnBuddyListDblClk)		 //双击好友列表中的好友
 		NOTIFY_HANDLER_EX(ID_LIST_CTRL_BUDDY, NM_RCLICK, OnBuddyListRButtonUp)	 //右键好友列表中的好友
-		NOTIFY_HANDLER_EX(ID_LIST_CTRL_GROUP, NM_DBLCLK, OnGroupListDblClk)
+		NOTIFY_HANDLER_EX(ID_LIST_CTRL_GROUP, NM_DBLCLK, OnGroupListDblClk)      //
 		NOTIFY_HANDLER_EX(ID_LIST_CTRL_GROUP, NM_RCLICK, OnGroupListRButtonUp)
 		NOTIFY_HANDLER_EX(ID_LIST_CTRL_RECENT, NM_DBLCLK, OnRecentListDblClk)
 		NOTIFY_HANDLER_EX(ID_LIST_CTRL_RECENT, NM_RCLICK, OnRecentListRButtonUp)	 //右键好友列表中的好友
@@ -491,12 +491,16 @@ private:
 	CBuddyListCtrl			m_BuddyListCtrl;//好友列表
 	CSkinMenu               m_BuddySelectedMenu;//好友选中时的右键菜单
 	CSkinMenu               m_BuddyEmptyAreaMenu;//好友列表空白区右键菜单
-	CSkinMenu               m_BuddyGroupSelectMenu;//好友分组选中时的弹出菜单
+	CSkinMenu               m_BuddyGroupSelectMenu;//好友分组选中时的右键菜单
 	//主界面好友列表相关变量 End
 
 
+	//主界面群组列表相关变量 Begin
 	CBuddyListCtrl			m_GroupListCtrl;//群组列表
-
+	CSkinMenu               m_GroupSelectedMenu;//群组选中时的右键菜单
+	CSkinMenu               m_GroupEmptyAreaMenu;//群组列表空白区右键菜单
+	CSkinMenu               m_GroupGroupSelectMenu;//群组分组选中时的右键菜单
+	//主界面群组列表相关变量 End
 	CSkinPictureBox			m_picLogining;//登录中的图片
 	CSkinStatic				m_staUTalkNum;
 	CSkinStatic				m_staLogining;

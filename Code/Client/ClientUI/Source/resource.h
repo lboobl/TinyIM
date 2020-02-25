@@ -83,23 +83,25 @@
 #define IDI_MULTI_CHAT_DLG_16           247
 #define IDI_MULTI_CHAT_DLG_32           251
 #define IDD_DIALOG2                     252
-#define IDD_REMOTE_DESKTOP              252
-#define IDD_MESSAGE_BOX                 253
-#define ID_MENU_TRAY_NORMAL             253
-#define ID_MENU_TRAY_LOCK               254
+#define IDD_REMOTE_DESKTOP              253
+#define IDD_MESSAGE_BOX                 254
+#define ID_MENU_TRAY_NORMAL             255
+#define ID_MENU_TRAY_LOCK               266
 #define ID_MENU_GROUP_LIST_EMTPY_AREA_RIGHT 256
 #define ID_MENU_GROUP_SELECT_RIGHT_MENU 257
-#define IDR_MENU_GROUP_SELECTED         258
+#define ID_MENU_GROUP_SELECTED          258
 #define ID_MENU_BUDDY_GROUP_SELECT      259
 #define IDR_MENU1                       260
 #define IDR_MENU2                       261
 #define IDR_MENU3                       262
 #define ID_MENU_BUDDY_EMPTY_POP         263
-#define IDR_MENU4                       264
 #define IDR_MENU_BUDDY_SELECT           264
+#define ID_MENU_GROUP_GROUP_SELECTED    265
 #define ID_BUDDY_DLG_SAVE_AS_BTN        302
 #define ID_GROUP_CHAT_DLG_SAVE_AS_BTN   302
 #define ID_GROUP_CHAT_DLG_MSG_PROMPT_BTN 303
+
+
 #define ID_LEFT_CHAT_WINDOW             997
 #define ID_CHAT_TAB_MGR                 998
 #define ID_TAB_CTRL_CHAT                999
@@ -449,7 +451,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        265
+#define _APS_NEXT_RESOURCE_VALUE        266
 #define _APS_NEXT_COMMAND_VALUE         33124
 #define _APS_NEXT_CONTROL_VALUE         1300
 #define _APS_NEXT_SYMED_VALUE           101

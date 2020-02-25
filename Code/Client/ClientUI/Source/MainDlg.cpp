@@ -1019,7 +1019,13 @@ BOOL CMainDlg::InitUI()
 		m_BuddyEmptyAreaMenu.LoadMenu(ID_MENU_BUDDY_EMPTY_POP);
 		m_BuddyGroupSelectMenu.LoadMenu(ID_MENU_BUDDY_GROUP_SELECT);
 		m_BuddySelectedMenu.LoadMenu(IDR_MENU_BUDDY_SELECT);
-		//m_BuddySelectedMenu.LoadMenu(ID_MENU_BUDDY)
+	}
+
+	//群组列表部分相关的右键菜单
+	{
+		m_GroupSelectedMenu.LoadMenu(ID_MENU_GROUP_SELECTED);
+		m_GroupEmptyAreaMenu.LoadMenu(ID_MENU_GROUP_LIST_EMTPY_AREA_RIGHT);
+		m_GroupGroupSelectMenu.LoadMenu(ID_MENU_GROUP_GROUP_SELECTED);
 	}
 }
 	//PopupMenu = m_SkinMenu.GetSubMenu(0);
@@ -1066,21 +1072,6 @@ BOOL CMainDlg::InitUI()
 	//m_btnMsgBox.MoveWindow(rcClient.Width()-48, 80, 22, 20, TRUE);
 	//m_btnMsgBox.SetToolTipText(_T("打开消息盒子"));
 
-	//m_btnChangeExterior.SetButtonType(SKIN_ICON_BUTTON);
-	//m_btnChangeExterior.SetTransparent(TRUE, hDlgBgDC);
-	//m_btnChangeExterior.SetBgPic(NULL, _T("allbtn_highlight.png"), _T("allbtn_down.png"), NULL);
-	//m_btnChangeExterior.SetIconPic(_T("colour.png"));
-	//m_btnChangeExterior.SubclassWindow(GetDlgItem(ID_BTN_CHANGE_EXTERIOR));
-	//m_btnChangeExterior.MoveWindow(rcClient.Width()-26, 80, 20, 20, TRUE);
-	//m_btnChangeExterior.SetToolTipText(_T("更改外观"));
-
-	//m_btnAppMgr.SetButtonType(SKIN_ICON_BUTTON);
-	//m_btnAppMgr.SetTransparent(TRUE, hDlgBgDC);
-	//m_btnAppMgr.SetBgPic(NULL, _T("allbtn_highlight.png"), _T("allbtn_down.png"), NULL);
-	//m_btnAppMgr.SetIconPic(_T("appbox_mgr_btn.png"));
-	//m_btnAppMgr.SubclassWindow(GetDlgItem(ID_BTN_APP_MGR));
-	//m_btnAppMgr.MoveWindow(rcClient.Width()-38, rcClient.bottom-60, 22, 22, TRUE);
-	//m_btnAppMgr.SetToolTipText(_T("打开应用管理器"));
 
 	m_picLogining.SetTransparent(TRUE, hDlgBgDC);
 	m_picLogining.SubclassWindow(GetDlgItem(ID_PIC_LOGINING));
@@ -1838,12 +1829,17 @@ LRESULT CMainDlg::OnGroupListRButtonUp(LPNMHDR pnmh)
     BLNMHDREx* hdr = (BLNMHDREx*)pnmh;
 	if(hdr->nPostionFlag == POSITION_ON_ITEM)
 	{
-		CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_GROUPLIST_CONTEXT_SUBMENU_INDEX);
+		CSkinMenu PopupMenu = m_BuddyGroupSelectMenu.GetSubMenu(0);
 		PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
 	}
-	else if(hdr->nPostionFlag==POSITION_ON_TEAM || hdr->nPostionFlag==POSITION_ON_BLANK)
+	else if(hdr->nPostionFlag==POSITION_ON_TEAM)
 	{
-		CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_GROUPLIST_BLANK_CONTEXT_SUBMENU_INDEX);
+		CSkinMenu PopupMenu = m_GroupGroupSelectMenu.GetSubMenu(0);
+		PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
+	}
+	else if(hdr->nPostionFlag == POSITION_ON_BLANK)
+	{
+		CSkinMenu PopupMenu = m_GroupEmptyAreaMenu.GetSubMenu(0);
 		PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
 	}
 

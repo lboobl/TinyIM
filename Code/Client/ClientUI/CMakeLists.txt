@@ -99,8 +99,6 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/stdafx.h  ./Source/stdafx.cpp   
 ./Source/SystemSettingDlg.h  ./Source/SystemSettingDlg.cpp  
 ./Source/TeamDlg.h  ./Source/TeamDlg.cpp 
-./Source/Thread.h  ./Source/Thread.cpp 
-./Source/ThreadPool.h  ./Source/ThreadPool.cpp 
 ./Source/UtilTime.h  ./Source/UtilTime.cpp  
 ./Source/TrayIcon.h  ./Source/TrayIcon.cpp  
 ./Source/UIText.h    
