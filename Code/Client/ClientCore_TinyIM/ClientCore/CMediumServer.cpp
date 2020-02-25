@@ -444,9 +444,16 @@ void CMediumServer::start(const std::function<void(const std::error_code &)> &ca
 		do_accept();
 		LOG_INFO(ms_loger, "Http Server On :{} [{} {} ]", m_httpCfg.m_nPort,__FILENAME__,__LINE__);
 		{
-			auto pSelf = shared_from_this();
+			std::weak_ptr<CMediumServer> pSelf = shared_from_this();
 			m_httpServer = std::make_shared<CHttpServer>(m_ioService, [this,pSelf](const BaseMsg* pMsg)->bool {
-				return HandleHttpMsg(pMsg);
+				if (pSelf.lock())
+				{
+					return HandleHttpMsg(pMsg);
+				}
+				else
+				{
+					return false;
+				}
 			});
 			m_httpServer->Start(m_httpCfg.m_nPort);
 
@@ -838,9 +845,12 @@ void CMediumServer::do_accept()
 
 
 				   //
-				   auto pSelf = shared_from_this();
+				   std::weak_ptr<CMediumServer> pSelf = shared_from_this();
 				   auto serverSess = std::make_shared<CServerSess>(std::move(m_socket), [this, pSelf](CServerSess_SHARED_PTR pSess, const TransBaseMsg_t& pMsg)->void {
-					   HandleSendForward(pSess, pMsg);
+					   if (pSelf.lock())
+					   {
+						   HandleSendForward(pSess, pMsg);
+					   }
 				   });
 				   serverSess->Start();
 
@@ -992,16 +1002,19 @@ void CMediumServer::SetTimer(int nSeconds)
 	if(m_timer && m_nNoSessTimeCount < 30)
 	{
 		m_timer->expires_from_now(std::chrono::seconds(nSeconds));
-		auto self = shared_from_this();
-		m_timer->async_wait([this,nSeconds,self](const std::error_code& ec){
-			if(!ec)
+		std::weak_ptr<CMediumServer> pSelf = shared_from_this();
+		m_timer->async_wait([this,nSeconds, pSelf](const std::error_code& ec){
+			if (pSelf.lock())
 			{
-				this->OnTimer();
-				this->SetTimer(nSeconds);
-			}
-			else
-			{
-				LOG_WARN(this->ms_loger,"On Timer at MediumServer {} [{} {}]",ec.message(),__FILENAME__, __LINE__);
+				if (!ec)
+				{
+					this->OnTimer();
+					this->SetTimer(nSeconds);
+				}
+				else
+				{
+					LOG_WARN(this->ms_loger, "On Timer at MediumServer {} [{} {}]", ec.message(), __FILENAME__, __LINE__);
+				}
 			}
 		});
 	}
@@ -3267,16 +3280,16 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 		}
 	}break;
 	case E_MsgType::NetRecoverReport_Type: {
-		//auto stateItem = m_userStateMap.find(pClientSess->UserId());
-		//if(stateItem != m_userStateMap.end()){
-		//	if (stateItem->second == CLIENT_SESS_STATE::SESS_LOGIN_FINISHED) {
-		//		auto item = m_userLoginMsgMap.find(pClientSess->UserName());
-		//		if (item != m_userLoginMsgMap.end())
-		//		{
-		//			pClientSess->SendMsg(&(item->second));
-		//		}return true;
-		//	}
-		//}
+		auto stateItem = m_userStateMap.find(pClientSess->UserId());
+		if(stateItem != m_userStateMap.end()){
+			if (stateItem->second == CLIENT_SESS_STATE::SESS_LOGIN_SEND) {
+				auto item = m_userLoginMsgMap.find(pClientSess->UserName());
+				if (item != m_userLoginMsgMap.end())
+				{
+					pClientSess->SendMsg(&(item->second));
+				}
+			}
+		}
 	}break;
 	case E_MsgType::KeepAliveRsp_Type:
 	{
@@ -3487,9 +3500,12 @@ SearchChatHistoryRsp CMediumServer::DoSearchChatHistoryReq(const SearchChatHisto
  */
 CUdpClient_PTR CMediumServer::CreateUdpSess()
 {
-	auto pSelf = shared_from_this();
+	std::weak_ptr<CMediumServer> pSelf = shared_from_this();
 	auto pSess = std::make_shared<CUdpClient>(m_ioService, m_udpCfg.m_strServerIp,m_udpCfg.m_nPort, [this, pSelf](const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg) {
-		DispatchUdpMsg(endPt, pMsg);
+		if (pSelf.lock())
+		{
+			DispatchUdpMsg(endPt, pMsg);
+		}
 	});
 	pSess->StartConnect();
 	return pSess;

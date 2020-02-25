@@ -102,6 +102,7 @@ int CClientSess::StopConnect()
 }
 void CClientSess::OnSocketError()
 {
+	StopConnect();
 	if (m_queue)
 	{
 		NetFailedReportMsg reqMsg;
