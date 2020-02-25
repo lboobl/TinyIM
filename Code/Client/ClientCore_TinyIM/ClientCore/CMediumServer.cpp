@@ -918,22 +918,6 @@ CClientSess_SHARED_PTR CMediumServer::GetClientSess(const std::string strUserId)
 		return pReturn;
 	}
 
-	//CClientSess_SHARED_PTR CMediumServer::CreateClientSess(const std::string strUserName)
-	//{
-	//	if (strUserName.empty())
-	//	{
-	//		return nullptr;
-	//	}
-	//	auto pReturn = m_freeClientSess;
-	//	m_freeClientSess = std::make_shared<CClientSess>(m_ioService,
-	//		m_clientCfgVec[0].m_strServerIp,
-	//		m_clientCfgVec[0].m_nPort, this);
-
-	//	m_freeClientSess->StartConnect();
-	//	m_userId_ClientSessMap.insert(std::pair<std::string, CClientSess_SHARED_PTR>(strUserName, pReturn));
-	//	return pReturn;
-	//}
-
 /**
  * @brief 检查待发送消息
  * 
@@ -962,6 +946,15 @@ void CMediumServer::CheckWaitMsgVec()
 		m_RecvWaitMsgMap = notSendMap;
 	}
 }
+
+
+void CMediumServer::stop()
+{
+	m_httpServer->Stop();
+	m_timer->cancel();
+	m_acceptor.close();
+	m_ioService.stop();
+}
 /**
  * @brief 响应定时器的任务，一些需要定时处理的任务，可以写成一个函数，在此函数中调用
  * 
@@ -978,12 +971,21 @@ void CMediumServer::OnTimer()
 	{
 		if (!m_userId_ClientSessMap.empty())
 		{
+			m_nNoSessTimeCount = 0;
 			CheckWaitMsgVec();
 		}
 		else
 		{
 			m_nNoSessTimeCount++;
-			LOG_ERR(ms_loger, "No Sess Count {} [ {} {} ]", m_timeCount, __FILENAME__, __LINE__);
+			if (m_nNoSessTimeCount > 3)
+			{
+				stop();
+				LOG_ERR(ms_loger, "Server Closed {} [ {} {} ]", m_timeCount, __FILENAME__, __LINE__);
+			}
+			else
+			{
+				LOG_WARN(ms_loger, "No Sess Count {} [ {} {} ]", m_timeCount, __FILENAME__, __LINE__);
+			}
 		}
 	}
 }
@@ -1829,7 +1831,7 @@ void CMediumServer::HSF_FileSendDataBeginReq(const std::shared_ptr<CServerSess>&
 	{
 		std::string strOldFileName = reqMsg.m_strFileName;
 		reqMsg.m_strFileName = m_fileUtil.GetFileNameFromPath(reqMsg.m_strFileName);
-		std::string strNewFileName = m_fileUtil.GetCurDir()  + reqMsg.m_strUserId + "\\" + reqMsg.m_strFileName;
+		std::string strNewFileName = GetUserFileDir(reqMsg.m_strUserId)+reqMsg.m_strFileName;
 		if (m_fileUtil.UtilCopy(strOldFileName, strNewFileName))
 		{
 			LOG_INFO(ms_loger, "CopyFile Succeed {} {} [{} {}]", strOldFileName, strNewFileName,__FILENAME__,__LINE__);
@@ -1883,7 +1885,7 @@ bool CMediumServer::DoSF_FriendChatSendTxtReq(FriendChatSendTxtReqMsg& reqMsg)
 				beginReqMsg.m_strFriendId = reqMsg.m_strReceiverId;
 				beginReqMsg.m_strFileHash = m_fileUtil.CalcHash(item.m_strImageName);
 				strFileHash = beginReqMsg.m_strFileHash;
-				std::string strNewFileName = m_fileUtil.GetCurDir() + reqMsg.m_strSenderId + "\\" + beginReqMsg.m_strFileName;
+				std::string strNewFileName = GetUserImageDir(reqMsg.m_strSenderId)+beginReqMsg.m_strFileName;
 				if (m_fileUtil.UtilCopy(item.m_strImageName, strNewFileName))
 				{
 
@@ -1966,7 +1968,7 @@ void CMediumServer::HSF_SendGroupTextMsgReqMsg(const std::shared_ptr<CServerSess
 				beginReqMsg.m_strFriendId = reqMsg.m_chatMsg.m_strGroupId;
 				beginReqMsg.m_strFileHash = m_fileUtil.CalcHash(item.m_strImageName);
 				strFileHash = beginReqMsg.m_strFileHash;
-				std::string strNewFileName = m_fileUtil.GetCurDir() + reqMsg.m_chatMsg.m_strSenderId + "\\" + beginReqMsg.m_strFileName;
+				std::string strNewFileName = GetUserImageDir(reqMsg.m_chatMsg.m_strSenderId) + beginReqMsg.m_strFileName;
 				if (m_fileUtil.UtilCopy(item.m_strImageName, strNewFileName))
 				{
 
@@ -2383,7 +2385,7 @@ void CMediumServer::HSB_FriendChatSendTxtRsp(const std::shared_ptr<CClientSess>&
 		{
 			if (item.m_eType == CHAT_MSG_TYPE::E_CHAT_IMAGE_TYPE)
 			{
-				std::string strImageName = m_fileUtil.GetCurDir() + rspMsg.m_chatMsg.m_strSenderId + "\\" + item.m_strImageName;
+				std::string strImageName = GetUserImageDir(rspMsg.m_chatMsg.m_strSenderId) + item.m_strImageName;
 				ChatMsgElem elem;
 				elem.m_eType = item.m_eType;
 				elem.m_strImageName = strImageName;
@@ -2982,21 +2984,35 @@ void CMediumServer::HSB_UserLoginRsp(const std::shared_ptr<CClientSess>& pClient
 		}
 
 		//添加目录
-		if (!m_fileUtil.IsFolder(rspMsg.m_strUserName))
 		{
-			m_fileUtil.CreateFolder(rspMsg.m_strUserName);
-		}
-		if (!m_fileUtil.IsFolder(rspMsg.m_strUserId))
-		{
-			m_fileUtil.CreateFolder(rspMsg.m_strUserId);
-		}
+			std::string strMainFolder = GetUserMainFolder(rspMsg.m_strUserId);
+			if (!m_fileUtil.IsFolder(strMainFolder))
+			{
+				m_fileUtil.CreateFolder(strMainFolder);
+			}
 
+			{
+				std::string strImageFolder = GetUserImageDir(rspMsg.m_strUserId);
+				if (!m_fileUtil.IsFolder(strImageFolder))
+				{
+					m_fileUtil.CreateFolder(strImageFolder);
+				}
+			}
+			{
+				std::string strFileFolder = GetUserFileDir(rspMsg.m_strUserId);
+				if (!m_fileUtil.IsFolder(strFileFolder))
+				{
+					m_fileUtil.CreateFolder(strFileFolder);
+				}
+			}
+		}
 		{
 			auto pOldUtil = GetMsgPersisUtil(rspMsg.m_strUserId);
 			if (pOldUtil == nullptr)
 			{
-				auto pMsgUtil = std::make_shared<CMsgPersistentUtil>(rspMsg.m_strUserId);
-				if (pMsgUtil->InitDataBase())
+				auto pMsgUtil = std::make_shared<CMsgPersistentUtil>();
+				std::string strDbFileName = GetUserDataBaseFileName(rspMsg.m_strUserId);
+				if (pMsgUtil->InitDataBase(strDbFileName))
 				{
 					m_UserId_MsgPersistentUtilMap.insert({ rspMsg.m_strUserId,pMsgUtil });
 				}
@@ -3403,7 +3419,76 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 	return true;
 }
 
+void CMediumServer::SetUserIdUserName(const std::string strUserId, const std::string strUserName)
+{
+	m_userId_UserNameMap.erase(strUserId);
+	m_userId_UserNameMap.insert({ strUserId,strUserName });
+}
+std::string CMediumServer::GetUserNameById(const std::string strUserId)
+{
+	auto item = m_userId_UserNameMap.find(strUserId);
+	if (item != m_userId_UserNameMap.end())
+	{
+		return item->second;
+	}
+	else
+	{
+		return "";
+	}
+}
 
+std::string CMediumServer::GetUserMainFolder(const std::string strUserId)
+{
+	std::string strUserName = GetUserNameById(strUserId);
+	if (!strUserName.empty())
+	{
+		return m_fileUtil.GetCurDir() + strUserName + "\\";
+	}
+	else
+	{
+		return "";
+	}
+}
+
+std::string CMediumServer::GetUserImageDir(const std::string strUserId)
+{
+	std::string strUserName = GetUserNameById(strUserId);
+	if (strUserName.empty())
+	{
+		return "";
+	}
+	else
+	{
+		return m_fileUtil.GetCurDir() + strUserName + "\\Image\\";
+	}
+}
+
+std::string CMediumServer::GetUserFileDir(const std::string strUserId)
+{
+
+	std::string strUserName = GetUserNameById(strUserId);
+	if (strUserName.empty())
+	{
+		return "";
+	}
+	else
+	{
+		return m_fileUtil.GetCurDir() + strUserName + "\\FileRecv\\";
+	}
+}
+
+std::string CMediumServer::GetUserDataBaseFileName(const std::string strUserId)
+{
+	std::string strUserName = GetUserNameById(strUserId);
+	if (strUserName.empty())
+	{
+		return "";
+	}
+	else
+	{
+		return m_fileUtil.GetCurDir() + strUserName + "\\"+strUserName+".db";
+	}
+}
 
 /**
  * @brief 处理获取好友聊天记录的请求 

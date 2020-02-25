@@ -20,7 +20,7 @@
 class CMsgPersistentUtil: public std::enable_shared_from_this<CMsgPersistentUtil>
 {
 public:
-	bool InitDataBase();
+	bool InitDataBase(const std::string strFolder);
 
 	//AddFriendRecvReqMsg
 	bool Save_AddFriendRecvReqMsg(const AddFriendRecvReqMsg& msg);
@@ -77,8 +77,7 @@ public:
 	std::string Get_FileByHash(const std::string strFileHash);
 	bool Delete_FileByHash(const std::string strFileHash);
 	static std::shared_ptr<spdlog::logger> ms_logger;
-	CMsgPersistentUtil(const std::string strUserId) {
-		m_strUserId = strUserId;
+	CMsgPersistentUtil() {
 	}
 	bool Save_FriendChatRecvTxtReqMsg(const FriendChatMsg_s& msg);
 	bool CloseDataBase();

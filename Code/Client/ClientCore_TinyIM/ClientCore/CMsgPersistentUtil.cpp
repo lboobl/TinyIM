@@ -28,15 +28,13 @@ std::shared_ptr<spdlog::logger> CMsgPersistentUtil::ms_logger=nullptr;
  * @return true 
  * @return false 
  */
-bool CMsgPersistentUtil::InitDataBase()
+bool CMsgPersistentUtil::InitDataBase(const std::string strDbFileName)
 {
 	if (nullptr == ms_logger)
 	{
 		ms_logger = spdlog::default_logger();
 	}
-	CFileUtil fileUtil;
-	std::string strDbName = fileUtil.GetCurDir()+m_strUserId + ".db";
-	m_pDb = new SQLite::Database(strDbName.data(),SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+	m_pDb = new SQLite::Database(strDbFileName.data(),SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
 
 	if (true)
 	{

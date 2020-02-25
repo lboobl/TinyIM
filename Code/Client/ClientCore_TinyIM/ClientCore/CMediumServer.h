@@ -64,7 +64,6 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	std::map<std::string, std::shared_ptr<CClientSess>> m_userId_ClientSessMap;
 	std::map<std::string, std::shared_ptr<CServerSess>> m_userId_ServerSessMap;
 
-	std::map<std::string, std::string> m_userId_UserNameMap;
 	std::map<std::string, FriendChatRecvTxtReqMsg> m_waitImageMsgMap;
 	std::map<std::string, RecvGroupTextMsgReqMsg> m_groupWaitImageMsgMap;
 
@@ -148,7 +147,7 @@ class CMediumServer : public std::enable_shared_from_this<CMediumServer>
 	void ServerSessClose(const CServerSess_SHARED_PTR pSess);
 
 	void start(const std::function<void(const std::error_code &)> &callback);
-
+	void stop();
     void loadConfig(const json11::Json &cfg, std::error_code &ec);
     //获取server的ip和端口,
     std::string getServerIpPort();
@@ -194,6 +193,16 @@ private:
 	
 
 	std::map<std::string, std::string> m_userName_UserIdMap;
+
+	void SetUserIdUserName(const std::string strUserId, const std::string strUserName);
+	std::string GetUserNameById(const std::string strUserId);
+	std::string GetUserMainFolder(const std::string strUserId);
+	std::string GetUserImageDir(const std::string strUserId);
+	std::string GetUserFileDir(const std::string strUserId);
+	std::string GetUserDataBaseFileName(const std::string strUserId);
+	std::map<std::string, std::string> m_userId_UserNameMap;
+
+
 	std::map<std::string, CLIENT_SESS_STATE>  m_userStateMap;
 	std::map<std::string, UserLoginReqMsg> m_userLoginMsgMap;
 	std::map<std::string, CUdpClient_PTR> m_userUdpSessMap;
