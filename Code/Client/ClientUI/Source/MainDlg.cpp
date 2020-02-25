@@ -1023,7 +1023,7 @@ BOOL CMainDlg::InitUI()
 
 	//群组列表部分相关的右键菜单
 	{
-		m_GroupSelectedMenu.LoadMenu(ID_MENU_GROUP_SELECTED);
+		m_GroupSelectedMenu.LoadMenu(ID_MENU_GROUP_SELECT);
 		m_GroupEmptyAreaMenu.LoadMenu(ID_MENU_GROUP_LIST_EMTPY_AREA_RIGHT);
 		m_GroupGroupSelectMenu.LoadMenu(ID_MENU_GROUP_GROUP_SELECTED);
 	}
@@ -1829,7 +1829,7 @@ LRESULT CMainDlg::OnGroupListRButtonUp(LPNMHDR pnmh)
     BLNMHDREx* hdr = (BLNMHDREx*)pnmh;
 	if(hdr->nPostionFlag == POSITION_ON_ITEM)
 	{
-		CSkinMenu PopupMenu = m_BuddyGroupSelectMenu.GetSubMenu(0);
+		CSkinMenu PopupMenu = m_GroupSelectedMenu.GetSubMenu(0);
 		PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
 	}
 	else if(hdr->nPostionFlag==POSITION_ON_TEAM)
