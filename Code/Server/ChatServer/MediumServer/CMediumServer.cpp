@@ -1031,24 +1031,14 @@ void CChatServer::HandleUserUnRegisterReq(const std::shared_ptr<CServerSess>& pS
  */
 void CChatServer::HandleFileSendDataBeginReq(const std::shared_ptr<CServerSess>& pSess, const FileSendDataBeginReq& req)
 {
-	std::string strFolder = m_fileUtil.GetCurDir() + req.m_strUserId + "\\";
+	std::string strFolder = GetImageDir();
 	{
-		
-		if (!m_fileUtil.IsFolder(strFolder)) {
-			m_fileUtil.CreateFolder(strFolder);
-		}
-
 		T_FILE_HASH_BEAN bean;
 		if(m_util.SelectFileByHash(bean,req.m_strFileHash))
 		{
-			std::string strFileName = GetFilePathByUserIdAndFileName(bean.m_strF_USER_ID, bean.m_strF_FILE_NAME);
-			std::string strNewFileName = strFolder + bean.m_strF_FILE_NAME;
+			std::string strFileName = strFolder+ bean.m_strF_FILE_NAME;
 			if (m_fileUtil.IsFileExist(strFileName))
 			{
-				if (!m_fileUtil.IsFileExist(strNewFileName))
-				{
-					m_fileUtil.UtilCopy(strFileName, strNewFileName);
-				}
 				LOG_ERR(ms_loger, "FileName:{} Hash:{} [{} {}]", strFileName, req.m_strFileHash,__FILENAME__,__LINE__);
 				FileSendDataBeginRsp rspMsg;
 				rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_FILE_HAS_EXIST;
@@ -1057,6 +1047,7 @@ void CChatServer::HandleFileSendDataBeginReq(const std::shared_ptr<CServerSess>&
 				rspMsg.m_strFriendId = req.m_strFriendId;
 				rspMsg.m_strUserId = req.m_strUserId;
 				rspMsg.m_strMsgId = req.m_strMsgId;
+				rspMsg.m_eFileType = req.m_eFileType;
 				pSess->SendMsg(&rspMsg);
 				return;
 			}
@@ -1065,7 +1056,6 @@ void CChatServer::HandleFileSendDataBeginReq(const std::shared_ptr<CServerSess>&
 				m_util.DeleteFileByHash(req.m_strFileHash);
 			}
 		}
-		
 	}
 	FileSendDataBeginRsp rspMsg;
 	rspMsg.m_nFileId = req.m_nFileId;
@@ -1073,6 +1063,7 @@ void CChatServer::HandleFileSendDataBeginReq(const std::shared_ptr<CServerSess>&
 	rspMsg.m_strFriendId = req.m_strFriendId;
 	rspMsg.m_strUserId = req.m_strUserId;
 	rspMsg.m_strMsgId = req.m_strMsgId;
+	rspMsg.m_eFileType = req.m_eFileType;
 	if (IsFileRecving(req.m_strFileHash))
 	{
 		rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_FILE_TRANSING;
@@ -1110,11 +1101,7 @@ void CChatServer::HandleFileDownLoadReq(const std::shared_ptr<CServerSess>& pSes
 		rspMsg.m_strRelateMsgId = req.m_strRelateMsgId;
 		rspMsg.m_eFileType = req.m_eFileType;
 		{
-			std::string strFileName = m_fileUtil.GetCurDir() + req.m_strFriendId + "\\" + req.m_strFileName;
-			if (m_fileUtil.IsFileExist(req.m_strFileName))
-			{
-				strFileName = req.m_strFileName;
-			}
+			std::string strFileName = GetImageDir() + req.m_strFileName;
 			rspMsg.m_strFileHash = m_fileUtil.CalcHash(strFileName);
 			if (!m_fileUtil.IsFileExist(strFileName))
 			{
@@ -1122,27 +1109,21 @@ void CChatServer::HandleFileDownLoadReq(const std::shared_ptr<CServerSess>& pSes
 				rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_NO_SUCH_FILE;
 				pSess->SendMsg(&rspMsg);
 			}
-			else if (IsFileSending(rspMsg.m_strFileHash))
-			{
-				LOG_ERR(ms_loger, "File Sending: {} [{} {}]", strFileName, __FILENAME__, __LINE__);
-				rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_FILE_TRANSING;
-				pSess->SendMsg(&rspMsg);
-			}
 			else
 			{
 				rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 				pSess->SendMsg(&rspMsg);
+				FileSendDataBeginReq reqMsg;
+				reqMsg.m_strUserId = req.m_strUserId;
+				reqMsg.m_strFriendId = req.m_strFriendId;
+				reqMsg.m_strFileName = req.m_strFileName;
+				reqMsg.m_nFileId = rand();
+				reqMsg.m_strFileHash = rspMsg.m_strFileHash;
+				reqMsg.m_strMsgId = CreateMsgId();
+				reqMsg.m_eFileType = req.m_eFileType;
+				pSess->SendMsg(&reqMsg);
+				SaveSendingState(reqMsg.m_strFileHash);
 			}
-			FileSendDataBeginReq reqMsg;
-			reqMsg.m_strUserId = req.m_strUserId;
-			reqMsg.m_strFriendId = req.m_strFriendId;
-			reqMsg.m_strFileName = req.m_strFileName;
-			reqMsg.m_nFileId = rand();
-			reqMsg.m_strFileHash = rspMsg.m_strFileHash;
-			reqMsg.m_strMsgId = CreateMsgId();
-			reqMsg.m_eFileType = req.m_eFileType;
-			pSess->SendMsg(&reqMsg);
-			SaveSendingState(reqMsg.m_strFileHash);
 		}
 	}
 }
@@ -1157,7 +1138,7 @@ void CChatServer::HandleFileSendDataBeginRsp(const std::shared_ptr<CServerSess>&
 {
 	if (req.m_errCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 	{
-		std::string strFileName = m_fileUtil.GetCurDir() + "\\" + req.m_strFriendId + "\\" + req.m_strFileName;
+		std::string strFileName = GetImageDir() + req.m_strFileName;
 		if (m_fileUtil.IsFileExist(req.m_strFileName))
 		{
 			strFileName = req.m_strFileName;
@@ -1502,13 +1483,9 @@ void CChatServer::HandleFriendSendFileReq(const std::shared_ptr<CServerSess>& pS
 			sendReqMsg.m_transMode = reqMsg.m_transMode;
 			pSess->SendMsg(&sendReqMsg);
 
-			//
 			{
-				std::string strCurDir = m_fileUtil.GetCurDir();
-				std::string strFileDir = strCurDir + "\\"+reqMsg.m_strFriendId+"\\";
-				m_fileUtil.CreateFolder(strFileDir);
-				std::string strFileName = m_fileUtil.GetFileNameFromPath(reqMsg.m_strFileName);
-				m_fileUtil.OpenWriteFile(sendReqMsg.m_nFileId, strFileDir + strFileName);
+				std::string strFileName = GetImageDir()+m_fileUtil.GetFileNameFromPath(reqMsg.m_strFileName);
+				m_fileUtil.OpenWriteFile(sendReqMsg.m_nFileId, strFileName);
 				m_fileTranModeMap.insert({ sendReqMsg.m_nFileId,reqMsg.m_transMode });
 			}
 		}
@@ -2543,8 +2520,7 @@ void CChatServer::HandleFileVerifyReq(const std::shared_ptr<CServerSess>& pSess,
 		m_fileUtil.OnCloseFile(req.m_nFileId);
 	}
 	{
-		std::string strFileName = GetFilePathByUserIdAndFileName(req.m_strUserId, req.m_strFileName);
-		std::string strNewFileName = GetFilePathByUserIdAndFileName(req.m_strFriendId, req.m_strFileName);
+		std::string strFileName = GetImageDir()+m_fileUtil.GetFileNameFromPath(req.m_strFileName);
 		std::string strFileHash = m_fileUtil.CalcHash(strFileName);
 		FileVerifyRspMsg rspMsg;
 		rspMsg.m_strMsgId = req.m_strMsgId;
@@ -2560,7 +2536,7 @@ void CChatServer::HandleFileVerifyReq(const std::shared_ptr<CServerSess>& pSess,
 			bean.m_strF_USER_ID = req.m_strUserId;
 			m_util.InsertFileHash(bean);
 			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
-			m_fileUtil.UtilCopy(strFileName, strNewFileName);
+			//m_fileUtil.UtilCopy(strFileName, strNewFileName);
 			rspMsg.m_strFileHash = strFileHash;
 			//判断离线文件消息，插入聊天消息
 		}
@@ -2929,23 +2905,6 @@ SendGroupTextMsgRspMsg CChatServer::DoSendGroupTextMsgReqMsg(const SendGroupText
 		rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 		rspMsg.m_chatMsg = reqMsg.m_chatMsg;
-		/*rspMsg.m_chatMsg.m_strChatMsgId = chatMsg.m_strF_MSG_ID;
-		rspMsg.m_chatMsg.m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
-		rspMsg.m_chatMsg.m_strMsgTime = CTimeUtil::GetYMD_HMS_Time();
-		rspMsg.m_chatMsg.m_strSenderId = reqMsg.m_chatMsg.m_strSenderId;
-
-		T_GROUP_RELATION_BEAN relationBean;
-		relationBean.m_strF_USER_ID = chatMsg.m_strF_SENDER_ID;
-		relationBean.m_strF_LAST_READ_MSG_ID = chatMsg.m_strF_MSG_ID;
-		relationBean.m_strF_GROUP_ID = chatMsg.m_strF_GROUP_ID;
-		if (m_util.UpdateGroupRelationLastReadId(relationBean))
-		{
-
-		}
-		else
-		{
-			LOG_ERR(ms_loger,"Update Last Read ID failed {} {} [{} {}]", relationBean.m_strF_USER_ID, relationBean.m_strF_GROUP_ID,__FILENAME__,__LINE__);
-		}*/
 	}
 	else
 	{
@@ -2986,6 +2945,14 @@ void CChatServer::NotifyUserRecvGroupMsg(const std::shared_ptr<CServerSess>& pSe
 			reqMsg.m_strUserId = pSess->UserId();
 			pSess->SendMsg(&reqMsg);
 		}
+		else
+		{
+			LOG_ERR(ms_loger, "User:{} No Last Msg Id [{} {}]", pSess->UserId(), __FILENAME__, __LINE__);
+		}
+	}
+	else
+	{
+		LOG_WARN(ms_loger, "User:{} Is Not IDLE State [{} {}]",pSess->UserId(),__FILENAME__, __LINE__);
 	}
 }
 void CChatServer::SendGroupMsgToUser(const std::shared_ptr<CServerSess>& pSess, const std::string strGroupId, const std::string strLastReadId)
@@ -3433,4 +3400,23 @@ void CChatServer::HandleFileDataSendReq(const std::shared_ptr<CServerSess>& pSes
 	pSess->SendMsg(&pMsg);
 }
 
+std::string CChatServer::GetImageDir()
+{
+	std::string strImageDir = m_fileUtil.GetCurDir() + "Image\\";
+	if (!m_fileUtil.IsFolder(strImageDir))
+	{
+		m_fileUtil.CreateFolder(strImageDir);
+	}
+	return strImageDir;
+}
+
+std::string CChatServer::GetFileDir()
+{
+	std::string strFileDir = m_fileUtil.GetCurDir() + "File\\";
+	if (!m_fileUtil.IsFolder(strFileDir))
+	{
+		m_fileUtil.CreateFolder(strFileDir);
+	}
+	return strFileDir;
+}
 }

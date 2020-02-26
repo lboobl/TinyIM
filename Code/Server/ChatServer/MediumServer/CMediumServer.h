@@ -291,7 +291,8 @@ private:
 	void RemoveGroupUserState(const UserIdGroupId_st& keyValue);
 	void RemoveUserAllGroupState(const std::string strUserId);
 	std::map<UserIdGroupId_st, CLIENT_SESS_STATE> m_groupStateMap;
-
+	std::string GetImageDir();
+	std::string GetFileDir();
 
 public:
 
