@@ -191,7 +191,8 @@ private:
 	void HandleFriendChatSendTextMsgRsp(const FriendChatSendTxtRspMsg& rspMsg);
 	void HandleFriendChatRecvTextMsgRsp(const FriendChatRecvTxtReqMsg& reqMsg);
 	
-
+	void HandleUserRecvImageByHash(const std::shared_ptr<CClientSess>& pClientSess,const std::string strFileName,std::string strFileHash);
+	void HandleGroupRecvImageByHash(const std::shared_ptr<CClientSess>& pClientSess, const std::string strFileName, std::string strFileHash);
 	std::map<std::string, std::string> m_userName_UserIdMap;
 
 	void SetUserIdUserName(const std::string strUserId, const std::string strUserName);
@@ -202,7 +203,8 @@ private:
 	std::string GetUserDataBaseFileName(const std::string strUserId);
 	std::map<std::string, std::string> m_userId_UserNameMap;
 
-
+	std::string GetSendFileNewName(const std::string strUserId, const std::string strOrgFileName);
+	void SendWaitMsgByHash(const std::shared_ptr<CClientSess>& pClientSess, const std::string strFileHash);
 	std::map<std::string, CLIENT_SESS_STATE>  m_userStateMap;
 	std::map<std::string, UserLoginReqMsg> m_userLoginMsgMap;
 	std::map<std::string, CUdpClient_PTR> m_userUdpSessMap;
