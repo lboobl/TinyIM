@@ -3103,7 +3103,7 @@ void CGroupChatDlg::OnRecvToHandle(const HWND recvHandle,C_UI_GroupMessage* pGro
 				case E_RichEditType::IMAGE:
 				{
 					WString strNewPath = Hootina::CPath::GetAppPath() + EncodeUtil::AnsiToUnicode(m_netProto->UserId()) + _T("\\");
-					WString imgName = strNewPath + item.m_strImageName;
+					WString imgName = item.m_strImageName;
 					_RichEdit_InsertFace(recvHandle,
 						imgName.data(),
 						-1,
