@@ -2514,7 +2514,6 @@ void CMediumServer::HSB_FileSendDataBeginReq(const std::shared_ptr<CClientSess>&
 	}
 	else
 	{
-
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 		rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_FILE_TRANSING;
 		rspMsg.m_strFileName = reqMsg.m_strFileName;
@@ -2654,6 +2653,12 @@ void CMediumServer::HSB_FileDownLoadRsp(const std::shared_ptr<CClientSess>& pCli
 	if (rspMsg.m_errCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
 	{
 		m_fileHashMsgIdMap.insert({ rspMsg.m_strFileHash, rspMsg.m_strRelateMsgId });
+		std::string strFileName = GetUserImageDir(pClientSess->UserId()) + rspMsg.m_strFileName;
+		if (m_fileUtil.IsFileExist(strFileName) && rspMsg.m_strFileHash == m_fileUtil.CalcHash(strFileName))
+		{
+			HandleUserRecvImageByHash(pClientSess, strFileName, rspMsg.m_strFileHash);
+			HandleGroupRecvImageByHash(pClientSess, strFileName, rspMsg.m_strFileHash);
+		}
 	}
 	else
 	{
