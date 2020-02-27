@@ -101,7 +101,7 @@ BOOL CAddFriendConfirmDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
  */
 BOOL CAddFriendConfirmDlg::InitUI()
 {
-	m_SkinDlg.SetBgPic(_T("DlgBg\\MsgBoxDlgBg.png"), CRect(4, 32, 4, 33));
+	m_SkinDlg.SetBgPic(_T("DlgBg\\MsgBoxDlgBg.png"), CRect(4, 32, 4, 32));
 	m_SkinDlg.SetCloseSysBtnPic(_T("SysBtn\\btn_close_normal.png"), _T("SysBtn\\btn_close_highlight.png"), _T("SysBtn\\btn_close_down.png"));
 	m_SkinDlg.SubclassWindow(m_hWnd);
 	m_SkinDlg.SetTitleText(m_strWindowTitle);
@@ -109,32 +109,43 @@ BOOL CAddFriendConfirmDlg::InitUI()
 
 	HDC hDlgBgDC = m_SkinDlg.GetBgDC();
 
-	m_btnAgree.SetButtonType(SKIN_PUSH_BUTTON);
-	m_btnAgree.SetTransparent(TRUE, hDlgBgDC);
-	m_btnAgree.SetBgPic(_T("Button\\btn_normal.png"), _T("Button\\btn_focus.png"),_T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"));
-	m_btnAgree.SetRound(4, 4);
-	m_btnAgree.SubclassWindow(GetDlgItem(ID_ADD_CONFIRM_AGREE));
-	m_btnAgree.ShowWindow(m_bShowAgreeButton? SW_SHOW : SW_HIDE);
+	//同意按钮
+	{
+		m_btnAgree.SetButtonType(SKIN_PUSH_BUTTON);
+		m_btnAgree.SetTransparent(TRUE, hDlgBgDC);
+		m_btnAgree.SetBgPic(_T("Button\\btn_normal.png"), _T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"));
+		m_btnAgree.SetRound(4, 4);
+		m_btnAgree.SubclassWindow(GetDlgItem(ID_ADD_CONFIRM_AGREE));
+		m_btnAgree.ShowWindow(m_bShowAgreeButton ? SW_SHOW : SW_HIDE);
+	}
 
-	m_btnRefuse.SetButtonType(SKIN_PUSH_BUTTON);
-	m_btnRefuse.SetTransparent(TRUE, hDlgBgDC);
-	m_btnRefuse.SetBgPic(_T("Button\\btn_normal.png"), _T("Button\\btn_focus.png"),_T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"));
-	m_btnRefuse.SubclassWindow(GetDlgItem(ID_ADDCONFIRM_REFUSE));
-	m_btnRefuse.ShowWindow(m_bShowRefuseButton? SW_SHOW : SW_HIDE);
-
-	m_btnOK.SetButtonType(SKIN_PUSH_BUTTON);
-	m_btnOK.SetTransparent(TRUE, hDlgBgDC);
-	m_btnOK.SetBgPic(_T("Button\\btn_normal.png"), _T("Button\\btn_focus.png"),_T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"));
-	m_btnOK.SubclassWindow(GetDlgItem(IDOK));
-	m_btnOK.ShowWindow(m_bShowOKButton? SW_SHOW : SW_HIDE);
-
-	m_staticAddConfirmInfo.SetTransparent(TRUE, hDlgBgDC);
-	m_staticAddConfirmInfo.SetLinkColor(RGB(225, 0, 0));
-	m_staticAddConfirmInfo.SetLinkType(SKIN_LINK_ADDNEW);
-	m_staticAddConfirmInfo.SubclassWindow(GetDlgItem(IDC_ADD_CONFIRM));
+	//拒绝按钮
+	{
+		m_btnRefuse.SetButtonType(SKIN_PUSH_BUTTON);
+		m_btnRefuse.SetTransparent(TRUE, hDlgBgDC);
+		m_btnRefuse.SetBgPic(_T("Button\\btn_normal.png"), _T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"));
+		m_btnRefuse.SubclassWindow(GetDlgItem(ID_ADDCONFIRM_REFUSE));
+		m_btnRefuse.ShowWindow(m_bShowRefuseButton ? SW_SHOW : SW_HIDE);
+	}
 	
-	m_staticAddConfirmInfo.SetWindowText(m_strWindowInfo);
+	//OK按钮
+	{
+		m_btnOK.SetButtonType(SKIN_PUSH_BUTTON);
+		m_btnOK.SetTransparent(TRUE, hDlgBgDC);
+		m_btnOK.SetBgPic(_T("Button\\btn_normal.png"), _T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"), _T("Button\\btn_focus.png"));
+		m_btnOK.SubclassWindow(GetDlgItem(IDOK));
+		m_btnOK.ShowWindow(m_bShowOKButton ? SW_SHOW : SW_HIDE);
+	}
+	
+	// 添加信息展示静态控件
+	{
+		m_staticAddConfirmInfo.SetTransparent(TRUE, hDlgBgDC);
+		m_staticAddConfirmInfo.SetLinkColor(RGB(225, 0, 0));
+		m_staticAddConfirmInfo.SetLinkType(SKIN_LINK_ADDNEW);
+		m_staticAddConfirmInfo.SubclassWindow(GetDlgItem(IDC_ADD_CONFIRM));
 
+		m_staticAddConfirmInfo.SetWindowText(m_strWindowInfo);
+	}
 	return TRUE;
 }
 

@@ -28,7 +28,6 @@ CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 	m_cyPicBarDlg = 24;
 
 	m_strGroupName = _T("群名称");
-	m_strUserName = _T("");
 	m_nMemberCnt = m_nOnlineMemberCnt = 0;
 
 
@@ -259,8 +258,8 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 
 	SetHotRgn();
 
-	C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-	if (lpGroupInfo != NULL)
+	C_UI_GroupInfo* lpGroupInfo = nullptr;
+	if (lpGroupInfo != nullptr)
 	{
 		//if (!lpGroupInfo->IsHasGroupInfo())		// 更新群信息
 			OnUpdateGroupInfo();
@@ -1317,8 +1316,8 @@ LRESULT CGroupChatDlg::OnRichEdit_Recv_Link(LPNMHDR pnmh)
 			}
 			else
 			{
-				C_UI_GroupInfo* pGroupInfo = GetGroupInfoPtr();
-				if (pGroupInfo == NULL)
+				C_UI_GroupInfo* pGroupInfo = nullptr;
+				if (pGroupInfo == nullptr)
 				{
 					return 0;
 				}
@@ -1359,23 +1358,7 @@ LRESULT CGroupChatDlg::OnGMemberList_DblClick(LPNMHDR pnmh)
 	int nCurSel = m_GroupMemberListCtrl.GetCurSelItemIndex();
 	if (nCurSel != -1)
 	{
-		std::string strFriendId = GetGroupInfoPtr()->GetMember(nCurSel)->m_strUserId;
-		if(strFriendId == m_netProto->UserId())
-		{
-			::MessageBox(m_hWnd, _T("不能和自己聊天。"), g_strAppTitle.c_str(), MB_OK | MB_ICONINFORMATION);
-			return 0;
-		}
-
-		if (m_netProto->m_BuddyList.IsFriend(strFriendId))
-		{
-			std::string * pFriend = new std::string();
-			*pFriend = strFriendId;
-			::SendMessage(m_hMainDlg, WM_SHOW_BUDDY_CHAT_DLG, 0, (LPARAM)(pFriend));
-		}
-		else
-		{
-			::MessageBox(m_hWnd, _T("暂且不支持临时会话，您必须加对方为好友以后才能与之会话。"), g_strAppTitle.c_str(), MB_OK | MB_ICONINFORMATION);
-		}
+		MessageBox(_T("暂不支持"), _T("TinyIM"));
 	}
 	return 0;
 }
@@ -1595,8 +1578,8 @@ void CGroupChatDlg::OnMenu_ViewInfo(UINT uNotifyCode, int nID, CWindow wndCtl)
 	UINT nUTalkUin = 0;
 	if (hWnd == m_richRecv.m_hWnd)
 	{
-		C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-		if (lpGroupInfo != NULL)
+		C_UI_GroupInfo* lpGroupInfo = nullptr;
+		if (lpGroupInfo != nullptr)
 		{
 			C_UI_BuddyInfo* lpBuddyInfo = lpGroupInfo->GetMemberByAccount(m_strCurLink);
 			if (lpBuddyInfo == NULL)
@@ -1637,8 +1620,8 @@ void CGroupChatDlg::OnMenu_SendMsg(UINT uNotifyCode, int nID, CWindow wndCtl)
 	UINT nUTalkUin = 0;
 	if (hWnd == m_richRecv.m_hWnd)
 	{
-		C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-		if (lpGroupInfo != NULL)
+		C_UI_GroupInfo* lpGroupInfo = nullptr;
+		if (lpGroupInfo != nullptr)
 		{
 			C_UI_BuddyInfo* lpBuddyInfo = lpGroupInfo->GetMemberByAccount(m_strCurLink);
 			if (lpBuddyInfo == NULL)
@@ -1861,10 +1844,7 @@ void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow
 	m_richMsgLog.SetReadOnly(FALSE);
 	m_richMsgLog.Cut();
 	INPUT Input={0};
-	// Backspace down
-	//Input.type = INPUT_KEYBOARD;
-	//Input.mi.dwFlags = KEYBDINPUT;
-	//SendInput(1,&Input,sizeof(INPUT));
+
 	::SendMessage(m_richMsgLog.m_hWnd, WM_KEYDOWN, VK_BACK, 0);
 	m_richMsgLog.SetReadOnly(TRUE);
 	//m_richSend.PasteSpecial(CF_TEXT);
@@ -1895,8 +1875,6 @@ void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow
 	}
 	::CloseClipboard();
 	//用sql语句去删除SQLite数据库中对应的消息记录
-
-	//UINT nMsgLogID = m_MsgLogger.DelBuddyMsgLogByText(lpStr);
 }
 
 void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
@@ -1909,70 +1887,19 @@ void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl
 	m_richMsgLog.SetWindowText(_T(""));
 	m_richRecv.SetWindowText(_T(""));
 	m_staMsgLogPage.SetWindowText(_T("0/0"));
-	//m_MsgLogger.DelGroupMsgLog(m_nGroupCode);
 }
 
 
-// 获取群信息指针
-C_UI_GroupInfo* CGroupChatDlg::GetGroupInfoPtr()
-{
-	if (m_netProto != nullptr)
-	{
-		CGroupList* lpGroupList = m_netProto->GetGroupList();
-		if (lpGroupList != NULL)
-		{
-			return lpGroupList->GetGroupById(m_strGroupId);
-		}
-	}
-	return NULL;
-}
-
-
-// 获取用户信息指针
-C_UI_BuddyInfo* CGroupChatDlg::GetUserInfoPtr()
-{
-	//if (m_lpFMGClient != NULL)
-	{
-		C_UI_BuddyInfo* lpUserInfo = NULL;// = m_lpFMGClient->GetUserInfo();
-		if (lpUserInfo != NULL)
-		{
-			C_UI_BuddyInfo* lpGMemberInfo = NULL;
-			C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-			/*if (lpGroupInfo != NULL)
-			{
-				lpGMemberInfo = lpGroupInfo->GetMemberByUin(lpUserInfo->m_uUserIndex);
-			}*/
-			
-			if ( (lpGMemberInfo != NULL) && 
-				 (0 == lpGMemberInfo->m_uUserIndex) )
-			{
-				lpGMemberInfo->m_uUserIndex = lpUserInfo->m_uUserIndex;
-			}
-			
-			return (lpGMemberInfo != NULL) ? lpGMemberInfo : lpUserInfo;
-		}
-	}
-	return NULL;
-}
 
 // 更新信息
 void CGroupChatDlg::UpdateData()
 {
-	C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-	if (lpGroupInfo != NULL)
+	C_UI_GroupInfo* lpGroupInfo = nullptr;
+	if (lpGroupInfo != nullptr)
 	{
 		m_nMemberCnt = lpGroupInfo->GetMemberCount();
 		m_nOnlineMemberCnt = lpGroupInfo->GetOnlineMemberCount();
-		//m_nGroupId = lpGroupInfo->m_nGroupId;
-		//m_nGroupNumber = lpGroupInfo->m_nGroupNumber;
 		m_strGroupName = lpGroupInfo->m_strName.c_str();
-	}
-
-	C_UI_BuddyInfo* lpUserInfo = GetUserInfoPtr();
-	if (lpUserInfo != NULL)
-	{
-		m_strUserName = lpUserInfo->m_strNickName.c_str();
-		m_strAccount = lpUserInfo->m_strAccount.c_str();
 	}
 }
 
@@ -1993,8 +1920,8 @@ BOOL CGroupChatDlg::UpdateGroupNameCtrl()
 BOOL CGroupChatDlg::UpdateGroupMemo()
 {
 	m_edtMemo.SetWindowText(_T("暂无公告"));
-	C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-	if (lpGroupInfo != NULL)
+	C_UI_GroupInfo* lpGroupInfo = nullptr;
+	if (lpGroupInfo != nullptr)
 	{
 		if (!lpGroupInfo->m_strMemo.empty())
 		{
@@ -2007,8 +1934,8 @@ BOOL CGroupChatDlg::UpdateGroupMemo()
 // 更新群成员列表
 BOOL CGroupChatDlg::UpdateGroupMemberList()
 {
-	C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-	if (NULL == lpGroupInfo)
+	C_UI_GroupInfo* lpGroupInfo = nullptr;
+	if (nullptr == lpGroupInfo)
 	{
 		return FALSE;
 	}
@@ -2088,12 +2015,12 @@ BOOL CGroupChatDlg::UpdateGroupMemberList()
 // 初始化Top工具栏
 BOOL CGroupChatDlg::InitTopToolBar()
 {
-	if (0)
+	
 	{
-		int nIndex = m_tbTop.AddItem(101, STBI_STYLE_DROPDOWN);
+		int nIndex = m_tbTop.AddItem(IDC_BTN_SEND_FILE, STBI_STYLE_DROPDOWN);
 		m_tbTop.SetItemSize(nIndex, 38, 28, 28, 10);
 		m_tbTop.SetItemPadding(nIndex, 1);
-		m_tbTop.SetItemToolTipText(nIndex, _T("群社区"));
+		m_tbTop.SetItemToolTipText(nIndex, _T("传送文件"));
 		m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
 			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
 		m_tbTop.SetItemLeftBgPic(nIndex, _T("aio_toolbar_leftnormal.png"),
@@ -2101,22 +2028,8 @@ BOOL CGroupChatDlg::InitTopToolBar()
 		m_tbTop.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"),
 			_T("aio_toolbar_rightdown.png"), CRect(0, 0, 0, 0));
 		m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-		m_tbTop.SetItemIconPic(nIndex, _T("GroupTopToolBar\\GroupCommunity.png"));
+		m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\sendfile.png"));
 	}
-	//{
-	//	int nIndex = m_tbTop.AddItem(IDC_BTN_SEND_FILE, STBI_STYLE_DROPDOWN);
-	//	m_tbTop.SetItemSize(nIndex, 38, 28, 28, 10);
-	//	m_tbTop.SetItemPadding(nIndex, 1);
-	//	m_tbTop.SetItemToolTipText(nIndex, _T("传送文件"));
-	//	m_tbTop.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
-	//		_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
-	//	m_tbTop.SetItemLeftBgPic(nIndex, _T("aio_toolbar_leftnormal.png"),
-	//		_T("aio_toolbar_leftdown.png"), CRect(0, 0, 0, 0));
-	//	m_tbTop.SetItemRightBgPic(nIndex, _T("aio_toolbar_rightnormal.png"),
-	//		_T("aio_toolbar_rightdown.png"), CRect(0, 0, 0, 0));
-	//	m_tbTop.SetItemArrowPic(nIndex, _T("aio_littletoolbar_arrow.png"));
-	//	m_tbTop.SetItemIconPic(nIndex, _T("BuddyTopToolBar\\sendfile.png"));
-	//}
 
 	m_tbTop.SetLeftTop(0, 0);
 	m_tbTop.SetTransparent(TRUE, m_SkinDlg.GetBgDC());
@@ -2130,51 +2043,57 @@ BOOL CGroupChatDlg::InitTopToolBar()
 // 初始化Middle工具栏
 BOOL CGroupChatDlg::InitMidToolBar()
 {
-	
-	int nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_FONT_BTN, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
-	m_tbMid.SetItemSize(nIndex, 30, 27);
-	m_tbMid.SetItemPadding(nIndex, 1);
-	m_tbMid.SetItemToolTipText(nIndex, _T("字体选择工具栏"));
-	m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_font.png"));
+	int nIndex = 0;
+	//
+	{
+		int nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_FONT_BTN, STBI_STYLE_BUTTON | STBI_STYLE_CHECK);
+		m_tbMid.SetItemSize(nIndex, 30, 27);
+		m_tbMid.SetItemPadding(nIndex, 1);
+		m_tbMid.SetItemToolTipText(nIndex, _T("字体选择工具栏"));
+		m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
+			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
+		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_font.png"));
+	}
+	{
+		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_FACE_BTN, STBI_STYLE_BUTTON | STBI_STYLE_CHECK);
+		m_tbMid.SetItemSize(nIndex, 30, 27);
+		m_tbMid.SetItemPadding(nIndex, 1);
+		m_tbMid.SetItemToolTipText(nIndex, _T("选择表情"));
+		m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
+			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
+		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_face.png"));
+	}
 
-	nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_FACE_BTN, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
-	m_tbMid.SetItemSize(nIndex, 30, 27);
-	m_tbMid.SetItemPadding(nIndex, 1);
-	m_tbMid.SetItemToolTipText(nIndex, _T("选择表情"));
-	m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_face.png"));
+	{
+		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_IMAGE_BTN, STBI_STYLE_BUTTON);
+		m_tbMid.SetItemSize(nIndex, 30, 27);
+		m_tbMid.SetItemPadding(nIndex, 1);
+		m_tbMid.SetItemToolTipText(nIndex, _T("发送图片"));
+		m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
+			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
+		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_sendpic.png"));
+	}
 
-	nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_IMAGE_BTN, STBI_STYLE_BUTTON);
-	m_tbMid.SetItemSize(nIndex, 30, 27);
-	m_tbMid.SetItemPadding(nIndex, 1);
-	m_tbMid.SetItemToolTipText(nIndex, _T("发送图片"));
-	m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_sendpic.png"));
-	
+	{
+		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_SCREEN_SHOT_BTN, STBI_STYLE_BUTTON);
+		m_tbMid.SetItemSize(nIndex, 30, 27, 27, 0);
+		m_tbMid.SetItemPadding(nIndex, 1);
+		m_tbMid.SetItemToolTipText(nIndex, _T("屏幕截图"));
+		m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"),
+			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
+		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_cut.png"));
+	}
 
-	/*nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_SCREEN_SHOT_BTN, STBI_STYLE_BUTTON);
-	m_tbMid.SetItemSize(nIndex, 30, 27, 27, 0);
-	m_tbMid.SetItemPadding(nIndex, 1);
-	m_tbMid.SetItemToolTipText(nIndex, _T("屏幕截图"));
-	m_tbMid.SetItemBgPic(nIndex, NULL, _T("aio_toolbar_highligh.png"), 
-		_T("aio_toolbar_down.png"), CRect(3,3,3,3));
-	m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_cut.png"));
-
-
-	*/
-	//nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_MSG_LOG_BTN, STBI_STYLE_BUTTON);
-	//m_nMsgLogIndexInToolbar = nIndex;
-	//m_tbMid.SetItemSize(nIndex, 90, 27, 27, 0);
-	//m_tbMid.SetItemPadding(nIndex, 1);
-	//m_tbMid.SetItemMargin(nIndex, 260, 0);
-	//m_tbMid.SetItemText(nIndex, _T(">>"));
-	//m_tbMid.SetItemToolTipText(nIndex, _T("点击查看消息记录"));
-	//m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_msglog.png"));
-	
+	{
+		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_MSG_LOG_BTN, STBI_STYLE_BUTTON);
+		m_nMsgLogIndexInToolbar = nIndex;
+		m_tbMid.SetItemSize(nIndex, 90, 27, 27, 0);
+		m_tbMid.SetItemPadding(nIndex, 1);
+		m_tbMid.SetItemMargin(nIndex, 260, 0);
+		m_tbMid.SetItemText(nIndex, _T(">>"));
+		m_tbMid.SetItemToolTipText(nIndex, _T("点击查看消息记录"));
+		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_msglog.png"));
+	}
 	m_tbMid.SetLeftTop(2, 4);
 	m_tbMid.SetBgPic(_T("MidToolBar\\bg.png"), CRect(0,0,0,0));
 
@@ -2688,21 +2607,6 @@ int CGroupChatDlg::FindMemberListByUin(UINT nUTalkUin)
 	return -1;
 }
 
-void CGroupChatDlg::GetSenderInfo(UINT nUTalkUin, CString& strName, WString& strAccount)
-{
-	strName = _T("");
-
-	C_UI_GroupInfo* lpGroupInfo = GetGroupInfoPtr();
-	if (lpGroupInfo != NULL)
-	{
-		/*C_UI_BuddyInfo* lpBuddyInfo = lpGroupInfo->GetMemberByUin(nUTalkUin);
-		if (lpBuddyInfo != NULL)
-		{
-			strName = lpBuddyInfo->m_strNickName.c_str();
-			strAccount = lpBuddyInfo->m_strAccount;
-		}*/
-	}
-}
 
 void CGroupChatDlg::_RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText)
 {

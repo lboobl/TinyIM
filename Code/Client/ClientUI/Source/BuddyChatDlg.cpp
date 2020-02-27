@@ -230,7 +230,6 @@ void CBuddyChatDlg::OnRecvMsgToHandle(const HWND recvHandle, const CBuddyChatUiM
 					std::string strImagePath = EncodeUtil::UnicodeToAnsi(strNewPath);
 					if (!Hootina::CPath::IsFileExist(strNewPath.data()))
 					{
-
 						ERR(m_pSess->ms_loger, "Image File No Exist: {} [{} {}]", strImagePath,__FILENAME__, __LINE__);
 						RichEdit_ReplaceSel(recvHandle, _T("-----接收图片失败------"),
 							msg.m_stFontInfo.m_strName.c_str(),
@@ -258,8 +257,6 @@ void CBuddyChatDlg::OnRecvMsgToHandle(const HWND recvHandle, const CBuddyChatUiM
 				}break;
 				}
 			}
-			
-			//m_richMsgLog.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 		}
 		RichEdit_ReplaceSel(recvHandle, _T("\r\n"));
 		RichEdit_SetStartIndent(recvHandle, 0);
@@ -340,19 +337,7 @@ void CBuddyChatDlg::OnUpdateBuddyHeadPic()
 		}	
 	}
 	
-	//if(lpBuddyInfo == NULL)
-	//{
-	//	::MessageBox(m_lpFMGClient->m_UserMgr.m_hCallBackWnd, _T("程序遇到一个严重的错误导致打开聊天对话框失败！"), g_strAppTitle.c_str(), MB_OK|MB_ICONERROR); 
-	//	return;
-	//}
 	
-	//if(pBuddyInfo!=NULL && pBuddyInfo->m_bUseCustomFace && pBuddyInfo->m_bCustomFaceAvailable)
-	//{
-	//	strThumbPath.Format(_T("%s%d.png"), m_lpFMGClient->m_UserMgr.GetCustomUserThumbFolder().c_str(), pBuddyInfo->m_uUserID);
-	//	if(!Hootina::CPath::IsFileExist(strThumbPath))
-	//		strThumbPath.Format(_T("%sImage\\UserThumbs\\%d.png"), g_szHomePath, pBuddyInfo->m_nFace);
-	//}
-	//else
 
 	//好友头像图片
 	strThumbPath.Format(_T("%sImage\\UserThumbs\\%d.png"), g_szHomePath, 2);
@@ -411,20 +396,7 @@ BOOL CBuddyChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 
 	CString strThumbPath;
 	//Dennis Modify
-	/*
-	C_UI_BuddyInfo* lpBuddyInfo = m_lpFMGClient->m_UserMgr.m_BuddyList.GetBuddy(m_nUTalkUin);
-	if(lpBuddyInfo == NULL)
-	{
-		::MessageBox(m_lpFMGClient->m_UserMgr.m_hCallBackWnd, _T("程序遇到一个严重的错误导致打开聊天对话框失败！"), g_strAppTitle.c_str(), MB_OK|MB_ICONERROR); 
-		return FALSE;
-	}
-	if(lpBuddyInfo->m_bUseCustomFace && !lpBuddyInfo->m_strCustomFace.empty() && lpBuddyInfo->m_bCustomFaceAvailable)
-	{
-		strThumbPath.Format(_T("%s%s"), m_lpFMGClient->m_UserMgr.GetCustomUserThumbFolder().c_str(), lpBuddyInfo->m_strCustomFace.c_str());
-		if(!Hootina::CPath::IsFileExist(strThumbPath))
-			strThumbPath.Format(_T("%sImage\\UserThumbs\\%d.png"), g_szHomePath, lpBuddyInfo->m_nFace);
-	}
-	else*/
+
 	
 	strThumbPath.Format(_T("%sImage\\UserThumbs\\%d.png"), g_szHomePath, 2);
 	
@@ -447,26 +419,6 @@ BOOL CBuddyChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 
 	UpdateData();
 
-	//Dennis Mask
-	//m_FontSelDlg.m_pFMGClient = m_lpFMGClient;
-	//m_bPressEnterToSendMessage = m_userConfig.IsEnablePressEnterToSend();
-
-	
-	//if (lpBuddyInfo != NULL)
-	//{
-	//	if (!lpBuddyInfo->IsHasUTalkNum())		// 更新好友号码
-	//	{
-	//		m_lpFMGClient->UpdateBuddyNum(m_nUTalkUin);
-	//	}
-	//	else								// 更新好友头像
-	//	{
-	//		if (m_lpFMGClient->IsNeedUpdateBuddyHeadPic(m_nUTalkNumber))
-	//			m_lpFMGClient->UpdateBuddyHeadPic(m_nUTalkUin, m_nUTalkNumber);
-	//	}
-
-	//	if (!lpBuddyInfo->IsHasUTalkSign())	// 更新个性签名
-	//		m_lpFMGClient->UpdateBuddySign(m_nUTalkUin);
-	//}
 
 	Init();		// 初始化
 
@@ -714,14 +666,7 @@ BOOL CBuddyChatDlg::HandleFileDragResult(PCTSTR lpszFileName)
 	    strFileExtension==_T("png")  ||
 	    strFileExtension==_T("bmp")  ||
 		strFileExtension==_T("gif") )
-	{
-		//UINT64 nFileSize = IUGetFileSize2(lpszFileName);
-		//if(nFileSize > MAX_CHAT_IMAGE_SIZE)
-		//{
-		//	::MessageBox(m_hWnd, _T("图片大小超过10M，请使用文件发送。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-		//	return FALSE;
-		//}
-		
+	{		
 		_RichEdit_InsertFace(m_richSend.m_hWnd, lpszFileName, -1, -1);
 		m_richSend.SetFocus();
 		return TRUE;
@@ -1350,7 +1295,7 @@ void CBuddyChatDlg::OnOpenTransferFileItem(UINT uNotifyCode, int nID, CWindow wn
 
 
 /**
- * @brief 响应工具栏的拖拽消息
+ * @brief 响应工具栏的点击消息
  * 
  * @param pnmh 
  * @return LRESULT 
@@ -1364,7 +1309,6 @@ LRESULT CBuddyChatDlg::OnToolbarDropDown(LPNMHDR pnmh)
 
 	switch (pnmtb->iItem)
 	{
-
 	case 101:
 	{
 		nIndex = 0;
@@ -1379,7 +1323,7 @@ LRESULT CBuddyChatDlg::OnToolbarDropDown(LPNMHDR pnmh)
 
 	case IDC_BTN_SEND_FILE:
 	{
-		nIndex = 2;
+		nIndex = 1;
 		m_tbTop.ClientToScreen(&rc);
 	}break;	
 		

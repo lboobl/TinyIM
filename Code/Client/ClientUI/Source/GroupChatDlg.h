@@ -22,7 +22,6 @@
 #include "PicBarDlg.h"
 #include "SplitterCtrl.h"
 #include "UI_USER_INFO.h"
-//#include "MessageLogger.h"
 #include "IUProtocolData.h"
 #include "Proto.h"
 #include "UICommonDef.h"
@@ -178,8 +177,6 @@ private:
 	BOOL OnRichEdit_LBtnDblClk(MSG* pMsg);		// 发送/接收文本框的鼠标双击消息
 	BOOL OnRichEdit_RBtnDown(MSG* pMsg);		// 发送/接收文本框的鼠标右键按下消息
 
-	C_UI_GroupInfo* GetGroupInfoPtr();				// 获取群信息指针
-	C_UI_BuddyInfo* GetUserInfoPtr();				// 获取用户信息指针
 
 	void UpdateData();					// 更新信息
 	void UpdateDlgTitle();				// 更新对话框标题栏
@@ -203,7 +200,6 @@ private:
 	BOOL HandleFileDragResult(PCTSTR lpszFileName);
 
 	int FindMemberListByUin(UINT nUTalkUin);
-	void GetSenderInfo(UINT nUTalkUin, CString& strName, WString& strAccount);
 	void _RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText);
 	BOOL _RichEdit_InsertFace(HWND hWnd, LPCTSTR lpszFileName, int nFaceId, int nFaceIndex);
 	BOOL HandleFontInfo(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
@@ -265,22 +261,33 @@ private:
 	CSkinButton             m_btnSend;//消息发送按钮
 	CSkinButton             m_btnArrow;//TODO
 	CSkinMenu				m_SkinMenu;//TODO 
-	CSkinToolBar			m_tbTop;//TODO 
-	CSkinToolBar            m_tbMid;//TODO 
+	CSkinToolBar			m_tbTop;//顶部工具栏 
+	CSkinToolBar            m_tbMid;//中部工具栏
 	CFontSelDlg				m_FontSelDlg;//字体选择对话框
 	CFaceSelDlg				m_FaceSelDlg;//头像选择对话框
 	CPicBarDlg				m_PicBarDlg;//TODO 
+	
 	CSkinRichEdit			m_richRecv;//消息接收控件
 	CSkinRichEdit           m_richSend;//消息发送编辑控件
-	CSkinRichEdit           m_richMsgLog;//历史消息富文本控件
+	
 	CSkinTabCtrl			m_RightTabCtrl;	//聊天窗口右边的Tab窗口
 	CSkinListCtrl			m_GroupMemberListCtrl;   //群成员列表
 
+	//历史消息记录相关 begin
+	CSkinRichEdit           m_richMsgLog;//历史消息富文本控件
 	CSkinButton				m_btnFirstMsgLog;//跳转到第一条消息按钮
 	CSkinButton             m_btnPrevMsgLog;//前一条消息按钮
 	CSkinButton             m_btnNextMsgLog;//下一条消息按钮
 	CSkinButton             m_btnLastMsgLog;//最后一条消息按钮
-	CSkinStatic				m_staMsgLogPage;//TODO 
+	CSkinStatic				m_staMsgLogPage;//显示当前是第几页的历史消息
+
+	BOOL					m_bMsgLogWindowVisible;  //是否显示历史消息控件
+	long					m_nMsgLogIndexInToolbar;
+
+	//CMessageLogger			m_MsgLogger;				// 消息记录
+	long					m_nMsgLogRecordOffset;		//当前消息记录的偏移量+1
+	long					m_nMsgLogCurrentPageIndex;	//消息记录当前页码
+	//历史消息记录相关 End
 
 	CSplitterCtrl			m_SplitterCtrl;//历史消息扩展控件
 	
@@ -295,11 +302,8 @@ private:
 
 	CString					m_strCurLink;//TODO
 
-	//UINT					m_nGroupId;//群组ID TODO 考虑删除
-	//UINT                    m_nGroupNumber;//考虑去掉
-	CString					m_strAccount;//TODO 考虑去掉
 	CString					m_strGroupName;//群组名
-	CString					m_strUserName;//用户名TODO 考虑去掉
+
 	int						m_nMemberCnt;			//群成员总数
 	int                     m_nOnlineMemberCnt;		//在线的群成员数
 
@@ -310,11 +314,7 @@ private:
 
 	BOOL					m_bPressEnterToSendMessage;	//TRUE按回车键发送消息, FALSE按Ctrl+Enter发送消息
 
-	BOOL					m_bMsgLogWindowVisible;  //是否显示历史消息控件
-	long					m_nMsgLogIndexInToolbar;
-	//CMessageLogger			m_MsgLogger;				// 消息记录
-	long					m_nMsgLogRecordOffset;		//当前消息记录的偏移量+1
-	long					m_nMsgLogCurrentPageIndex;	//消息记录当前页码
+
 
 
 	BOOL					m_bDraged;					//用户是否拖拽过发送文本框的尺寸
@@ -323,7 +323,6 @@ private:
 	RECT					m_rtSplitter; 
 	RECT					m_rtRichSend; //发送富文本控件矩形区域
 
-	//void SendGroupTextMsg_Core(WString strContext);
 	void OnSizeShowMsgHistory();
 };
 

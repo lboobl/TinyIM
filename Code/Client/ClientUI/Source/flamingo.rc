@@ -740,11 +740,6 @@ BEGIN
         MENUITEM "传文件设置",                       IDM_SEND_FILE_SETTINGS, GRAYED
         MENUITEM "发送在线文件(P2P)",                 IDM_SEND_FILE_P2P
     END
-    POPUP "举报"
-    BEGIN
-        MENUITEM "删除好友",                        ID_REMOVE_FRIEND
-        MENUITEM "移至黑名单",                       ID_MOVE_TO_BLACK
-    END
     POPUP "屏幕截图"
     BEGIN
         MENUITEM "屏幕截图 Ctrl + Alt + A",         ID_SCREEN_SHOT
