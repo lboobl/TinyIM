@@ -1,4 +1,14 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file GroupChatDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 群聊功能对话框
+ * @version 0.1
+ * @date 2020-02-27
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "GroupChatDlg.h"
 #include "UI_USER_INFO.h"
 #include "UtilTime.h"
@@ -13,6 +23,10 @@
 #include "FileTool.h"
 
 
+/**
+ * @brief Construct a new CGroupChatDlg::CGroupChatDlg object
+ * 
+ */
 CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 {
 	m_netProto = nullptr;
@@ -48,11 +62,21 @@ CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 	::SetRectEmpty(&m_rtRichSend);
 }
 
+/**
+ * @brief Destroy the CGroupChatDlg::CGroupChatDlg object
+ * 
+ */
 CGroupChatDlg::~CGroupChatDlg(void)
 {
 }
 
-//预处理消息
+//
+/**
+ * @brief 预处理消息
+ * 
+ * @param pMsg 待处理的消息
+ * @return BOOL 处理结果
+ */
 BOOL CGroupChatDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if ( (pMsg->hwnd == m_richRecv.m_hWnd) || 
@@ -126,7 +150,10 @@ BOOL CGroupChatDlg::PreTranslateMessage(MSG* pMsg)
 }
 
 
-// 更新群信息
+/**
+ * @brief 响应更新群信息
+ * 
+ */
 void CGroupChatDlg::OnUpdateGroupInfo()
 {
 	UpdateData();						// 更新信息
@@ -137,14 +164,21 @@ void CGroupChatDlg::OnUpdateGroupInfo()
 	UpdateGroupMemberList();			// 更新群成员列表
 }
 
-// 更新群号码
+/**
+ * @brief 更新群号码
+ * TODO: 可能需要去掉
+ */
 void CGroupChatDlg::OnUpdateGroupNumber()
 {
 	UpdateData();						// 更新信息
 	UpdateGroupNameCtrl();				// 更新群名称控件
 }
 
-// 更新群头像
+
+/**
+ * @brief 更新群头像
+ * 
+ */
 void CGroupChatDlg::OnUpdateGroupHeadPic()
 {
 	WString strFileName;
@@ -158,7 +192,13 @@ void CGroupChatDlg::OnUpdateGroupHeadPic()
 	m_picHead.Invalidate();
 }
 
-// 更新群成员号码
+
+/**
+ * @brief 响应更新群成员号码
+ * TODO: 暂时不知道用在什么业务上,后期考虑去掉
+ * @param wParam 
+ * @param lParam 
+ */
 void CGroupChatDlg::OnUpdateGMemberNumber(WPARAM wParam, LPARAM lParam)
 {
 	UINT nGroupCode = (UINT)wParam;
@@ -198,7 +238,12 @@ void CGroupChatDlg::OnUpdateGMemberNumber(WPARAM wParam, LPARAM lParam)
 	}
 }
 
-// 更新群成员头像
+/**
+ * @brief 更新群成员头像
+ * TODO: 暂时没有支持响应的功能
+ * @param wParam 
+ * @param lParam 
+ */
 void CGroupChatDlg::OnUpdateGMemberHeadPic(WPARAM wParam, LPARAM lParam)
 {
 	UINT nGroupCode = (UINT)wParam;
@@ -206,7 +251,6 @@ void CGroupChatDlg::OnUpdateGMemberHeadPic(WPARAM wParam, LPARAM lParam)
 
 	C_UI_BuddyInfo* lpBuddyInfo = NULL;
 	if ((NULL == lpBuddyInfo) )
-//		(0 == lpBuddyInfo->m_uUserID))
 	{
 		return;
 	}
@@ -233,7 +277,14 @@ void CGroupChatDlg::OnUpdateGMemberHeadPic(WPARAM wParam, LPARAM lParam)
 	}
 }
 
-//初始化对话框
+
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	m_lpCascadeWinManager->Add(m_hWnd, GROUP_CHAT_DLG_WIDTH, GROUP_CHAT_DLG_HEIGHT);
@@ -290,7 +341,14 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
-//响应拷贝数据
+
+/**
+ * @brief 响应拷贝数据,即Ctrl+C的操作
+ * 
+ * @param wnd 
+ * @param pCopyDataStruct 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::OnCopyData(CWindow wnd, PCOPYDATASTRUCT pCopyDataStruct)
 {
 	if (NULL == pCopyDataStruct)
@@ -321,16 +379,33 @@ BOOL CGroupChatDlg::OnCopyData(CWindow wnd, PCOPYDATASTRUCT pCopyDataStruct)
 	return TRUE;
 }
 
+/**
+ * @brief 
+ * TODO: 需要调研
+ * @param nIDCtl 
+ * @param lpMeasureItemStruct 
+ */
 void CGroupChatDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	m_SkinMenu.OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
 
+/**
+ * @brief 响应绘制每一项的功能
+ * 
+ * @param nIDCtl 
+ * @param lpDrawItemStruct 
+ */
 void CGroupChatDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	m_SkinMenu.OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
 
+/**
+ * @brief 响应获取最大最小化信息
+ * 
+ * @param lpMMI 
+ */
 void CGroupChatDlg::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
 {
 	if(m_bMsgLogWindowVisible)
@@ -345,6 +420,12 @@ void CGroupChatDlg::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
 	}
 }
 
+
+/**
+ * @brief 响应窗口移动消息
+ * 
+ * @param ptPos 
+ */
 void CGroupChatDlg::OnMove(CPoint ptPos)
 {
 	SetMsgHandled(FALSE);
@@ -352,6 +433,12 @@ void CGroupChatDlg::OnMove(CPoint ptPos)
 	m_lpCascadeWinManager->SetPos(m_hWnd, ptPos.x, ptPos.y);
 }
 
+/**
+ * @brief 响应鼠标移动消息
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CGroupChatDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (::GetCapture() == m_SplitterCtrl.m_hWnd)
@@ -360,6 +447,10 @@ void CGroupChatDlg::OnMouseMove(UINT nFlags, CPoint point)
 	}
 }
 
+/**
+ * @brief 响应显示历史消息的情况,群聊消息的窗口大小改变
+ * 
+ */
 void CGroupChatDlg::OnSizeShowMsgHistory()
 {
 
@@ -642,6 +733,10 @@ void CGroupChatDlg::OnSizeShowMsgHistory()
 	}
 }
 
+/**
+ * @brief 响应隐藏历史消息的情况,群聊消息的窗口大小改变
+ * 
+ */
 void CGroupChatDlg::OnSizeNotShowMsgHistory()
 {
 
@@ -862,15 +957,25 @@ void CGroupChatDlg::OnSizeNotShowMsgHistory()
 		}
 	}
 }
-//响应窗口大小变化
-//TODO 此函数过于复杂，要分析每种情况分别处理和提取
+
+
+/**
+ * @brief 响应窗口大小变化
+ * TODO 此函数过于复杂，要分析每种情况分别处理和提取
+ * @param nType 
+ * @param size 
+ */
 void CGroupChatDlg::OnSize(UINT nType, CSize size)
 {
 	OnSizeNotShowMsgHistory();
 	ResizeImageInRecvRichEdit();
 }
 
-//TODO 函数不明白干嘛的,好像是合并什么区域
+
+/**
+ * @brief 
+ * TODO:函数不明白干嘛的,好像是合并什么区域
+ */
 void CGroupChatDlg::SetHotRgn()
 {
 	RECT rtWindow;
@@ -951,21 +1056,38 @@ void CGroupChatDlg::SetHotRgn()
 	m_SkinDlg.SetHotRegion(m_HotRgn);
 }
 
-//回车键发送消息
+/**
+ * @brief 响应设置回车键发送消息的设置
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnPressEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_bPressEnterToSendMessage = TRUE;
 	m_userConfig.EnablePressEnterToSend(TRUE);
 }
 
-//ctrl+回车键发送消息
+/**
+ * @brief 设置 Ctrl+回车键 发送消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_bPressEnterToSendMessage = FALSE;
 	m_userConfig.EnablePressEnterToSend(m_bPressEnterToSendMessage);
 }
 
-//TODO 响应定时器，注意定时器ID重构
+
+/**
+ * @brief 响应定时器
+ * TODO: 注意定时器ID重构
+ * @param nIDEvent 定时器ID
+ */
 void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == 1001)
@@ -984,6 +1106,10 @@ void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
+/**
+ * @brief 响应群聊对话框关闭
+ * 
+ */
 void CGroupChatDlg::OnClose()
 {
 	RecordWindowSize();
@@ -993,6 +1119,10 @@ void CGroupChatDlg::OnClose()
 	DestroyWindow();
 }
 
+/**
+ * @brief 响应群聊对话框销毁
+ * 
+ */
 void CGroupChatDlg::OnDestroy()
 {
 	SetMsgHandled(FALSE);
@@ -1021,13 +1151,26 @@ void CGroupChatDlg::OnDestroy()
 	pLoop->RemoveMessageFilter(this);
 }
 
-// “群名称”超链接控件
+
+/**
+ * @brief 响应“群名称”超链接控件点击
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnLnk_GroupName(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	//PostMessage(m_hMainDlg, WM_SHOW_GROUP_INFO_DLG, m_nGroupCode, NULL);
 }
 
-// “字体选择工具栏”按钮
+/**
+ * @brief 响应“字体选择工具栏”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_Font(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	RECT rtRichRecv;
@@ -1044,7 +1187,14 @@ void CGroupChatDlg::OnBtn_Font(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “表情”按钮
+
+/**
+ * @brief 响应“表情”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_Face(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (BN_PUSHED == uNotifyCode)
@@ -1073,7 +1223,13 @@ void CGroupChatDlg::OnBtn_Face(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “发送图片”按钮
+/**
+ * @brief 响应工具栏的“发送图片”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	BOOL bOpenFileDialog = TRUE;
@@ -1099,7 +1255,14 @@ void CGroupChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “来消息不提示”按钮
+
+/**
+ * @brief 响应“来消息不提示”按钮
+ * TODO: 考虑去掉
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_MsgNotPrompt(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CSkinMenu PopupMenu = PopupMenu = m_SkinMenu.GetSubMenu(1).GetSubMenu(5);
@@ -1116,7 +1279,14 @@ void CGroupChatDlg::OnBtn_MsgNotPrompt(UINT uNotifyCode, int nID, CWindow wndCtl
 	}
 }
 
-//截图工具
+
+/**
+ * @brief 响应工具栏的“截图工具”
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_ScreenShot(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	DWORD dwSucceedExitCode = 2;
@@ -1142,19 +1312,38 @@ void CGroupChatDlg::OnBtn_ScreenShot(UINT uNotifyCode, int nID, CWindow wndCtl)
 }
 
 
-// “点击另存为”按钮
+/**
+ * @brief 响应“点击另存为”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	OnMenu_SaveAs(uNotifyCode, nID, wndCtl);
 }
 
-// “关闭”按钮
+/**
+ * @brief 响应“关闭”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_Close(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	PostMessage(WM_CLOSE);
 }
 
-// “发送”按钮
+
+/**
+ * @brief 响应“发送”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_Send(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	int nCustomPicCnt = RichEdit_GetCustomPicCount(m_richSend.m_hWnd);
@@ -1179,8 +1368,13 @@ void CGroupChatDlg::OnBtn_Send(UINT uNotifyCode, int nID, CWindow wndCtl)
 }
 
 
-
-// “箭头”按钮
+/**
+ * @brief 响应“箭头”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_Arrow(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(5);
@@ -1206,7 +1400,12 @@ void CGroupChatDlg::OnBtn_Arrow(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-//TODO switch的编码和GetSubMenu的编码部分要重构
+/**
+ * @brief 响应工具栏的按钮被按下,此类将顶部工具栏,中部工具栏和底部工具栏的消息处理都放到这个函数里了
+ * TODO: switch的编码和GetSubMenu的编码部分要重构
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnToolbarDropDown(LPNMHDR pnmh)
 {
 	NMTOOLBAR* pnmtb = (NMTOOLBAR*)pnmh;
@@ -1263,7 +1462,15 @@ LRESULT CGroupChatDlg::OnToolbarDropDown(LPNMHDR pnmh)
 	return 0;
 }
 
-// 更新字体信息
+
+/**
+ * @brief 响应更新字体信息
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnUpdateFontInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	C_UI_FontInfo fontInfo = m_FontSelDlg.GetFontInfo();
@@ -1273,7 +1480,15 @@ LRESULT CGroupChatDlg::OnUpdateFontInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// “表情”控件选取消息
+
+/**
+ * @brief 响应“表情”控件选取消息
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnFaceCtrlSel(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	int nFaceId = m_FaceSelDlg.GetSelFaceId();
@@ -1291,14 +1506,26 @@ LRESULT CGroupChatDlg::OnFaceCtrlSel(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// 设置对话框初始焦点
+/**
+ * @brief 设置对话框初始焦点
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnSetDlgInitFocus(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	m_richSend.SetFocus();
 	return 0;
 }
 
-//	“接收消息”富文本框链接点击消息
+/**
+ * @brief 响应“接收消息”富文本框链接点击消息
+ * 
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnRichEdit_Recv_Link(LPNMHDR pnmh)
 {
 	if (pnmh->code == EN_LINK)
@@ -1339,7 +1566,13 @@ LRESULT CGroupChatDlg::OnRichEdit_Recv_Link(LPNMHDR pnmh)
 	return 0;
 }
 
-//发送粘贴
+
+/**
+ * @brief 发送“粘贴”到发送对话框的消息
+ * 
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnRichEdit_Send_Paste(LPNMHDR pnmh)
 {
 	NMRICHEDITOLECALLBACK* lpOleNotify = (NMRICHEDITOLECALLBACK*)pnmh;
@@ -1352,7 +1585,13 @@ LRESULT CGroupChatDlg::OnRichEdit_Send_Paste(LPNMHDR pnmh)
 	return 0;
 }
 
-// “群成员”列表双击消息
+
+/**
+ * @brief 响应“群成员”列表双击消息
+ * 
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnGMemberList_DblClick(LPNMHDR pnmh)
 {
 	int nCurSel = m_GroupMemberListCtrl.GetCurSelItemIndex();
@@ -1363,7 +1602,13 @@ LRESULT CGroupChatDlg::OnGMemberList_DblClick(LPNMHDR pnmh)
 	return 0;
 }
 
-// “群成员”列表右键单击消息
+
+/**
+ * @brief 响应“群成员”列表右键单击消息
+ * TODO: GetSubMenu的地方需要修改
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnGMemberList_RClick(LPNMHDR pnmh)
 {
 	int nCurSel = m_GroupMemberListCtrl.GetCurSelItemIndex();
@@ -1378,13 +1623,26 @@ LRESULT CGroupChatDlg::OnGMemberList_RClick(LPNMHDR pnmh)
 	return 0;
 }
 
-// “剪切”菜单
+/**
+ * @brief 响应“剪切”菜单
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_Cut(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_richSend.Cut();
 }
 
-// “复制”菜单
+
+/**
+ * @brief 响应弹出的右键“复制”菜单
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_Copy(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	HWND hWnd = GetFocus();
@@ -1402,13 +1660,26 @@ void CGroupChatDlg::OnMenu_Copy(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “粘贴”菜单
+/**
+ * @brief 响应“粘贴”菜单
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_Paste(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_richSend.PasteSpecial(CF_TEXT);
 }
 
-// “全部选择”菜单
+
+/**
+ * @brief 响应“全部选择”菜单
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_SelAll(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	HWND hWnd = GetFocus();
@@ -1422,13 +1693,26 @@ void CGroupChatDlg::OnMenu_SelAll(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “清屏”菜单
+/**
+ * @brief 响应接收消息文本框的“清屏”菜单
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_Clear(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_richRecv.SetWindowText(_T(""));
 }
 
-// “显示比例”菜单
+
+/**
+ * @brief 响应“显示比例”菜单,完成图片的放大和缩小
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_ZoomRatio(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	switch (nID)
@@ -1481,7 +1765,14 @@ void CGroupChatDlg::OnMenu_ZoomRatio(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}	
 }
 
-// “另存为”菜单
+
+/**
+ * @brief 响应“图片另存为”菜单
+ *
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	IImageOle* pImageOle = NULL;
