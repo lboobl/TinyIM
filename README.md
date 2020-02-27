@@ -15,7 +15,8 @@ ChatServer主要完成IM服务器的功能。
 
 有问题可以联系: dennismi1024@gmail.com            
 或者加入QQ群：106350930                    
-文档链接:https://dennisthink.github.io/index.html             
+文档链接:https://dennisthink.github.io/index.html       
+客户端的界面参考： https://github.com/balloonwj/flamingo
 
 ## 1. 支持平台
 
