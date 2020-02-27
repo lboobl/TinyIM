@@ -1031,32 +1031,33 @@ void CChatServer::HandleUserUnRegisterReq(const std::shared_ptr<CServerSess>& pS
  */
 void CChatServer::HandleFileSendDataBeginReq(const std::shared_ptr<CServerSess>& pSess, const FileSendDataBeginReq& req)
 {
+	//
+	//{
+	//	T_FILE_HASH_BEAN bean;
+	//	if(m_util.SelectFileByHash(bean,req.m_strFileHash))
+	//	{
+	//		std::string strFileName = strFolder+ bean.m_strF_FILE_NAME;
+	//		if (m_fileUtil.IsFileExist(strFileName))
+	//		{
+	//			LOG_INFO(ms_loger, "FileName:{} Is On Server Hash:{} [{} {}]", strFileName, req.m_strFileHash,__FILENAME__,__LINE__);
+	//			FileSendDataBeginRsp rspMsg;
+	//			rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_FILE_HAS_EXIST;
+	//			rspMsg.m_nFileId = req.m_nFileId;
+	//			rspMsg.m_strFileName = req.m_strFileName;
+	//			rspMsg.m_strFriendId = req.m_strFriendId;
+	//			rspMsg.m_strUserId = req.m_strUserId;
+	//			rspMsg.m_strMsgId = req.m_strMsgId;
+	//			rspMsg.m_eFileType = req.m_eFileType;
+	//			pSess->SendMsg(&rspMsg);
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			m_util.DeleteFileByHash(req.m_strFileHash);
+	//		}
+	//	}
+	//}
 	std::string strFolder = GetImageDir();
-	{
-		T_FILE_HASH_BEAN bean;
-		if(m_util.SelectFileByHash(bean,req.m_strFileHash))
-		{
-			std::string strFileName = strFolder+ bean.m_strF_FILE_NAME;
-			if (m_fileUtil.IsFileExist(strFileName))
-			{
-				LOG_ERR(ms_loger, "FileName:{} Hash:{} [{} {}]", strFileName, req.m_strFileHash,__FILENAME__,__LINE__);
-				FileSendDataBeginRsp rspMsg;
-				rspMsg.m_errCode = ERROR_CODE_TYPE::E_CODE_FILE_HAS_EXIST;
-				rspMsg.m_nFileId = req.m_nFileId;
-				rspMsg.m_strFileName = req.m_strFileName;
-				rspMsg.m_strFriendId = req.m_strFriendId;
-				rspMsg.m_strUserId = req.m_strUserId;
-				rspMsg.m_strMsgId = req.m_strMsgId;
-				rspMsg.m_eFileType = req.m_eFileType;
-				pSess->SendMsg(&rspMsg);
-				return;
-			}
-			else
-			{
-				m_util.DeleteFileByHash(req.m_strFileHash);
-			}
-		}
-	}
 	FileSendDataBeginRsp rspMsg;
 	rspMsg.m_nFileId = req.m_nFileId;
 	rspMsg.m_strFileName = req.m_strFileName;
@@ -2530,11 +2531,11 @@ void CChatServer::HandleFileVerifyReq(const std::shared_ptr<CServerSess>& pSess,
 		rspMsg.m_nFileId = req.m_nFileId;
 		if (strFileHash == req.m_strFileHash)
 		{
-			T_FILE_HASH_BEAN bean;
-			bean.m_strF_FILE_HASH = strFileHash;
-			bean.m_strF_FILE_NAME = req.m_strFileName;
-			bean.m_strF_USER_ID = req.m_strUserId;
-			m_util.InsertFileHash(bean);
+			//T_FILE_HASH_BEAN bean;
+			//bean.m_strF_FILE_HASH = strFileHash;
+			//bean.m_strF_FILE_NAME = req.m_strFileName;
+			//bean.m_strF_USER_ID = req.m_strUserId;
+			//m_util.InsertFileHash(bean);
 			rspMsg.m_eErrCode = ERROR_CODE_TYPE::E_CODE_SUCCEED;
 			//m_fileUtil.UtilCopy(strFileName, strNewFileName);
 			rspMsg.m_strFileHash = strFileHash;
@@ -2962,18 +2963,18 @@ void CChatServer::SendGroupMsgToUser(const std::shared_ptr<CServerSess>& pSess, 
 	keyValue.m_strGroupId = strGroupId;
 	if (CLIENT_SESS_STATE::SESS_GROUP_MSG_SEND_RECV_STATE == GetGroupUserState(keyValue))
 	{
+		LOG_ERR(ms_loger, "User:{} No Last Msg Id [{} {}]", pSess->UserId(), __FILENAME__, __LINE__);
 		T_GROUP_CHAT_MSG msgBean;
 		msgBean.m_strF_GROUP_ID = strGroupId;
 		msgBean.m_strF_MSG_ID = strLastReadId;
 		if (m_util.SelectGroupChatText(msgBean))
 		{
-			if (CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE == msgBean.m_eChatMsgType)
-			{
-				DoUserRecvGroupMsg(pSess, msgBean);
-			}
+			LOG_ERR(ms_loger, "User:{} No Last Msg Id [{} {}]", pSess->UserId(), __FILENAME__, __LINE__);
+			DoUserRecvGroupMsg(pSess, msgBean);
 		}
 		else
 		{
+			LOG_ERR(ms_loger, "User:{} No Last Msg Id [{} {}]", pSess->UserId(), __FILENAME__, __LINE__);
 			SetGroupUserState(keyValue, CLIENT_SESS_STATE::SESS_IDLE_STATE);
 		}
 	}

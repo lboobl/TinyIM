@@ -123,9 +123,9 @@ public:
 	
 
 	//  文件Hash的基本操作 begin
-	bool InsertFileHash(const T_FILE_HASH_BEAN& hashBean);
-	bool SelectFileByHash(T_FILE_HASH_BEAN& hashBean, const std::string strFileHash);
-	bool DeleteFileByHash(const std::string strFileHash);
+	//bool InsertFileHash(const T_FILE_HASH_BEAN& hashBean);
+	//bool SelectFileByHash(T_FILE_HASH_BEAN& hashBean, const std::string strFileHash);
+	//bool DeleteFileByHash(const std::string strFileHash);
 	//  文件hash的基本操作 end
 
 	static std::shared_ptr<spdlog::logger> m_loger;
