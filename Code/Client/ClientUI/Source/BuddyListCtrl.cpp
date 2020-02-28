@@ -455,7 +455,7 @@ BOOL CBuddyListCtrl::DelBuddyTeam(int nTeamIndex)
  * @param nID 
  * @return int 
  */
-int CBuddyListCtrl::AddBuddyItem(int nTeamIndex, const std::string strUserId)
+int CBuddyListCtrl::AddBuddyItem(int nTeamIndex, const std::string strItemId)
 {
 	CBuddyTeamItem* lpTeamItem = GetBuddyTeamByIndex(nTeamIndex);
 	if (NULL == lpTeamItem)
@@ -463,7 +463,7 @@ int CBuddyListCtrl::AddBuddyItem(int nTeamIndex, const std::string strUserId)
 	CBuddyItem* lpItem = new CBuddyItem;
 	if (NULL == lpItem)
 		return -1;
-	lpItem->m_strUserId = strUserId;
+	lpItem->m_strItemId = strItemId;
 	lpTeamItem->m_arrBuddys.push_back(lpItem);
 	return lpTeamItem->m_arrBuddys.size() - 1;
 }
@@ -728,7 +728,7 @@ std::string CBuddyListCtrl::GetBuddyItemUserId(const int nTeamIndex, const int n
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
 	if (lpItem != NULL)
 	{
-		return lpItem->m_strUserId;
+		return lpItem->m_strItemId;
 	}
 	return "";
 }
@@ -1013,7 +1013,13 @@ BLCTRL_DISPLAY_MODE CBuddyListCtrl::GetBuddyItemMode(int nTeamIndex, int nIndex)
 }
 
 
-
+/**
+ * @brief 获取好友的昵称
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return CString 好友昵称
+ */
 CString CBuddyListCtrl::GetBuddyItemNickName(int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -1023,6 +1029,14 @@ CString CBuddyListCtrl::GetBuddyItemNickName(int nTeamIndex, int nIndex)
 		return _T("");
 }
 
+
+/**
+ * @brief 获取好友备注
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return CString 好友备注
+ */
 CString CBuddyListCtrl::GetBuddyItemMarkName(int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -1032,6 +1046,13 @@ CString CBuddyListCtrl::GetBuddyItemMarkName(int nTeamIndex, int nIndex)
 		return _T("");
 }
 
+/**
+ * @brief 获取好友签名
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return CString 好友签名
+ */
 CString CBuddyListCtrl::GetBuddyItemSign(int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -1041,6 +1062,13 @@ CString CBuddyListCtrl::GetBuddyItemSign(int nTeamIndex, int nIndex)
 		return _T("");
 }
 
+/**
+ * @brief 获取好友性别
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::GetBuddyItemGender(int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -1050,6 +1078,14 @@ BOOL CBuddyListCtrl::GetBuddyItemGender(int nTeamIndex, int nIndex)
 		return FALSE;
 }
 
+
+/**
+ * @brief 判断当前的好友是否有消息
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return BOOL 是否有消息
+ */
 BOOL CBuddyListCtrl::IsBuddyItemHasMsg(int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -1059,11 +1095,23 @@ BOOL CBuddyListCtrl::IsBuddyItemHasMsg(int nTeamIndex, int nIndex)
 		return FALSE;
 }
 
+
+/**
+ * @brief 获取分组总数
+ * 
+ * @return int 分组总数
+ */
 int CBuddyListCtrl::GetBuddyTeamCount()
 {
 	return m_arrBuddyTeamItems.size();
 }
 
+/**
+ * @brief 根据分组索引获取当前组的用户数
+ * 
+ * @param nTeamIndex 分组索引
+ * @return int 当前组的用户数
+ */
 int CBuddyListCtrl::GetBuddyItemCount(int nTeamIndex)
 {
 	CBuddyTeamItem* lpTeamItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -1074,6 +1122,14 @@ int CBuddyListCtrl::GetBuddyItemCount(int nTeamIndex)
 }
 
 
+/**
+ * @brief 获取当前好友的矩形显示区域
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param rect 矩形区域
+ * @return BOOL 获取结果
+ */
 BOOL CBuddyListCtrl::GetItemRectByIndex(int nTeamIndex, int nIndex, CRect& rect)
 {
 	CBuddyTeamItem* lpTeamItem;
@@ -1146,28 +1202,56 @@ BOOL CBuddyListCtrl::GetItemRectByIndex(int nTeamIndex, int nIndex, CRect& rect)
 	return FALSE;
 }
 
+/**
+ * @brief 获取当前被选中的分组索引和组内索引
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ */
 void CBuddyListCtrl::GetCurSelIndex(int& nTeamIndex, int& nIndex)
 {
 	nTeamIndex = m_nSelTeamIndex;
 	nIndex = m_nSelIndex;
 }
 
+/**
+ * @brief 获取每一项的显示风格
+ * 
+ * @return BLCTRL_STYLE 
+ */
 BLCTRL_STYLE CBuddyListCtrl::GetStyle()
 {
 	return m_nStyle;
 }
 
+/**
+ * @brief 是否显示大头像
+ * 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::IsShowBigIconInSel()
 {
 	return m_bShowBigIconInSel;
 }
 
+/**
+ * @brief 
+ * TODO: 具体作用不明
+ * @param bTransparent 
+ * @param hBgDC 
+ */
 void CBuddyListCtrl::SetTransparent(BOOL bTransparent, HDC hBgDC)
 {
 	m_bTransparent = bTransparent;
 	m_hBgDC = hBgDC;
 }
 
+/**
+ * @brief 创建列表
+ * 
+ * @param lpCreateStruct 
+ * @return int 
+ */
 int CBuddyListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	CRect rcClient;
@@ -1201,12 +1285,23 @@ int CBuddyListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+/**
+ * @brief 响应擦除背景
+ * 
+ * @param dc 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::OnEraseBkgnd(CDCHandle dc)
 {
 	return TRUE;
 	//return FALSE;
 }
 
+/**
+ * @brief 响应界面绘制
+ * 
+ * @param dc 
+ */
 void CBuddyListCtrl::OnPaint(CDCHandle dc)
 {
 	CRect rcClient;
@@ -1242,6 +1337,12 @@ void CBuddyListCtrl::OnPaint(CDCHandle dc)
 	m_VScrollBar.OnPaint(MemDC.m_hDC);
 }
 
+/**
+ * @brief 响应鼠标左键双击
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CBuddyListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -1260,6 +1361,12 @@ void CBuddyListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	::SendMessage(::GetParent(m_hWnd), WM_NOTIFY, GetDlgCtrlID(), (LPARAM)&stNmhdr);
 }
 
+/**
+ * @brief 响应鼠标左键单击
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CBuddyListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -1275,6 +1382,13 @@ void CBuddyListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	m_VScrollBar.OnLButtonDown(nFlags, point);
 }
 
+
+/**
+ * @brief 响应鼠标左键抬起
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CBuddyListCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -1303,6 +1417,12 @@ void CBuddyListCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 	m_VScrollBar.OnLButtonUp(nFlags, point);
 }
 
+/**
+ * @brief 响应鼠标右键抬起
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CBuddyListCtrl::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -1332,6 +1452,12 @@ void CBuddyListCtrl::OnRButtonUp(UINT nFlags, CPoint point)
 	::SendMessage(::GetParent(m_hWnd), WM_NOTIFY, GetDlgCtrlID(), (LPARAM)&stNmhdr);
 }
 
+/**
+ * @brief 响应鼠标在控件上移动
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CBuddyListCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -1374,6 +1500,11 @@ void CBuddyListCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	m_VScrollBar.OnMouseMove(nFlags, point);
 }
 
+
+/**
+ * @brief 响应鼠标离开控件的操作
+ * 
+ */
 void CBuddyListCtrl::OnMouseLeave()
 {
 	SetMsgHandled(FALSE);
@@ -1401,6 +1532,11 @@ void CBuddyListCtrl::OnMouseLeave()
     //::SendMessage(::GetParent(m_hWnd), WM_NOTIFY, GetDlgCtrlID(), (LPARAM)&stNmhdr);
 }
 
+/**
+ * @brief 响应定时器
+ * 
+ * @param nIDEvent 
+ */
 void CBuddyListCtrl::OnTimer(UINT_PTR nIDEvent)
 {
 	m_VScrollBar.OnTimer(nIDEvent);
@@ -1419,6 +1555,14 @@ void CBuddyListCtrl::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
+
+/**
+ * @brief 响应滚动条的滚动
+ * 
+ * @param nSBCode 
+ * @param nPos 
+ * @param pScrollBar 
+ */
 void CBuddyListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar pScrollBar)
 {
 	CRect rcClient;
@@ -1455,20 +1599,41 @@ void CBuddyListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar pScrollBar)
 	Invalidate();
 }
 
+
+/**
+ * @brief 响应鼠标滚动
+ * 
+ * @param nFlags 
+ * @param zDelta 
+ * @param pt 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	int nLineSize = 100;
 
 	if (zDelta < 0)		// SB_LINEDOWN
+	{
 		Scroll(0, nLineSize);
+	}
 	else	// SB_LINEUP
+	{
 		Scroll(0, -nLineSize);
+	}	
 
 	Invalidate();
 
 	return TRUE;
 }
 
+
+/**
+ * @brief 响应键盘的按键消息
+ * 
+ * @param nChar 
+ * @param nRepCnt 
+ * @param nFlags 
+ */
 void CBuddyListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if (GetBuddyTeamCount() <= 0)
@@ -1612,6 +1777,12 @@ void CBuddyListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	Invalidate();
 }
 
+/**
+ * @brief 响应控件大小改变
+ * 
+ * @param nType 
+ * @param size 
+ */
 void CBuddyListCtrl::OnSize(UINT nType, CSize size)
 {
 	SetMsgHandled(FALSE);
@@ -1624,11 +1795,25 @@ void CBuddyListCtrl::OnSize(UINT nType, CSize size)
 	Invalidate();
 }
 
+/**
+ * @brief 获取对话框代码
+ * TODO: 函数用意不明
+ * @param lpMsg 
+ * @return UINT 
+ */
 UINT CBuddyListCtrl::OnGetDlgCode(LPMSG lpMsg)
 {
 	return DLGC_HASSETSEL | DLGC_WANTARROWS | DLGC_WANTCHARS | DLGC_WANTTAB;
 }
 
+/**
+ * @brief 响应鼠标消息
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CBuddyListCtrl::OnMouseMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	SetMsgHandled(FALSE);
@@ -1638,6 +1823,11 @@ LRESULT CBuddyListCtrl::OnMouseMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+
+/**
+ * @brief 响应好友列表控件销毁消息
+ * 
+ */
 void CBuddyListCtrl::OnDestroy()
 {
 	SetMsgHandled(FALSE);

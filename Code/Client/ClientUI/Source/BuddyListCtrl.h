@@ -59,8 +59,8 @@ public:
 	~CBuddyItem(void);
 
 public:
-	std::string m_strUserId;		    //用户唯一标识
-	std::string m_strUserName;			//用户名
+	std::string m_strItemId;		    //项目ID
+	std::string m_strItemName;			//项目名称
 	CString		m_strNickName;			// 昵称
 	CString		m_strMarkName;			// 备注
 	BLCTRL_DISPLAY_MODE		m_nDisplayMode;			// 显示模式
