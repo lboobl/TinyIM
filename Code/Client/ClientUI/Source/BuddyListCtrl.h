@@ -61,8 +61,6 @@ public:
 public:
 	std::string m_strUserId;		    //用户唯一标识
 	std::string m_strUserName;			//用户名
-	int			m_nID;					// 项ID
-	CString		m_strUTalkNum;			// UTalk号码
 	CString		m_strNickName;			// 昵称
 	CString		m_strMarkName;			// 备注
 	BLCTRL_DISPLAY_MODE		m_nDisplayMode;			// 显示模式
@@ -154,7 +152,7 @@ public:
 	int InsertBuddyTeam(int nTeamIndex, int nID);
 	BOOL DelBuddyTeam(int nTeamIndex);
 
-	int AddBuddyItem(int nTeamIndex, int nID);
+	int AddBuddyItem(int nTeamIndex, const std::string strUserId);
 	int InsertBuddyItem(int nTeamIndex, int nIndex, int nID);
 	BOOL DelBuddyItem(int nTeamIndex, int nIndex);
 
@@ -188,7 +186,6 @@ public:
 	void SetBuddyItemHeadFlashAnim(int nTeamIndex, int nIndex, BOOL bHeadFlashAnim);
 	void SetBuddyItemOnline(int nTeamIndex, int nIndex, BOOL bOnline, BOOL bAnim);
 	void SetBuddyItemUserName(const int nTeamIndex, const int nIndex, const std::string strUserName);
-	void SetBuddyItemUserId(const int nTeamIndex, const int nIndex, const std::string strUserId);
 	std::string GetBuddyItemUserName(const int nTeamIndex, const int nIndex);
 	std::string GetBuddyItemUserId(const int nTeamIndex, const int nIndex);
 	int GetBuddyItemID(int nTeamIndex, int nIndex);

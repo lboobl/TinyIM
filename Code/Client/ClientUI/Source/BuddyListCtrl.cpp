@@ -1,10 +1,24 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file BuddyListCtrl.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 好友列表的实现文件
+ * @version 0.1
+ * @date 2020-02-28
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "BuddyListCtrl.h"
 #include "GDIFactory.h"
 
+/**
+ * @brief Construct a new CBuddyItem::CBuddyItem object
+ * 
+ */
 CBuddyItem::CBuddyItem(void)
 {
-	m_nID = 0;
 	m_nDisplayMode = BLCTRL_DISPLAY_SHOW_NICKNAME_ACCOUNT;
 	m_bShowSign = TRUE;
 	m_bOnline = FALSE;
@@ -19,6 +33,10 @@ CBuddyItem::CBuddyItem(void)
 	m_lpMobileImg = NULL;
 }
 
+/**
+ * @brief Destroy the CBuddyItem::CBuddyItem object
+ * 
+ */
 CBuddyItem::~CBuddyItem(void)
 {
 	if (m_lpHeadImg != NULL)
@@ -33,6 +51,10 @@ CBuddyItem::~CBuddyItem(void)
 	}
 }
 
+/**
+ * @brief Construct a new CBuddyTeamItem::CBuddyTeamItem object
+ * 
+ */
 CBuddyTeamItem::CBuddyTeamItem(void)
 {
 	m_nID = 0;
@@ -43,6 +65,10 @@ CBuddyTeamItem::CBuddyTeamItem(void)
 	m_nHeadFlashAnimState = 0;
 }
 
+/**
+ * @brief Destroy the CBuddyTeamItem::CBuddyTeamItem object
+ * 
+ */
 CBuddyTeamItem::~CBuddyTeamItem(void)
 {
 	for (int i = 0; i < (int)m_arrBuddys.size(); i++)
@@ -54,6 +80,10 @@ CBuddyTeamItem::~CBuddyTeamItem(void)
 	m_arrBuddys.clear();
 }
 
+/**
+ * @brief Construct a new CBuddyListCtrl::CBuddyListCtrl object
+ * 
+ */
 CBuddyListCtrl::CBuddyListCtrl(void)
 {
 	m_lpBgImg = NULL;
@@ -92,11 +122,21 @@ CBuddyListCtrl::CBuddyListCtrl(void)
 	m_dwHeadFlashAnimTimerId = NULL;
 }
 
+/**
+ * @brief Destroy the CBuddyListCtrl::CBuddyListCtrl object
+ * 
+ */
 CBuddyListCtrl::~CBuddyListCtrl(void)
 {
 }
 
-//设置背景图
+
+/**
+ * @brief 给好友列表控件设置背景图
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetBgPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpBgImg);
@@ -104,6 +144,12 @@ BOOL CBuddyListCtrl::SetBgPic(LPCTSTR lpszFileName)
 	return (m_lpBgImg != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置分组的背景图
+ * TODO: 作用待明确
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetBuddyTeamHotBgPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpBuddyTeamBgImgH);
@@ -111,6 +157,13 @@ BOOL CBuddyListCtrl::SetBuddyTeamHotBgPic(LPCTSTR lpszFileName)
 	return (m_lpBuddyTeamBgImgH != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置好友项的背景图
+ * 
+ * @param lpszFileName 
+ * @param lpNinePart 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetBuddyItemHotBgPic(LPCTSTR lpszFileName, RECT* lpNinePart/* = NULL*/)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpBuddyItemBgImgH);
@@ -120,6 +173,13 @@ BOOL CBuddyListCtrl::SetBuddyItemHotBgPic(LPCTSTR lpszFileName, RECT* lpNinePart
 	return (m_lpBuddyItemBgImgH != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置好友项被选中时的背景图
+ * 
+ * @param lpszFileName 
+ * @param lpNinePart 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetBuddyItemSelBgPic(LPCTSTR lpszFileName, RECT* lpNinePart/* = NULL*/)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpBuddyItemBgImgS);
@@ -129,6 +189,13 @@ BOOL CBuddyListCtrl::SetBuddyItemSelBgPic(LPCTSTR lpszFileName, RECT* lpNinePart
 	return (m_lpBuddyItemBgImgS != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置头像图片
+ * 
+ * @param lpszFileName 
+ * @param lpNinePart 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetHeadFramePic(LPCTSTR lpszFileName, RECT* lpNinePart/* = NULL*/)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpHeadFrameImg);
@@ -138,6 +205,12 @@ BOOL CBuddyListCtrl::SetHeadFramePic(LPCTSTR lpszFileName, RECT* lpNinePart/* = 
 	return (m_lpHeadFrameImg != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置普通箭头图片
+ * TODO: 具体的UI作用需要确定
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetNormalArrowPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpArrowImgN);
@@ -145,6 +218,12 @@ BOOL CBuddyListCtrl::SetNormalArrowPic(LPCTSTR lpszFileName)
 	return (m_lpArrowImgN != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置热点的箭头图片
+ * TODO: 具体UI作用需要确定
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetHotArrowPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpArrowImgH);
@@ -152,6 +231,12 @@ BOOL CBuddyListCtrl::SetHotArrowPic(LPCTSTR lpszFileName)
 	return (m_lpArrowImgH != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置选中时的箭头图片
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetSelArrowPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpArrowImgS);
@@ -159,6 +244,12 @@ BOOL CBuddyListCtrl::SetSelArrowPic(LPCTSTR lpszFileName)
 	return (m_lpArrowImgS != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置箭头普通情况下，箭头展开的图片
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetNormalExpArrowPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpExpArrowImgN);
@@ -166,6 +257,12 @@ BOOL CBuddyListCtrl::SetNormalExpArrowPic(LPCTSTR lpszFileName)
 	return (m_lpExpArrowImgN != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置热点情况下，箭头展开的图片
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetHotExpArrowPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpExpArrowImgH);
@@ -173,6 +270,12 @@ BOOL CBuddyListCtrl::SetHotExpArrowPic(LPCTSTR lpszFileName)
 	return (m_lpExpArrowImgH != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置选中展开箭头时的图片
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetSelExpArrowPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpExpArrowImgS);
@@ -180,6 +283,12 @@ BOOL CBuddyListCtrl::SetSelExpArrowPic(LPCTSTR lpszFileName)
 	return (m_lpExpArrowImgS != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置默认男士头像
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetStdGGHeadPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpStdGGHeadImg);
@@ -187,6 +296,12 @@ BOOL CBuddyListCtrl::SetStdGGHeadPic(LPCTSTR lpszFileName)
 	return (m_lpStdGGHeadImg != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置默认女士头像
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::SetStdMMHeadPic(LPCTSTR lpszFileName)
 {
 	CSkinManager::GetInstance()->ReleaseImage(m_lpStdMMHeadImg);
@@ -194,52 +309,104 @@ BOOL CBuddyListCtrl::SetStdMMHeadPic(LPCTSTR lpszFileName)
 	return (m_lpStdMMHeadImg != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 设置风格
+ * 
+ * @param nStyle 
+ */
 void CBuddyListCtrl::SetStyle(BLCTRL_STYLE nStyle)
 {
 	m_nStyle = nStyle;
 }
 
+/**
+ * @brief 设置选中时显示大图标
+ * 
+ * @param bShowBigIconInSel 
+ */
 void CBuddyListCtrl::SetShowBigIconInSel(BOOL bShowBigIconInSel)
 {
 	m_bShowBigIconInSel = bShowBigIconInSel;
 }
 
+/**
+ * @brief 设置分组的高度
+ * 
+ * @param nHeight 
+ */
 void CBuddyListCtrl::SetBuddyTeamHeight(int nHeight)
 {
 	m_nBuddyTeamHeight = nHeight;
 }
 
+/**
+ * @brief 设置大图标时的图像高度
+ * 
+ * @param nHeight 
+ */
 void CBuddyListCtrl::SetBuddyItemHeightInBigIcon(int nHeight)
 {
 	m_nBuddyItemHeightInBig = nHeight;
 }
 
+/**
+ * @brief 设置小图标时的图像高度
+ * 
+ * @param nHeight 
+ */
 void CBuddyListCtrl::SetBuddyItemHeightInSmallIcon(int nHeight)
 {
 	m_nBuddyItemHeightInSmall = nHeight;
 }
 
+/**
+ * @brief 设置标准图标的图像高度
+ * 
+ * @param nHeight 
+ */
 void CBuddyListCtrl::SetBuddyItemHeightInStandardIcon(int nHeight)
 {
 	m_nBuddyItemHeightInStd = nHeight;
 }
 
+/**
+ * @brief 设置分组填充情况
+ * TODO: 作用不明确
+ * @param nPadding 
+ */
 void CBuddyListCtrl::SetBuddyTeamPadding(int nPadding)
 {
 	m_nBuddyTeamPadding = nPadding;
 }
 
+
+/**
+ * @brief 设置好友项的填充情况
+ * 
+ * @param nPadding 
+ */
 void CBuddyListCtrl::SetBuddyItemPadding(int nPadding)
 {
 	m_nBuddyItemPadding = nPadding;
 }
 
+/**
+ * @brief 设置空白区域
+ * 
+ * @param lpMargin 
+ */
 void CBuddyListCtrl::SetMargin(const RECT* lpMargin)
 {
 	if (lpMargin != NULL)
 		m_rcMargin =*lpMargin;
 }
 
+/**
+ * @brief 增加好友分组
+ * 
+ * @param nID 分组ID
+ * @return int 新的分组ID
+ */
 int CBuddyListCtrl::AddBuddyTeam(int nID)
 {
 	CBuddyTeamItem* lpItem = new CBuddyTeamItem;
@@ -250,11 +417,24 @@ int CBuddyListCtrl::AddBuddyTeam(int nID)
 	return m_arrBuddyTeamItems.size() - 1;
 }
 
+/**
+ * @brief 插入好友分组
+ * TODO: 功能未实现 
+ * @param nTeamIndex 
+ * @param nID 
+ * @return int 
+ */
 int CBuddyListCtrl::InsertBuddyTeam(int nTeamIndex, int nID)
 {
 	return -1;
 }
 
+/**
+ * @brief 根据分组下标,删除对应的分组
+ * 
+ * @param nTeamIndex 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::DelBuddyTeam(int nTeamIndex)
 {
 	if (nTeamIndex >= 0 && nTeamIndex < (int)m_arrBuddyTeamItems.size())
@@ -268,7 +448,14 @@ BOOL CBuddyListCtrl::DelBuddyTeam(int nTeamIndex)
 	return FALSE;
 }
 
-int CBuddyListCtrl::AddBuddyItem(int nTeamIndex, int nID)
+/**
+ * @brief 增加好友分组
+ * 
+ * @param nTeamIndex 
+ * @param nID 
+ * @return int 
+ */
+int CBuddyListCtrl::AddBuddyItem(int nTeamIndex, const std::string strUserId)
 {
 	CBuddyTeamItem* lpTeamItem = GetBuddyTeamByIndex(nTeamIndex);
 	if (NULL == lpTeamItem)
@@ -276,16 +463,32 @@ int CBuddyListCtrl::AddBuddyItem(int nTeamIndex, int nID)
 	CBuddyItem* lpItem = new CBuddyItem;
 	if (NULL == lpItem)
 		return -1;
-	lpItem->m_nID = nID;
+	lpItem->m_strUserId = strUserId;
 	lpTeamItem->m_arrBuddys.push_back(lpItem);
 	return lpTeamItem->m_arrBuddys.size() - 1;
 }
 
+/**
+ * @brief 添加好友项
+ * TODO: 未实现
+ * @param nTeamIndex 
+ * @param nIndex 
+ * @param nID 
+ * @return int 
+ */
 int CBuddyListCtrl::InsertBuddyItem(int nTeamIndex, int nIndex, int nID)
 {
 	return -1;
 }
 
+
+/**
+ * @brief 删除好友项
+ * 
+ * @param nTeamIndex 
+ * @param nIndex 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::DelBuddyItem(int nTeamIndex, int nIndex)
 {
 	if (nTeamIndex >= 0 && nTeamIndex < (int)m_arrBuddyTeamItems.size())
@@ -306,6 +509,10 @@ BOOL CBuddyListCtrl::DelBuddyItem(int nTeamIndex, int nIndex)
 	return FALSE;
 }
 
+/**
+ * @brief 删除所有好友项
+ * 
+ */
 void CBuddyListCtrl::DelAllItems()
 {
 	for (int i = 0; i < (int)m_arrBuddyTeamItems.size(); i++)
@@ -317,6 +524,12 @@ void CBuddyListCtrl::DelAllItems()
 	m_arrBuddyTeamItems.clear();
 }
 
+/**
+ * @brief 设置分组ID
+ * 
+ * @param nTeamIndex 分组索引
+ * @param strId 分组ID
+ */
 void CBuddyListCtrl::SetBuddyTeamID(int nTeamIndex, const std::string strId)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -326,6 +539,12 @@ void CBuddyListCtrl::SetBuddyTeamID(int nTeamIndex, const std::string strId)
 	}
 }
 
+/**
+ * @brief 设置分组名称
+ * 
+ * @param nTeamIndex 分组索引
+ * @param lpszText 分组名称
+ */
 void CBuddyListCtrl::SetBuddyTeamName(int nTeamIndex, LPCTSTR lpszText)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -333,13 +552,26 @@ void CBuddyListCtrl::SetBuddyTeamName(int nTeamIndex, LPCTSTR lpszText)
 		lpItem->m_strName = lpszText;
 }
 
+/**
+ * @brief 设置某个分组的最大成员数量
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nMaxCnt 分组最大成员数
+ */
 void CBuddyListCtrl::SetBuddyTeamMaxCnt(int nTeamIndex, int nMaxCnt)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
 	if (lpItem != NULL)
 		lpItem->m_nMaxCnt = nMaxCnt;
 }
-// 更新好友列表在线人数
+
+
+/**
+ * @brief 更新好友分组的当前人数
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nCurCnt 当前数量
+ */
 void CBuddyListCtrl::SetBuddyTeamCurCnt(int nTeamIndex, int nCurCnt)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -347,6 +579,12 @@ void CBuddyListCtrl::SetBuddyTeamCurCnt(int nTeamIndex, int nCurCnt)
 		lpItem->m_nCurCnt = nCurCnt;
 }
 
+/**
+ * @brief 根据分组索引设置该分组是否展开
+ * 
+ * @param nTeamIndex 
+ * @param bExpand 
+ */
 void CBuddyListCtrl::SetBuddyTeamExpand(int nTeamIndex, BOOL bExpand)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -354,6 +592,12 @@ void CBuddyListCtrl::SetBuddyTeamExpand(int nTeamIndex, BOOL bExpand)
 		lpItem->m_bExpand = bExpand;
 }
 
+/**
+ * @brief 根据分组索引获取分组的ID
+ * 
+ * @param nTeamIndex 分组索引
+ * @return std::string 分组ID
+ */
 std::string CBuddyListCtrl::GetBuddyTeamID(int nTeamIndex)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -367,6 +611,12 @@ std::string CBuddyListCtrl::GetBuddyTeamID(int nTeamIndex)
 	}
 }
 
+/**
+ * @brief 根据分组索引获取分组名称
+ * 
+ * @param nTeamIndex 
+ * @return CString 
+ */
 CString CBuddyListCtrl::GetBuddyTeamName(int nTeamIndex)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -376,6 +626,12 @@ CString CBuddyListCtrl::GetBuddyTeamName(int nTeamIndex)
 		return _T("");
 }
 
+/**
+ * @brief 根据分组索引获取分组最大个数
+ * 
+ * @param nTeamIndex 分组索引
+ * @return int 分组的最大数
+ */
 int CBuddyListCtrl::GetBuddyTeamMaxCnt(int nTeamIndex)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -385,6 +641,12 @@ int CBuddyListCtrl::GetBuddyTeamMaxCnt(int nTeamIndex)
 		return 0;
 }
 
+/**
+ * @brief 根据分组索引获取分组当前数
+ * 
+ * @param nTeamIndex 分组索引
+ * @return int 分组当前数
+ */
 int CBuddyListCtrl::GetBuddyTeamCurCnt(int nTeamIndex)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -394,6 +656,12 @@ int CBuddyListCtrl::GetBuddyTeamCurCnt(int nTeamIndex)
 		return 0;
 }
 
+/**
+ * @brief 根据分组索引,判断当前分组是否展开
+ * 
+ * @param nTeamIndex 分组索引
+ * @return BOOL 是否展开
+ */
 BOOL CBuddyListCtrl::IsBuddyTeamExpand(int nTeamIndex)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nTeamIndex);
@@ -403,13 +671,15 @@ BOOL CBuddyListCtrl::IsBuddyTeamExpand(int nTeamIndex)
 		return FALSE;
 }
 
-void CBuddyListCtrl::SetBuddyItemID(int nTeamIndex, int nIndex, int nID)
-{
-	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
-	if (lpItem != NULL)
-		lpItem->m_nID = nID;
-}
 
+
+/**
+ * @brief 设置某一项的显示模式
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param nMode 显示模式
+ */
 void CBuddyListCtrl::SetBuddyItemMode(int nTeamIndex, int nIndex, BLCTRL_DISPLAY_MODE nMode)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -417,12 +687,7 @@ void CBuddyListCtrl::SetBuddyItemMode(int nTeamIndex, int nIndex, BLCTRL_DISPLAY
 		lpItem->m_nDisplayMode = nMode;
 }
 
-void CBuddyListCtrl::SetBuddyItemUTalkNum(int nTeamIndex, int nIndex, LPCTSTR lpszText)
-{
-	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
-	if (lpItem != NULL)
-		lpItem->m_strUTalkNum = lpszText;
-}
+
 
 //void CBuddyListCtrl::SetBuddyItemUserName(const int nTeamIndex, const int nIndex, const std::string strUserName) {
 //	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -430,11 +695,18 @@ void CBuddyListCtrl::SetBuddyItemUTalkNum(int nTeamIndex, int nIndex, LPCTSTR lp
 //		lpItem->m_strUserName = strUserName;
 //}
 
-void CBuddyListCtrl::SetBuddyItemUserId(const int nTeamIndex, const int nIndex, const std::string strUserId) {
-	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
-	if (lpItem != NULL)
-		lpItem->m_strUserId = strUserId;
-}
+///**
+// * @brief 设置每一项的ID
+// * 
+// * @param nTeamIndex 分组索引
+// * @param nIndex 组内索引
+// * @param strUserId 用户ID
+// */
+//void CBuddyListCtrl::SetBuddyItemUserId(const int nTeamIndex, const int nIndex, const std::string strUserId) {
+//	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
+//	if (lpItem != NULL)
+//		lpItem->m_strUserId = strUserId;
+//}
 
 //std::string CBuddyListCtrl::GetBuddyItemUserName(const int nTeamIndex, const int nIndex) {
 //	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -445,6 +717,13 @@ void CBuddyListCtrl::SetBuddyItemUserId(const int nTeamIndex, const int nIndex, 
 //	return "";
 //}
 
+/**
+ * @brief 获取每一项的ID
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return std::string 用户ID
+ */
 std::string CBuddyListCtrl::GetBuddyItemUserId(const int nTeamIndex, const int nIndex) {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
 	if (lpItem != NULL)
@@ -453,6 +732,14 @@ std::string CBuddyListCtrl::GetBuddyItemUserId(const int nTeamIndex, const int n
 	}
 	return "";
 }
+
+/**
+ * @brief 设置每一项的昵称
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param lpszText 用户昵称
+ */
 void CBuddyListCtrl::SetBuddyItemNickName(int nTeamIndex, int nIndex, LPCTSTR lpszText)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -462,6 +749,13 @@ void CBuddyListCtrl::SetBuddyItemNickName(int nTeamIndex, int nIndex, LPCTSTR lp
 	}
 }
 
+/**
+ * @brief 设置好友备注名
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param lpszText 备注名
+ */
 void CBuddyListCtrl::SetBuddyItemMarkName(int nTeamIndex, int nIndex, LPCTSTR lpszText)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -471,6 +765,15 @@ void CBuddyListCtrl::SetBuddyItemMarkName(int nTeamIndex, int nIndex, LPCTSTR lp
 	}
 }
 
+
+/**
+ * @brief 设置好友签名
+ * 
+ * @param nTeamIndex 分组索引 
+ * @param nIndex 组内索引
+ * @param lpszText 签名字符串
+ * @param bShowSign 是否显示签名
+ */
 void CBuddyListCtrl::SetBuddyItemSign(int nTeamIndex, int nIndex, LPCTSTR lpszText, BOOL bShowSign)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -481,6 +784,13 @@ void CBuddyListCtrl::SetBuddyItemSign(int nTeamIndex, int nIndex, LPCTSTR lpszTe
 	}
 }
 
+/**
+ * @brief 设置好友性别
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param bGender 性别
+ */
 void CBuddyListCtrl::SetBuddyItemGender(int nTeamIndex, int nIndex, BOOL bGender)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -488,6 +798,15 @@ void CBuddyListCtrl::SetBuddyItemGender(int nTeamIndex, int nIndex, BOOL bGender
 		lpItem->m_bGender = bGender;
 }
 
+/**
+ * @brief 设置用户的头像
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param lpszFileName 头像图片名
+ * @param bGray 是否灰色
+ * @return BOOL 设置结果
+ */
 BOOL CBuddyListCtrl::SetBuddyItemHeadPic(int nTeamIndex, int nIndex, LPCTSTR lpszFileName, BOOL bGray)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -520,6 +839,14 @@ BOOL CBuddyListCtrl::SetBuddyItemHeadPic(int nTeamIndex, int nIndex, LPCTSTR lps
 	return TRUE;
 }
 
+
+/**
+ * @brief 获取列表用户头像
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return CString 头像文件名
+ */
 CString CBuddyListCtrl::GetBuddyItemHeadPic(int nTeamIndex, int nIndex)
 {
     CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -529,6 +856,15 @@ CString CBuddyListCtrl::GetBuddyItemHeadPic(int nTeamIndex, int nIndex)
     return lpItem->m_strHeadImgName;
 }
 
+/**
+ * @brief 设置某个好友的移动端在线状态
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param lpszFileName 图片路径
+ * @param bShow 是否显示
+ * @return BOOL 设置结果
+ */
 BOOL CBuddyListCtrl::SetBuddyItemMobilePic(int nTeamIndex, int nIndex, LPCTSTR lpszFileName, BOOL bShow/*=TRUE*/)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -558,6 +894,13 @@ BOOL CBuddyListCtrl::SetBuddyItemMobilePic(int nTeamIndex, int nIndex, LPCTSTR l
 	return TRUE;
 }
 
+/**
+ * @brief 设置头像是否闪烁
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param bHeadFlashAnim 是否闪烁
+ */
 void CBuddyListCtrl::SetBuddyItemHeadFlashAnim(int nTeamIndex, int nIndex, BOOL bHeadFlashAnim)
 {
 	CBuddyItem* lpBuddyItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -611,6 +954,14 @@ void CBuddyListCtrl::SetBuddyItemHeadFlashAnim(int nTeamIndex, int nIndex, BOOL 
 	}
 }
 
+/**
+ * @brief 设置好友的在线状态,以及是否闪烁
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @param bOnline 在线状态
+ * @param bAnim 闪烁状态
+ */
 void CBuddyListCtrl::SetBuddyItemOnline(int nTeamIndex, int nIndex, BOOL bOnline, BOOL bAnim)
 {
 	CBuddyItem* lpBuddyItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -643,15 +994,15 @@ void CBuddyListCtrl::SetBuddyItemOnline(int nTeamIndex, int nIndex, BOOL bOnline
 	}
 }
 
-int CBuddyListCtrl::GetBuddyItemID(int nTeamIndex, int nIndex)
-{
-	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
-	if (lpItem != NULL)
-		return lpItem->m_nID;
-	else
-		return 0;
-}
 
+
+/**
+ * @brief 获取好友的显示模式
+ * 
+ * @param nTeamIndex 分组索引
+ * @param nIndex 组内索引
+ * @return BLCTRL_DISPLAY_MODE 显示模式 
+ */
 BLCTRL_DISPLAY_MODE CBuddyListCtrl::GetBuddyItemMode(int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -661,14 +1012,7 @@ BLCTRL_DISPLAY_MODE CBuddyListCtrl::GetBuddyItemMode(int nTeamIndex, int nIndex)
 		return BLCTRL_DISPLAY_SHOW_NICKNAME_ACCOUNT;
 }
 
-CString CBuddyListCtrl::GetBuddyItemUTalkNum(int nTeamIndex, int nIndex)
-{
-	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
-	if (lpItem != NULL)
-		return lpItem->m_strUTalkNum;
-	else
-		return _T("");
-}
+
 
 CString CBuddyListCtrl::GetBuddyItemNickName(int nTeamIndex, int nIndex)
 {
@@ -729,39 +1073,6 @@ int CBuddyListCtrl::GetBuddyItemCount(int nTeamIndex)
 		return 0;
 }
 
-BOOL CBuddyListCtrl::GetItemIndexByID(int nID, int& nTeamIndex, int& nIndex)
-{
-	nTeamIndex = -1;
-	nIndex = -1;
-
-	for (int i = 0; i < (int)m_arrBuddyTeamItems.size(); i++)
-	{
-		CBuddyTeamItem* lpTeamItem = m_arrBuddyTeamItems[i];
-		if (lpTeamItem != NULL)
-		{
-			if (nID == lpTeamItem->m_nID)
-			{
-				nTeamIndex = i;
-				return TRUE;
-			}
-
-			for (int j = 0; j < (int)lpTeamItem->m_arrBuddys.size(); j++)
-			{
-				CBuddyItem* lpItem = lpTeamItem->m_arrBuddys[j];
-				if (lpItem != NULL && nID == lpItem->m_nID)
-				{
-					if (nID == lpItem->m_nID)
-					{
-						nTeamIndex = i;
-						nIndex = j;
-						return TRUE;
-					}
-				}
-			}
-		}
-	}
-	return FALSE;
-}
 
 BOOL CBuddyListCtrl::GetItemRectByIndex(int nTeamIndex, int nIndex, CRect& rect)
 {
@@ -1589,7 +1900,7 @@ void CBuddyListCtrl::DrawBuddyItemInBigIcon(HDC hDC, int nTeamIndex, int nIndex)
 		}
         else
         {
-            strName1.Format(_T("%s(%s)"), lpItem->m_strNickName, lpItem->m_strUTalkNum);
+           // strName1.Format(_T("%s(%s)"), lpItem->m_strNickName, lpItem->m_strUTalkNum);
             //strName1 = lpItem->m_strNickName;
         }
 	}
@@ -1597,11 +1908,11 @@ void CBuddyListCtrl::DrawBuddyItemInBigIcon(HDC hDC, int nTeamIndex, int nIndex)
 	{
 		strName1 = lpItem->m_strNickName;
 	}
-	else if(lpItem->m_nDisplayMode == BLCTRL_DISPLAY_SHOW_ACCOUNT)
-	{
-        strName1 = lpItem->m_strUTalkNum;
-		//strName1 = lpItem->m_strNickName;
-	}
+	//else if(lpItem->m_nDisplayMode == BLCTRL_DISPLAY_SHOW_ACCOUNT)
+	//{
+ //       strName1 = lpItem->m_strUTalkNum;
+	//	//strName1 = lpItem->m_strNickName;
+	//}
 
 	if(strName1.IsEmpty())
 		strName1 = _T("  ");
@@ -2221,11 +2532,11 @@ void CBuddyListCtrl::SortBuddyTeam(int nTeamIndex, int nIndex)
 			}
 			else if (lpBuddyItem1->m_bOnline == lpBuddyItem2->m_bOnline)
 			{
-				if (lpBuddyItem1->m_nID <= lpBuddyItem2->m_nID)
-				{
-					nInsert = i;
-					break;
-				}
+				//if (lpBuddyItem1->m_nID <= lpBuddyItem2->m_nID)
+				//{
+				//	nInsert = i;
+				//	break;
+				//}
 			}
 		}
 	}

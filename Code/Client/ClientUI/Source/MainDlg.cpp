@@ -1761,12 +1761,12 @@ LRESULT CMainDlg::OnGroupListDblClk(LPNMHDR pnmh)
 	int nIndex = 0 ;
 	m_GroupListCtrl.GetCurSelIndex(nTeamIndex, nIndex);
 
-	if (nTeamIndex != -1 && nIndex != -1)
-	{
-		UINT nGroupCode = m_GroupListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
-		std::string strGroupId = m_GroupListCtrl.GetBuddyItemUserId(nTeamIndex, nIndex);
-		ShowGroupChatDlg(strGroupId, TRUE);
-	}	
+	//if (nTeamIndex != -1 && nIndex != -1)
+	//{
+	//	UINT nGroupCode = m_GroupListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
+	//	std::string strGroupId = m_GroupListCtrl.GetBuddyItemUserId(nTeamIndex, nIndex);
+	//	ShowGroupChatDlg(strGroupId, TRUE);
+	//}	
 	return 0;
 }
 
@@ -1819,24 +1819,24 @@ LRESULT CMainDlg::OnRecentListDblClk(LPNMHDR pnmh)
 
 	if (nTeamIndex != -1 && nIndex != -1)
 	{
-		UINT nUTalkUin = m_RecentListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
-		if(IsGroupTarget(nUTalkUin))
-		{
-			SendMessage(WM_SHOW_GROUP_CHAT_DLG, (WPARAM)nUTalkUin, 0);
-		}
-		else
-		{
-			if(m_userMgr.IsFriend(nUTalkUin))
-			{
-				WString strNickName = m_RecentListCtrl.GetBuddyItemNickName(nTeamIndex, nIndex);
-				CString strInfo;
-				strInfo.Format(_T("%s已经不是您的好友，请先加对方为好友后再聊天。"), strNickName.c_str());
-				::MessageBox(m_hWnd, strInfo, g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-				return 1;
-			}
-			
-			//SendMessage(WM_SHOW_BUDDY_CHAT_DLG, 0, nUTalkUin);
-		}
+		//UINT nUTalkUin = m_RecentListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
+		//if(IsGroupTarget(nUTalkUin))
+		//{
+		//	SendMessage(WM_SHOW_GROUP_CHAT_DLG, (WPARAM)nUTalkUin, 0);
+		//}
+		//else
+		//{
+		//	if(m_userMgr.IsFriend(nUTalkUin))
+		//	{
+		//		WString strNickName = m_RecentListCtrl.GetBuddyItemNickName(nTeamIndex, nIndex);
+		//		CString strInfo;
+		//		strInfo.Format(_T("%s已经不是您的好友，请先加对方为好友后再聊天。"), strNickName.c_str());
+		//		::MessageBox(m_hWnd, strInfo, g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
+		//		return 1;
+		//	}
+		//	
+		//	//SendMessage(WM_SHOW_BUDDY_CHAT_DLG, 0, nUTalkUin);
+		//}
 	}	
 	return 0;
 }
@@ -2212,7 +2212,7 @@ void CMainDlg::OnMenu_DeleteFriend(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{
 		return;
 	}
-	UINT uUserID = (UINT)m_BuddyListCtrl.GetBuddyItemID(nTeamIndex, nBuddyIndex);	
+	
 	//Core
 	{
 		std::string strFriendId = m_BuddyListCtrl.GetBuddyItemUserId(nTeamIndex, nBuddyIndex);
@@ -2268,8 +2268,8 @@ void CMainDlg::OnDeleteRecentItem(UINT uNotifyCode, int nID, CWindow wndCtl)
 		return;
 	}
 
-	UINT uUserID = (UINT)m_RecentListCtrl.GetBuddyItemID(nTeamIndex, nRecentIndex);	
-	m_userMgr.DeleteRecentItem(uUserID);
+	//UINT uUserID = (UINT)m_RecentListCtrl.GetBuddyItemID(nTeamIndex, nRecentIndex);	
+	//m_userMgr.DeleteRecentItem(uUserID);
 	::PostMessage(m_hWnd, FMG_MSG_UPDATE_RECENT_LIST, 0, 0);
 }
 
@@ -2339,8 +2339,8 @@ void CMainDlg::OnMenu_ViewBuddyInfoFromRecentList(UINT uNotifyCode, int nID, CWi
 		return;
 	}
 
-	UINT nUTalkUin = m_RecentListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
-	::PostMessage(m_hWnd, WM_SHOW_BUDDY_INFO_DLG, NULL, nUTalkUin);
+	/*UINT nUTalkUin = m_RecentListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
+	::PostMessage(m_hWnd, WM_SHOW_BUDDY_INFO_DLG, NULL, nUTalkUin);*/
 }
 
 
@@ -2361,11 +2361,11 @@ void CMainDlg::OnMenu_ModifyBuddyMarkName(UINT uNotifyCode, int nID, CWindow wnd
 		return;
 	}
 
-	UINT uUserID = m_BuddyListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
-	if (uUserID == 0)
-	{
-		return;
-	}
+	//UINT uUserID = m_BuddyListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
+	//if (uUserID == 0)
+	//{
+	//	return;
+	//}
 
 	CModifyMarkNameDlg modifyMarkNameDlg;
 	//modifyMarkNameDlg.m_uUserID = uUserID;
@@ -3314,11 +3314,11 @@ LRESULT CMainDlg::OnUpdateBuddyInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	else
 	{
-		int nTeamIndex, nIndex;	// 获取好友项索引
-		m_BuddyListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
-		m_BuddyListCtrl.SetBuddyItemMarkName(nTeamIndex, nIndex, lpBuddyInfo->m_strMarkName.c_str());
-		m_BuddyListCtrl.SetBuddyItemNickName(nTeamIndex, nIndex, lpBuddyInfo->m_strNickName.c_str());
-		m_BuddyListCtrl.Invalidate(FALSE);
+		//int nTeamIndex, nIndex;	// 获取好友项索引
+		//m_BuddyListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
+		//m_BuddyListCtrl.SetBuddyItemMarkName(nTeamIndex, nIndex, lpBuddyInfo->m_strMarkName.c_str());
+		//m_BuddyListCtrl.SetBuddyItemNickName(nTeamIndex, nIndex, lpBuddyInfo->m_strNickName.c_str());
+		//m_BuddyListCtrl.Invalidate(FALSE);
 	}
 
 
@@ -3555,33 +3555,33 @@ LRESULT CMainDlg::OnUpdateBuddyHeadPic(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//}
 	}
 
-	int nTeamIndex, nIndex;
-	m_BuddyListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
-	m_BuddyListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strThumbPath, bGray);
+	//int nTeamIndex, nIndex;
+	//m_BuddyListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
+	//m_BuddyListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strThumbPath, bGray);
 
 	// 更新最近联系人列表头像
 	int nItemCnt = m_RecentListCtrl.GetBuddyItemCount(0);
 	for (int i = 0; i < nItemCnt; i++)
 	{
-		int nIndex = m_RecentListCtrl.GetBuddyItemID(0, i);
+		//int nIndex = m_RecentListCtrl.GetBuddyItemID(0, i);
 
-		C_UI_RecentList* lpRecentList = NULL;// m_FMGClient.GetRecentList();
-		if (lpRecentList != NULL)
-		{
-			C_UI_RecentInfo* lpRecentInfo = lpRecentList->GetRecent(nIndex);
-			if (lpRecentInfo != NULL)
-			{
-				if (E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_BUDDY == lpRecentInfo->m_nType)			// 好友
-				{
-					if (nUTalkUin == lpRecentInfo->m_uUserID)
-					{
-						m_RecentListCtrl.GetItemIndexByID(nIndex, nTeamIndex, nIndex);
-						m_RecentListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strThumbPath, bGray);
-						break;
-					}
-				}
-			}
-		}
+		//C_UI_RecentList* lpRecentList = NULL;// m_FMGClient.GetRecentList();
+		//if (lpRecentList != NULL)
+		//{
+		//	C_UI_RecentInfo* lpRecentInfo = lpRecentList->GetRecent(nIndex);
+		//	if (lpRecentInfo != NULL)
+		//	{
+		//		if (E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_BUDDY == lpRecentInfo->m_nType)			// 好友
+		//		{
+		//			if (nUTalkUin == lpRecentInfo->m_uUserID)
+		//			{
+		//				m_RecentListCtrl.GetItemIndexByID(nIndex, nTeamIndex, nIndex);
+		//				m_RecentListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strThumbPath, bGray);
+		//				break;
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 	NotifyBuddyChatDlg(nUTalkUin, FMG_MSG_UPDATE_BUDDY_HEADPIC);		// 通知好友聊天窗口更新
@@ -3637,38 +3637,38 @@ LRESULT CMainDlg::OnUpdateGroupHeadPic(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	WString strFileName;// m_FMGClient.GetGroupHeadPicFullName(nGroupNum);
 	if (!Hootina::CPath::IsFileExist(strFileName.c_str()))
 		strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DefGroupHeadPic.png");
-	int nTeamIndex, nIndex;
+	/*int nTeamIndex, nIndex;
 	m_GroupListCtrl.GetItemIndexByID(nGroupCode, nTeamIndex, nIndex);
-	m_GroupListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strFileName.c_str(), FALSE);
+	m_GroupListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strFileName.c_str(), FALSE);*/
 
 	// 更新最近联系人列表头像
 	int nItemCnt = m_RecentListCtrl.GetBuddyItemCount(0);
 	for (int i = 0; i < nItemCnt; i++)
 	{
-		int nIndex = m_RecentListCtrl.GetBuddyItemID(0, i);
+		//int nIndex = m_RecentListCtrl.GetBuddyItemID(0, i);
 
-		C_UI_RecentList* lpRecentList = NULL;// m_FMGClient.GetRecentList();
-		if (lpRecentList != NULL)
-		{
-			C_UI_RecentInfo* lpRecentInfo = lpRecentList->GetRecent(nIndex);
-			if (lpRecentInfo != NULL)
-			{
-				if (E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_GROUP == lpRecentInfo->m_nType)	// 群
-				{
-					CGroupList* lpGroupList = NULL;// m_FMGClient.GetGroupList();
-					if (lpGroupList != NULL)
-					{
-						//C_UI_GroupInfo* lpGroupInfo = lpGroupList->GetGroupById(lpRecentInfo->m_uUserID);
-						//if (lpGroupInfo != NULL && nGroupCode == lpGroupInfo->m_nGroupCode)
-						//{
-						//	m_RecentListCtrl.GetItemIndexByID(nIndex, nTeamIndex, nIndex);
-						//	m_RecentListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strFileName.c_str(), FALSE);
-						//	break;
-						//}
-					}
-				}
-			}
-		}
+		//C_UI_RecentList* lpRecentList = NULL;// m_FMGClient.GetRecentList();
+		//if (lpRecentList != NULL)
+		//{
+		//	C_UI_RecentInfo* lpRecentInfo = lpRecentList->GetRecent(nIndex);
+		//	if (lpRecentInfo != NULL)
+		//	{
+		//		if (E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_GROUP == lpRecentInfo->m_nType)	// 群
+		//		{
+		//			CGroupList* lpGroupList = NULL;// m_FMGClient.GetGroupList();
+		//			if (lpGroupList != NULL)
+		//			{
+		//				//C_UI_GroupInfo* lpGroupInfo = lpGroupList->GetGroupById(lpRecentInfo->m_uUserID);
+		//				//if (lpGroupInfo != NULL && nGroupCode == lpGroupInfo->m_nGroupCode)
+		//				//{
+		//				//	m_RecentListCtrl.GetItemIndexByID(nIndex, nTeamIndex, nIndex);
+		//				//	m_RecentListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strFileName.c_str(), FALSE);
+		//				//	break;
+		//				//}
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 	NotifyGroupChatDlg(nGroupCode, FMG_MSG_UPDATE_GROUP_HEADPIC, wParam, lParam);// 通知群聊天窗口更新
@@ -3905,7 +3905,7 @@ LRESULT CMainDlg::OnDeleteFriendResult(UINT message, WPARAM wParam, LPARAM lPara
 	//主界面已有的消息仍然继续保持闪动
 	//TODO: 这段代码有问题：
 	//当删除某个有新消息的好友时或者群组时，另外一个有消息的群组仍然闪烁，但另外一个有消息的好友就不闪烁了！！
-	int nTeamIndex, nIndex;
+	//int nTeamIndex, nIndex;
 	int nCount = 0;// m_userMgr.m_MsgList.GetMsgSenderCount();
 	UINT nUTalkUin = 0;
 	C_UI_MessageSender* pSender = NULL;
@@ -3919,14 +3919,14 @@ LRESULT CMainDlg::OnDeleteFriendResult(UINT message, WPARAM wParam, LPARAM lPara
 			{
 				if(!IsGroupTarget(nUTalkUin))
 				{
-					m_BuddyListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
-					m_BuddyListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, TRUE);
+					//m_BuddyListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
+					//m_BuddyListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, TRUE);
 					//m_BuddyListCtrl.Invalidate(FALSE);
 				}
 				else
 				{
-					m_GroupListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
-					m_GroupListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, TRUE);
+					//m_GroupListCtrl.GetItemIndexByID(nUTalkUin, nTeamIndex, nIndex);
+					//m_GroupListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, TRUE);
 				}
 			}
 		}
@@ -4171,19 +4171,19 @@ LRESULT CMainDlg::OnDelMsgSender(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	if (eType == E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_BUDDY)
 	{
-		int nTeamIndex, nIndex;
-		m_BuddyListCtrl.GetItemIndexByID(nSenderId, nTeamIndex, nIndex);
-		m_BuddyListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, FALSE);
-		//更新最近联系人中新消息的数目
-		SendMessage(FMG_MSG_UPDATE_RECENT_LIST, 0, 0);
+		//int nTeamIndex, nIndex;
+		//m_BuddyListCtrl.GetItemIndexByID(nSenderId, nTeamIndex, nIndex);
+		//m_BuddyListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, FALSE);
+		////更新最近联系人中新消息的数目
+		//SendMessage(FMG_MSG_UPDATE_RECENT_LIST, 0, 0);
 	}
 	else if (eType == E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_GROUP)
 	{
-		int nTeamIndex, nIndex;
-		m_GroupListCtrl.GetItemIndexByID(nSenderId, nTeamIndex, nIndex);
-		m_GroupListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, FALSE);
-		//更新最近联系人中新消息的数目
-		SendMessage(FMG_MSG_UPDATE_RECENT_LIST, 0, 0);
+		//int nTeamIndex, nIndex;
+		//m_GroupListCtrl.GetItemIndexByID(nSenderId, nTeamIndex, nIndex);
+		//m_GroupListCtrl.SetBuddyItemHeadFlashAnim(nTeamIndex, nIndex, FALSE);
+		////更新最近联系人中新消息的数目
+		//SendMessage(FMG_MSG_UPDATE_RECENT_LIST, 0, 0);
 	}
 
 	UpdateMsgIcon();
@@ -5168,12 +5168,10 @@ void CMainDlg::UpdateBuddyTreeCtrl()
 				}
 
 				//int nIndex = m_BuddyListCtrl.AddBuddyItem(nTeamIndex, lpBuddyInfo->m_nUTalkUin);
-				int nIndex = m_BuddyListCtrl.AddBuddyItem(nTeamIndex, lpBuddyInfo->m_uUserIndex);
-				m_BuddyListCtrl.SetBuddyItemUTalkNum(nTeamIndex, nIndex, strUTalkNum);
+				int nIndex = m_BuddyListCtrl.AddBuddyItem(nTeamIndex, lpBuddyInfo->m_strUserId);
+
 				m_BuddyListCtrl.SetBuddyItemNickName(nTeamIndex, nIndex, lpBuddyInfo->m_strNickName.c_str());
 				m_BuddyListCtrl.SetBuddyItemMarkName(nTeamIndex, nIndex, lpBuddyInfo->m_strMarkName.c_str());
-				//m_BuddyListCtrl.SetBuddyItemUserName(nTeamIndex, nIndex, lpBuddyInfo->m_strUserName);
-				m_BuddyListCtrl.SetBuddyItemUserId(nTeamIndex, nIndex, lpBuddyInfo->m_strUserId);
 
 				//清爽资料不显示个性签名
 				if (bShowSimpleProfile)
@@ -5248,10 +5246,9 @@ void CMainDlg::UpdateGroupTreeCtrl()
 			strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DefGroupHeadPic.png");
 
 		//TODO: Dennis Notice
-		int nIndex = m_GroupListCtrl.AddBuddyItem(nTeamIndex,1);
+		int nIndex = m_GroupListCtrl.AddBuddyItem(nTeamIndex,lpGroupInfo->m_strGroupId);
 		m_GroupListCtrl.SetBuddyItemNickName(nTeamIndex, nIndex, lpGroupInfo->m_strAccount.c_str());
 		m_GroupListCtrl.SetBuddyItemMarkName(nTeamIndex, nIndex, lpGroupInfo->m_strName.c_str());
-		m_GroupListCtrl.SetBuddyItemUserId(nTeamIndex, nIndex, lpGroupInfo->m_strGroupId);
 		m_GroupListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strFileName.c_str(), FALSE);
 
 		++nActualGroupCount;
