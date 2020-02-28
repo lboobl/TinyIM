@@ -1884,6 +1884,11 @@ void CBuddyListCtrl::OnDestroy()
 	m_arrBuddyTeamItems.clear();
 }
 
+/**
+ * @brief 绘制父窗口背景
+ * 
+ * @param hDC 
+ */
 void CBuddyListCtrl::DrawParentWndBg(HDC hDC)
 {
 	HWND hParentWnd = ::GetParent(m_hWnd);
@@ -1896,6 +1901,12 @@ void CBuddyListCtrl::DrawParentWndBg(HDC hDC)
 	::BitBlt(hDC, 0, 0, rcWindow.Width(), rcWindow.Height(), m_hBgDC, rcWindow.left, rcWindow.top, SRCCOPY);
 }
 
+/**
+ * @brief 绘制每一个好友项
+ * 
+ * @param hDC 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::DrawBuddyTeam(HDC hDC, int nIndex)
 {
 	CBuddyTeamItem* lpItem = GetBuddyTeamByIndex(nIndex);
@@ -1998,6 +2009,14 @@ void CBuddyListCtrl::DrawBuddyTeam(HDC hDC, int nIndex)
 	}
 }
 
+
+/**
+ * @brief 根据分组索引和组内索引,绘制每一个好友项
+ * 
+ * @param hDC 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::DrawBuddyItem(HDC hDC, int nTeamIndex, int nIndex)
 {
 	int nMode = ::SetStretchBltMode(hDC, HALFTONE);
@@ -2010,6 +2029,14 @@ void CBuddyListCtrl::DrawBuddyItem(HDC hDC, int nTeamIndex, int nIndex)
 	::SetStretchBltMode(hDC, nMode);
 }
 
+
+/**
+ * @brief 以大图标的风格绘制每一个好友项
+ * 
+ * @param hDC 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::DrawBuddyItemInBigIcon(HDC hDC, int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -2212,6 +2239,13 @@ void CBuddyListCtrl::DrawBuddyItemInBigIcon(HDC hDC, int nTeamIndex, int nIndex)
 	::SetBkMode(hDC, nMode);
 }
 
+/**
+ * @brief 以小图标的风格绘制每一个好友项
+ * 
+ * @param hDC 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::DrawBuddyItemInSmallIcon(HDC hDC, int nTeamIndex, int nIndex)
 {
 	if (m_bShowBigIconInSel && m_nSelTeamIndex == nTeamIndex && m_nSelIndex == nIndex)
@@ -2336,6 +2370,14 @@ void CBuddyListCtrl::DrawBuddyItemInSmallIcon(HDC hDC, int nTeamIndex, int nInde
 	::SetBkMode(hDC, nMode);
 }
 
+
+/**
+ * @brief 以标准图标的风格绘制每一个好友项
+ * 
+ * @param hDC 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::DrawBuddyItemInStdIcon(HDC hDC, int nTeamIndex, int nIndex)
 {
 	CBuddyItem* lpItem = GetBuddyItemByIndex(nTeamIndex, nIndex);
@@ -2468,6 +2510,11 @@ void CBuddyListCtrl::DrawBuddyItemInStdIcon(HDC hDC, int nTeamIndex, int nIndex)
 	::SetBkMode(hDC, nMode);
 }
 
+/**
+ * @brief 开始追踪鼠标离开
+ * 
+ * @return BOOL 
+ */
 BOOL CBuddyListCtrl::StartTrackMouseLeave()
 {
 	TRACKMOUSEEVENT tme = { 0 };
@@ -2477,6 +2524,15 @@ BOOL CBuddyListCtrl::StartTrackMouseLeave()
 	return _TrackMouseEvent(&tme);
 }
 
+
+/**
+ * @brief 计算中央矩形区域
+ * 
+ * @param rcDest 
+ * @param cx 
+ * @param cy 
+ * @param rcCenter 
+ */
 void CBuddyListCtrl::CalcCenterRect(CRect& rcDest, int cx, int cy, CRect& rcCenter)
 {
 	int x = (rcDest.Width() - cx + 1) / 2;
@@ -2485,7 +2541,14 @@ void CBuddyListCtrl::CalcCenterRect(CRect& rcDest, int cx, int cy, CRect& rcCent
 	rcCenter = CRect(rcDest.left+x, rcDest.top+y, rcDest.left+x+cx, rcDest.top+y+cy);
 }
 
-//点击测试
+
+/**
+ * @brief 点击测试
+ * TODO: 具体作用的原理不太明白
+ * @param pt 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::HitTest(POINT pt, int& nTeamIndex, int& nIndex)
 {
 	CBuddyTeamItem* lpTeamItem;
@@ -2565,7 +2628,13 @@ void CBuddyListCtrl::HitTest(POINT pt, int& nTeamIndex, int& nIndex)
 	}
 }
 
-//根据分组索引，获取好友分组项
+
+/**
+ * @brief 根据分组索引，获取好友分组项
+ * 
+ * @param nIndex 
+ * @return CBuddyTeamItem* 
+ */
 CBuddyTeamItem* CBuddyListCtrl::GetBuddyTeamByIndex(int nIndex)
 {
 	if (nIndex >= 0 && nIndex < (int)m_arrBuddyTeamItems.size())
@@ -2574,7 +2643,13 @@ CBuddyTeamItem* CBuddyListCtrl::GetBuddyTeamByIndex(int nIndex)
 		return NULL;
 }
 
-//根据分组索引和好友在该分组的索引获取好友项
+/**
+ * @brief 根据分组索引和好友在该分组的索引获取好友项
+ * 
+ * @param nTeamIndex 
+ * @param nIndex 
+ * @return CBuddyItem* 
+ */
 CBuddyItem* CBuddyListCtrl::GetBuddyItemByIndex(int nTeamIndex, int nIndex)
 {
 	CBuddyTeamItem* lpTeamItem;
@@ -2591,7 +2666,11 @@ CBuddyItem* CBuddyListCtrl::GetBuddyItemByIndex(int nTeamIndex, int nIndex)
 	return NULL;
 }
 
-//检查滚动条的状态
+
+/**
+ * @brief 检查滚动条的状态
+ * 
+ */
 void CBuddyListCtrl::CheckScrollBarStatus()
 {
 	if (!IsWindow())
@@ -2657,7 +2736,13 @@ void CBuddyListCtrl::CheckScrollBarStatus()
 	}
 }
 
-//响应滚动条
+
+/**
+ * @brief 响应滚动条
+ * 
+ * @param cx 
+ * @param cy 
+ */
 void CBuddyListCtrl::Scroll(int cx, int cy)
 {
 	if (m_VScrollBar.IsVisible() &&
@@ -2670,7 +2755,13 @@ void CBuddyListCtrl::Scroll(int cx, int cy)
 	}
 }
 
-//确保可见
+
+/**
+ * @brief 确保可见 
+ * 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::EnsureVisible(int nTeamIndex, int nIndex)
 {
 	CRect rcClient;
@@ -2690,7 +2781,13 @@ void CBuddyListCtrl::EnsureVisible(int nTeamIndex, int nIndex)
 	}
 }
 
-//好友分组排序
+
+/**
+ * @brief 好友分组排序
+ * 
+ * @param nTeamIndex 
+ * @param nIndex 
+ */
 void CBuddyListCtrl::SortBuddyTeam(int nTeamIndex, int nIndex)
 {
 	CBuddyTeamItem* lpBuddyTeam = GetBuddyTeamByIndex(nTeamIndex);			// 获取要排序的分组
@@ -2734,7 +2831,12 @@ void CBuddyListCtrl::SortBuddyTeam(int nTeamIndex, int nIndex)
 	lpBuddyTeam->m_arrBuddys.insert(lpBuddyTeam->m_arrBuddys.begin()+nInsert, lpBuddyItem1);
 }
 
-// 头像闪动动画
+
+/**
+ * @brief 响应定时器的,头像闪动动画
+ * 
+ * @param nIDEvent 
+ */
 void CBuddyListCtrl::OnTimer_HeadFlashAnim(UINT_PTR nIDEvent)
 {
 	if (nIDEvent != m_dwHeadFlashAnimTimerId)
@@ -2774,7 +2876,12 @@ void CBuddyListCtrl::OnTimer_HeadFlashAnim(UINT_PTR nIDEvent)
 	Invalidate();
 }
 
-// 上线动画
+
+/**
+ * @brief 根据定时器,响应上线动画
+ * 
+ * @param nIDEvent 
+ */
 void CBuddyListCtrl::OnTimer_OnlineAnim(UINT_PTR nIDEvent)
 {
 	if (nIDEvent != m_dwOnlineAnimTimerId)
@@ -2814,7 +2921,12 @@ void CBuddyListCtrl::OnTimer_OnlineAnim(UINT_PTR nIDEvent)
 	Invalidate();
 }
 
-// 下线动画
+
+/**
+ * @brief 根据定时器,响应下线动画
+ * 
+ * @param nIDEvent 
+ */
 void CBuddyListCtrl::OnTimer_OfflineAnim(UINT_PTR nIDEvent)
 {
 	if (nIDEvent != m_dwOfflineAnimTimerId)
