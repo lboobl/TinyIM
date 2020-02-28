@@ -39,7 +39,7 @@ DWORD __stdcall ShakeWindowThreadProc(LPVOID pParameters)
 
 void ShakeWindow(HWND hwnd, long nTimes)
 {
-	//新建一个现成来抖动窗口，避免Sleep时阻塞主线程消息循环
+	//新建一个线程来抖动窗口，避免Sleep时阻塞主线程消息循环
     HANDLE hShakeWindowThread = ::CreateThread(NULL, 0, ShakeWindowThreadProc, (LPVOID)hwnd, 0, NULL);
     ::CloseHandle(hShakeWindowThread);   
 }

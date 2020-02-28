@@ -1,18 +1,42 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file ChangePicHead.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 设置不同的头像风格
+ * @version 0.1
+ * @date 2020-02-28
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "ChangePicHead.h"
 
-
+/**
+ * @brief Construct a new CChangePicHead::CChangePicHead object
+ * 
+ */
 CChangePicHead::CChangePicHead()
 {
 
 };
 
+/**
+ * @brief Destroy the CChangePicHead::CChangePicHead object
+ * 
+ */
 CChangePicHead::~CChangePicHead()
 {
 
 };
 
-
+/**
+ * @brief 初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CChangePicHead::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);
@@ -20,6 +44,11 @@ BOOL CChangePicHead::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 窗口初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CChangePicHead::Init()
 {
 
@@ -61,7 +90,12 @@ BOOL CChangePicHead::Init()
 }
 
 
-// 初始化Tab栏
+
+/**
+ * @brief 初始化Tab栏
+ * 
+ * @return BOOL 
+ */
 BOOL CChangePicHead::InitTabCtrl()
 {
 	CRect rcClient;
@@ -106,6 +140,13 @@ BOOL CChangePicHead::InitTabCtrl()
 }
 
 
+/**
+ * @brief 响应窗口的激活状态
+ * 
+ * @param nState 窗口状态
+ * @param bMinimized 是否最小化
+ * @param wndOther 其他窗口
+ */
 void CChangePicHead::OnActivate(UINT nState, BOOL bMinimized, CWindow wndOther)
 {
 	SetMsgHandled(FALSE);
@@ -116,6 +157,11 @@ void CChangePicHead::OnActivate(UINT nState, BOOL bMinimized, CWindow wndOther)
 	}
 }
 
+/**
+ * @brief 响应窗口绘制
+ * 
+ * @param dc 
+ */
 void CChangePicHead::OnPaint(CDCHandle dc)
 {
 	CPaintDC PaintDC(m_hWnd);
@@ -136,12 +182,20 @@ void CChangePicHead::OnPaint(CDCHandle dc)
 	::DeleteObject(hBrush);
 }
 
+/**
+ * @brief 响应控件关闭
+ * 
+ */
 void CChangePicHead::OnClose()
 {
 	//::PostMessage(GetParent(), FACE_CTRL_SEL, NULL, NULL);
 	EndDialog(IDCANCEL);
 }
 
+/**
+ * @brief 响应控件销毁
+ * 
+ */
 void CChangePicHead::OnDestroy()
 {
 	SetMsgHandled(FALSE);

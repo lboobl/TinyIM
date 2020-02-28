@@ -1,19 +1,42 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file ChangePicHeadDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 修改头像对话框的实现文件
+ * @version 0.1
+ * @date 2020-02-28
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "ChangePicHeadDlg.h"
 #include "UI_USER_INFO.h"
 
 
+/**
+ * @brief Construct a new CChangePicHeadDlg::CChangePicHeadDlg object
+ * 
+ */
 CChangePicHeadDlg::CChangePicHeadDlg()
 {
 	m_SelectedIndex = -1;
 	m_LastSelectedIndex = -1;
 }
 
+/**
+ * @brief Destroy the CChangePicHeadDlg::CChangePicHeadDlg object
+ * 
+ */
 CChangePicHeadDlg::~CChangePicHeadDlg()
 {
 
 }
 
+/**
+ * @brief 设置当前的选项
+ * 
+ * @param nIndex 
+ */
 void CChangePicHeadDlg::SetSelection(long nIndex)
 {
 	if(nIndex < 0)
@@ -21,12 +44,23 @@ void CChangePicHeadDlg::SetSelection(long nIndex)
 	m_SelectedIndex = nIndex;
 }
 
-
+/**
+ * @brief 获取当前的选项
+ * 
+ * @return long 
+ */
 long CChangePicHeadDlg::GetSelection()
 {
 	return m_SelectedIndex;
 }
 
+/**
+ * @brief 响应对话框初始化
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CChangePicHeadDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	SetWindowPos(NULL, 0, 0, 587, 500, SWP_NOMOVE);
@@ -40,6 +74,11 @@ BOOL CChangePicHeadDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 对话框初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CChangePicHeadDlg::Init()
 {
 	m_SkinDlg.SetBgPic(_T("LoginPanel_window_windowBkg.png"), CRect(4, 69, 4, 33));
@@ -72,6 +111,11 @@ BOOL CChangePicHeadDlg::Init()
 	return 1;
 }
 
+/**
+ * @brief 初始化缩略图
+ * 
+ * @return BOOL 
+ */
 BOOL CChangePicHeadDlg::InitThumbImages()
 {
 	//TODO: 后期改成自动判断\Image\UserThumbs\文件夹里面头像文件的个数
@@ -117,6 +161,10 @@ BOOL CChangePicHeadDlg::InitThumbImages()
 	return TRUE;
 }
 
+/**
+ * @brief 销毁缩略图列表
+ * 
+ */
 void CChangePicHeadDlg::DestroyThumbImages()
 {
 	CSkinPictureBox* pSkinPictureBox = NULL;
@@ -131,21 +179,47 @@ void CChangePicHeadDlg::DestroyThumbImages()
 	}
 }
 
+/**
+ * @brief 响应确定按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CChangePicHeadDlg::OnOK(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	EndDialog(IDOK);
 }
 
+/**
+ * @brief 响应取消按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CChangePicHeadDlg::OnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	EndDialog(IDCANCEL);
 }
 
+
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CChangePicHeadDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
 
+/**
+ * @brief 响应缩略图选择
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CChangePicHeadDlg::OnSelectThumb(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	long nIndex = nID - THUMB_WINDOW_BASE_ID;
@@ -161,6 +235,10 @@ void CChangePicHeadDlg::OnSelectThumb(UINT uNotifyCode, int nID, CWindow wndCtl)
 	m_LastSelectedIndex = nIndex;
 }
 
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CChangePicHeadDlg::OnDestroy()
 {
 	SetMsgHandled(FALSE);

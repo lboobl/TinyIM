@@ -1,16 +1,43 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file CascadeWinManager.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 窗口层叠器的实现
+ * @version 0.1
+ * @date 2020-02-28
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "CascadeWinManager.h"
 
+/**
+ * @brief Construct a new CCascadeWinManager::CCascadeWinManager object
+ * 
+ */
 CCascadeWinManager::CCascadeWinManager(void)
 {
 }
 
+/**
+ * @brief Destroy the CCascadeWinManager::CCascadeWinManager object
+ * 
+ */
 CCascadeWinManager::~CCascadeWinManager(void)
 {
 	Clear();
 }
 
-// 添加窗口，并层叠显示
+
+/**
+ * @brief 添加窗口，并层叠显示
+ * 
+ * @param hWnd 
+ * @param cx 
+ * @param cy 
+ * @return BOOL 
+ */
 BOOL CCascadeWinManager::Add(HWND hWnd, int cx, int cy)
 {
 	::SetWindowPos(hWnd, NULL, 0, 0, cx, cy, SWP_NOMOVE);
@@ -63,7 +90,12 @@ BOOL CCascadeWinManager::Add(HWND hWnd, int cx, int cy)
 	return TRUE;
 }
 
-// 删除窗口
+
+/**
+ * @brief 根据窗口句柄,删除窗口
+ * 
+ * @param hWnd 
+ */
 void CCascadeWinManager::Del(HWND hWnd)
 {
 	for (int i = 0; i < (int)m_arrWinInfo.size(); i++)
@@ -77,7 +109,15 @@ void CCascadeWinManager::Del(HWND hWnd)
 	}
 }
 
-// 设置窗口位置
+
+/**
+ * @brief 根据 窗口句柄、坐标 设置窗口位置
+ * 
+ * @param hWnd 
+ * @param x 
+ * @param y 
+ * @return BOOL 
+ */
 BOOL CCascadeWinManager::SetPos(HWND hWnd, int x, int y)
 {
 	if (::IsIconic(hWnd))	// 判断窗口是否最小化，是则不更新窗口位置
@@ -96,7 +136,11 @@ BOOL CCascadeWinManager::SetPos(HWND hWnd, int x, int y)
 	return FALSE;
 }
 
-// 清除所有窗口
+
+/**
+ * @brief 清除所有窗口
+ * 
+ */
 void CCascadeWinManager::Clear()
 {
 	for (int i = 0; i < (int)m_arrWinInfo.size(); i++)
