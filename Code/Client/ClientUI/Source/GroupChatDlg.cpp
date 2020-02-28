@@ -1859,7 +1859,14 @@ void CGroupChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “查看资料”菜单
+
+/**
+ * @brief  响应“查看资料”菜单,根据消息来源的不同窗口,分为查看用户资料和群组资料
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_ViewInfo(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	DWORD dwPos = GetMessagePos();
@@ -1901,7 +1908,13 @@ void CGroupChatDlg::OnMenu_ViewInfo(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “发送消息”菜单
+/**
+ * @brief 响应“发送消息”的右键弹出菜单,根据选择的窗口决定是群组消息还是好友消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_SendMsg(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	DWORD dwPos = GetMessagePos();
@@ -1947,7 +1960,13 @@ void CGroupChatDlg::OnMenu_SendMsg(UINT uNotifyCode, int nID, CWindow wndCtl)
 	//	::MessageBox(m_hWnd, _T("暂且不支持临时会话，您必须加对方为好友以后才能与之会话。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
 }
 
-// 发送/接收文本框的鼠标移动消息
+
+/**
+ * @brief 响应 “发送/接收” 文本框的鼠标移动消息
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::OnRichEdit_MouseMove(MSG* pMsg)
 {
 	IImageOle* pNewImageOle = NULL;
@@ -2008,7 +2027,12 @@ BOOL CGroupChatDlg::OnRichEdit_MouseMove(MSG* pMsg)
 	return FALSE;
 }
 
-// 发送/接收文本框的鼠标双击消息
+/**
+ * @brief  响应“接收文本框”的鼠标双击消息
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::OnRichEdit_LBtnDblClk(MSG* pMsg)
 {
 	POINT pt = {GET_X_LPARAM(pMsg->lParam), GET_Y_LPARAM(pMsg->lParam)};
@@ -2061,7 +2085,13 @@ BOOL CGroupChatDlg::OnRichEdit_LBtnDblClk(MSG* pMsg)
 	return bRet;
 }
 
-// 发送/接收文本框的鼠标右键按下消息
+
+/**
+ * @brief 响应“发送/接收/聊天记录 文本框”的鼠标右键按下消息
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::OnRichEdit_RBtnDown(MSG* pMsg)
 {
 	if (pMsg->hwnd == m_richSend.m_hWnd)
@@ -2124,7 +2154,14 @@ BOOL CGroupChatDlg::OnRichEdit_RBtnDown(MSG* pMsg)
 	return FALSE;
 }
 
-// 删除选中消息记录
+
+/**
+ * @brief 响应“删除选中消息记录”菜单消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除选中的消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
@@ -2168,6 +2205,14 @@ void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow
 	//用sql语句去删除SQLite数据库中对应的消息记录
 }
 
+
+/**
+ * @brief 响应“清空聊天记录”的菜单消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除该群的所有消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
@@ -2182,7 +2227,10 @@ void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl
 
 
 
-// 更新信息
+/**
+ * @brief 更新信息
+ * 
+ */
 void CGroupChatDlg::UpdateData()
 {
 	C_UI_GroupInfo* lpGroupInfo = nullptr;
@@ -2194,20 +2242,33 @@ void CGroupChatDlg::UpdateData()
 	}
 }
 
-// 更新对话框标题栏
+
+/**
+ * @brief 更新群聊对话框标题栏,群名称修改后会被调用
+ * 
+ */
 void CGroupChatDlg::UpdateDlgTitle()
 {
 	SetWindowText(m_strGroupName);
 }
 
-// 更新群名称超链接控件
+
+/**
+ * @brief 更新“群名称”控件
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::UpdateGroupNameCtrl()
 {
 	m_lnkGroupName.SetLabel(m_strGroupName);
 	return TRUE;
 }
 
-// 更新群公告
+/**
+ * @brief 更新群公告
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::UpdateGroupMemo()
 {
 	m_edtMemo.SetWindowText(_T("暂无公告"));
@@ -2222,7 +2283,11 @@ BOOL CGroupChatDlg::UpdateGroupMemo()
 	return TRUE;
 }
 
-// 更新群成员列表
+/**
+ * @brief 更新群成员列表
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::UpdateGroupMemberList()
 {
 	C_UI_GroupInfo* lpGroupInfo = nullptr;
@@ -2303,7 +2368,11 @@ BOOL CGroupChatDlg::UpdateGroupMemberList()
 	return TRUE;
 }
 
-// 初始化Top工具栏
+/**
+ * @brief 初始化对话框顶部工具栏,主要是发送文件等功能
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::InitTopToolBar()
 {
 	
@@ -2331,11 +2400,16 @@ BOOL CGroupChatDlg::InitTopToolBar()
 	return TRUE;
 }
 
-// 初始化Middle工具栏
+
+/**
+ * @brief 初始化Middle工具栏,主要包括(字体选择、表情图片、发送图片、发送截图等功能)
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::InitMidToolBar()
 {
 	int nIndex = 0;
-	//
+	//工具栏字体选择
 	{
 		int nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_FONT_BTN, STBI_STYLE_BUTTON | STBI_STYLE_CHECK);
 		m_tbMid.SetItemSize(nIndex, 30, 27);
@@ -2345,6 +2419,7 @@ BOOL CGroupChatDlg::InitMidToolBar()
 			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
 		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_font.png"));
 	}
+	//工具栏选择表情
 	{
 		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_FACE_BTN, STBI_STYLE_BUTTON | STBI_STYLE_CHECK);
 		m_tbMid.SetItemSize(nIndex, 30, 27);
@@ -2354,7 +2429,7 @@ BOOL CGroupChatDlg::InitMidToolBar()
 			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
 		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_face.png"));
 	}
-
+	//工具栏发送图片按钮
 	{
 		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_IMAGE_BTN, STBI_STYLE_BUTTON);
 		m_tbMid.SetItemSize(nIndex, 30, 27);
@@ -2365,6 +2440,7 @@ BOOL CGroupChatDlg::InitMidToolBar()
 		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_sendpic.png"));
 	}
 
+	//工具栏屏幕截图按钮
 	{
 		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_SCREEN_SHOT_BTN, STBI_STYLE_BUTTON);
 		m_tbMid.SetItemSize(nIndex, 30, 27, 27, 0);
@@ -2375,6 +2451,7 @@ BOOL CGroupChatDlg::InitMidToolBar()
 		m_tbMid.SetItemIconPic(nIndex, _T("MidToolBar\\aio_quickbar_cut.png"));
 	}
 
+	//工具栏查看历史消息的按钮
 	{
 		nIndex = m_tbMid.AddItem(ID_GROUP_CHAT_DLG_MSG_LOG_BTN, STBI_STYLE_BUTTON);
 		m_nMsgLogIndexInToolbar = nIndex;
@@ -2397,7 +2474,14 @@ BOOL CGroupChatDlg::InitMidToolBar()
 	return TRUE;
 }
 
-// “消息记录”按钮
+
+/**
+ * @brief 响应查看“消息记录”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_bMsgLogWindowVisible = !m_bMsgLogWindowVisible;
@@ -2450,7 +2534,12 @@ void CGroupChatDlg::OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// 初始化IRichEditOleCallback接口
+/**
+ * @brief 初始化IRichEditOleCallback接口
+ * 
+ * TODO: 具体作用不清楚,需要再看看
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::InitRichEditOleCallback()
 {
 	IRichEditOleCallback2* pRichEditOleCallback2 = NULL;
@@ -2489,7 +2578,12 @@ BOOL CGroupChatDlg::InitRichEditOleCallback()
 	return SUCCEEDED(hr);
 }
 
-// 初始化
+
+/**
+ * @brief 群聊对话框初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::Init()
 {
 	m_SkinDlg.SubclassWindow(m_hWnd);
@@ -2733,7 +2827,12 @@ BOOL CGroupChatDlg::Init()
 	return TRUE;
 }
 
-// 初始化Tab栏
+
+/**
+ * @brief 初始化右侧Tab栏
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::InitRightTabWindow()
 {
 	CRect rcRightTabCtrl(GROUP_CHAT_DLG_WIDTH, 75, GROUP_CHAT_DLG_WIDTH+ GROUP_DLG_MSG_LOG_WIDTH -3, 102);
@@ -2774,6 +2873,12 @@ BOOL CGroupChatDlg::InitRightTabWindow()
 	return TRUE;
 }
 
+
+/**
+ * @brief 显示或隐藏消息记录的翻阅按钮
+ * 
+ * @param bShow 
+ */
 void CGroupChatDlg::ShowMsgLogButtons(BOOL bShow)
 {
 	DWORD dwFlag = (bShow ? SW_SHOW : SW_HIDE); 
@@ -2785,7 +2890,11 @@ void CGroupChatDlg::ShowMsgLogButtons(BOOL bShow)
 	m_btnLastMsgLog.ShowWindow(dwFlag);
 }
 
-// 反初始化
+/**
+ * @brief 反初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::UnInit()
 {
 	if (m_PicBarDlg.IsWindow())
@@ -2884,6 +2993,13 @@ BOOL CGroupChatDlg::UnInit()
 	return TRUE;
 }
 
+
+/**
+ * @brief 
+ * TODO: 待删除
+ * @param nUTalkUin 
+ * @return int 
+ */
 int CGroupChatDlg::FindMemberListByUin(UINT nUTalkUin)
 {
 	int nCount = m_GroupMemberListCtrl.GetItemCount();
@@ -2899,6 +3015,12 @@ int CGroupChatDlg::FindMemberListByUin(UINT nUTalkUin)
 }
 
 
+/**
+ * @brief 超文本窗口插入文本
+ * 
+ * @param hWnd 文本窗口Handle
+ * @param lpszNewText 待插入的文本
+ */
 void CGroupChatDlg::_RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText)
 {
 	if (hWnd == m_richRecv.m_hWnd)
@@ -2915,6 +3037,16 @@ void CGroupChatDlg::_RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText)
 	}
 }
 
+
+/**
+ * @brief 超文本窗口插入 表情/图片
+ * 
+ * @param hWnd 文本窗口句柄
+ * @param lpszFileName 文件名称
+ * @param nFaceId 表情ID
+ * @param nFaceIndex 表情索引
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::_RichEdit_InsertFace(HWND hWnd, LPCTSTR lpszFileName, int nFaceId, int nFaceIndex)
 {
 	ITextServices* pTextServices;
@@ -2990,9 +3122,11 @@ BOOL CGroupChatDlg::_RichEdit_InsertFace(HWND hWnd, LPCTSTR lpszFileName, int nF
 }
 
 
-
-
-
+/**
+ * @brief 响应收到群组聊天记录的消息
+ * 
+ * @param pGroupMsg 
+ */
 void CGroupChatDlg::OnRecvGroupLogMsg(C_UI_GroupMessage* pGroupMsg)
 {
 	if (nullptr != pGroupMsg)
@@ -3002,6 +3136,11 @@ void CGroupChatDlg::OnRecvGroupLogMsg(C_UI_GroupMessage* pGroupMsg)
 	}
 }
 
+/**
+ * @brief 响应收到群消息
+ * 
+ * @param pGroupMsg 
+ */
 void CGroupChatDlg::OnRecvGroupMsg(C_UI_GroupMessage* pGroupMsg)
 {
 	if (nullptr != pGroupMsg)
@@ -3010,6 +3149,13 @@ void CGroupChatDlg::OnRecvGroupMsg(C_UI_GroupMessage* pGroupMsg)
 	}
 }
 
+
+/**
+ * @brief 将群组聊天消息,在对应的富文本控件显示出来
+ * 
+ * @param recvHandle 对应的富文本控件的Handle
+ * @param pGroupMsg 群组聊天消息
+ */
 void CGroupChatDlg::OnRecvToHandle(const HWND recvHandle,C_UI_GroupMessage* pGroupMsg)
 {
 	#define USER_NAME_COLOR  RGB(0,128,64)
@@ -3087,6 +3233,14 @@ void CGroupChatDlg::OnRecvToHandle(const HWND recvHandle,C_UI_GroupMessage* pGro
 }
 
 
+/**
+ * @brief 响应发送群组消息的结果
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnSendChatMsgResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	CString strInfo;
@@ -3110,6 +3264,15 @@ LRESULT CGroupChatDlg::OnSendChatMsgResult(UINT uMsg, WPARAM wParam, LPARAM lPar
 	return (LRESULT)1;
 }
 
+
+/**
+ * @brief 响应发送文件进度消息
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnSendFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	FileProgress* pFileProgress = (FileProgress*)lParam;
@@ -3126,6 +3289,15 @@ LRESULT CGroupChatDlg::OnSendFileProgress(UINT uMsg, WPARAM wParam, LPARAM lPara
 	return (LRESULT)1;
 }
 
+
+/**
+ * @brief 响应发送文件结果
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	CUploadFileResult* pResult = (CUploadFileResult*)lParam;
@@ -3162,6 +3334,15 @@ LRESULT CGroupChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+
+/**
+ * @brief 响应接收文件进度
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnRecvFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	/*FileProgress* pFileProgress = (FileProgress*)lParam;
@@ -3186,6 +3367,14 @@ LRESULT CGroupChatDlg::OnRecvFileProgress(UINT uMsg, WPARAM wParam, LPARAM lPara
 	return 1;
 }
 
+/**
+ * @brief 响应接收文件结果
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CGroupChatDlg::OnRecvFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	C_WND_MSG_FileItemRequest* pFileItem = (C_WND_MSG_FileItemRequest*)lParam;
@@ -3224,11 +3413,21 @@ LRESULT CGroupChatDlg::OnRecvFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+/**
+ * @brief 发送文件上传确认消息
+ * 
+ * TODO: 具体的业务逻辑待分析
+ * @param pUploadFileResult 
+ */
 void CGroupChatDlg::SendConfirmMessage(const CUploadFileResult* pUploadFileResult)
 {
 }
 
-// 打开消息记录浏览窗口
+
+/**
+ * @brief 打开消息记录浏览窗口
+ * 
+ */
 void CGroupChatDlg::OpenMsgLogBrowser()
 {
 
@@ -3247,7 +3446,10 @@ void CGroupChatDlg::OpenMsgLogBrowser()
 	//CalculateMsgLogCountAndOffset();
 }
 
-// 关闭消息记录浏览窗口
+/**
+ * @brief 关闭消息记录浏览窗口
+ * 
+ */
 void CGroupChatDlg::CloseMsgLogBrowser()
 {
 	::SendMessage(m_richMsgLog.m_hWnd, WM_SETTEXT, 0, 0L);
@@ -3268,6 +3470,10 @@ void CGroupChatDlg::CloseMsgLogBrowser()
 
 
 
+/**
+ * @brief 调整消息接收区的图片大小
+ * 
+ */
 void CGroupChatDlg::ResizeImageInRecvRichEdit()
 {
 	std::vector<ImageInfo*> arrImageInfo;
@@ -3297,7 +3503,10 @@ void CGroupChatDlg::ResizeImageInRecvRichEdit()
 
 }
 
-//记录窗口大小
+/**
+ * @brief 记录窗口大小
+ * 
+ */
 void CGroupChatDlg::RecordWindowSize()
 {
 	if (IsZoomed() || IsIconic())
@@ -3318,6 +3527,15 @@ void CGroupChatDlg::RecordWindowSize()
 	//m_lpFMGClient->m_UserConfig.SetGroupDlgHeight(rtWindow.Height());		
 }
 
+/**
+ * @brief 获取富文本框中的图片大小
+ * 
+ * @param pszFileName 
+ * @param hWnd 
+ * @param nWidth 
+ * @param nHeight 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::GetImageDisplaySizeInRichEdit(PCTSTR pszFileName, HWND hWnd, long& nWidth, long& nHeight)
 {
 	//1像素约等于20缇
@@ -3400,6 +3618,11 @@ BOOL CGroupChatDlg::GetImageDisplaySizeInRichEdit(PCTSTR pszFileName, HWND hWnd,
 	return TRUE;
 }
 
+/**
+ * @brief 响应拖拽文件
+ * 
+ * @param hDropInfo 
+ */
 void CGroupChatDlg::OnDropFiles(HDROP hDropInfo)
 { 
 	UINT nFileNum = ::DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0); // 拖拽文件个数  
@@ -3414,6 +3637,12 @@ void CGroupChatDlg::OnDropFiles(HDROP hDropInfo)
     //InvalidateRect(hwnd, NULL, TRUE); 
 }
 
+/**
+ * @brief 处理文件拖拽结果
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CGroupChatDlg::HandleFileDragResult(PCTSTR lpszFileName)
 {
 	if(lpszFileName == NULL) 
@@ -3457,49 +3686,23 @@ BOOL CGroupChatDlg::HandleFileDragResult(PCTSTR lpszFileName)
 	return FALSE;
 }
 
+/**
+ * @brief 计算消息记录的总数和偏移量
+ * 
+ */
 void CGroupChatDlg::CalculateMsgLogCountAndOffset()
 {
-	{
 
-	}
-	////读取消息记录个数
-	//CString strMsgFile;// = m_lpFMGClient->GetMsgLogFullName().c_str();
-	//strMsgFile.Replace(_T("\\"), _T("/"));
-	//m_MsgLogger.SetMsgLogFileName(strMsgFile);
-	//long nTotal = 0;// m_MsgLogger.GetGroupMsgLogCount(m_nGroupCode);
-
-	//long nPageCount = nTotal / 10;
-	//if (nTotal % 10 != 0)
-	//	++nPageCount;
-
-	//m_nMsgLogRecordOffset = 1;
-	//m_nMsgLogCurrentPageIndex = 1;
-	//while (TRUE)
-	//{
-	//	m_nMsgLogRecordOffset += 10;
-	//	++m_nMsgLogCurrentPageIndex;
-	//	if (m_nMsgLogCurrentPageIndex > nPageCount)
-	//	{
-	//		m_nMsgLogRecordOffset -= 10;
-	//		--m_nMsgLogCurrentPageIndex;
-	//		break;
-	//	}
-	//}
-	//CString strInfo;
-	//if (nPageCount > 0)
-	//{
-	//	strInfo.Format(_T("%d/%d"), m_nMsgLogCurrentPageIndex, nPageCount);
-	//}
-	//else
-	//{
-	//	strInfo = _T("0/0");
-	//}
-
-	//m_staMsgLogPage.SetWindowText(strInfo);
-	//m_staMsgLogPage.Invalidate(FALSE);
 }
 
 
+/**
+ * @brief 响应消息记录翻页消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (m_netProto)
@@ -3542,6 +3745,11 @@ void CGroupChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 	OpenMsgLogBrowser();
 }
 
+
+/**
+ * @brief 在接收消息的富文本框中显示最后一条消息
+ * 
+ */
 void CGroupChatDlg::ShowLastMsgInRecvRichEdit()
 {
 	CString strMsgFile;// (m_lpFMGClient->GetMsgLogFullName().c_str());
@@ -3593,6 +3801,11 @@ void CGroupChatDlg::ShowLastMsgInRecvRichEdit()
 	//AddMsgToRecvEdit(arrMsgLog);
 }
 
+/**
+ * @brief 重新计算控件的位置
+ * 
+ * @param nMouseY 
+ */
 void CGroupChatDlg::ReCaculateCtrlPostion(long nMouseY)
 {
 		CRect rtClient;
