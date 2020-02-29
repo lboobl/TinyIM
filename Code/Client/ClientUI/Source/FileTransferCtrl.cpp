@@ -1,9 +1,24 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file FileTransferCtrl.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 文件传输控件的实现类
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "FileTransferCtrl.h"
 #include "GDIFactory.h"
 #include "net/IUProtocolData.h"
 
 
+/**
+ * @brief Construct a new CFileTransferItem::CFileTransferItem object
+ * 
+ */
 CFileTransferItem::CFileTransferItem()
 {
 	m_nID = 0;
@@ -21,6 +36,10 @@ CFileTransferItem::CFileTransferItem()
 	m_bCancelBtnVisible = TRUE;
 }
 
+/**
+ * @brief Destroy the CFileTransferItem::CFileTransferItem object
+ * 
+ */
 CFileTransferItem::~CFileTransferItem()
 {
 	if(m_pImgFileType != NULL)
@@ -31,6 +50,10 @@ CFileTransferItem::~CFileTransferItem()
 }
 
 
+/**
+ * @brief Construct a new CFileTransferCtrl::CFileTransferCtrl object
+ * 
+ */
 CFileTransferCtrl::CFileTransferCtrl()
 {
 	m_bTransparent = FALSE;
@@ -46,11 +69,20 @@ CFileTransferCtrl::CFileTransferCtrl()
 	m_bHoverOnCancelBtn = FALSE;
 }
 
+/**
+ * @brief Destroy the CFileTransferCtrl::CFileTransferCtrl object
+ * 
+ */
 CFileTransferCtrl::~CFileTransferCtrl()
 {
 
 }
 
+/**
+ * @brief 增加一个传输项,并返回该项的ID
+ * 
+ * @return long 
+ */
 long CFileTransferCtrl::AddItem()
 {
 	CFileTransferItem* pItem = new CFileTransferItem;
@@ -63,6 +95,12 @@ long CFileTransferCtrl::AddItem()
 	return pItem->m_nID;
 }
 
+/**
+ * @brief 根据ID删除某个传输项
+ * 
+ * @param nID 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::RemoveItemByID(long nID)
 {
 	if(m_arrFileTransferItems.empty())
@@ -86,17 +124,35 @@ BOOL CFileTransferCtrl::RemoveItemByID(long nID)
 	return FALSE;
 }
 
+/**
+ * @brief 设置为透明状态
+ * TODO: 作用不清楚
+ * @param bTransparent 
+ * @param hBgDC 
+ */
 void CFileTransferCtrl::SetTransparent(BOOL bTransparent, HDC hBgDC)
 {
 	m_bTransparent = bTransparent;
 	m_hBgDC = hBgDC;
 }
 
+/**
+ * @brief 获取文件传输项的个数
+ * 
+ * @return long 
+ */
 long CFileTransferCtrl::GetItemCount() const
 {
-	return (long)m_arrFileTransferItems.size();
+	return static_cast<long>(m_arrFileTransferItems.size());
 }
 
+/**
+ * @brief 根据ID号,设置该传输项的图片
+ * 
+ * @param nID 传输ID
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemFileTypePicByID(long nID, LPCTSTR lpszFileName)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -124,6 +180,12 @@ BOOL CFileTransferCtrl::SetItemFileTypePicByID(long nID, LPCTSTR lpszFileName)
 	return TRUE;
 }
 
+/**
+ * @brief 根据传输ID获取传输项
+ * 
+ * @param nID 
+ * @return CFileTransferItem* 
+ */
 CFileTransferItem* CFileTransferCtrl::GetItemByID(long nID)
 {
 	CFileTransferItem* pItem = NULL;
@@ -140,6 +202,12 @@ CFileTransferItem* CFileTransferCtrl::GetItemByID(long nID)
 	return NULL;
 }
 
+/**
+ * @brief 根据索引获取传输项
+ * 
+ * @param nIndex 
+ * @return CFileTransferItem* 
+ */
 CFileTransferItem* CFileTransferCtrl::GetItemByIndex(size_t nIndex)
 {
 	if (nIndex>=0 && nIndex<m_arrFileTransferItems.size())
@@ -148,6 +216,13 @@ CFileTransferItem* CFileTransferCtrl::GetItemByIndex(size_t nIndex)
 	return NULL;
 }
 
+/**
+ * @brief 根据传输ID设置文件类型
+ * 
+ * @param nID 
+ * @param nType 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemTargetTypeByID(long nID, FILE_TARGET_TYPE nType)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -158,6 +233,12 @@ BOOL CFileTransferCtrl::SetItemTargetTypeByID(long nID, FILE_TARGET_TYPE nType)
 	return TRUE;
 }
 
+/**
+ * @brief 根据传输ID获取文件类型
+ * 
+ * @param nID 
+ * @return FILE_TARGET_TYPE 
+ */
 FILE_TARGET_TYPE CFileTransferCtrl::GetItemTargetTypeByID(long nID)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -167,6 +248,13 @@ FILE_TARGET_TYPE CFileTransferCtrl::GetItemTargetTypeByID(long nID)
 	return pItem->m_nTargetType;
 }
 
+
+/**
+ * @brief 根据索引获取文件传输类型
+ * 
+ * @param nIndex 
+ * @return FILE_TARGET_TYPE 
+ */
 FILE_TARGET_TYPE CFileTransferCtrl::GetItemTargetTypeByIndex(size_t nIndex)
 {
 	CFileTransferItem* pItem = GetItemByIndex(nIndex);
@@ -176,6 +264,13 @@ FILE_TARGET_TYPE CFileTransferCtrl::GetItemTargetTypeByIndex(size_t nIndex)
 	return pItem->m_nTargetType;
 }
 
+/**
+ * @brief 根据ID值设置文件请求数据
+ * 
+ * @param nID 
+ * @param pFileItemRequest 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetFileItemRequestByID(long nID, C_WND_MSG_FileItemRequest* pFileItemRequest)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -186,6 +281,12 @@ BOOL CFileTransferCtrl::SetFileItemRequestByID(long nID, C_WND_MSG_FileItemReque
 	return TRUE;
 }
 
+/**
+ * @brief 根据ID值获取文件请求数据
+ * 
+ * @param nID 
+ * @return C_WND_MSG_FileItemRequest* 
+ */
 C_WND_MSG_FileItemRequest* CFileTransferCtrl::GetFileItemRequestByID(long nID)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -195,6 +296,12 @@ C_WND_MSG_FileItemRequest* CFileTransferCtrl::GetFileItemRequestByID(long nID)
 	return pItem->m_pFileItemRequest;
 }
 
+/**
+ * @brief 根据索引获取文件请求数据
+ * 
+ * @param nIndex 
+ * @return C_WND_MSG_FileItemRequest* 
+ */
 C_WND_MSG_FileItemRequest* CFileTransferCtrl::GetFileItemRequestByIndex(size_t nIndex)
 {
 	CFileTransferItem* pItem = GetItemByIndex(nIndex);
@@ -204,7 +311,12 @@ C_WND_MSG_FileItemRequest* CFileTransferCtrl::GetFileItemRequestByIndex(size_t n
 	return pItem->m_pFileItemRequest;
 }
 
-
+/**
+ * @brief 根据ID号,设置接收按钮是否可见
+ * 
+ * @param nID 
+ * @param bVisible 
+ */
 void CFileTransferCtrl::SetAcceptButtonVisibleByID(long nID, BOOL bVisible)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -214,6 +326,12 @@ void CFileTransferCtrl::SetAcceptButtonVisibleByID(long nID, BOOL bVisible)
 	pItem->m_bAcceptBtnVisible = bVisible;
 }
 
+/**
+ * @brief 根据ID设置另存为按钮是否可见
+ * 
+ * @param nID 
+ * @param bVisible 
+ */
 void CFileTransferCtrl::SetSaveAsButtonVisibleByID(long nID, BOOL bVisible)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -223,6 +341,12 @@ void CFileTransferCtrl::SetSaveAsButtonVisibleByID(long nID, BOOL bVisible)
 	pItem->m_bSaveAsBtnVisible = bVisible;
 }
 
+/**
+ * @brief 根据ID设置取消按钮是否可见
+ * 
+ * @param nID 
+ * @param bVisible 
+ */
 void CFileTransferCtrl::SetCancelButtonVisibleByID(long nID, BOOL bVisible)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -232,6 +356,13 @@ void CFileTransferCtrl::SetCancelButtonVisibleByID(long nID, BOOL bVisible)
 	pItem->m_bCancelBtnVisible = bVisible;
 }
 
+/**
+ * @brief 根据ID设置对应项目的文件名
+ * 
+ * @param nID 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemFileNameByID(long nID, LPCTSTR lpszFileName)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -242,6 +373,13 @@ BOOL CFileTransferCtrl::SetItemFileNameByID(long nID, LPCTSTR lpszFileName)
 	return TRUE;
 }
 
+/**
+ * @brief 根据ID设置对应项的文件进度
+ * 
+ * @param nID 
+ * @param nProgressPercent 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemProgressPercentByID(long nID, long nProgressPercent)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -257,6 +395,13 @@ BOOL CFileTransferCtrl::SetItemProgressPercentByID(long nID, long nProgressPerce
 	return TRUE;
 }
 
+/**
+ * @brief 根据Id设置文件校验进度百分比
+ * 
+ * @param nID 
+ * @param nVerificationPercent 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemVerificationPercentByID(long nID, long nVerificationPercent)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -272,6 +417,13 @@ BOOL CFileTransferCtrl::SetItemVerificationPercentByID(long nID, long nVerificat
 	return TRUE;
 }
 
+/**
+ * @brief 根据ID设置文件大小
+ * 
+ * @param nID 
+ * @param nFileSize 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemFileSizeByID(long nID, long nFileSize)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -286,6 +438,12 @@ BOOL CFileTransferCtrl::SetItemFileSizeByID(long nID, long nFileSize)
 }
 
 
+/**
+ * @brief 根据ID获取文件大小
+ * 
+ * @param nID 
+ * @return long 
+ */
 long CFileTransferCtrl::GetItemFileSizeByID(long nID)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -295,6 +453,12 @@ long CFileTransferCtrl::GetItemFileSizeByID(long nID)
 	return pItem->m_nFileSize;
 }
 
+/**
+ * @brief 根据文件名获取ID
+ * 
+ * @param pszFileName 
+ * @return long 
+ */
 long CFileTransferCtrl::GetItemIDByFileName(PCTSTR pszFileName)
 {
 	size_t nSize = m_arrFileTransferItems.size();
@@ -313,6 +477,12 @@ long CFileTransferCtrl::GetItemIDByFileName(PCTSTR pszFileName)
 	return -1;
 }
 
+/**
+ * @brief 根据文件全路径获取传输项ID
+ * 
+ * @param pszFullName 
+ * @return long 
+ */
 long CFileTransferCtrl::GetItemIDByFullName(PCTSTR pszFullName)
 {
 	size_t nSize = m_arrFileTransferItems.size();
@@ -331,6 +501,13 @@ long CFileTransferCtrl::GetItemIDByFullName(PCTSTR pszFullName)
 	return -1;
 }
 
+
+/**
+ * @brief 根据保存的文件名获取文件项的ID
+ * 
+ * @param pszSaveName 
+ * @return long 
+ */
 long CFileTransferCtrl::GetItemIDBySaveName(PCTSTR pszSaveName)
 {
 	size_t nSize = m_arrFileTransferItems.size();
@@ -349,6 +526,13 @@ long CFileTransferCtrl::GetItemIDBySaveName(PCTSTR pszSaveName)
 	return -1;
 }
 
+/**
+ * @brief 根据ID设置下载的文件名
+ * 
+ * @param nID 
+ * @param pszDownloadName 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemDownloadNameByID(long nID, PCSTR pszDownloadName)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -359,6 +543,12 @@ BOOL CFileTransferCtrl::SetItemDownloadNameByID(long nID, PCSTR pszDownloadName)
 	return TRUE;
 }
 
+/**
+ * @brief 根据ID获取下载的文件名
+ * 
+ * @param nID 
+ * @return PCSTR 
+ */
 PCSTR CFileTransferCtrl::GetItemDownloadNameByID(long nID)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -369,6 +559,12 @@ PCSTR CFileTransferCtrl::GetItemDownloadNameByID(long nID)
 }
 
 
+/**
+ * @brief 根据ID获取传输项的文件名
+ * 
+ * @param nID 
+ * @return PCTSTR 
+ */
 PCTSTR CFileTransferCtrl::GetItemFileNameByID(long nID)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -378,6 +574,13 @@ PCTSTR CFileTransferCtrl::GetItemFileNameByID(long nID)
 	return pItem->m_strFileName;
 }
 
+
+/**
+ * @brief 根据索引获取传输项的文件名
+ * 
+ * @param nIndex 
+ * @return PCTSTR 
+ */
 PCTSTR CFileTransferCtrl::GetItemFileNameByIndex(size_t nIndex)
 {
 	CFileTransferItem* pItem = GetItemByIndex(nIndex);
@@ -387,6 +590,13 @@ PCTSTR CFileTransferCtrl::GetItemFileNameByIndex(size_t nIndex)
 	return pItem->m_strFileName;
 }
 
+/**
+ * @brief 根据ID设置文件的全路径名称
+ * 
+ * @param nID 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemFileFullNameByID(long nID, LPCTSTR lpszFileName)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -397,6 +607,13 @@ BOOL CFileTransferCtrl::SetItemFileFullNameByID(long nID, LPCTSTR lpszFileName)
 	return TRUE;
 }
 
+
+/**
+ * @brief 根据ID获取传输项的全路径名
+ * 
+ * @param nID 
+ * @return PCTSTR 
+ */
 PCTSTR CFileTransferCtrl::GetItemFileFullNameByID(long nID)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -406,6 +623,13 @@ PCTSTR CFileTransferCtrl::GetItemFileFullNameByID(long nID)
 	return pItem->m_strFullName;
 }
 
+/**
+ * @brief 根据传输项ID设置保存的文件名
+ * 
+ * @param nID 
+ * @param lpszSaveName 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::SetItemSaveNameByID(long nID, LPCTSTR lpszSaveName)
 {
 	CFileTransferItem* pItem = GetItemByID(nID);
@@ -416,16 +640,33 @@ BOOL CFileTransferCtrl::SetItemSaveNameByID(long nID, LPCTSTR lpszSaveName)
 	return TRUE;
 }
 
+/**
+ * @brief 响应控件创建
+ * 
+ * @param lpCreateStruct 
+ * @return int 
+ */
 int CFileTransferCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	return 0;
 }
 
+/**
+ * @brief 响应背景擦除消息
+ * 
+ * @param dc 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::OnEraseBkgnd(CDCHandle dc)
 {
 	return TRUE;
 }
 
+/**
+ * @brief 响应控件绘制
+ * 
+ * @param dc 
+ */
 void CFileTransferCtrl::OnPaint(CDCHandle dc)
 {
 	CRect rcClient;
@@ -457,6 +698,12 @@ void CFileTransferCtrl::OnPaint(CDCHandle dc)
 	//m_VScrollBar.OnPaint(MemDC.m_hDC);
 }
 
+/**
+ * @brief 响应鼠标左键抬起
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CFileTransferCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -481,6 +728,12 @@ void CFileTransferCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 	//m_VScrollBar.OnLButtonUp(nFlags, point);
 }
 
+/**
+ * @brief 响应鼠标移动
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CFileTransferCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -530,6 +783,14 @@ void CFileTransferCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	Invalidate(FALSE);
 }
 
+
+/**
+ * @brief 点击测试(鼠标按键消息)
+ * 
+ * @param pt 
+ * @param nID 
+ * @param nBtnArea 
+ */
 void CFileTransferCtrl::HitTest(POINT pt, long& nID, HITTEST_BTN_AREA& nBtnArea)
 {
 	size_t nSize = m_arrFileTransferItems.size();
@@ -602,6 +863,11 @@ void CFileTransferCtrl::HitTest(POINT pt, long& nID, HITTEST_BTN_AREA& nBtnArea)
 	nBtnArea = BTN_NONE;
 }
 
+/**
+ * @brief 绘制父窗口的背景
+ * 
+ * @param hDC 
+ */
 void CFileTransferCtrl::DrawParentWndBg(HDC hDC)
 {
 	HWND hParentWnd = ::GetParent(m_hWnd);
@@ -614,6 +880,12 @@ void CFileTransferCtrl::DrawParentWndBg(HDC hDC)
 	::BitBlt(hDC, 0, 0, rcWindow.Width(), rcWindow.Height(), m_hBgDC, rcWindow.left, rcWindow.top, SRCCOPY);
 }
 
+/**
+ * @brief 绘制每一个传输项
+ * 
+ * @param hDC 
+ * @param nIndex 
+ */
 void CFileTransferCtrl::DrawItem(HDC hDC, size_t nIndex)
 {
 	CFileTransferItem* pItem = GetItemByIndex(nIndex);
@@ -768,6 +1040,13 @@ void CFileTransferCtrl::DrawItem(HDC hDC, size_t nIndex)
 	}
 }
 
+/**
+ * @brief 根据传输项索引获取该传输项的矩形区域
+ * 
+ * @param nIndex 
+ * @param rect 
+ * @return BOOL 
+ */
 BOOL CFileTransferCtrl::GetItemRectByIndex(size_t nIndex, CRect& rect)
 {
 	size_t nItemCount = m_arrFileTransferItems.size();
@@ -799,6 +1078,10 @@ BOOL CFileTransferCtrl::GetItemRectByIndex(size_t nIndex, CRect& rect)
 	return TRUE;
 }
 
+/**
+ * @brief 响应传输控件销毁
+ * 
+ */
 void CFileTransferCtrl::OnDestroy()
 {
 

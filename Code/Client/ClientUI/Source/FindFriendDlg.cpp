@@ -1,6 +1,17 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file FindFriendDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 查找好友对话框的实现文件
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+
+#include "stdafx.h"
 #include "FindFriendDlg.h"
-//#include "FlamingoClient.h"
 #include "UserSnapInfoDlg.h"
 #include "Utils.h"
 #include "EncodingUtil.h"
@@ -15,14 +26,29 @@ enum RELATION_TYPE
 	RELATION_TYPE_FRIENDS,//是好友
 };
 
+
+/**
+ * @brief Construct a new CFindFriendDlg::CFindFriendDlg object
+ * 
+ */
 CFindFriendDlg::CFindFriendDlg():m_userMgr(CUserMgr::GetInstance())
 {
 }
 
+/**
+ * @brief Destroy the CFindFriendDlg::CFindFriendDlg object
+ * 
+ */
 CFindFriendDlg::~CFindFriendDlg()
 {
 }
 
+/**
+ * @brief 预处理消息
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CFindFriendDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//支持回车键查找
@@ -45,6 +71,13 @@ BOOL CFindFriendDlg::PreTranslateMessage(MSG* pMsg)
 	return CWindow::IsDialogMessage(pMsg);
 }
 
+/**
+ * @brief 响应初始化对话框消息
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CFindFriendDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	AddMessageFilter();
@@ -55,7 +88,12 @@ BOOL CFindFriendDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
-//初始化UI
+
+/**
+ * @brief 初始化UI
+ * 
+ * @return BOOL 
+ */
 BOOL CFindFriendDlg::InitUI()
 {
 	//对话框整体界面
@@ -98,7 +136,6 @@ BOOL CFindFriendDlg::InitUI()
 		m_btnFindTypeGroup.Attach(GetDlgItem(IDC_RADIO_FIND_TYPE2));
 		//m_btnFindTypeGroup.SetTransparent(TRUE, hDlgBgDC)
 	}
-;
 	//TODO 
 	{
 		m_staticAddInfo.SetTransparent(TRUE, hDlgBgDC);
@@ -110,7 +147,14 @@ BOOL CFindFriendDlg::InitUI()
 	return TRUE;
 }
 
-//响应添加按钮
+
+/**
+ * @brief 响应确认添加按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFindFriendDlg::OnAddFriend(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CString strAccountToAdd;
@@ -308,6 +352,13 @@ LRESULT CFindFriendDlg::OnFindFriendResult(UINT uMsg, WPARAM wParam, LPARAM lPar
 
 }
 
+/**
+ * @brief 
+ * TODO: 具体作用不清楚
+ * @param dc 
+ * @param wndStatic 
+ * @return HBRUSH 
+ */
 HBRUSH CFindFriendDlg::OnCtlColorStatic(CDCHandle dc, CStatic wndStatic)
 {
 	if (wndStatic == m_staticAddInfo) 
@@ -322,18 +373,30 @@ HBRUSH CFindFriendDlg::OnCtlColorStatic(CDCHandle dc, CStatic wndStatic)
 	return 0;
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CFindFriendDlg::OnClose()
 {
 	m_staticAddInfo.SetWindowText(_T(""));
 	ShowWindow(SW_HIDE);
 }
 
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CFindFriendDlg::OnDestroy()
 {
 	UninitUI();
 }
 
-//反初始化UI
+
+/**
+ * @brief 反初始化UI
+ * 
+ */
 void CFindFriendDlg::UninitUI()
 {
 	if (m_edtAddId.IsWindow())
@@ -364,7 +427,11 @@ void CFindFriendDlg::UninitUI()
 	}
 }
 
-//加入到消息循环
+
+/**
+ * @brief 加入到消息循环
+ * 
+ */
 void CFindFriendDlg::AddMessageFilter()
 {
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -372,7 +439,11 @@ void CFindFriendDlg::AddMessageFilter()
 	pLoop->AddMessageFilter(this);
 }
 
-//从消息循环移除
+
+/**
+ * @brief 从消息循环移除
+ * 
+ */
 void CFindFriendDlg::RemoveMessageFilter()
 {
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -380,7 +451,13 @@ void CFindFriendDlg::RemoveMessageFilter()
 	pLoop->RemoveMessageFilter(this);
 }
 
-//显示窗口 TODO函数的调用需要确定
+
+/**
+ * @brief 显示窗口 TODO函数的调用需要确定
+ * 
+ * @param bShow 
+ * @param nStatus 
+ */
 void CFindFriendDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	if (bShow)
