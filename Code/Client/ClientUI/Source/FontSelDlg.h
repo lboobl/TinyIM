@@ -14,11 +14,9 @@
 
 #include "resource.h"
 #include "SkinLib/SkinLib.h"
-//#include "FlamingoClient.h"
 #include "UI_USER_INFO.h"
 #include "Utils.h"
 #include "UserConfig.h"
-//#include "FontSelDlg.h"
 
 #define		WM_UPDATE_FONTINFO		WM_USER + 2
 
@@ -79,13 +77,13 @@ private:
 
 
 private:
-	CSkinDialog			m_SkinDlg;
-	CSkinToolBar		m_tbFontClass; 
-	CSkinToolBar		m_tbFontAttr;
-	CSkinComboBox		m_cboFontName;
-	CSkinComboBox		m_cboFontSize;
-	C_UI_FontInfo			m_fontInfo;
-	CUserConfig&		m_userConfig;
+	CSkinDialog			m_SkinDlg;//对话框主体
+	CSkinToolBar		m_tbFontClass; //字体类型工具栏
+	CSkinToolBar		m_tbFontAttr; //字体属性工具栏
+	CSkinComboBox		m_cboFontName;//字体名称组合框
+	CSkinComboBox		m_cboFontSize;//字体大小组合框
+	C_UI_FontInfo			m_fontInfo;//界面的字体信息
+	CUserConfig&		m_userConfig;//用户设置
 };
 
 #endif

@@ -1,4 +1,15 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file FontSelDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 字体选择对话框实现文件
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "FontSelDlg.h"
 #include "UIDefaultValue.h"
 #include "UserConfig.h"
@@ -6,26 +17,51 @@ static C_UI_FontInfo g_fontInfo;		// 字体信息
 TCHAR g_cHotKey = _T('D');	// 提取消息热键
 
 
+/**
+ * @brief Construct a new CFontSelDlg::CFontSelDlg object
+ * 
+ */
 CFontSelDlg::CFontSelDlg(void):m_userConfig(CUserConfig::GetInstance())
 {
 }
 
+/**
+ * @brief Destroy the CFontSelDlg::CFontSelDlg object
+ * 
+ */
 CFontSelDlg::~CFontSelDlg(void)
 {
 }
 
-// 获取全局字体信息
+
+/**
+ * @brief 获取全局字体信息
+ * 
+ * @return C_UI_FontInfo& 
+ */
 C_UI_FontInfo& CFontSelDlg::GetPublicFontInfo()
 {
 	return g_fontInfo;
 }
 
-// 获取字体信息
+
+/**
+ * @brief 获取字体信息
+ * 
+ * @return C_UI_FontInfo& 
+ */
 C_UI_FontInfo& CFontSelDlg::GetFontInfo()
 {
 	return m_fontInfo;
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CFontSelDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	Init();		// 初始化
@@ -34,17 +70,31 @@ BOOL CFontSelDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return FALSE;
 }
 
+/**
+ * @brief 响应对话框被关闭
+ * 
+ */
 void CFontSelDlg::OnClose()
 {
 	DestroyWindow();
 }
 
+/**
+ * @brief 响应对话框被销毁
+ * 
+ */
 void CFontSelDlg::OnDestroy()
 {
 	UnInit();	// 反初始化
 }
 
-// “系统字体”按钮
+/**
+ * @brief 响应“系统字体”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnBtn_SysFont(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (BN_PUSHED == uNotifyCode)
@@ -57,7 +107,14 @@ void CFontSelDlg::OnBtn_SysFont(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “会员炫彩字”按钮
+
+/**
+ * @brief 响应“会员炫彩字”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnBtn_MemberFont(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (BN_PUSHED == uNotifyCode)
@@ -70,7 +127,14 @@ void CFontSelDlg::OnBtn_MemberFont(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “字体名称”组合框
+
+/**
+ * @brief 响应“字体名称”组合框,选择不同字体的时候使用
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnCbo_SelChange_FontName(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	int nCurSel = m_cboFontName.GetCurSel();
@@ -87,7 +151,14 @@ void CFontSelDlg::OnCbo_SelChange_FontName(UINT uNotifyCode, int nID, CWindow wn
 	}
 }
 
-// “字体大小”组合框
+
+/**
+ * @brief 响应“字体大小”组合框,选择不同字号的时候使用
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnCbo_SelChange_FontSize(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	int nCurSel = m_cboFontSize.GetCurSel();
@@ -104,7 +175,14 @@ void CFontSelDlg::OnCbo_SelChange_FontSize(UINT uNotifyCode, int nID, CWindow wn
 	}
 }
 
-// “加粗”按钮
+
+/**
+ * @brief 响应字体风格的“加粗”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (BN_PUSHED == uNotifyCode || BN_UNPUSHED == uNotifyCode)
@@ -119,7 +197,14 @@ void CFontSelDlg::OnBtn_Bold(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “倾斜”按钮
+
+/**
+ * @brief 响应字体风格的“倾斜”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (BN_PUSHED == uNotifyCode || BN_UNPUSHED == uNotifyCode)
