@@ -16,7 +16,7 @@
 #include "SkinLib/SkinLib.h"
 
 
-class CFlamingoClient;
+
 
 class CBuddyInfoDlg : public CDialogImpl<CBuddyInfoDlg>, public CMessageFilter
 {
@@ -49,7 +49,7 @@ private:
 	void UnInit();		// 反初始化
 
 public:
-	//CFlamingoClient*		m_lpFMGClient;
+
 	UINT				m_nUTalkUin;//聊天ID
 
 private:

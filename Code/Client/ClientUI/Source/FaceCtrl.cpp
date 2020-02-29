@@ -1,6 +1,20 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file FaceCtrl.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 头像控件实现文件
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "FaceCtrl.h"
 
+/**
+ * @brief Construct a new CFaceCtrl::CFaceCtrl object
+ * 
+ */
 CFaceCtrl::CFaceCtrl(void)
 {
 	m_clrBg = RGB(255, 255, 255);
@@ -20,54 +34,106 @@ CFaceCtrl::CFaceCtrl(void)
 	m_dwTimerId = NULL;
 }
 
+/**
+ * @brief Destroy the CFaceCtrl::CFaceCtrl object
+ * 
+ */
 CFaceCtrl::~CFaceCtrl(void)
 {
 	DestroyImage();
 }
 
+/**
+ * @brief 设置背景色
+ * 
+ * @param color 
+ */
 void CFaceCtrl::SetBgColor(COLORREF color)
 {
 	m_clrBg = color;
 }
 
+/**
+ * @brief 设置线条颜色
+ * 
+ * @param color 
+ */
 void CFaceCtrl::SetLineColor(COLORREF color)
 {
 	m_clrLine = color;
 }
 
+/**
+ * @brief 设置选中时的边框颜色
+ * 
+ * @param color 
+ */
 void CFaceCtrl::SetFocusBorderColor(COLORREF color)
 {
 	m_clrFocusBorder = color;
 }
 
+/**
+ * @brief 设置缩放的边框颜色
+ * 
+ * @param color 
+ */
 void CFaceCtrl::SetZoomBorderColor(COLORREF color)
 {
 	m_clrZoomBorder = color;
 }
 
+/**
+ * @brief 设置行数和列数
+ * 
+ * @param nRow 
+ * @param nCol 
+ */
 void CFaceCtrl::SetRowAndCol(int nRow, int nCol)
 {
 	m_nRow = nRow;
 	m_nCol = nCol;
 }
 
+/**
+ * @brief 设置每一项的大小
+ * 
+ * @param nWidth 每个头像的宽度
+ * @param nHeight 头像高度
+ */
 void CFaceCtrl::SetItemSize(int nWidth, int nHeight)
 {
 	m_nItemWidth = nWidth;
 	m_nItemHeight = nHeight;
 }
 
+/**
+ * @brief 设置缩放大小
+ * 
+ * @param nWidth 
+ * @param nHeight 
+ */
 void CFaceCtrl::SetZoomSize(int nWidth, int nHeight)
 {
 	m_nZoomWidth = nWidth;
 	m_nZoomHeight = nHeight;
 }
 
+/**
+ * @brief 设置头像列表
+ * 
+ * @param lpFaceList 
+ */
 void CFaceCtrl::SetFaceList(CFaceList* lpFaceList)
 {
 	m_lpFaceList = lpFaceList;
 }
 
+/**
+ * @brief 设置当前页
+ * 
+ * @param nPageIndex 当前页索引 
+ */
 void CFaceCtrl::SetCurPage(int nPageIndex)
 {
 	if (NULL == m_lpFaceList)
@@ -92,6 +158,12 @@ void CFaceCtrl::SetCurPage(int nPageIndex)
 	LoadImage(m_nCurPage);
 }
 
+/**
+ * @brief 获取头像信息
+ * 
+ * @param nItemIndex 头像索引
+ * @return CFaceInfo* 头像信息
+ */
 CFaceInfo* CFaceCtrl::GetFaceInfo(int nItemIndex)
 {
 	if (m_lpFaceList != NULL)
@@ -106,11 +178,22 @@ CFaceInfo* CFaceCtrl::GetFaceInfo(int nItemIndex)
 	return NULL;
 }
 
+/**
+ * @brief 响应擦除背景
+ * 
+ * @param dc 
+ * @return BOOL 
+ */
 BOOL CFaceCtrl::OnEraseBkgnd(CDCHandle dc)
 {
 	return TRUE;
 }
 
+/**
+ * @brief 响应界面绘制
+ * 
+ * @param dc 
+ */
 void CFaceCtrl::OnPaint(CDCHandle dc)
 {
 	CPaintDC PaintDC(m_hWnd);
@@ -158,6 +241,12 @@ void CFaceCtrl::OnPaint(CDCHandle dc)
 		DrawZoomImage(MemDC.m_hDC);
 }
 
+/**
+ * @brief 响应鼠标左键按下
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CFaceCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -171,11 +260,23 @@ void CFaceCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 }
 
+/**
+ * @brief 响应鼠标左键抬起
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CFaceCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
 }
 
+/**
+ * @brief 响应鼠标移动
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CFaceCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	SetMsgHandled(FALSE);
@@ -212,6 +313,10 @@ void CFaceCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	}
 }
 
+/**
+ * @brief 响应鼠标离开消息
+ * 
+ */
 void CFaceCtrl::OnMouseLeave()
 {
 	SetMsgHandled(FALSE);
@@ -220,6 +325,14 @@ void CFaceCtrl::OnMouseLeave()
 	this->Invalidate();
 }
 
+/**
+ * @brief 响应鼠标消息
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CFaceCtrl::OnMouseMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	SetMsgHandled(FALSE);
@@ -229,6 +342,11 @@ LRESULT CFaceCtrl::OnMouseMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+/**
+ * @brief 响应定时器消息
+ * 
+ * @param nIDEvent 
+ */
 void CFaceCtrl::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == m_dwTimerId)
@@ -247,6 +365,10 @@ void CFaceCtrl::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
+/**
+ * @brief 响应控件销毁
+ * 
+ */
 void CFaceCtrl::OnDestroy()
 {
 	SetMsgHandled(FALSE);
@@ -267,6 +389,11 @@ void CFaceCtrl::OnDestroy()
 	m_nFramePos = 0;
 }
 
+/**
+ * @brief 开始追踪鼠标离开
+ * 
+ * @return BOOL 
+ */
 BOOL CFaceCtrl::StartTrackMouseLeave()
 {
 	TRACKMOUSEEVENT tme = { 0 };
@@ -276,6 +403,14 @@ BOOL CFaceCtrl::StartTrackMouseLeave()
 	return _TrackMouseEvent(&tme);
 }
 
+/**
+ * @brief 计算中心区域矩形
+ * 
+ * @param rcDest 
+ * @param cx 
+ * @param cy 
+ * @param rcCenter 
+ */
 void CFaceCtrl::CalcCenterRect(CRect& rcDest, int cx, int cy, CRect& rcCenter)
 {
 	if (cx > rcDest.Width())
@@ -290,6 +425,12 @@ void CFaceCtrl::CalcCenterRect(CRect& rcDest, int cx, int cy, CRect& rcCenter)
 	rcCenter = CRect(rcDest.left+x, rcDest.top+y, rcDest.left+x+cx, rcDest.top+y+cy);
 }
 
+/**
+ * @brief 点击测试
+ * 
+ * @param pt 
+ * @return int 
+ */
 int CFaceCtrl::HitTest(POINT pt)
 {
 	CRect rcItem;
@@ -317,6 +458,11 @@ int CFaceCtrl::HitTest(POINT pt)
 	return -1;
 }
 
+/**
+ * @brief 计算缩放矩形
+ * 
+ * @param point 
+ */
 void CFaceCtrl::CalcZoomRect(CPoint point)
 {
 	CRect rcClient;
@@ -339,6 +485,13 @@ void CFaceCtrl::CalcZoomRect(CPoint point)
 	}
 }
 
+/**
+ * @brief 获取每一项的矩形区域
+ * 
+ * @param nItemIndex 
+ * @param rect 
+ * @return BOOL 
+ */
 BOOL CFaceCtrl::GetItemRect(int nItemIndex, CRect& rect)
 {
 	rect = CRect(0,0,0,0);
@@ -374,6 +527,11 @@ BOOL CFaceCtrl::GetItemRect(int nItemIndex, CRect& rect)
 	return FALSE;
 }
 
+/**
+ * @brief 获取缩放图
+ * 
+ * @return CGifImage* 
+ */
 CGifImage* CFaceCtrl::GetZoomImage()
 {
 	if (m_nHoverIndex >= 0 && m_nHoverIndex < (int)m_arrImage.size())
@@ -382,6 +540,11 @@ CGifImage* CFaceCtrl::GetZoomImage()
 		return NULL;
 }
 
+/**
+ * @brief 设置某一项的提示,在该项选中时使用
+ * 
+ * @param nItemIndex 
+ */
 void CFaceCtrl::SetItemToolTip(int nItemIndex)
 {
 	CRect rcItem;
@@ -416,6 +579,11 @@ void CFaceCtrl::SetItemToolTip(int nItemIndex)
 	}
 }
 
+/**
+ * @brief 绘制边框线
+ * 
+ * @param hDC 
+ */
 void CFaceCtrl::DrawLine(HDC hDC)
 {
 	CRect rcClient;
@@ -446,6 +614,13 @@ void CFaceCtrl::DrawLine(HDC hDC)
 	::DeleteObject(hPen);
 }
 
+
+/**
+ * @brief 绘制选中时的边框
+ * 
+ * @param hDC 
+ * @param rect 
+ */
 void CFaceCtrl::DrawFocusBorder(HDC hDC, const CRect& rect)
 {
 	HPEN hPen = ::CreatePen(PS_SOLID, 1, m_clrFocusBorder);
@@ -457,6 +632,11 @@ void CFaceCtrl::DrawFocusBorder(HDC hDC, const CRect& rect)
 	::DeleteObject(hPen);
 }
 
+/**
+ * @brief 绘制缩放图
+ * 
+ * @param hDC 
+ */
 void CFaceCtrl::DrawZoomImage(HDC hDC)
 {
 	HPEN hPen = ::CreatePen(PS_SOLID, 1, m_clrZoomBorder);
@@ -482,6 +662,12 @@ void CFaceCtrl::DrawZoomImage(HDC hDC)
 	}
 }
 
+/**
+ * @brief 加载图片
+ * 
+ * @param nPageIndex 
+ * @return BOOL 
+ */
 BOOL CFaceCtrl::LoadImage(int nPageIndex)
 {
 	if (NULL == m_lpFaceList)
@@ -517,6 +703,10 @@ BOOL CFaceCtrl::LoadImage(int nPageIndex)
 	return TRUE;
 }
 
+/**
+ * @brief 释放图像
+ * 
+ */
 void CFaceCtrl::DestroyImage()
 {
 	for (int i = 0; i < (int)m_arrImage.size(); i++)

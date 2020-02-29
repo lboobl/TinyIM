@@ -52,7 +52,7 @@ private:
 	void UninitUI();
 public:
 	std::shared_ptr<CMsgProto> m_netProto;
-	//CFlamingoClient*		m_pFMGClient;
+
 
 private:
 	CSkinDialog			m_SkinDlg;                  //主界面的对话框

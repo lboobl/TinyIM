@@ -17,7 +17,6 @@
 #include "SkinLib/SkinLib.h"
 
 
-class CFlamingoClient;
 
 //修改备注对话框
 class CModifyMarkNameDlg : public CDialogImpl<CModifyMarkNameDlg>
@@ -48,7 +47,7 @@ protected:
 	void UninitUI();
 
 public:
-	CFlamingoClient*		m_pFMGClient;
+
 	UINT				m_uUserIndex; //用户唯一编号
 
 private:

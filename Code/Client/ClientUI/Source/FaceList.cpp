@@ -1,6 +1,24 @@
-﻿#include "stdafx.h"
-#include "FaceList.h"
+﻿/**
+ * @file FaceList.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 头像列表信息的实现文件,数据结构实现
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 
+#include "stdafx.h"
+#include "FaceList.h"
+#include "XmlDocument.h"
+#include "Utils.h"
+#include "Path.h"
+
+/**
+ * @brief Construct a new CFaceInfo::CFaceInfo object
+ * 
+ */
 CFaceInfo::CFaceInfo(void)
 {
 	m_nId = -1;
@@ -9,21 +27,37 @@ CFaceInfo::CFaceInfo(void)
 	m_strFileName = _T("");
 }
 
+/**
+ * @brief Destroy the CFaceInfo::CFaceInfo object
+ * 
+ */
 CFaceInfo::~CFaceInfo(void)
 {
 
 }
 
+/**
+ * @brief Construct a new CFaceList::CFaceList object
+ * 
+ */
 CFaceList::CFaceList(void)
 {
 	Reset();
 }
 
+/**
+ * @brief Destroy the CFaceList::CFaceList object
+ * 
+ */
 CFaceList::~CFaceList(void)
 {
 	Reset();
 }
 
+/**
+ * @brief 清空列表数据
+ * 
+ */
 void CFaceList::Reset()
 {
 // 	m_nWidth = 28;
@@ -44,6 +78,13 @@ void CFaceList::Reset()
 	m_arrFaceInfo.clear();
 }
 
+
+/**
+ * @brief 加载配置文件
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CFaceList::LoadConfigFile(LPCTSTR lpszFileName)
 {
 	CXmlDocument xmlDoc;
@@ -91,6 +132,12 @@ BOOL CFaceList::LoadConfigFile(LPCTSTR lpszFileName)
 	return TRUE;
 }
 
+/**
+ * @brief 根据索引获取头像信息
+ * 
+ * @param nIndex 
+ * @return CFaceInfo* 
+ */
 CFaceInfo* CFaceList::GetFaceInfo(int nIndex)
 {
 	if (nIndex >= 0 && nIndex < (int)m_arrFaceInfo[nIndex])
@@ -99,6 +146,12 @@ CFaceInfo* CFaceList::GetFaceInfo(int nIndex)
 		return NULL;
 }
 
+/**
+ * @brief 根据头像ID获取头像信息
+ * 
+ * @param nFaceId 
+ * @return CFaceInfo* 
+ */
 CFaceInfo* CFaceList::GetFaceInfoById(int nFaceId)
 {
 	for (int i = 0; i < (int)m_arrFaceInfo.size(); i++)
@@ -111,6 +164,12 @@ CFaceInfo* CFaceList::GetFaceInfoById(int nFaceId)
 	return NULL;
 }
 
+/**
+ * @brief 根据头像索引获取头像信息
+ * 
+ * @param nFaceIndex 
+ * @return CFaceInfo* 
+ */
 CFaceInfo* CFaceList::GetFaceInfoByIndex(int nFaceIndex)
 {
 	for (int i = 0; i < (int)m_arrFaceInfo.size(); i++)

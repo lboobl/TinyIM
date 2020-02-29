@@ -17,6 +17,10 @@
 #include "Path.h"
 #include "XmlDocument.h"
 
+/**
+ * @brief 用户头像信息
+ * 
+ */
 class CFaceInfo
 {
 public:
@@ -24,10 +28,10 @@ public:
 	~CFaceInfo(void);
 
 public:
-	int m_nId;
-	int m_nIndex;
-	WString m_strTip;
-	WString m_strFileName;
+	int m_nId; //头像ID
+	int m_nIndex;//头像索引
+	WString m_strTip;//头像信息提示
+	WString m_strFileName;//头像文件名
 };
 
 class CFaceList
@@ -44,9 +48,12 @@ public:
 	CFaceInfo* GetFaceInfoByIndex(int nFaceIndex);
 
 public:
-	int m_nItemWidth, m_nItemHeight;
-	int m_nZoomWidth, m_nZoomHeight;
-	int m_nRow, m_nCol;
+	int m_nItemWidth;//宽度
+	int m_nItemHeight;//高度
+	int m_nZoomWidth;//缩放宽度
+	int m_nZoomHeight;//缩放高度
+	int m_nRow;//行数
+	int m_nCol;//列数
 	std::vector<CFaceInfo*> m_arrFaceInfo;
 };
 

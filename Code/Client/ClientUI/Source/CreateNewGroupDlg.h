@@ -52,7 +52,7 @@ protected:
 	void RemoveMessageFilter();
 
 public:
-	//CFlamingoClient*		m_pFMGClient;
+
 
 private:
 	CSkinDialog			m_SkinDlg;//主对话框

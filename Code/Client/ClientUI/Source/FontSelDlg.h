@@ -76,8 +76,7 @@ private:
 	BOOL Init();					// 初始化
 	void UnInit();					// 反初始化
 
-public:
-	////CFlamingoClient*		m_pFMGClient;
+
 
 private:
 	CSkinDialog			m_SkinDlg;

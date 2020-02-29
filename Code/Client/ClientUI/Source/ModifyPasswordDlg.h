@@ -57,7 +57,7 @@ private:
 	void RemoveMessageFilter();
 
 public:
-	//CFlamingoClient*		m_pFMGClient;
+
 	std::shared_ptr<CMsgProto> m_netProto;
 private:
 	CSkinDialog			m_SkinDlg;

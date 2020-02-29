@@ -1,6 +1,21 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file FaceSelDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 头像选择对话框的实现文件
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "FaceSelDlg.h"
 
+/**
+ * @brief Construct a new CFaceSelDlg::CFaceSelDlg object
+ * 
+ */
 CFaceSelDlg::CFaceSelDlg(void)
 {
 	m_lpFaceList = NULL;
@@ -9,30 +24,61 @@ CFaceSelDlg::CFaceSelDlg(void)
 	m_strSelFaceFileName = _T("");
 }
 
+/**
+ * @brief Destroy the CFaceSelDlg::CFaceSelDlg object
+ * 
+ */
 CFaceSelDlg::~CFaceSelDlg(void)
 {
 }
 
+/**
+ * @brief 设置头像列表
+ * 
+ * @param lpFaceList 
+ */
 void CFaceSelDlg::SetFaceList(CFaceList* lpFaceList)
 {
 	m_lpFaceList = lpFaceList;
 }
 
+/**
+ * @brief 获取选中的头像id
+ * 
+ * @return int 
+ */
 int CFaceSelDlg::GetSelFaceId()
 {
 	return m_nSelFaceId;
 }
 
+/**
+ * @brief 获取选中的头像索引
+ * 
+ * @return int 
+ */
 int CFaceSelDlg::GetSelFaceIndex()
 {
 	return m_nSelFaceIndex;
 }
 
+/**
+ * @brief 获取选中头像的文件名
+ * 
+ * @return CString 
+ */
 CString CFaceSelDlg::GetSelFaceFileName()
 {
 	return m_strSelFaceFileName;
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CFaceSelDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	CRect rcClient;
@@ -65,6 +111,13 @@ BOOL CFaceSelDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 响应对话框激活
+ * 
+ * @param nState 
+ * @param bMinimized 
+ * @param wndOther 
+ */
 void CFaceSelDlg::OnActivate(UINT nState, BOOL bMinimized, CWindow wndOther)
 {
 	SetMsgHandled(FALSE);
@@ -75,6 +128,11 @@ void CFaceSelDlg::OnActivate(UINT nState, BOOL bMinimized, CWindow wndOther)
 	}
 }
 
+/**
+ * @brief 响应对话框绘制
+ * 
+ * @param dc 
+ */
 void CFaceSelDlg::OnPaint(CDCHandle dc)
 {
 	CPaintDC PaintDC(m_hWnd);
@@ -95,12 +153,20 @@ void CFaceSelDlg::OnPaint(CDCHandle dc)
 	::DeleteObject(hBrush);
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CFaceSelDlg::OnClose()
 {
 	::PostMessage(GetParent(), FACE_CTRL_SEL, NULL, NULL);
 	DestroyWindow();
 }
 
+/**
+ * @brief 销毁对话框
+ * 
+ */
 void CFaceSelDlg::OnDestroy()
 {
 	SetMsgHandled(FALSE);
@@ -108,6 +174,14 @@ void CFaceSelDlg::OnDestroy()
 	m_FaceCtrl.DestroyWindow();
 }
 
+/**
+ * @brief 响应头像选择消息
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CFaceSelDlg::OnFaceCtrlSel(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	int nSelIndex = (int)lParam;

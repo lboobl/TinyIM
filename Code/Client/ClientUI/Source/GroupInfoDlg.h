@@ -54,7 +54,7 @@ private:
 	void UnInit();		// 反初始化
 
 public:
-	//CFlamingoClient* m_lpFMGClient;
+
 	HWND m_hMainDlg;
 	UINT m_nGroupCode;
 	std::string m_strGroupId;

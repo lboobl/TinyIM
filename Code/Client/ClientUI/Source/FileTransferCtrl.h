@@ -41,6 +41,10 @@ typedef struct tagFileTransferNMHDREx
 	long				nID;
 }FILE_TRANSFER_NMHDREX,*PFILE_TRANSFER_NMHDREX;
 
+/**
+ * @brief 文件传输的数据描述控件
+ * 
+ */
 class CFileTransferItem
 {
 public:
@@ -53,24 +57,28 @@ public:
 	CStringA				m_strFileDownloadName;	//文件下载名
 	CString					m_strFullName;			//文件全饰名
 	CString					m_strFileSaveName;		//下载文件时的存储名
-	CString					m_strFilePath;
-	CString					m_strFileType;
-	DWORD					m_nFileSize;
-	BOOL					m_bOfflineSent;
-	CImageEx*				m_pImgFileType;
-	long					m_nProgressPercent;
+	CString					m_strFilePath;          //文件路径
+	CString					m_strFileType;          //文件类型
+	DWORD					m_nFileSize;            //文件大小
+	BOOL					m_bOfflineSent;         //是否离线发送
+	CImageEx*				m_pImgFileType;         //文件类型图片
+	long					m_nProgressPercent;     //文件处理速度
 	long					m_nVerificationPercent;	//校验文件进度
 	FILE_TARGET_TYPE		m_nTargetType;			//到底是发送方还是接收方
 
 	C_WND_MSG_FileItemRequest*		m_pFileItemRequest;		//与该项相匹配的文件传输队列项
 
-	BOOL					m_bAcceptBtnVisible;
-	BOOL					m_bSaveAsBtnVisible;
-	BOOL					m_bCancelBtnVisible;
+	BOOL					m_bAcceptBtnVisible;    //是否显示接受按钮
+	BOOL					m_bSaveAsBtnVisible;    //是否显示另存为按钮
+	BOOL					m_bCancelBtnVisible;    //是否显示取消按钮
 
 	//TODO:转离线发送和转在线发送两个按钮可见性
 };
 
+/**
+ * @brief 文件传输显示控件
+ * 
+ */
 class CFileTransferCtrl : public CWindowImpl<CFileTransferCtrl, CWindow>
 {
 public:
