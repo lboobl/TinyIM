@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_C_FACE_SEL_DLG_H_ 
-#define _DENNIS_THINK_C_FACE_SEL_DLG_H_
+#ifndef _TINY_IM_C_FACE_SEL_DLG_H_ 
+#define _TINY_IM_C_FACE_SEL_DLG_H_
 #include "resource.h"
 #include "FaceCtrl.h"
 #include "FaceList.h"

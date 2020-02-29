@@ -1,7 +1,23 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file ChatTabMgr.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+//TODO: 需要区分和层叠窗口管理器的区别
+
+#include "stdafx.h"
 #include "ChatTabMgr.h"
 #include "GDIFactory.h"
 
+/**
+ * @brief Construct a new CChatTabMgr::CChatTabMgr object
+ * 
+ */
 CChatTabMgr::CChatTabMgr()
 {
 	m_nSelectionIndex = -1;
@@ -9,11 +25,22 @@ CChatTabMgr::CChatTabMgr()
 	m_nLeft = 0;
 }
 
+/**
+ * @brief Destroy the CChatTabMgr::CChatTabMgr object
+ * 
+ */
 CChatTabMgr::~CChatTabMgr()
 {
 	
 }
 
+/**
+ * @brief 增加一个Tab项
+ * 
+ * @param pszTitle 
+ * @param hwndItem 
+ * @param bEnableClose 
+ */
 void CChatTabMgr::AddItem(PCTSTR pszTitle, HWND hwndItem, BOOL bEnableClose/*=TRUE*/)
 {
 	size_t nSize = m_arrWindowInfo.size();
@@ -35,6 +62,11 @@ void CChatTabMgr::AddItem(PCTSTR pszTitle, HWND hwndItem, BOOL bEnableClose/*=TR
 	Invalidate(FALSE);
 }
 
+/**
+ * @brief 删除具体的Tab项
+ * 
+ * @param hwndItem 
+ */
 void CChatTabMgr::RemoveItem(HWND hwndItem)
 {
 	std::vector<TAB_WINDOW_INFO>::iterator iter = m_arrWindowInfo.begin();
@@ -55,11 +87,21 @@ void CChatTabMgr::RemoveItem(HWND hwndItem)
 		Active(m_arrWindowInfo[0].hwndItem);
 }
 
+/**
+ * @brief 获取子项总数
+ * 
+ * @return long 
+ */
 long CChatTabMgr::GetItemCount() const
 {
 	return (long)m_arrWindowInfo.size();
 }
 
+/**
+ * @brief 响应界面激活消息
+ * 
+ * @param hwndItem 
+ */
 void CChatTabMgr::Active(HWND hwndItem)
 {
 	size_t nSize = m_arrWindowInfo.size();
@@ -78,6 +120,12 @@ void CChatTabMgr::Active(HWND hwndItem)
 	Invalidate(FALSE);
 }
 
+/**
+ * @brief 响应窗口创建消息
+ * 
+ * @param lpCreateStruct 
+ * @return int 
+ */
 int CChatTabMgr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	//TODO: 测试数据
@@ -97,6 +145,11 @@ int CChatTabMgr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 1;
 }
 
+/**
+ * @brief 聊天的Tab页面绘制
+ * 
+ * @param dc 
+ */
 void CChatTabMgr::OnPaint(CDCHandle dc)
 {
 	CPaintDC PaintDC(m_hWnd);
@@ -118,6 +171,13 @@ void CChatTabMgr::OnPaint(CDCHandle dc)
 	m_nLeft = 0;
 }
 
+
+/**
+ * @brief 绘制Tab的每一项
+ * 
+ * @param hDC 
+ * @param nIndex 
+ */
 void CChatTabMgr::DrawTabItem(HDC hDC, size_t nIndex)
 {
 	HFONT hFont = CGDIFactory::GetFont(18);
@@ -188,11 +248,24 @@ void CChatTabMgr::DrawTabItem(HDC hDC, size_t nIndex)
 	m_nLeft = rtBorder.right-1;
 }
 
+
+/**
+ * @brief 响应背景擦除消息
+ * 
+ * @param dc 
+ * @return BOOL 
+ */
 BOOL CChatTabMgr::OnEraseBkgnd(CDCHandle dc)
 {
 	return TRUE;
 }
 
+/**
+ * @brief 响应鼠标左键按下
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CChatTabMgr::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	TWI_HEADER stNmdhdrEx = {0};
@@ -225,11 +298,23 @@ void CChatTabMgr::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 }
 
+/**
+ * @brief 响应鼠标左键抬起
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CChatTabMgr::OnLButtonUp(UINT nFlags, CPoint point)
 {
 
 }
 
+/**
+ * @brief 响应鼠标移动消息
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CChatTabMgr::OnMouseMove(UINT nFlags, CPoint point)
 {
 	size_t nSize = m_arrWindowInfo.size();

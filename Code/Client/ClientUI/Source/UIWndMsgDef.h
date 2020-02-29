@@ -4,8 +4,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_UI_WND_MSG_DEF_H_
-#define _DENNIS_THINK_UI_WND_MSG_DEF_H_
+#ifndef _TINY_IM_UI_WND_MSG_DEF_H_
+#define _TINY_IM_UI_WND_MSG_DEF_H_
 
 
 #define     FMG_MSG_NET_ERROR               WM_USER + 50            // 网络错误

@@ -10,14 +10,14 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_UPDATE_DLG_H_
-#define _DENNIS_THINK_UPDATE_DLG_H_
+#ifndef _TINY_IM_UPDATE_DLG_H_
+#define _TINY_IM_UPDATE_DLG_H_
 #include "resource.h"
 #include "SkinLib/SkinLib.h"
 #include <vector>
 
 //class CIUProtocol;
-class CFlamingoClient;
+
 
 //自动解压下载下来的升级包文件，成功返回true，失败返回false
 bool Unzip();
@@ -46,7 +46,7 @@ private:
 	void ParseFileInfo();	//解析升级包文件信息
 
 public:
-	//CFlamingoClient*	     m_pFMGClient;     //客户端Socket类
+
 	std::vector<CString>	 m_aryFileInfo;    //需要下载的文件列表
 
 	std::vector<CString>	 m_aryFileDesc;		//升级包中文描述

@@ -3,8 +3,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_C_TRAY_ICON_H_ 
-#define _DENNIS_THINK_C_TRAY_ICON_H_
+#ifndef _TINY_IM_C_TRAY_ICON_H_ 
+#define _TINY_IM_C_TRAY_ICON_H_
 class CTrayIcon		// 托盘图标封装类
 {
 public:

@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_IMAGE_EX_H_ 
-#define _DENNIS_THINK_IMAGE_EX_H_
+#ifndef _TINY_IM_IMAGE_EX_H_ 
+#define _TINY_IM_IMAGE_EX_H_
 
 #include <atlimage.h>
 

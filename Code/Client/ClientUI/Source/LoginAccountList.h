@@ -10,8 +10,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_C_LOGIN_ACCOUNT_LIST_H_  
-#define _DENNIS_THINK_C_LOGIN_ACCOUNT_LIST_H_
+#ifndef _TINY_IM_C_LOGIN_ACCOUNT_LIST_H_  
+#define _TINY_IM_C_LOGIN_ACCOUNT_LIST_H_
 
 #include <vector>
 

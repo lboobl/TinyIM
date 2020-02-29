@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_LOGIN_DLG_H_ 
-#define _DENNIS_THINK_LOGIN_DLG_H_
+#ifndef _TINY_IM_LOGIN_DLG_H_ 
+#define _TINY_IM_LOGIN_DLG_H_
 
 #include "SkinLib/SkinLib.h"
 #include "RegisterDialog.h"

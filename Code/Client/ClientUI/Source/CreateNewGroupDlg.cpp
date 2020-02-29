@@ -1,20 +1,43 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file CreateNewGroupDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 新建群组对话框实现文件
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "CreateNewGroupDlg.h"
-//#include "FlamingoClient.h"
 #include "net/IUProtocolData.h"
 #include "EncodingUtil.h"
 #include "UIText.h"
 #include "Proto.h"
 // CCreateNewGroupDlg实现代码
+/**
+ * @brief Construct a new CCreateNewGroupDlg::CCreateNewGroupDlg object
+ * 
+ */
 CCreateNewGroupDlg::CCreateNewGroupDlg()
 {
 	//m_pFMGClient = NULL;
 }
 
+/**
+ * @brief Destroy the CCreateNewGroupDlg::CCreateNewGroupDlg object
+ * 
+ */
 CCreateNewGroupDlg::~CCreateNewGroupDlg()
 {
 }
 
+/**
+ * @brief 对于消息的预处理
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CCreateNewGroupDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//支持回车键查找
@@ -34,6 +57,14 @@ BOOL CCreateNewGroupDlg::PreTranslateMessage(MSG* pMsg)
 	return CWindow::IsDialogMessage(pMsg);
 }
 
+
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CCreateNewGroupDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	AddMessageFilter();
@@ -45,6 +76,11 @@ BOOL CCreateNewGroupDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 初始化对话框
+ * 
+ * @return BOOL 
+ */
 BOOL CCreateNewGroupDlg::InitUI()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\CreateNewGroupBg.png"));
@@ -76,7 +112,14 @@ BOOL CCreateNewGroupDlg::InitUI()
 	return TRUE;
 }
 
-/* 创建新的群组 */
+
+/**
+ * @brief 响应确定按钮,创建新的群组
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CCreateNewGroupDlg::OnOK(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CString strGroupName;
@@ -103,14 +146,28 @@ void CCreateNewGroupDlg::OnOK(UINT uNotifyCode, int nID, CWindow wndCtl)
 	m_SkinDlg.SetTitleText(_T("创建群（正在向服务器发送数据，请稍候...）"));
 }
 
+/**
+ * @brief 响应取消按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CCreateNewGroupDlg::OnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	EndDialog(IDCANCEL);
 }
 
-/*
-响应创建群组的结果
-*/
+
+
+/**
+ * @brief 响应创建群组的结果
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CCreateNewGroupDlg::OnCreateNewGroupResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	m_edtGroupName.EnableWindow(TRUE);
@@ -143,17 +200,29 @@ LRESULT CCreateNewGroupDlg::OnCreateNewGroupResult(UINT uMsg, WPARAM wParam, LPA
 	return (LRESULT)1;
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CCreateNewGroupDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
 
+/**
+ * @brief 响应对话框 销毁
+ * 
+ */
 void CCreateNewGroupDlg::OnDestroy()
 {
 	UninitUI();
 	RemoveMessageFilter();
 }
 
+/**
+ * @brief UI相关控件反初始化
+ * 
+ */
 void CCreateNewGroupDlg::UninitUI()
 {
 	if (m_edtGroupName.IsWindow())
@@ -172,6 +241,10 @@ void CCreateNewGroupDlg::UninitUI()
 	}
 }
 
+/**
+ * @brief 增加消息过滤器
+ * 
+ */
 void CCreateNewGroupDlg::AddMessageFilter()
 {
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -179,6 +252,10 @@ void CCreateNewGroupDlg::AddMessageFilter()
 	pLoop->AddMessageFilter(this);
 }
 
+/**
+ * @brief 移除消息过滤器
+ * 
+ */
 void CCreateNewGroupDlg::RemoveMessageFilter()
 {
 	CMessageLoop* pLoop = _Module.GetMessageLoop();

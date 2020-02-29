@@ -10,8 +10,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_C_CHANGE_PIC_HEAD_H_ 
-#define _DENNIS_THINK_C_CHANGE_PIC_HEAD_H_
+#ifndef _TINY_IM_C_CHANGE_PIC_HEAD_H_ 
+#define _TINY_IM_C_CHANGE_PIC_HEAD_H_
 #define C_PAGES 3 
 #include "resource.h"
 #include "SkinLib/SkinLib.h"

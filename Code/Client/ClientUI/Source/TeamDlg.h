@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_TEAM_DLG_H_
-#define _DENNIS_THINK_TEAM_DLG_H_
+#ifndef _TINY_IM_TEAM_DLG_H_
+#define _TINY_IM_TEAM_DLG_H_
 
 #include "resource.h"
 #include "SkinLib/SkinLib.h"

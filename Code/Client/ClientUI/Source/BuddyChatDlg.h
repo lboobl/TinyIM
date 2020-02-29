@@ -12,8 +12,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_C_BUDDY_CHAT_DLG_H_
-#define _DENNIS_THINK_C_BUDDY_CHAT_DLG_H_
+#ifndef _TINY_IM_C_BUDDY_CHAT_DLG_H_
+#define _TINY_IM_C_BUDDY_CHAT_DLG_H_
 #include <string>
 #include "resource.h"
 #include "CustomMsgDef.h"

@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_USER_SESSION_DATA_H_
-#define _DENNIS_THINK_USER_SESSION_DATA_H_
+#ifndef _TINY_IM_USER_SESSION_DATA_H_
+#define _TINY_IM_USER_SESSION_DATA_H_
 //#include "jsoncpp-1.9.0/json.h"
 #include <string>
 #include <vector>

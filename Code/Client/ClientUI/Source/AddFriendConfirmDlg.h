@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_C_ADD_FRIEND_CONFIRM_DLG_H_
-#define _DENNIS_THINK_C_ADD_FRIEND_CONFIRM_DLG_H_
+#ifndef _TINY_IM_C_ADD_FRIEND_CONFIRM_DLG_H_
+#define _TINY_IM_C_ADD_FRIEND_CONFIRM_DLG_H_
 #include "resource.h"
 #include "SkinLib/SkinLib.h"
 //#include "FlamingoClient.h"
@@ -54,7 +54,7 @@ protected:
 	void UninitUI();
 
 public:
-	//CFlamingoClient*		m_pFMGClient;
+
 
 private:
 	CSkinDialog			m_SkinDlg;//对话框

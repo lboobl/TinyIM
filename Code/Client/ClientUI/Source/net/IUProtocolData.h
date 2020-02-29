@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2020
  * 
  */
-#ifndef _DENNIS_THINK_IU_PROTOCOL_DATA_H_
-#define _DENNIS_THINK_IU_PROTOCOL_DATA_H_
+#ifndef _TINY_IM_IU_PROTOCOL_DATA_H_
+#define _TINY_IM_IU_PROTOCOL_DATA_H_
 #include <stdint.h>
 #include <set>
 #include <list>

@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_PATH_H_
-#define _DENNIS_THINK_PATH_H_
+#ifndef _TINY_IM_PATH_H_
+#define _TINY_IM_PATH_H_
 #include "UICommonType.h"
 namespace Hootina
 {

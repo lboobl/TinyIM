@@ -1,18 +1,42 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file ClosePromptDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 关闭通知对话框的实现类
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "ClosePromptDlg.h"
-//#include "FlamingoClient.h"
 #include "UI_USER_INFO.h"
 
+/**
+ * @brief Construct a new CClosePromptDlg::CClosePromptDlg object
+ * 
+ */
 CClosePromptDlg::CClosePromptDlg()
 {
 	//m_pFMGClient = NULL;
 }
 
+/**
+ * @brief Destroy the CClosePromptDlg::CClosePromptDlg object
+ * 
+ */
 CClosePromptDlg::~CClosePromptDlg()
 {
 
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CClosePromptDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	InitUI();
@@ -21,6 +45,11 @@ BOOL CClosePromptDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 初始化UI
+ * 
+ * @return BOOL 
+ */
 BOOL CClosePromptDlg::InitUI()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\MsgBoxDlgBg.png"), CRect(4, 69, 4, 33));
@@ -66,19 +95,37 @@ BOOL CClosePromptDlg::InitUI()
 	return TRUE;
 }
 
+/**
+ * @brief 反初始化UI
+ * 
+ */
 void CClosePromptDlg::UninitUI()
 {
 	if(m_picInfoIcon.IsWindow())
 		m_picInfoIcon.DestroyWindow();
 }
 
+/**
+ * @brief 响应最小化按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CClosePromptDlg::OnMinimize(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	//->m_UserConfig.EnableExitPrompt(!m_btnRememberChoice.GetCheck());
 	//m_pFMGClient->m_UserConfig.EnableExitWhenCloseMainDlg(FALSE);
 	EndDialog(IDC_MINIMIZE);
 }
-	
+
+/**
+ * @brief 响应退出按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CClosePromptDlg::OnExit(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	//m_pFMGClient->m_UserConfig.EnableExitPrompt(!m_btnRememberChoice.GetCheck());
@@ -86,12 +133,19 @@ void CClosePromptDlg::OnExit(UINT uNotifyCode, int nID, CWindow wndCtl)
 	EndDialog(IDC_EXIT);
 }
 
-
+/**
+ * @brief 响应关闭按钮
+ * 
+ */
 void CClosePromptDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
 
+/**
+ * @brief 响应销毁按钮
+ * 
+ */
 void CClosePromptDlg::OnDestroy()
 {
 	UninitUI();

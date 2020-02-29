@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_COMMON_TYPE_H_
-#define _DENNIS_THINK_COMMON_TYPE_H_
+#ifndef _TINY_IM_COMMON_TYPE_H_
+#define _TINY_IM_COMMON_TYPE_H_
 #include <string>
 typedef std::wstring WString;
 #endif

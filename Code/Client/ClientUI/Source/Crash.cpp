@@ -1,4 +1,15 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file Crash.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 处理程序的崩溃问题
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "UI_USER_INFO.h"
 #include <Dbghelp.h>
 

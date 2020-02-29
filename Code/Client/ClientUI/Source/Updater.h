@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_UPDATER_H_
-#define _DENNIS_THINK_UPDATER_H_
+#ifndef _TINY_IM_UPDATER_H_
+#define _TINY_IM_UPDATER_H_
 #include <vector>
 #include "Path.h"
 

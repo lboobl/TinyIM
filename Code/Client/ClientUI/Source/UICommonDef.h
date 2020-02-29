@@ -4,8 +4,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_UI_COMMON_DEF_H_
-#define _DENNIS_THINK_UI_COMMON_DEF_H_
+#ifndef _TINY_IM_UI_COMMON_DEF_H_
+#define _TINY_IM_UI_COMMON_DEF_H_
 //客户端类型
 enum class E_UI_CLIENT_TYPE
 {

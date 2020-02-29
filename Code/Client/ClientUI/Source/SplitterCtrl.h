@@ -1,5 +1,5 @@
-﻿#ifndef _DENNIS_THINK_C_SPLITTER_CTRL_H_
-#define _DENNIS_THINK_C_SPLITTER_CTRL_H_
+﻿#ifndef _TINY_IM_C_SPLITTER_CTRL_H_
+#define _TINY_IM_C_SPLITTER_CTRL_H_
 
 //该窗口用于聊天窗口中拖拽发送文本框
 class CSplitterCtrl : public CWindowImpl<CSplitterCtrl, CWindow>

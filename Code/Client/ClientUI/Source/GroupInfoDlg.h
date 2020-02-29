@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_C_GROUP_INFO_DLG_H_ 
-#define _DENNIS_THINK_C_GROUP_INFO_DLG_H_
+#ifndef _TINY_IM_C_GROUP_INFO_DLG_H_ 
+#define _TINY_IM_C_GROUP_INFO_DLG_H_
 
 #include "resource.h"
 #include "CustomMsgDef.h"

@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_C_GIF_IMAGE_H_ 
-#define _DENNIS_THINK_C_GIF_IMAGE_H_
+#ifndef _TINY_IM_C_GIF_IMAGE_H_ 
+#define _TINY_IM_C_GIF_IMAGE_H_
 #include <gdiplus.h>
 
 #pragma comment(lib, "gdiplus.lib")

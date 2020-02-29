@@ -1,7 +1,16 @@
-﻿/**
- * Windows平台用编码格式相互转换类, EncodingUtil.cpp
- * zhangyl 2017.03.29
- **/
+﻿
+/**
+ * @file EncodingUtil.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 平台用编码格式相互转换类
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+
 #include "stdafx.h"
 #include <locale.h>
 //#include <iconv.h>          //linux only
@@ -9,6 +18,12 @@
 
 
 
+/**
+ * @brief ASCII转Unicode,C语言版本
+ * 
+ * @param lpszStr 
+ * @return wchar_t* 
+ */
 wchar_t* EncodeUtil::AnsiToUnicode(const char* lpszStr)
 {
     wchar_t* lpUnicode;
@@ -36,6 +51,12 @@ wchar_t* EncodeUtil::AnsiToUnicode(const char* lpszStr)
     return lpUnicode;
 }
 
+/**
+ * @brief Unicode转ASCII,C语言版本
+ * 
+ * @param lpszStr 
+ * @return char* 
+ */
 char* EncodeUtil::UnicodeToAnsi(const wchar_t* lpszStr)
 {
     char* lpAnsi;
@@ -63,6 +84,12 @@ char* EncodeUtil::UnicodeToAnsi(const wchar_t* lpszStr)
     return lpAnsi;
 }
 
+/**
+ * @brief ASCII转UTF8,C语言版本
+ * 
+ * @param lpszStr 
+ * @return char* 
+ */
 char* EncodeUtil::AnsiToUtf8(const char* lpszStr)
 {
     wchar_t* lpUnicode;
@@ -116,6 +143,13 @@ char* EncodeUtil::AnsiToUtf8(const char* lpszStr)
     return lpUtf8;
 }
 
+
+/**
+ * @brief UTF8转ASCII,C语言版本
+ * 
+ * @param lpszStr 
+ * @return char* 
+ */
 char* EncodeUtil::Utf8ToAnsi(const char* lpszStr)
 {
     wchar_t* lpUnicode;
@@ -169,6 +203,12 @@ char* EncodeUtil::Utf8ToAnsi(const char* lpszStr)
     return lpAnsi;
 }
 
+/**
+ * @brief unicode转UTF8,C语言版本
+ * 
+ * @param lpszStr 
+ * @return char* 
+ */
 char* EncodeUtil::UnicodeToUtf8(const wchar_t* lpszStr)
 {
     char* lpUtf8;

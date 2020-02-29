@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_MSG_TIP_DLG_H_
-#define _DENNIS_THINK_MSG_TIP_DLG_H_
+#ifndef _TINY_IM_MSG_TIP_DLG_H_
+#define _TINY_IM_MSG_TIP_DLG_H_
 
 #include "resource.h"
 #include "CustomMsgDef.h"

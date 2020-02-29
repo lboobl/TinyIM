@@ -1,5 +1,5 @@
-﻿#ifndef _DENNIS_THINK_UI_COMMON_STRUCT_H_
-#define _DENNIS_THINK_UI_COMMON_STRUCT_H_
+﻿#ifndef _TINY_IM_UI_COMMON_STRUCT_H_
+#define _TINY_IM_UI_COMMON_STRUCT_H_
 #include "UICommonDef.h"
 #include "UICommonType.h"
 #include <vector>

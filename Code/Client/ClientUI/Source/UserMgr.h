@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_USER_MGR_H_
-#define _DENNIS_THINK_USER_MGR_H_
+#ifndef _TINY_IM_USER_MGR_H_
+#define _TINY_IM_USER_MGR_H_
 #include "UI_USER_INFO.h"
 //#include "MessageLogger.h"
 #include "UserConfig.h"

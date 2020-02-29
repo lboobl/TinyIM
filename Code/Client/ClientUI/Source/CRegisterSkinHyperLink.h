@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef _DENNIS_THINK_C_REGISTER_SKIN_HYPER_LINK_H_
+#define _DENNIS_THINK_C_REGISTER_SKIN_HYPER_LINK_H_
 #include "..\UTalkClient\RegisterTask.h"
 #include "..\SkinLib\SkinHyperLink.h"
 
@@ -19,3 +20,4 @@ protected:
 protected:
 	
 };
+#endif

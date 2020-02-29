@@ -1,6 +1,6 @@
 ﻿
-#ifndef _DENNIS_THINK_UTIL_H_
-#define _DENNIS_THINK_UTIL_H_
+#ifndef _TINY_IM_UTIL_H_
+#define _TINY_IM_UTIL_H_
 #include <vector>
 #include <string>
 #include <time.h>

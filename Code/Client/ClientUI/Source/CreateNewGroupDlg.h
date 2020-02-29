@@ -9,14 +9,12 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_C_CREATE_NEW_GROUP_DLG_H_
-#define _DENNIS_THINK_C_CREATE_NEW_GROUP_DLG_H_
+#ifndef _TINY_IM_C_CREATE_NEW_GROUP_DLG_H_
+#define _TINY_IM_C_CREATE_NEW_GROUP_DLG_H_
 #include "resource.h"
 #include "SkinLib/SkinLib.h"
 #include "UI_USER_INFO.h"
 #include "UIWndMsgDef.h"
-
-class CFlamingoClient;
 
 //查找还有并添加好友对话框
 class CCreateNewGroupDlg : public CDialogImpl<CCreateNewGroupDlg>, public CMessageFilter

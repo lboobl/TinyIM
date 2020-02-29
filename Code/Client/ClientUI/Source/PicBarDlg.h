@@ -10,8 +10,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_PIC_BAR_DLG_H_
-#define _DENNIS_THINK_PIC_BAR_DLG_H_
+#ifndef _TINY_IM_PIC_BAR_DLG_H_
+#define _TINY_IM_PIC_BAR_DLG_H_
 
 #include "resource.h"
 #include "SkinLib/SkinLib.h"

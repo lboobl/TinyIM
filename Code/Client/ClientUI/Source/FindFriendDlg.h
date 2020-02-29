@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_C_FIND_FRIEND_DLG_
-#define _DENNIS_THINK_C_FIND_FRIEND_DLG_
+#ifndef _TINY_IM_C_FIND_FRIEND_DLG_
+#define _TINY_IM_C_FIND_FRIEND_DLG_
 
 
 #include "resource.h"

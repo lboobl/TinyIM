@@ -10,8 +10,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_SRC_VERSION_H_
-#define _DENNIS_THINK_SRC_VERSION_H_
+#ifndef _TINY_IM_SRC_VERSION_H_
+#define _TINY_IM_SRC_VERSION_H_
 
 #define Flamingo_MAJOR_VERSION    1
 #define Flamingo_MINOR_VERSION    0

@@ -6,8 +6,8 @@
 
 
 
-#ifndef _DENNIS_THINK_C_INI_FILE_H_ 
-#define _DENNIS_THINK_C_INI_FILE_H_
+#ifndef _TINY_IM_C_INI_FILE_H_ 
+#define _TINY_IM_C_INI_FILE_H_
 
 class CIniFile
 {

@@ -1,17 +1,42 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file CRegisterSkinHyperLink.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 注册的皮肤控件超链接
+ * @version 0.1
+ * @date 2020-02-29
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "CRegisterSkinHyperLink.h"
 #include "..\UTalkClient\UTalkProtocolData.h"
 #include "CRegisterDialog.h"
 
+/**
+ * @brief Construct a new CRegisterSkinHyperLink::CRegisterSkinHyperLink object
+ * 
+ */
 CRegisterSkinHyperLink::CRegisterSkinHyperLink()
 {
 	memset(&m_RegisterUser, 0, sizeof(m_RegisterUser));
 }
 
+/**
+ * @brief Destroy the CRegisterSkinHyperLink::CRegisterSkinHyperLink object
+ * 
+ */
 CRegisterSkinHyperLink::~CRegisterSkinHyperLink()
 {
 }
 
+/**
+ * @brief 响应鼠标左键弹起
+ * 
+ * @param nFlags 
+ * @param point 
+ */
 void CRegisterSkinHyperLink::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	__super::OnLButtonUp(nFlags, point);

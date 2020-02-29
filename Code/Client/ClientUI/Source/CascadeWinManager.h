@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#ifndef _DENNIS_THINK_C_CASCADE_WIN_MANAGER_H_
-#define _DENNIS_THINK_C_CASCADE_WIN_MANAGER_H_
+#ifndef _TINY_IM_C_CASCADE_WIN_MANAGER_H_
+#define _TINY_IM_C_CASCADE_WIN_MANAGER_H_
 #include <vector>
 
 struct CASCADE_WIN_INFO			// 层叠窗口信息

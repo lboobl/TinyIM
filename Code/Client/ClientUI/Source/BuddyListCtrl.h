@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_C_BUDDY_LIST_CTRL_H_
-#define _DENNIS_THINK_C_BUDDY_LIST_CTRL_H_
+#ifndef _TINY_IM_C_BUDDY_LIST_CTRL_H_
+#define _TINY_IM_C_BUDDY_LIST_CTRL_H_
 
 #include <vector>
 #include "SkinLib/SkinLib.h"

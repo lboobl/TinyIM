@@ -10,8 +10,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_ENCODE_H__
-#define _DENNIS_THINK_ENCODE_H__
+#ifndef _TINY_IM_ENCODE_H__
+#define _TINY_IM_ENCODE_H__
 
 //#ifdef ENCODE_EXPORTS
 //#define ENCODE_API __declspec(dllexport)

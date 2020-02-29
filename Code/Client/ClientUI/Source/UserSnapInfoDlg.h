@@ -1,6 +1,6 @@
 ﻿
-#ifndef _DENNIS_THINK_USER_SNAP_INFO_DLG_H_
-#define _DENNIS_THINK_USER_SNAP_INFO_DLG_H_
+#ifndef _TINY_IM_USER_SNAP_INFO_DLG_H_
+#define _TINY_IM_USER_SNAP_INFO_DLG_H_
 
 #include "resource.h"
 #include "SkinLib/SkinLib.h"

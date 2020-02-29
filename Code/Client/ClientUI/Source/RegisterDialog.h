@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_REGISTER_DIALOG_H_
-#define _DENNIS_THINK_REGISTER_DIALOG_H_
+#ifndef _TINY_IM_REGISTER_DIALOG_H_
+#define _TINY_IM_REGISTER_DIALOG_H_
 #include "resource.h"
 #include "SkinLib/SkinLib.h"
 #include "UI_USER_INFO.h"

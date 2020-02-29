@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_RICH_EDIT_UTIL_H_
-#define _DENNIS_THINK_RICH_EDIT_UTIL_H_
+#ifndef _TINY_IM_RICH_EDIT_UTIL_H_
+#define _TINY_IM_RICH_EDIT_UTIL_H_
 
 #include <string>
 #include "UICommonStruct.h"

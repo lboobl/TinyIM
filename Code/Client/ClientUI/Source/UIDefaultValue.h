@@ -4,8 +4,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_UI_DEFAULT_VALUE_H_
-#define _DENNIS_THINK_UI_DEFAULT_VALUE_H_
+#ifndef _TINY_IM_UI_DEFAULT_VALUE_H_
+#define _TINY_IM_UI_DEFAULT_VALUE_H_
 
 #define CHAT_BG_IMAGE_NAME			_T("BuddyChatDlgBg.png")
 #define CHAT_EXPAND_BG_IMAGE_NAME   _T("BuddyChatDlgExpandBg.png")

@@ -10,8 +10,8 @@
  */
 
 
-#ifndef _DENNIS_THINK_CHAT_TAB_MGR_H_
-#define _DENNIS_THINK_CHAT_TAB_MGR_H_
+#ifndef _TINY_IM_CHAT_TAB_MGR_H_
+#define _TINY_IM_CHAT_TAB_MGR_H_
 #include <vector>
 
 struct TAB_WINDOW_INFO

@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_USER_CONFIG_H_
-#define _DENNIS_THINK_USER_CONFIG_H_
+#ifndef _TINY_IM_USER_CONFIG_H_
+#define _TINY_IM_USER_CONFIG_H_
 #include <string>
 #include "UICommonDef.h"
 

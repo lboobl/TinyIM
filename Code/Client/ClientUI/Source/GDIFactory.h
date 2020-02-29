@@ -10,8 +10,8 @@
  * 
  */
 
-#ifndef _DENNIS_THINK_GDI_FACTORY_H_
-#define _DENNIS_THINK_GDI_FACTORY_H_
+#ifndef _TINY_IM_GDI_FACTORY_H_
+#define _TINY_IM_GDI_FACTORY_H_
 #include <map>
 
 class CGDIFactory
