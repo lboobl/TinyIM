@@ -1,18 +1,43 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file MessageBoxDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 退出提示对话框的实现类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "MessageBoxDlg.h"
-//#include "FlamingoClient.h"
 #include "UI_USER_INFO.h"
 
+/**
+ * @brief Construct a new CMessageBoxDlg::CMessageBoxDlg object
+ * 
+ */
 CMessageBoxDlg::CMessageBoxDlg()
 {
 	//m_pFMGClient = NULL;
 }
 
+/**
+ * @brief Destroy the CMessageBoxDlg::CMessageBoxDlg object
+ * 
+ */
 CMessageBoxDlg::~CMessageBoxDlg()
 {
 
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CMessageBoxDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	InitUI();
@@ -21,6 +46,11 @@ BOOL CMessageBoxDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 初始化UI
+ * 
+ * @return BOOL 
+ */
 BOOL CMessageBoxDlg::InitUI()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\MsgBoxDlgBg.png"), CRect(4, 69, 4, 33));
@@ -66,19 +96,38 @@ BOOL CMessageBoxDlg::InitUI()
 	return TRUE;
 }
 
+
+/**
+ * @brief 反初始化UI
+ * 
+ */
 void CMessageBoxDlg::UninitUI()
 {
 	if(m_picInfoIcon.IsWindow())
 		m_picInfoIcon.DestroyWindow();
 }
 
+/**
+ * @brief 响应窗口最小化
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CMessageBoxDlg::OnMinimize(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	//->m_UserConfig.EnableExitPrompt(!m_btnRememberChoice.GetCheck());
 	//m_pFMGClient->m_UserConfig.EnableExitWhenCloseMainDlg(FALSE);
 	EndDialog(IDC_MINIMIZE);
 }
-	
+
+/**
+ * @brief 响应对话框退出
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CMessageBoxDlg::OnExit(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	//m_pFMGClient->m_UserConfig.EnableExitPrompt(!m_btnRememberChoice.GetCheck());
@@ -87,11 +136,19 @@ void CMessageBoxDlg::OnExit(UINT uNotifyCode, int nID, CWindow wndCtl)
 }
 
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CMessageBoxDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
 
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CMessageBoxDlg::OnDestroy()
 {
 	UninitUI();

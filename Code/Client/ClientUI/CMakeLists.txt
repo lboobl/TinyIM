@@ -89,7 +89,7 @@ SET(FLAMING_GO_CLIENT_SOURCE
 ./Source/PicBarDlg.h ./Source/PicBarDlg.cpp  
 ./Source/RecentListCtrl.h ./Source/RecentListCtrl.cpp   
 ./Source/RegisterDialog.h ./Source/RegisterDialog.cpp
-./Source/resource.h ./Source/Result.h 
+./Source/resource.h
 ./Source/RichEditUtil.h ./Source/RichEditUtil.cpp  
 ./Source/SplitterCtrl.h  ./Source/SplitterCtrl.cpp   
 ./Source/MsgTipDlg.h  ./Source/MsgTipDlg.cpp 

@@ -1,11 +1,24 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file MsgTipDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 收到消息提示的对话框，
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "MsgTipDlg.h"
 #include "UI_USER_INFO.h"
-//#include "FlamingoClient.h"
 #include "Path.h"
 #include "Utils.h"
 #include "IUProtocolData.h"
 
+/**
+ * @brief Construct a new CMsgTipDlg::CMsgTipDlg object
+ * 
+ */
 CMsgTipDlg::CMsgTipDlg(void)
 {
 	m_hMainDlg = NULL;
@@ -15,10 +28,21 @@ CMsgTipDlg::CMsgTipDlg(void)
 	m_nListItemHeight = 20;
 }
 
+/**
+ * @brief Destroy the CMsgTipDlg::CMsgTipDlg object
+ * 
+ */
 CMsgTipDlg::~CMsgTipDlg(void)
 {
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CMsgTipDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	InitCtrls();			// 初始化控件
@@ -30,6 +54,12 @@ BOOL CMsgTipDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return FALSE;
 }
 
+/**
+ * @brief 响应背景擦除消息
+ * 
+ * @param dc 
+ * @return BOOL 
+ */
 BOOL CMsgTipDlg::OnEraseBkgnd(CDCHandle dc)
 {
 	CRect rcClient;
@@ -38,6 +68,11 @@ BOOL CMsgTipDlg::OnEraseBkgnd(CDCHandle dc)
 	return TRUE;
 }
 
+/**
+ * @brief 响应定时器消息
+ * 
+ * @param nIDEvent 
+ */
 void CMsgTipDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == m_dwTimerId)
@@ -57,6 +92,12 @@ void CMsgTipDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
+/**
+ * @brief 响应对话框大小改变消息
+ * 
+ * @param nType 
+ * @param size 
+ */
 void CMsgTipDlg::OnSize(UINT nType, CSize size)
 {
 	SetMsgHandled(FALSE);
@@ -80,11 +121,19 @@ void CMsgTipDlg::OnSize(UINT nType, CSize size)
 	}
 }
 
+/**
+ * @brief 响应对话框关闭消息
+ * 
+ */
 void CMsgTipDlg::OnClose()
 {
 	DestroyWindow();
 }
 
+/**
+ * @brief 响应对话框销毁消息
+ * 
+ */
 void CMsgTipDlg::OnDestroy()
 {
 	SetMsgHandled(FALSE);
@@ -98,6 +147,12 @@ void CMsgTipDlg::OnDestroy()
 	}
 }
 
+/**
+ * @brief 响应列表点击操作
+ * 
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CMsgTipDlg::OnList_Click(LPNMHDR pnmh)
 {
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pnmh;
@@ -134,6 +189,12 @@ LRESULT CMsgTipDlg::OnList_Click(LPNMHDR pnmh)
 	return 0;
 }
 
+/**
+ * @brief 响应列表每一项改变
+ * 
+ * @param pnmh 
+ * @return LRESULT 
+ */
 LRESULT CMsgTipDlg::OnList_ItemChange(LPNMHDR pnmh)
 {
 	int nIndex = m_ListCtrl.GetCurSelItemIndex();
@@ -173,14 +234,28 @@ LRESULT CMsgTipDlg::OnList_ItemChange(LPNMHDR pnmh)
 	return 0;
 }
 
-// “取消闪烁”超链接控件
+
+/**
+ * @brief 响应“取消闪烁”超链接控件
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CMsgTipDlg::OnLnk_CancelFlash(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	::PostMessage(m_hMainDlg, WM_CANCEL_FLASH, 0, 0);
 	//SendMessage(WM_CLOSE);
 }
 
-// “显示全部”超链接控件
+
+/**
+ * @brief 响应“显示全部”超链接控件
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CMsgTipDlg::OnLnk_ShowAll(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	int nCount = m_ListCtrl.GetItemCount();
@@ -220,12 +295,24 @@ void CMsgTipDlg::OnLnk_ShowAll(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
+/**
+ * @brief 开始追踪鼠标移开
+ * 
+ * @return BOOL 
+ */
 BOOL CMsgTipDlg::StartTrackMouseLeave()
 {
 	m_dwTimerId = SetTimer(990, 160, NULL);
 	return m_dwTimerId != NULL ? TRUE : FALSE;
 }
 
+/**
+ * @brief 查找消息发送者
+ * 
+ * @param nType 
+ * @param nSenderId 
+ * @return int 
+ */
 int CMsgTipDlg::FindMsgSender(E_UI_CHAT_MSG_TYPE nType, const std::string nSenderId)
 {
 	CString strType;
@@ -244,6 +331,12 @@ int CMsgTipDlg::FindMsgSender(E_UI_CHAT_MSG_TYPE nType, const std::string nSende
 	return -1;
 }
 
+/**
+ * @brief 添加消息发送者
+ * 
+ * @param nType 
+ * @param nSenderId 
+ */
 void CMsgTipDlg::AddMsgSender(E_UI_CHAT_MSG_TYPE nType, const std::string nSenderId)
 {
 	/*C_UI_MessageSender* lpMsgSender = NULL;
@@ -273,6 +366,12 @@ void CMsgTipDlg::AddMsgSender(E_UI_CHAT_MSG_TYPE nType, const std::string nSende
 	}
 }
 
+/**
+ * @brief 删除消息发送者
+ * 
+ * @param nType 
+ * @param nSenderId 
+ */
 void CMsgTipDlg::DelMsgSender(E_UI_CHAT_MSG_TYPE nType, const std::string nSenderId)
 {
 	int nItemIndex = FindMsgSender(nType, nSenderId);
@@ -282,7 +381,12 @@ void CMsgTipDlg::DelMsgSender(E_UI_CHAT_MSG_TYPE nType, const std::string nSende
 	SetCtrlsAutoSize();		// 自动调整控件大小
 }
 
-// 初始化控件
+
+/**
+ * @brief 初始化控件
+ * 
+ * @return BOOL 
+ */
 BOOL CMsgTipDlg::InitCtrls()
 {
 	m_SkinDlg.SubclassWindow(m_hWnd);
@@ -345,7 +449,12 @@ BOOL CMsgTipDlg::InitCtrls()
 	return TRUE;
 }
 
-// 反初始化控件
+
+/**
+ * @brief 反初始化控件
+ * 
+ * @return BOOL 
+ */
 BOOL CMsgTipDlg::UnInitCtrls()
 {
 	if (m_ListCtrl.IsWindow())
@@ -360,7 +469,11 @@ BOOL CMsgTipDlg::UnInitCtrls()
 	return TRUE;
 }
 
-// 自动调整对话框大小
+
+/**
+ * @brief 自动调整对话框大小
+ * 
+ */
 void CMsgTipDlg::SetDlgAutoSize()
 {
 	int nMsgSenderCnt = 0;
@@ -417,7 +530,11 @@ void CMsgTipDlg::SetDlgAutoSize()
 	Invalidate();
 }
 
-// 自动调整控件大小
+
+/**
+ * @brief  自动调整控件大小
+ * 
+ */
 void CMsgTipDlg::SetCtrlsAutoSize()
 {
 	CRect rcClient;
@@ -442,6 +559,12 @@ void CMsgTipDlg::SetCtrlsAutoSize()
 		m_lnkShowAll.MoveWindow(156, rcClient.bottom - 22, 48, 14);
 }
 
+/**
+ * @brief 添加消息发送者到列表
+ * 
+ * @param nIndex 
+ * @param lpMsgSender 
+ */
 void CMsgTipDlg::_AddMsgSender(int nIndex, C_UI_MessageSender* lpMsgSender)
 {
 	//if (NULL == lpMsgSender || NULL == m_lpFMGClient)
@@ -555,6 +678,13 @@ void CMsgTipDlg::_AddMsgSender(int nIndex, C_UI_MessageSender* lpMsgSender)
 	m_ListCtrl.SetItemText(nIndex, 3, strMsgType);
 }
 
+/**
+ * @brief 获取头像图片全路径
+ * 
+ * @param nGroupCode 
+ * @param nUTalkUin 
+ * @return WString 
+ */
 WString CMsgTipDlg::GetHeadPicFullName(UINT nGroupCode, UINT nUTalkUin)
 {
 	UINT nGroupNum, nUTalkNum;
@@ -571,6 +701,14 @@ WString CMsgTipDlg::GetHeadPicFullName(UINT nGroupCode, UINT nUTalkUin)
 	return tresult;
 }
 
+/**
+ * @brief 获取好友ID或者群组ID
+ * TODO: 具体流程需要详细梳理
+ * @param nGroupCode 
+ * @param nUTalkUin 
+ * @param nGroupNum 
+ * @param nUTalkNum 
+ */
 void CMsgTipDlg::GetNumber(UINT nGroupCode, UINT nUTalkUin, UINT& nGroupNum, UINT& nUTalkNum)
 {
 	nGroupNum = nUTalkNum = 0;

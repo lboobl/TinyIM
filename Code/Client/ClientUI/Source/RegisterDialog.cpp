@@ -14,11 +14,20 @@
 #include "EncodingUtil.h"
 #include "UIText.h"
 #include "Proto.h"
+
+/**
+ * @brief Construct a new CRegisterDialog::CRegisterDialog object
+ * 
+ */
 CRegisterDialog::CRegisterDialog()
 {
 
 }
 
+/**
+ * @brief Destroy the CRegisterDialog::CRegisterDialog object
+ * 
+ */
 CRegisterDialog::~CRegisterDialog()
 {
 

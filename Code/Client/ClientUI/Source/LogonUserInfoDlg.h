@@ -68,23 +68,23 @@ public:
 private:
 	CSkinDialog			m_SkinDlg;
 
-	CSkinEdit			m_edtNickName;
-	CSkinButton			m_btnSysHead;
-	CSkinButton			m_btnCustomHead;
-	CSkinEdit			m_edtSign;
-	CSkinPictureBox		m_picHead;
-	CButton				m_btnGenderMale;
-	CButton				m_btnGenderFemale;
-	CDateTimePickerCtrl	m_dtpBirthday;
-	CSkinEdit			m_edtAddress;
-	CSkinEdit			m_edtPhone;
-	CSkinEdit			m_edtMail;
+	CSkinEdit			m_edtNickName;//用户昵称编辑框
+	CSkinButton			m_btnSysHead;//系统头像按钮
+	CSkinButton			m_btnCustomHead;//用户自定义头像按钮
+	CSkinEdit			m_edtSign;//用户签名编辑框
+	CSkinPictureBox		m_picHead;//头像图片显示窗
+	CButton				m_btnGenderMale;//男性性别按钮
+	CButton				m_btnGenderFemale;//女性性别按钮
+	CDateTimePickerCtrl	m_dtpBirthday;//出生日期选择控件
+	CSkinEdit			m_edtAddress;//用户地址编辑控件
+	CSkinEdit			m_edtPhone;//用户电话编辑控件
+	CSkinEdit			m_edtMail;//用户邮箱地址编辑控件
 
-	CSkinButton			m_btnOK;
-	CSkinButton			m_btnCancel;
+	CSkinButton			m_btnOK;//确定按钮
+	CSkinButton			m_btnCancel;//取消按钮
 
-	HICON				m_hDlgIcon;
-	HICON				m_hDlgSmallIcon;
+	HICON				m_hDlgIcon;//标准ICON句柄
+	HICON				m_hDlgSmallIcon;//小ICON句柄
 
 	BOOL				m_bUseCustomThumb;	//是否使用自定义头像
 	TCHAR				m_szCustomFaceRemotePath[MAX_PATH];

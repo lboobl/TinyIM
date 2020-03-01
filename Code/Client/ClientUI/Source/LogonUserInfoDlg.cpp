@@ -1,7 +1,16 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file LogonUserInfoDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 已经登陆的用户信息修改对话框
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "LogonUserInfoDlg.h"
 #include "ChangePicHeadDlg.h"
-//#include "FlamingoClient.h"
 #include "net/IUProtocolData.h"
 #include "Utils.h"
 #include "EncodingUtil.h"
@@ -9,6 +18,10 @@
 #include "Path.h"
 #include "UIText.h"
 
+/**
+ * @brief Construct a new CLogonUserInfoDlg::CLogonUserInfoDlg object
+ * 
+ */
 CLogonUserInfoDlg::CLogonUserInfoDlg(void):m_userMgr(CUserMgr::GetInstance())
 {
 	//m_uUserID = 0;
@@ -20,10 +33,20 @@ CLogonUserInfoDlg::CLogonUserInfoDlg(void):m_userMgr(CUserMgr::GetInstance())
 	memset(m_szCustomFaceRemotePath, 0, sizeof(m_szCustomFaceRemotePath));
 }
 
+/**
+ * @brief Destroy the CLogonUserInfoDlg::CLogonUserInfoDlg object
+ * 
+ */
 CLogonUserInfoDlg::~CLogonUserInfoDlg(void)
 {
 }
 
+/**
+ * @brief 完成消息的预处理,支持Esc关闭对话框
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CLogonUserInfoDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//支持Esc关闭对话框
@@ -36,6 +59,13 @@ BOOL CLogonUserInfoDlg::PreTranslateMessage(MSG* pMsg)
 	return CWindow::IsDialogMessage(pMsg);
 }
 
+/**
+ * @brief 响应初始化对话框的操作
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CLogonUserInfoDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	{
@@ -60,6 +90,12 @@ BOOL CLogonUserInfoDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 响应显示对话框
+ * 
+ * @param bShow 
+ * @param nStatus 
+ */
 void CLogonUserInfoDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	if (bShow)
@@ -68,12 +104,20 @@ void CLogonUserInfoDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	}
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CLogonUserInfoDlg::OnClose()
 {
 	//EndDialog(IDCANCEL);
 	ShowWindow(SW_HIDE);
 }
 
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CLogonUserInfoDlg::OnDestroy()
 {
 	SetMsgHandled(FALSE);
@@ -99,7 +143,14 @@ void CLogonUserInfoDlg::OnDestroy()
 	}
 }
 
-// “更改用户头像”控件
+
+/**
+ * @brief  响应更改“系统头像”控件
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLogonUserInfoDlg::OnSysHead(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CChangePicHeadDlg changePicHeadDlg;
@@ -124,6 +175,13 @@ void CLogonUserInfoDlg::OnSysHead(UINT uNotifyCode, int nID, CWindow wndCtl)
 	m_bUseCustomThumb = FALSE;
 }
 
+/**
+ * @brief 响应用户自定义头像事件
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLogonUserInfoDlg::OnCustomHead(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	BOOL bOpenFileDialog = TRUE;
@@ -161,6 +219,13 @@ void CLogonUserInfoDlg::OnCustomHead(UINT uNotifyCode, int nID, CWindow wndCtl)
 	m_SkinDlg.SetTitleText(_T("我的资料(正在上传头像，请稍等...)"));
 }
 
+/**
+ * @brief 响应OK按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLogonUserInfoDlg::OnBtn_OK(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CString strNickName;
@@ -239,11 +304,26 @@ void CLogonUserInfoDlg::OnBtn_OK(UINT uNotifyCode, int nID, CWindow wndCtl)
 	ShowWindow(SW_HIDE);
 }
 
+/**
+ * @brief 响应取消按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLogonUserInfoDlg::OnBtn_Cancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	ShowWindow(SW_HIDE);
 }
 
+/**
+ * @brief 响应上传用户资料的结果
+ * 
+ * @param uMsg 
+ * @param wParam 
+ * @param lParam 
+ * @return LRESULT 
+ */
 LRESULT CLogonUserInfoDlg::OnUploadUserThumbResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	m_btnOK.EnableWindow(TRUE);
@@ -278,6 +358,10 @@ LRESULT CLogonUserInfoDlg::OnUploadUserThumbResult(UINT uMsg, WPARAM wParam, LPA
 	return (LRESULT)1;
 }
 
+/**
+ * @brief 更新控件的数据
+ * 
+ */
 void CLogonUserInfoDlg::UpdateCtrlData()
 {
 	//账户名
@@ -349,6 +433,12 @@ void CLogonUserInfoDlg::UpdateCtrlData()
 	InvalidateRect(FALSE);
 }
 
+/**
+ * @brief 验证电话号码
+ * 
+ * @param strPhone 
+ * @return BOOL 
+ */
 BOOL CLogonUserInfoDlg::ValidatePhone(const CString& strPhone)
 {
 	long nLength = strPhone.GetLength();
@@ -365,7 +455,12 @@ BOOL CLogonUserInfoDlg::ValidatePhone(const CString& strPhone)
 	return TRUE;
 }
 
-// 初始化
+
+/**
+ * @brief 初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CLogonUserInfoDlg::Init()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\GeneralBg.png"), CRect(4, 69, 4, 33));
@@ -443,7 +538,11 @@ BOOL CLogonUserInfoDlg::Init()
 	return TRUE;
 }
 
-// 反初始化
+
+/**
+ * @brief 反初始化
+ * 
+ */
 void CLogonUserInfoDlg::UnInit()
 {
 	if (m_edtNickName.IsWindow())
@@ -502,6 +601,21 @@ void CLogonUserInfoDlg::UnInit()
 	}
 }
 
+
+/**
+ * @brief 更新用户的信息
+ * 
+ * @param strNickName 
+ * @param strSignature 
+ * @param uGender 
+ * @param uBirthday 
+ * @param strAddress 
+ * @param strPhone 
+ * @param strMail 
+ * @param m_uSysFaceId 
+ * @param strCustomFaceRemotePath 
+ * @param bUseCustomThub 
+ */
 void CLogonUserInfoDlg::UpdateLogonUserInfo(CString strNickName,
 	CString strSignature,
 	UINT uGender,

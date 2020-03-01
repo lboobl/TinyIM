@@ -1,7 +1,7 @@
 ﻿/**
  * @file MsgTipDlg.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 消息盒子对话框
+ * @brief 消息盒子对话框,在托盘区显示
  * @image https://www.dennisthink.com/wp-content/uploads/2019/10/2019-10-25_101630.jpg
  * @version 0.1
  * @date 2019-08-05
@@ -72,10 +72,10 @@ public:
 
 private:
 	CSkinDialog m_SkinDlg;
-	CSkinListCtrl m_ListCtrl;
-	CSkinHyperLink m_lnkCancelFlash;
-	CSkinHyperLink m_lnkShowAll;
-	DWORD m_dwTimerId;
+	CSkinListCtrl m_ListCtrl;//消息列表
+	CSkinHyperLink m_lnkCancelFlash;//取消闪烁的超链接
+	CSkinHyperLink m_lnkShowAll;//显示全部的超链接
+	DWORD m_dwTimerId;//定时器ID
 	int m_nListItemHeight;
 };
 #endif

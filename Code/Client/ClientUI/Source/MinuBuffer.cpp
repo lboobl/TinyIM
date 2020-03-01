@@ -1,4 +1,16 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file MinuBuffer.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief MiniBuffer的实现类,考虑后期将这个类优化掉
+ * TODO: 优化掉这个类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "MiniBuffer.h"
 #include "Utils.h"
 

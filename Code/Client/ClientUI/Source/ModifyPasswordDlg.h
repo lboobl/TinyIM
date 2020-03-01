@@ -18,7 +18,7 @@
 #include "UI_USER_INFO.h"
 #include "Proto.h"
 #include "UIWndMsgDef.h"
-//修改密码对话框类
+
 class CModifyPasswordDlg : public CDialogImpl<CModifyPasswordDlg>, public CMessageFilter
 {
 public:

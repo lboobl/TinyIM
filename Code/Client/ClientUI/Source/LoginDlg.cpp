@@ -1,11 +1,21 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file LoginDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 用户登录对话框的实现文件
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "LoginDlg.h"
 #include "Startup.h"
 #include "Utils.h"
 #include "Updater.h"
 #include "IniFile.h"
 #include "UpdateDlg.h"
-//#include "FlamingoClient.h"
 #include "Path.h"
 #include "UI_USER_INFO.h"
 #include "GDIFactory.h"
@@ -15,6 +25,10 @@
 #include "net/IUProtocolData.h"
 #include "Proto.h"
 
+/**
+ * @brief Construct a new CLoginDlg::CLoginDlg object
+ * 
+ */
 CLoginDlg::CLoginDlg()
 {
 	m_pLoginAccountList = NULL;
@@ -23,10 +37,20 @@ CLoginDlg::CLoginDlg()
 	m_stAccountInfo.nStatus = E_UI_ONLINE_STATUS::STATUS_ONLINE;
 }
 
+/**
+ * @brief Destroy the CLoginDlg::CLoginDlg object
+ * 
+ */
 CLoginDlg::~CLoginDlg(void)
 {
 }
 
+/**
+ * @brief 获取登录账号的具体信息
+ * 
+ * @param lpAccount 
+ * @return BOOL 
+ */
 BOOL CLoginDlg::GetLoginAccountInfo(LOGIN_ACCOUNT_INFO* lpAccount)
 {
 	if (NULL == lpAccount)
@@ -36,17 +60,34 @@ BOOL CLoginDlg::GetLoginAccountInfo(LOGIN_ACCOUNT_INFO* lpAccount)
 	return TRUE;
 }
 
+/**
+ * @brief 设置默认的登录账号
+ * 
+ * @param pszDefaultAccount 
+ */
 void CLoginDlg::SetDefaultAccount(PCTSTR pszDefaultAccount)
 {
 	m_strDefaultAccount = pszDefaultAccount;
 }
 
+/**
+ * @brief 设置默认的登录密码
+ * 
+ * @param pszDefaultPassword 
+ */
 void CLoginDlg::SetDefaultPassword(PCTSTR pszDefaultPassword)
 {
 	m_strDefaultPassword = pszDefaultPassword;
 }
 
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CLoginDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	// set icons
@@ -70,6 +111,12 @@ BOOL CLoginDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 响应系统指令
+ * 
+ * @param nID 
+ * @param pt 
+ */
 void CLoginDlg::OnSysCommand(UINT nID, CPoint pt)
 {
 	if (nID == SC_MINIMIZE)
@@ -81,21 +128,42 @@ void CLoginDlg::OnSysCommand(UINT nID, CPoint pt)
 	SetMsgHandled(FALSE);
 }
 
+/**
+ * @brief 响应测量每一项
+ * 
+ * @param nIDCtl 
+ * @param lpMeasureItemStruct 
+ */
 void CLoginDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	m_SkinMenu.OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
 
+/**
+ * @brief 响应绘制每一项
+ * 
+ * @param nIDCtl 
+ * @param lpDrawItemStruct 
+ */
 void CLoginDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	m_SkinMenu.OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CLoginDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
 
+
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CLoginDlg::OnDestroy()
 {
 	// unregister message filtering and idle updates
@@ -114,7 +182,14 @@ void CLoginDlg::OnDestroy()
 	UninitUI();
 }
 
-// “UTalk帐号”组合框
+
+/**
+ * @brief 响应账号组合框内容被编辑事件
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnCbo_EditChange_UID(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CString strText;
@@ -142,7 +217,14 @@ void CLoginDlg::OnCbo_EditChange_UID(UINT uNotifyCode, int nID, CWindow wndCtl)
 		SetCurUser(strText);
 }
 
-// “UTalk帐号”组合框
+
+/**
+ * @brief 响应账号组合框,账号被选择事件
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnCbo_SelChange_UID(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	int nCurSel = m_cboUid.GetCurSel();
@@ -154,7 +236,14 @@ void CLoginDlg::OnCbo_SelChange_UID(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “记住密码”复选框
+
+/**
+ * @brief 响应“记住密码”复选框
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnBtn_RememberPwd(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	// 取消“记住密码”复选框，则自动取消“自动登录”复选框
@@ -162,7 +251,14 @@ void CLoginDlg::OnBtn_RememberPwd(UINT uNotifyCode, int nID, CWindow wndCtl)
 		m_btnAutoLogin.SetCheck(BST_UNCHECKED);
 }
 
-// “自动登录”复选框
+
+/**
+ * @brief 响应“自动登录”复选框
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnBtn_AutoLogin(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	// 选中“自动登录”复选框，则自动选上“记住密码”复选框
@@ -170,7 +266,14 @@ void CLoginDlg::OnBtn_AutoLogin(UINT uNotifyCode, int nID, CWindow wndCtl)
 		m_btnRememberPwd.SetCheck(BST_CHECKED);
 }
 
-// “登录”按钮
+
+/**
+ * @brief 响应“登录”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnBtn_Login(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	//调试版就不要检测自动升级了，不然如何调试呢？
@@ -207,7 +310,14 @@ void CLoginDlg::OnBtn_Login(UINT uNotifyCode, int nID, CWindow wndCtl)
 	EndDialog(IDOK);
 }
 
-// “设置”按钮
+
+/**
+ * @brief 响应“设置”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnBtn_Set(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CLoginSettingsDlg m_LoginSettingDlg;
@@ -216,6 +326,10 @@ void CLoginDlg::OnBtn_Set(UINT uNotifyCode, int nID, CWindow wndCtl)
 	m_btnLogin.SetFocus();
 }
 
+/**
+ * @brief 检查应用程序是否有新的版本
+ * 
+ */
 void CLoginDlg::DetectNewVersion()
 {
 	//将updater.IsNeedUpdate()做成UpdateDlg成员方法
@@ -239,7 +353,13 @@ void CLoginDlg::DetectNewVersion()
 	}*/
 }
 
-//主界面的注册功能
+/**
+ * @brief 响应注册按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnRegister(UINT uNotifyCode, int nID, CWindow wndCtl)
 {	
 	//显示注册对话框
@@ -255,13 +375,25 @@ void CLoginDlg::OnRegister(UINT uNotifyCode, int nID, CWindow wndCtl)
 	m_edtPwd.SetPasswordChar(0x25CF);
 }
 
-// “登录状态”菜单按钮
+
+/**
+ * @brief 响应登录状态按钮改变
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginDlg::OnMenu_LoginStatus(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_stAccountInfo.nStatus = GetStatusFromMenuID(nID);
 	//StatusMenuBtn_SetIconPic(m_btnLoginStatus, (UTalk_STATUS)m_stAccountInfo.nStatus);
 }
 
+/**
+ * @brief 初始化界面UI
+ * 
+ * @return BOOL 
+ */
 BOOL CLoginDlg::InitUI()
 {
 	HRGN hHotRgn = NULL;
@@ -478,6 +610,12 @@ BOOL CLoginDlg::InitUI()
 	return TRUE;
 }
 
+/**
+ * @brief 设置当前的登录用户
+ * 
+ * @param lpszUser 
+ * @param bPwdInvalid 
+ */
 void CLoginDlg::SetCurUser(LPCTSTR lpszUser, BOOL bPwdInvalid/* = FALSE*/)
 {
 	if (NULL == lpszUser)
@@ -566,8 +704,13 @@ void CLoginDlg::SetCurUser(LPCTSTR lpszUser, BOOL bPwdInvalid/* = FALSE*/)
 	}
 }
 
-//DennisThink
-//用户登录消息的处理
+
+/**
+ * @brief 用户登录消息的处理
+ * 
+ * @param pParam 
+ * @return UINT 
+ */
 UINT CLoginDlg::LoginThreadProc(void* pParam)
 {
     CLoginDlg* pLoginDlg = (CLoginDlg*)pParam;
@@ -586,6 +729,11 @@ UINT CLoginDlg::LoginThreadProc(void* pParam)
     return 1;
 }
 
+
+/**
+ * @brief 反初始化相关的UI
+ * 
+ */
 void CLoginDlg::UninitUI()
 {
 	if (m_cboUid.IsWindow())
@@ -642,7 +790,13 @@ void CLoginDlg::UninitUI()
 	m_SkinMenu.DestroyMenu();
 }
 
-// 从菜单ID获取对应的UTalk_STATUS
+
+/**
+ * @brief 从菜单ID获取对应的UTalk_STATUS
+ * 
+ * @param nMenuID 
+ * @return E_UI_ONLINE_STATUS 
+ */
 E_UI_ONLINE_STATUS CLoginDlg::GetStatusFromMenuID(int nMenuID)
 {
 	switch (nMenuID)
@@ -656,7 +810,13 @@ E_UI_ONLINE_STATUS CLoginDlg::GetStatusFromMenuID(int nMenuID)
 	}
 }
 
-// 根据指定状态设置状态菜单按钮的图标
+
+/**
+ * @brief 根据指定状态设置状态菜单按钮的图标
+ * 
+ * @param btnStatus 
+ * @param nStatus 
+ */
 void CLoginDlg::StatusMenuBtn_SetIconPic(CSkinButton& btnStatus, E_UI_ONLINE_STATUS nStatus)
 {
 	LPCTSTR lpszFileName;
@@ -676,7 +836,14 @@ void CLoginDlg::StatusMenuBtn_SetIconPic(CSkinButton& btnStatus, E_UI_ONLINE_STA
 	btnStatus.Invalidate();
 }
 
-//Core Function
+
+/**
+ * @brief 实现用户登录逻辑的核心模块
+ * 
+ * @param strUserName 
+ * @param strPassword 
+ * @return C_WND_MSG_LoginResult 
+ */
 C_WND_MSG_LoginResult CLoginDlg::DoLogin_Core(const std::string strUserName, const std::string strPassword)
 {
 	C_WND_MSG_LoginResult* pLoginResult = new C_WND_MSG_LoginResult();

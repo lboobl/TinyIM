@@ -1,7 +1,7 @@
 ﻿/**
  * @file PicBarDlg.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 图片显示对话框
+ * @brief 表情显示对话框
  * @version 0.1
  * @date 2019-08-05
  * 

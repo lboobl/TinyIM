@@ -1,15 +1,41 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file PicBarDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 表情工具对话框的实现类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "PicBarDlg.h"
 #include "Path.h"
 
+/**
+ * @brief Construct a new CPicBarDlg::CPicBarDlg object
+ * 
+ */
 CPicBarDlg::CPicBarDlg(void)
 {
 }
 
+/**
+ * @brief Destroy the CPicBarDlg::CPicBarDlg object
+ * 
+ */
 CPicBarDlg::~CPicBarDlg(void)
 {
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CPicBarDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	CString strCurDir = Hootina::CPath::GetAppPath().c_str();
@@ -63,12 +89,23 @@ BOOL CPicBarDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 响应对话框销毁消息
+ * 
+ */
 void CPicBarDlg::OnDestroy()
 {
 	if (m_ToolBar.IsWindow())
 		m_ToolBar.DestroyWindow();
 }
 
+/**
+ * @brief 响应按钮点击消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CPicBarDlg::OnBtn_Clicked(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	::PostMessage(::GetParent(m_hWnd), WM_COMMAND, MAKEWPARAM(nID, uNotifyCode), (LPARAM)(HWND)wndCtl);

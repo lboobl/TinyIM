@@ -1,3 +1,14 @@
+/**
+ * @file ProtoTestMain.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 协议测试的类实现
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include "Proto.h"
 #include <thread>
 #include <iostream>

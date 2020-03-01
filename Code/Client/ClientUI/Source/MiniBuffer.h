@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef _TINY_IM_C_MINI_BUFFER_H_
+#define _TINY_IM_C_MINI_BUFFER_H_
 #include <stdint.h>
 
 //可以在出了作用域自动释放的迷你内存类
@@ -25,3 +26,4 @@ private:
     int64_t	m_nSize;
 	char*	m_pData;
 };
+#endif

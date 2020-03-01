@@ -1,19 +1,42 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file ModifyMarkNameDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 修改备注的对话框的实现类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "ModifyMarkNameDlg.h"
-//#include "FlamingoClient.h"
 #include "UIText.h"
 
-
+/**
+ * @brief Construct a new CModifyMarkNameDlg::CModifyMarkNameDlg object
+ * 
+ */
 CModifyMarkNameDlg::CModifyMarkNameDlg()
 {
 }
 
+/**
+ * @brief Destroy the CModifyMarkNameDlg::CModifyMarkNameDlg object
+ * 
+ */
 CModifyMarkNameDlg::~CModifyMarkNameDlg()
 {
 
 }
 
-
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CModifyMarkNameDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	InitUI();
@@ -21,6 +44,11 @@ BOOL CModifyMarkNameDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 初始化UI
+ * 
+ * @return BOOL 
+ */
 BOOL CModifyMarkNameDlg::InitUI()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\AddFriendDlgBg.png"));
@@ -56,6 +84,10 @@ BOOL CModifyMarkNameDlg::InitUI()
 }
 
 
+/**
+ * @brief 反初始UI
+ * 
+ */
 void CModifyMarkNameDlg::UninitUI()
 {
 	if(m_staMarkName.IsWindow())
@@ -71,11 +103,19 @@ void CModifyMarkNameDlg::UninitUI()
 		m_btnCancel.DestroyWindow();
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CModifyMarkNameDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
-	
+
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CModifyMarkNameDlg::OnDestroy()
 {
 	UninitUI();

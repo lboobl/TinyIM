@@ -1,11 +1,26 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file LoginSettingsDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 登录设置对话框的实现文件
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "UI_USER_INFO.h"
-//#include "FlamingoClient.h"
 #include "../IniFile.h"
 #include "UIText.h"
 #include "LoginSettingsDlg.h"
 #include "Proto.h"
 #include "EncodingUtil.h"
+
+/**
+ * @brief 代理模式
+ * 
+ */
 enum PROXY_TYPE
 {
 	NOT_USE_PROXY     = 0,
@@ -14,6 +29,10 @@ enum PROXY_TYPE
 	USE_SOCKS5_PROXY  = 3
 };
 
+/**
+ * @brief Construct a new CLoginSettingsDlg::CLoginSettingsDlg object
+ * 
+ */
 CLoginSettingsDlg::CLoginSettingsDlg()
 {
 	memset(m_szSrvAddr, 0, sizeof(m_szSrvAddr));
@@ -28,11 +47,21 @@ CLoginSettingsDlg::CLoginSettingsDlg()
 	memset(m_szProxyPort, 0, sizeof(m_szProxyPort));
 };
 
+/**
+ * @brief Destroy the CLoginSettingsDlg::CLoginSettingsDlg object
+ * 
+ */
 CLoginSettingsDlg::~CLoginSettingsDlg()
 {
 
 };
 
+/**
+ * @brief 预处理翻译消息
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CLoginSettingsDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//TODO: 奇怪为什么只有焦点在控件上才走这个逻辑？
@@ -46,7 +75,13 @@ BOOL CLoginSettingsDlg::PreTranslateMessage(MSG* pMsg)
 	return CWindow::IsDialogMessage(pMsg);
 }
 
-
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CLoginSettingsDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -61,6 +96,11 @@ BOOL CLoginSettingsDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 }
 
 
+/**
+ * @brief 初始化UI
+ * 
+ * @return BOOL 
+ */
 BOOL CLoginSettingsDlg::InitUI()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\LoginSettingDlgBg.png"));
@@ -225,11 +265,19 @@ BOOL CLoginSettingsDlg::InitUI()
 	return TRUE;
 }
 
+/**
+ * @brief 响应对话框关闭
+ * 
+ */
 void CLoginSettingsDlg::OnClose()
 {
 	EndDialog(IDCANCEL);
 }
 
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CLoginSettingsDlg::OnDestroy()
 {
 	UninitUI();
@@ -239,6 +287,13 @@ void CLoginSettingsDlg::OnDestroy()
 	pLoop->RemoveMessageFilter(this);
 }
 
+/**
+ * @brief 响应组合框选择消息
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginSettingsDlg::OnComboBox_Select(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	BOOL bEnabled = (m_comboProxyType.GetCurSel() > USE_BROWSER_PROXY ? TRUE : FALSE);
@@ -246,6 +301,10 @@ void CLoginSettingsDlg::OnComboBox_Select(UINT uNotifyCode, int nID, CWindow wnd
 	m_editProxyPort.EnableWindow(bEnabled);
 }
 
+/**
+ * @brief 反初始化UI
+ * 
+ */
 void CLoginSettingsDlg::UninitUI()
 {
 	if (m_editSrvAddr.IsWindow())
@@ -271,6 +330,13 @@ void CLoginSettingsDlg::UninitUI()
 
 }
 
+/**
+ * @brief 响应OK按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginSettingsDlg::OnBtn_OK(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_editSrvAddr.GetWindowText(m_szSrvAddr, MAX_SRV_ADDR);
@@ -384,6 +450,13 @@ void CLoginSettingsDlg::OnBtn_OK(UINT uNotifyCode, int nID, CWindow wndCtl)
 	EndDialog(IDOK);
 }
 
+/**
+ * @brief 响应取消按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CLoginSettingsDlg::OnBtn_Cancel(UINT uNotifyCode, int nID, CWindow wndCtl)	
 {
 	EndDialog(IDCANCEL);
