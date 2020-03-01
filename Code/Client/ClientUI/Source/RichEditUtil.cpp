@@ -1,11 +1,26 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file RichEditUtil.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 富文本编辑框的相关功能的实现文件
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "RichEditUtil.h"
 #include "UI_USER_INFO.h"
 
 
 static BOOL bIsInstallImageOleCtrl = FALSE;
 
-//注册名称为ImageOleCtrl的COM组件
+
+/**
+ * @brief 注册名称为ImageOleCtrl的COM组件
+ * 
+ */
 void RegisterCom_ImageOleCtrl()
 {
 	CString strImageOleCtrlFilePath = g_szHomePath;
@@ -30,6 +45,13 @@ void RegisterCom_ImageOleCtrl()
 	}
 }
 
+
+/**
+ * @brief 根据句柄,获取超文本编辑Ole控件
+ * 
+ * @param hWnd 
+ * @return IRichEditOle* 
+ */
 IRichEditOle* RichEdit_GetOleInterface(HWND hWnd)
 {
 	IRichEditOle*pRichEditOle = NULL;
@@ -37,16 +59,37 @@ IRichEditOle* RichEdit_GetOleInterface(HWND hWnd)
 	return pRichEditOle;
 }
 
+/**
+ * @brief 获取文本编辑框的文本长度
+ * 
+ * @param hWnd 
+ * @return int 
+ */
 int RichEdit_GetWindowTextLength(HWND hWnd)
 {
 	return ::GetWindowTextLength(hWnd);
 }
 
+/**
+ * @brief 获取文本编辑框的文本内容
+ * 
+ * @param hWnd 
+ * @param lpszStringBuf 
+ * @param nMaxCount 
+ * @return int 
+ */
 int RichEdit_GetWindowText(HWND hWnd, LPTSTR lpszStringBuf, int nMaxCount)
 {
 	return ::GetWindowText(hWnd, lpszStringBuf, nMaxCount);
 }
 
+/**
+ * @brief 根据窗口Handle,获取编辑框的文本内容
+ * 
+ * @param hWnd 
+ * @param strText 
+ * @return int 
+ */
 int RichEdit_GetWindowText(HWND hWnd, WString& strText)
 {
 	int nLength;
@@ -64,6 +107,14 @@ int RichEdit_GetWindowText(HWND hWnd, WString& strText)
 	return nLength;
 }
 
+/**
+ * @brief 获取指定范围内的文本
+ * TODO: 参数待优化,增加const
+ * @param hWnd 
+ * @param lpchrg 
+ * @param strText 
+ * @return int 
+ */
 int RichEdit_GetTextRange(HWND hWnd, CHARRANGE* lpchrg, WString& strText)
 {
 	strText = _T("");
@@ -89,12 +140,26 @@ int RichEdit_GetTextRange(HWND hWnd, CHARRANGE* lpchrg, WString& strText)
 	return nRet;
 }
 
+/**
+ * @brief 根据窗口句柄,获取其字符格式
+ * 
+ * @param hWnd 窗口句柄
+ * @param cf 字符格式
+ * @return DWORD 
+ */
 DWORD RichEdit_GetDefaultCharFormat(HWND hWnd, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
 	return (DWORD)::SendMessage(hWnd, EM_GETCHARFORMAT, 0, (LPARAM)&cf);
 }
 
+/**
+ * @brief 设置指定编辑框的默认字符格式
+ * 
+ * @param hWnd 编辑框Handle
+ * @param cf 字符格式
+ * @return BOOL 
+ */
 BOOL RichEdit_SetDefaultCharFormat(HWND hWnd, CHARFORMAT& cf)
 {
 	//必须关闭这个选项，否则设置的默认字体只对中文起作用，对英文不起作用.
@@ -105,23 +170,51 @@ BOOL RichEdit_SetDefaultCharFormat(HWND hWnd, CHARFORMAT& cf)
 	return (BOOL)::SendMessage(hWnd, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM)&cf);
 }
 
+/**
+ * @brief 获取已经选择的范围的字符格式
+ * 
+ * @param hWnd 编辑框Handle
+ * @param cf 字符格式
+ * @return DWORD 
+ */
 DWORD RichEdit_GetSelectionCharFormat(HWND hWnd, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
 	return (DWORD)::SendMessage(hWnd, EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
 }
 
+/**
+ * @brief 设置已选内容的字符格式
+ * 
+ * @param hWnd 
+ * @param cf 
+ * @return BOOL 
+ */
 BOOL RichEdit_SetSelectionCharFormat(HWND hWnd, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
 	return (BOOL)::SendMessage(hWnd, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
 }
 
+/**
+ * @brief 
+ * TODO: 具体的作用需要确定
+ * @param hWnd 
+ * @param lpszNewText 
+ * @param bCanUndo 
+ */
 void RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText, BOOL bCanUndo/* = FALSE*/)
 {
 	::SendMessage(hWnd, EM_REPLACESEL, (WPARAM)bCanUndo, (LPARAM)lpszNewText);
 }
 
+/**
+ * @brief 获取选择内容的开始字符和结束字符
+ * TODO: 
+ * @param hWnd 
+ * @param nStartChar 
+ * @param nEndChar 
+ */
 void RichEdit_GetSel(HWND hWnd, LONG& nStartChar, LONG& nEndChar)
 {
 	CHARRANGE cr = { 0, 0 };
@@ -130,13 +223,33 @@ void RichEdit_GetSel(HWND hWnd, LONG& nStartChar, LONG& nEndChar)
 	nEndChar = cr.cpMax;
 }
 
+/**
+ * @brief 设置选择范围的开始字符和结束字符
+ * TODO: 具体作用待明确
+ * @param hWnd 
+ * @param nStartChar 
+ * @param nEndChar 
+ * @return int 
+ */
 int RichEdit_SetSel(HWND hWnd, LONG nStartChar, LONG nEndChar)
 {
 	CHARRANGE cr = { nStartChar, nEndChar };
 	return (int)::SendMessage(hWnd, EM_EXSETSEL, 0, (LPARAM)&cr);
 }
 
-// 设置默认字体
+
+/**
+ * @brief 设置默认字体
+ * 
+ * @param hWnd 
+ * @param lpFontName 
+ * @param nFontSize 
+ * @param clrText 
+ * @param bBold 
+ * @param bItalic 
+ * @param bUnderLine 
+ * @param bIsLink 
+ */
 void RichEdit_SetDefFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize,
 						 COLORREF clrText, BOOL bBold, BOOL bItalic, 
 						 BOOL bUnderLine, BOOL bIsLink)
@@ -185,7 +298,14 @@ void RichEdit_SetDefFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize,
 	RichEdit_SetDefaultCharFormat(hWnd, cf);
 }
 
-// 设置默认字体名称和大小
+
+/**
+ * @brief 设置默认字体名称和大小
+ * 
+ * @param hWnd 
+ * @param lpFontName 
+ * @param nFontSize 
+ */
 void RichEdit_SetDefFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize)
 {
 	CHARFORMAT cf;
@@ -207,7 +327,13 @@ void RichEdit_SetDefFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize)
 	RichEdit_SetDefaultCharFormat(hWnd, cf);
 }
 
-// 设置默认字体颜色
+
+/**
+ * @brief 设置默认文本的颜色
+ * 
+ * @param hWnd 
+ * @param clrText 
+ */
 void RichEdit_SetDefTextColor(HWND hWnd, COLORREF clrText)
 {
 	CHARFORMAT cf;
@@ -220,7 +346,13 @@ void RichEdit_SetDefTextColor(HWND hWnd, COLORREF clrText)
 	RichEdit_SetDefaultCharFormat(hWnd, cf);
 }
 
-// 设置默认超链接
+
+/**
+ * @brief 设置默认超链接文本是否允许
+ * TODO: 
+ * @param hWnd 
+ * @param bEnable 
+ */
 void RichEdit_SetDefLinkText(HWND hWnd, BOOL bEnable)
 {
 	CHARFORMAT cf;
@@ -236,7 +368,19 @@ void RichEdit_SetDefLinkText(HWND hWnd, BOOL bEnable)
 	RichEdit_SetDefaultCharFormat(hWnd, cf);
 }
 
-// 设置字体
+
+/**
+ * @brief 设置字体
+ * TODO: 比较几个设置字体的区别
+ * @param hWnd 
+ * @param lpFontName 
+ * @param nFontSize 
+ * @param clrText 
+ * @param bBold 
+ * @param bItalic 
+ * @param bUnderLine 
+ * @param bIsLink 
+ */
 void RichEdit_SetFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize,
 					  COLORREF clrText, BOOL bBold, BOOL bItalic, 
 					  BOOL bUnderLine, BOOL bIsLink)
@@ -285,7 +429,14 @@ void RichEdit_SetFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize,
 	RichEdit_SetSelectionCharFormat(hWnd, cf);
 }
 
-// 设置字体名称和大小
+
+/**
+ * @brief 设置字体名称和大小
+ * TODO: 和其他的字体设置做比较
+ * @param hWnd 
+ * @param lpFontName 
+ * @param nFontSize 
+ */
 void RichEdit_SetFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize)
 {
 	CHARFORMAT cf;
@@ -307,7 +458,13 @@ void RichEdit_SetFont(HWND hWnd, LPCTSTR lpFontName, int nFontSize)
 	RichEdit_SetSelectionCharFormat(hWnd, cf);
 }
 
-// 设置字体颜色
+
+/**
+ * @brief 设置文本颜色
+ * 
+ * @param hWnd 
+ * @param clrText 
+ */
 void RichEdit_SetTextColor(HWND hWnd, COLORREF clrText)
 {
 	CHARFORMAT cf;
@@ -321,7 +478,13 @@ void RichEdit_SetTextColor(HWND hWnd, COLORREF clrText)
 	RichEdit_SetSelectionCharFormat(hWnd, cf);
 }
 
-// 设置超链接
+
+/**
+ * @brief 设置超链接
+ * TODO: 和其他的超链接函数比较
+ * @param hWnd 
+ * @param bEnable 
+ */
 void RichEdit_SetLinkText(HWND hWnd, BOOL bEnable)
 {
 	CHARFORMAT cf;
@@ -337,7 +500,14 @@ void RichEdit_SetLinkText(HWND hWnd, BOOL bEnable)
 	RichEdit_SetSelectionCharFormat(hWnd, cf);
 }
 
-// 设置左缩进(单位:缇)
+
+/**
+ * @brief 设置左缩进(单位:缇)
+ * 
+ * @param hWnd 
+ * @param nSize 
+ * @return BOOL 
+ */
 BOOL RichEdit_SetStartIndent(HWND hWnd, int nSize)
 {
 	PARAFORMAT2 pf2;
@@ -348,7 +518,19 @@ BOOL RichEdit_SetStartIndent(HWND hWnd, int nSize)
 	return (BOOL)::SendMessage(hWnd, EM_SETPARAFORMAT, 0, (LPARAM)&pf2);
 }
 
-// 插入表情图片
+
+/**
+ * @brief 插入表情图片
+ * 
+ * @param hWnd 
+ * @param lpszFileName 
+ * @param nFaceId 
+ * @param nFaceIndex 
+ * @param clrBg 
+ * @param bAutoScale 
+ * @param nReservedWidth 
+ * @return BOOL 
+ */
 BOOL RichEdit_InsertFace(HWND hWnd, LPCTSTR lpszFileName, int nFaceId,
 						 int nFaceIndex, COLORREF clrBg, BOOL bAutoScale, int nReservedWidth)
 {
@@ -431,6 +613,13 @@ Ret0:
 
 	return SUCCEEDED(hr);
 }
+
+/**
+ * @brief 从对应的编辑框获取消息列表
+ * 
+ * @param hWnd 
+ * @return RichEditMsgList 
+ */
 RichEditMsgList RichEdit_GetMsg(HWND hWnd)
 {
 	RichEditMsgList result;
@@ -518,7 +707,13 @@ RichEditMsgList RichEdit_GetMsg(HWND hWnd)
 }
 
 
-// 获取文本
+
+/**
+ * @brief 获取编辑框的文本内容
+ * 
+ * @param hWnd 
+ * @param strText 
+ */
 void RichEdit_GetText(HWND hWnd, WString& strText)
 {
 	REOBJECT reobject;
@@ -639,7 +834,13 @@ void RichEdit_GetText(HWND hWnd, WString& strText)
 }
 
 
-// 获取文本
+
+/**
+ * @brief 获取编辑框的图片信息
+ * 
+ * @param hWnd 
+ * @param arrImageInfo 
+ */
 void RichEdit_GetImageInfo(HWND hWnd, std::vector<ImageInfo*>& arrImageInfo)
 {
 	REOBJECT reobject;
@@ -721,7 +922,22 @@ void RichEdit_GetImageInfo(HWND hWnd, std::vector<ImageInfo*>& arrImageInfo)
 	pRichEditOle->Release();
 }
 
-// 替换选中文本
+
+/**
+ * @brief 替换选中文本
+ * 
+ * @param hWnd 
+ * @param lpszNewText 
+ * @param lpFontName 
+ * @param nFontSize 
+ * @param clrText 
+ * @param bBold 
+ * @param bItalic 
+ * @param bUnderLine 
+ * @param bIsLink 
+ * @param nStartIndent 
+ * @param bCanUndo 
+ */
 void RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText, LPCTSTR lpFontName,
 						 int nFontSize,	COLORREF clrText, BOOL bBold, BOOL bItalic, 
 						 BOOL bUnderLine, BOOL bIsLink, int nStartIndent, BOOL bCanUndo/* = FALSE*/)
@@ -736,6 +952,14 @@ void RichEdit_ReplaceSel(HWND hWnd, LPCTSTR lpszNewText, LPCTSTR lpFontName,
 	RichEdit_SetSel(hWnd, lEndChar, lEndChar);
 }
 
+/**
+ * @brief 获取编辑框中某个位置的图片
+ * TODO: 具体的逻辑需要画图
+ * @param hWnd 
+ * @param pt 
+ * @param pImageOle 
+ * @return BOOL 
+ */
 BOOL RichEdit_GetImageOle(HWND hWnd, POINT pt, IImageOle** pImageOle)
 {
 	IRichEditOle* pRichEditOle;
@@ -796,6 +1020,14 @@ BOOL RichEdit_GetImageOle(HWND hWnd, POINT pt, IImageOle** pImageOle)
 	return bRet;
 }
 
+/**
+ * @brief 获取编辑框某个矩形区域内的图片
+ * TODO: 具体的逻辑需要画图
+ * @param hWnd 
+ * @param rcRect 
+ * @param pImageOle 
+ * @return BOOL 
+ */
 BOOL RichEdit_GetImageOle(HWND hWnd, CRect& rcRect, IImageOle** pImageOle)
 {
 	IRichEditOle* pRichEditOle;
@@ -852,6 +1084,12 @@ BOOL RichEdit_GetImageOle(HWND hWnd, CRect& rcRect, IImageOle** pImageOle)
 	return !bRet;
 }
 
+/**
+ * @brief 获取编辑框中,客户自定义图片的个数(用户自定义图片和系统表情图片不同)
+ * 
+ * @param hWnd 
+ * @return int 
+ */
 int RichEdit_GetCustomPicCount(HWND hWnd)
 {
 	IRichEditOle* pRichEditOle;
@@ -900,6 +1138,12 @@ int RichEdit_GetCustomPicCount(HWND hWnd)
 	return nCustomPicCnt;
 }
 
+/**
+ * @brief 
+ * TODO: 具体作用待明确
+ * @param pTextServices 
+ * @return IRichEditOle* 
+ */
 IRichEditOle* RichEdit_GetOleInterface(ITextServices* pTextServices)
 {
 	IRichEditOle*pRichEditOle = NULL;
@@ -907,6 +1151,12 @@ IRichEditOle* RichEdit_GetOleInterface(ITextServices* pTextServices)
 	return pRichEditOle;
 }
 
+/**
+ * @brief 获取对应窗口的文本长度
+ * 
+ * @param pTextServices 
+ * @return int 
+ */
 int RichEdit_GetWindowTextLength(ITextServices* pTextServices)
 {
 	HRESULT lRes = 0;
@@ -914,6 +1164,14 @@ int RichEdit_GetWindowTextLength(ITextServices* pTextServices)
 	return (int)lRes;
 }
 
+/**
+ * @brief 获取对应窗口的文本内容
+ * 
+ * @param pTextServices 
+ * @param lpszStringBuf 
+ * @param nMaxCount 
+ * @return int 
+ */
 int RichEdit_GetWindowText(ITextServices* pTextServices, LPTSTR lpszStringBuf, int nMaxCount)
 {
 	HRESULT lRes = 0;
@@ -921,6 +1179,13 @@ int RichEdit_GetWindowText(ITextServices* pTextServices, LPTSTR lpszStringBuf, i
 	return (int)lRes;
 }
 
+/**
+ * @brief 获取对应窗口的文本内容
+ * 
+ * @param pTextServices 
+ * @param strText 
+ * @return int 
+ */
 int RichEdit_GetWindowText(ITextServices* pTextServices, WString& strText)
 {
 	int nLength;
@@ -938,6 +1203,14 @@ int RichEdit_GetWindowText(ITextServices* pTextServices, WString& strText)
 	return nLength;
 }
 
+/**
+ * @brief 获取对应编辑框的文本范围
+ * TODO: 为什么要获得范围
+ * @param pTextServices 
+ * @param lpchrg 
+ * @param strText 
+ * @return int 
+ */
 int RichEdit_GetTextRange(ITextServices* pTextServices, CHARRANGE* lpchrg, WString& strText)
 {
 	strText = _T("");
@@ -965,6 +1238,13 @@ int RichEdit_GetTextRange(ITextServices* pTextServices, CHARRANGE* lpchrg, WStri
 	return (int)lRes;
 }
 
+/**
+ * @brief 获取编辑框的默认字符格式
+ * 
+ * @param pTextServices 
+ * @param cf 
+ * @return DWORD 
+ */
 DWORD RichEdit_GetDefaultCharFormat(ITextServices* pTextServices, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
@@ -973,6 +1253,13 @@ DWORD RichEdit_GetDefaultCharFormat(ITextServices* pTextServices, CHARFORMAT& cf
 	return (DWORD)lRes;
 }
 
+/**
+ * @brief 设置默认的字符格式
+ * 
+ * @param pTextServices 
+ * @param cf 
+ * @return BOOL 
+ */
 BOOL RichEdit_SetDefaultCharFormat(ITextServices* pTextServices, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
@@ -981,6 +1268,13 @@ BOOL RichEdit_SetDefaultCharFormat(ITextServices* pTextServices, CHARFORMAT& cf)
 	return (BOOL)lRes;
 }
 
+/**
+ * @brief 获取选中的字符格式
+ * 
+ * @param pTextServices 
+ * @param cf 
+ * @return DWORD 
+ */
 DWORD RichEdit_GetSelectionCharFormat(ITextServices* pTextServices, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
@@ -989,6 +1283,13 @@ DWORD RichEdit_GetSelectionCharFormat(ITextServices* pTextServices, CHARFORMAT& 
 	return (DWORD)lRes;
 }
 
+/**
+ * @brief 设置选中的字符格式
+ * 
+ * @param pTextServices 
+ * @param cf 
+ * @return BOOL 
+ */
 BOOL RichEdit_SetSelectionCharFormat(ITextServices* pTextServices, CHARFORMAT& cf)
 {
 	cf.cbSize = sizeof(CHARFORMAT);
