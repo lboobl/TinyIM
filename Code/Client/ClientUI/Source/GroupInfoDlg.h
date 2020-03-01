@@ -16,7 +16,7 @@
 #include "Utils.h"
 #include "SkinLib/SkinLib.h"
 #include "UI_USER_INFO.h"
-//#include "FlamingoClient.h"
+
 
 class CGroupInfoDlg : public CDialogImpl<CGroupInfoDlg>, public CMessageFilter
 {
@@ -56,27 +56,46 @@ private:
 public:
 
 	HWND m_hMainDlg;
-	UINT m_nGroupCode;
+	UINT m_nGroupCode;//TODO: 待删除
 	std::string m_strGroupId;
 
 private:
 	CSkinDialog m_SkinDlg;
 
-	CSkinStatic m_staName, m_staCreater, m_staClass;
-	CSkinStatic m_staNumber, m_staCreateTime, m_staRemark;
-	CSkinStatic m_staMemo, m_staFingerMemo;
-	CSkinStatic m_staCardName, m_staPhone, m_staGender, m_staEmail;
+	CSkinStatic m_staName;
+	CSkinStatic m_staCreater;
+	CSkinStatic m_staClass;
+
+	CSkinStatic m_staNumber; 
+	CSkinStatic m_staCreateTime; 
+	CSkinStatic m_staRemark;
+	CSkinStatic m_staMemo;
+	CSkinStatic m_staFingerMemo;
+	CSkinStatic m_staCardName;
+	CSkinStatic m_staPhone;
+	CSkinStatic m_staGender;
+	CSkinStatic m_staEmail;
 	CSkinStatic m_staRemark2;
 
-	CSkinEdit m_edtName, m_edtCreater, m_edtClass;
-	CSkinEdit m_edtNumber, m_edtCreateTime, m_edtRemark;
-	CSkinEdit m_edtMemo, m_edtFingerMemo;
-	CSkinEdit m_edtCardName, m_edtPhone, m_edtGender, m_edtEmail;
+	CSkinEdit m_edtName;
+	CSkinEdit m_edtCreater;
+	CSkinEdit m_edtClass;
+	CSkinEdit m_edtNumber;
+	CSkinEdit m_edtCreateTime;
+	CSkinEdit m_edtRemark;
+	CSkinEdit m_edtMemo;
+	CSkinEdit m_edtFingerMemo;
+	CSkinEdit m_edtCardName;
+	CSkinEdit m_edtPhone;
+	CSkinEdit m_edtGender;
+	CSkinEdit m_edtEmail;
 	CSkinEdit m_edtRemark2;
 
-	CSkinButton m_btnOk, m_btnCancel;
+	CSkinButton m_btnOk;
+	CSkinButton m_btnCancel;
 
-	HICON m_hDlgIcon, m_hDlgSmallIcon;
+	HICON m_hDlgIcon;
+	HICON m_hDlgSmallIcon;
 };
 
 #endif 

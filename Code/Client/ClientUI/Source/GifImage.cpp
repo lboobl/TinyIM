@@ -1,6 +1,22 @@
-﻿#include "stdafx.h"
+﻿
+/**
+ * @file GifImage.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 显示GIF图像的实现类
+ * TODO: 具体的作用需要再次确定
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "GifImage.h"
 
+/**
+ * @brief Construct a new CGifImage::CGifImage object
+ * 
+ */
 CGifImage::CGifImage(void)
 {
 	m_pImage = NULL;
@@ -9,11 +25,21 @@ CGifImage::CGifImage(void)
 	m_pFrameDelay = NULL;
 }
 
+/**
+ * @brief Destroy the CGifImage::CGifImage object
+ * 
+ */
 CGifImage::~CGifImage(void)
 {
 	Destroy();
 }
 
+/**
+ * @brief 从文件中加载图片
+ * 
+ * @param pszFileName 
+ * @return BOOL 
+ */
 BOOL CGifImage::LoadFromFile(LPCTSTR pszFileName)
 {
 	Destroy();
@@ -35,6 +61,12 @@ BOOL CGifImage::LoadFromFile(LPCTSTR pszFileName)
 	return ReadGifInfo();
 }
 
+/**
+ * @brief 从数据流中加载图片
+ * 
+ * @param pStream 
+ * @return BOOL 
+ */
 BOOL CGifImage::LoadFromIStream(IStream* pStream)
 {
 	Destroy();
@@ -56,6 +88,13 @@ BOOL CGifImage::LoadFromIStream(IStream* pStream)
 	return ReadGifInfo();
 }
 
+/**
+ * @brief 从内存中加载图片
+ * 
+ * @param lpBuf 
+ * @param dwSize 
+ * @return BOOL 
+ */
 BOOL CGifImage::LoadFromBuffer(const BYTE* lpBuf, DWORD dwSize)
 {
 	if (NULL == lpBuf || dwSize <= 0)
@@ -89,16 +128,38 @@ BOOL CGifImage::LoadFromBuffer(const BYTE* lpBuf, DWORD dwSize)
 	return bRet;
 }
 
+/**
+ * @brief 从资源中加载图片
+ * TODO: 未实现
+ * @param hInstance 
+ * @param pszResourceName 
+ * @param pszResType 
+ * @return BOOL 
+ */
 BOOL CGifImage::LoadFromResource(HINSTANCE hInstance, LPCTSTR pszResourceName, LPCTSTR pszResType)
 {
 	return TRUE;
 }
 
+/**
+ * @brief 根据资源ID来加载图片
+ * TODO: 未实现
+ * @param hInstance 
+ * @param nIDResource 
+ * @param pszResType 
+ * @return BOOL 
+ */
 BOOL CGifImage::LoadFromResource(HINSTANCE hInstance, UINT nIDResource, LPCTSTR pszResType)
 {
 	return TRUE;
 }
 
+/**
+ * @brief 将GIF图片保存为文件
+ * 
+ * @param pszFileName 
+ * @return BOOL 
+ */
 BOOL CGifImage::SaveAsFile(LPCTSTR pszFileName)
 {
 	if (NULL == pszFileName || NULL == m_pImage)
@@ -116,6 +177,11 @@ BOOL CGifImage::SaveAsFile(LPCTSTR pszFileName)
 	return (status != Gdiplus::Ok) ? FALSE : TRUE;
 }
 
+
+/**
+ * @brief 释放保存GIF图片的相关内存
+ * 
+ */
 void CGifImage::Destroy()
 {
 	m_nFrameCnt = 0;
@@ -134,16 +200,32 @@ void CGifImage::Destroy()
 	}
 }
 
+/**
+ * @brief 获取GIF图片的帧数
+ * 
+ * @return UINT 
+ */
 UINT CGifImage::GetFrameCount()
 {
 	return m_nFrameCnt;
 }
 
+/**
+ * @brief 判断是否为动态的帧数
+ * 
+ * @return BOOL 
+ */
 BOOL CGifImage::IsAnimatedGif()
 {
 	return m_nFrameCnt > 1;
 }
 
+/**
+ * @brief 获取当前帧的时延
+ * 
+ * @param nFramePos 
+ * @return long 
+ */
 long CGifImage::GetFrameDelay(int nFramePos/* = -1*/)
 {
 	if (!IsAnimatedGif() || NULL == m_pFrameDelay)
@@ -161,6 +243,10 @@ long CGifImage::GetFrameDelay(int nFramePos/* = -1*/)
 		return 0;
 }
 
+/**
+ * @brief 激活下一帧图像
+ * 
+ */
 void CGifImage::ActiveNextFrame()
 {
 	if (m_pImage != NULL && IsAnimatedGif())
@@ -177,6 +263,12 @@ void CGifImage::ActiveNextFrame()
 	}
 }
 
+/**
+ * @brief 选择当前的激活帧
+ * 
+ * TODO: 此函数应该被某个函数作为循环体调用了
+ * @param nFramePos 
+ */
 void CGifImage::SelectActiveFrame(int nFramePos)
 {
 	if (m_pImage != NULL && IsAnimatedGif() 
@@ -188,41 +280,17 @@ void CGifImage::SelectActiveFrame(int nFramePos)
 	}
 }
 
+/**
+ * @brief 绘制具体的图像
+ * 
+ * @param hDestDC 
+ * @param xDest 
+ * @param yDest 
+ * @param nFramePos 
+ * @return BOOL 
+ */
 BOOL CGifImage::Draw(HDC hDestDC, int xDest, int yDest, int nFramePos/* = -1*/)
 {
-// 	HDC hMemDC;
-// 	HBITMAP hBitmap = NULL, hOldBmp;
-// 	Gdiplus::Bitmap* pBitmap;
-// 	int nWidth, nHeight;
-// 
-// 	if (NULL == m_pImage)
-// 		return FALSE;
-// 
-// 	if (nFramePos != -1)
-// 		SelectActiveFrame(nFramePos);
-// 
-// 	nWidth = m_pImage->GetWidth();
-// 	nHeight = m_pImage->GetHeight();
-// 
-// 	pBitmap = (Gdiplus::Bitmap*)m_pImage;
-// 	pBitmap->GetHBITMAP(Gdiplus::Color::Transparent, &hBitmap);
-// 
-// 	hMemDC = ::CreateCompatibleDC(hDestDC);
-// 	hOldBmp = (HBITMAP)::SelectObject(hMemDC, hBitmap);
-// 
-// 	BLENDFUNCTION stBlendFunction = {0};
-// 	stBlendFunction.BlendOp= AC_SRC_OVER;
-// 	stBlendFunction.SourceConstantAlpha = 255;
-// 	stBlendFunction.AlphaFormat = AC_SRC_ALPHA;
-// 
-// 	BOOL bStat = ::AlphaBlend(hDestDC, xDest, yDest, nWidth, nHeight,
-// 		hMemDC, 0, 0, nWidth, nHeight, stBlendFunction);
-// 
-// 	::SelectObject(hMemDC, hOldBmp);
-// 	::DeleteObject(hBitmap);
-// 	::DeleteDC(hMemDC);
-// 
-// 	return TRUE;
  	Gdiplus::Graphics graphics(hDestDC);
  	Gdiplus::Status status = graphics.DrawImage(m_pImage, xDest, yDest);
  	if(status != Gdiplus::Ok)
@@ -231,43 +299,16 @@ BOOL CGifImage::Draw(HDC hDestDC, int xDest, int yDest, int nFramePos/* = -1*/)
  		return TRUE;
 }
 
+/**
+ * @brief 绘制具体的图像
+ * 
+ * @param hDestDC 
+ * @param rectDest 
+ * @param nFramePos 
+ * @return BOOL 
+ */
 BOOL CGifImage::Draw(HDC hDestDC, const RECT& rectDest, int nFramePos/* = -1*/)
 {
-// 	HDC hMemDC;
-// 	HBITMAP hBitmap = NULL, hOldBmp;
-// 	Gdiplus::Bitmap* pBitmap;
-// 	int nWidth, nHeight;
-// 
-// 	if (NULL == m_pImage)
-// 		return FALSE;
-// 
-// 	if (nFramePos != -1)
-// 		SelectActiveFrame(nFramePos);
-// 
-// 	nWidth = m_pImage->GetWidth();
-// 	nHeight = m_pImage->GetHeight();
-//
-// 	pBitmap = (Gdiplus::Bitmap*)m_pImage;
-// 	pBitmap->GetHBITMAP(Gdiplus::Color::Transparent, &hBitmap);
-// 
-// 	hMemDC = ::CreateCompatibleDC(hDestDC);
-// 	hOldBmp = (HBITMAP)::SelectObject(hMemDC, hBitmap);
-// 
-// 	BLENDFUNCTION stBlendFunction = {0};
-// 	stBlendFunction.BlendOp= AC_SRC_OVER;
-// 	stBlendFunction.SourceConstantAlpha = 255;
-// 	stBlendFunction.AlphaFormat = AC_SRC_ALPHA;
-// 
-// 	BOOL bStat = ::AlphaBlend(hDestDC, rectDest.left, rectDest.top, 
-// 		rectDest.right - rectDest.left, rectDest.bottom - rectDest.top,
-// 		hMemDC, 0, 0, nWidth, nHeight, stBlendFunction);
-// 
-// 	::SelectObject(hMemDC, hOldBmp);
-// 	::DeleteObject(hBitmap);
-// 	::DeleteDC(hMemDC);
-//
-//	return TRUE;
-
 	if (NULL == m_pImage)
 		return FALSE;
 
@@ -286,6 +327,11 @@ BOOL CGifImage::Draw(HDC hDestDC, const RECT& rectDest, int nFramePos/* = -1*/)
  		return TRUE;
 }
 
+/**
+ * @brief 获取图像的宽度
+ * 
+ * @return int 
+ */
 int CGifImage::GetWidth()
 {
 	if (m_pImage != NULL)
@@ -294,6 +340,11 @@ int CGifImage::GetWidth()
 		return 0;
 }
 
+/**
+ * @brief 获取图像的高度
+ * 
+ * @return int 
+ */
 int CGifImage::GetHeight()
 {
 	if (m_pImage != NULL)
@@ -302,17 +353,34 @@ int CGifImage::GetHeight()
 		return 0;
 }
 
+/**
+ * @brief 获取当前帧的位置
+ * 
+ * @return UINT 
+ */
 UINT CGifImage::GetCurFramePos()
 {
 	return m_nFramePos;
 }
 
+/**
+ * @brief 获取原始数据格式
+ * 
+ * @param lpGuid 
+ * @return BOOL 
+ */
 BOOL CGifImage::GetRawFormat(GUID* lpGuid)
 {
 	Gdiplus::Status status = m_pImage->GetRawFormat(lpGuid);
 	return (Gdiplus::Ok == status) ? TRUE : FALSE;
 }
 
+/**
+ * @brief 
+ * TODO: 具体作用不清楚
+ * @param lpExtension 
+ * @return CLSID 
+ */
 CLSID CGifImage::GetEncoderClsidByExtension(const WCHAR* lpExtension)
 {
 	CLSID clsid = CLSID_NULL;
@@ -378,6 +446,11 @@ CLSID CGifImage::GetEncoderClsidByExtension(const WCHAR* lpExtension)
 	return clsid;
 }
 
+/**
+ * @brief 读取GIF图片的信息
+ * 
+ * @return BOOL 
+ */
 BOOL CGifImage::ReadGifInfo()
 {
 	if (NULL == m_pImage)

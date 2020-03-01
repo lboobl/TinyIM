@@ -1,17 +1,41 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file LoginAccountList.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 登录列表实现类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "LoginAccountList.h"
 
+/**
+ * @brief Construct a new CLoginAccountList::CLoginAccountList object
+ * 
+ */
 CLoginAccountList::CLoginAccountList(void)
 {
 	m_nLastLoginUser = 0;
 }
 
+/**
+ * @brief Destroy the CLoginAccountList::CLoginAccountList object
+ * 
+ */
 CLoginAccountList::~CLoginAccountList(void)
 {
 	Clear();
 }
 
-// 加载登录帐号列表文件
+
+/**
+ * @brief 加载登录帐号列表文件
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::LoadFile(LPCTSTR lpszFileName)
 {
 	if (NULL == lpszFileName || NULL ==*lpszFileName)
@@ -40,7 +64,13 @@ BOOL CLoginAccountList::LoadFile(LPCTSTR lpszFileName)
 	return TRUE;
 }
 
-// 保存登录帐号列表文件
+
+/**
+ * @brief 保存登录帐号列表到文件
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::SaveFile(LPCTSTR lpszFileName)
 {
 	if (NULL == lpszFileName || NULL ==*lpszFileName)
@@ -78,7 +108,17 @@ BOOL CLoginAccountList::SaveFile(LPCTSTR lpszFileName)
 	return TRUE;
 }
 
-// 添加帐号
+ 
+/**
+ * @brief 添加帐号到列表
+ * 
+ * @param lpszUser 用户名
+ * @param lpszPwd 登录密码
+ * @param nStatus 状态
+ * @param bRememberPwd 是否记住密码 
+ * @param bAutoLogin 是否自动登录
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::Add(LPCTSTR lpszUser, LPCTSTR lpszPwd, 
 	E_UI_ONLINE_STATUS nStatus, BOOL bRememberPwd, BOOL bAutoLogin)
 {
@@ -111,7 +151,13 @@ BOOL CLoginAccountList::Add(LPCTSTR lpszUser, LPCTSTR lpszPwd,
 	return TRUE;
 }
 
-// 删除帐号
+
+/**
+ * @brief 根据索引,删除对应账号的信息
+ * 
+ * @param nIndex 
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::Del(int nIndex)
 {
 	if (nIndex < 0 || nIndex >= (int)m_arrLoginAccount.size())
@@ -124,7 +170,18 @@ BOOL CLoginAccountList::Del(int nIndex)
 	return TRUE;
 }
 
-// 修改帐号
+
+/**
+ * @brief 根据索引,修改帐号信息
+ * 
+ * @param nIndex 索引值
+ * @param lpszUser 用户名
+ * @param lpszPwd 用户密码
+ * @param nStatus 用户状态
+ * @param bRememberPwd 是否记住密码
+ * @param bAutoLogin 是否自动登录
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::Modify(int nIndex, LPCTSTR lpszUser, LPCTSTR lpszPwd, 
 	E_UI_ONLINE_STATUS nStatus, BOOL bRememberPwd, BOOL bAutoLogin)
 {
@@ -152,7 +209,10 @@ BOOL CLoginAccountList::Modify(int nIndex, LPCTSTR lpszUser, LPCTSTR lpszPwd,
 	return TRUE;
 }
 
-// 清除所有帐号
+/**
+ * @brief 清除所有帐号
+ * 
+ */
 void CLoginAccountList::Clear()
 {
 	for (int i = 0; i < (int)m_arrLoginAccount.size(); i++)
@@ -164,13 +224,24 @@ void CLoginAccountList::Clear()
 	m_arrLoginAccount.clear();
 }
 
-// 获取帐号总数
+
+/**
+ * @brief 获取帐号总数
+ * 
+ * @return int 
+ */
 int CLoginAccountList::GetCount()
 {
 	return (int)m_arrLoginAccount.size();
 }
 
-// 获取帐号信息
+// 
+/**
+ * @brief 根据索引,获取帐号信息
+ * 
+ * @param nIndex 
+ * @return LOGIN_ACCOUNT_INFO* 
+ */
 LOGIN_ACCOUNT_INFO* CLoginAccountList::GetAccountInfo(int nIndex)
 {
 	if (nIndex < 0 || nIndex >= (int)m_arrLoginAccount.size())
@@ -179,7 +250,13 @@ LOGIN_ACCOUNT_INFO* CLoginAccountList::GetAccountInfo(int nIndex)
 	return m_arrLoginAccount[nIndex];
 }
 
-// 查找帐号
+
+/**
+ * @brief 根据用户名,查找帐号相关信息
+ * 
+ * @param lpszUser 
+ * @return LOGIN_ACCOUNT_INFO* 
+ */
 LOGIN_ACCOUNT_INFO* CLoginAccountList::Find(LPCTSTR lpszUser)
 {
 	if (NULL == lpszUser)
@@ -194,16 +271,32 @@ LOGIN_ACCOUNT_INFO* CLoginAccountList::Find(LPCTSTR lpszUser)
 	return NULL;
 }
 
+/**
+ * @brief 获取最后登录账号的索引值
+ * 
+ * @return int 
+ */
 int CLoginAccountList::GetLastLoginUser()
 {
 	return m_nLastLoginUser;
 }
 
+/**
+ * @brief 获取最后登录账号的账号信息
+ * 
+ * @return LOGIN_ACCOUNT_INFO* 
+ */
 LOGIN_ACCOUNT_INFO* CLoginAccountList::GetLastLoginAccountInfo()
 {
 	return GetAccountInfo(m_nLastLoginUser);
 }
 
+/**
+ * @brief 获取最后登录的账号的信息
+ * 
+ * @param lpAccount 
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::GetLastLoginAccountInfo(LOGIN_ACCOUNT_INFO* lpAccount)
 {
 	if (NULL == lpAccount)
@@ -217,6 +310,11 @@ BOOL CLoginAccountList::GetLastLoginAccountInfo(LOGIN_ACCOUNT_INFO* lpAccount)
 	return TRUE;
 }
 
+/**
+ * @brief 设置最后登录的账号
+ * 
+ * @param lpszUser 最后登录的用户名
+ */
 void CLoginAccountList::SetLastLoginUser(LPCTSTR lpszUser)
 {
 	if (NULL == lpszUser)
@@ -233,13 +331,24 @@ void CLoginAccountList::SetLastLoginUser(LPCTSTR lpszUser)
 	}
 }
 
+/**
+ * @brief 最后一个用户是否是自动登录
+ * 
+ * @return BOOL 
+ */
 BOOL CLoginAccountList::IsAutoLogin()
 {
 	LOGIN_ACCOUNT_INFO* lpAccount = GetAccountInfo(m_nLastLoginUser);
 	return (lpAccount != NULL) ? lpAccount->bAutoLogin : FALSE;
 }
 
-// 加密
+
+/**
+ * @brief 就地加密
+ * 
+ * @param lpBuf 
+ * @param nLen 
+ */
 void CLoginAccountList::Encrypt(char* lpBuf, int nLen)
 {
 	for (int i = 0; i < nLen; i++)
@@ -248,7 +357,10 @@ void CLoginAccountList::Encrypt(char* lpBuf, int nLen)
 	}
 }
 
-// 解密
+/**
+ * @brief 就地解密
+ * 
+ */
 void CLoginAccountList::Decrypt(char* lpBuf, int nLen)
 {
 	for (int i = 0; i < nLen; i++)
@@ -257,6 +369,15 @@ void CLoginAccountList::Decrypt(char* lpBuf, int nLen)
 	}
 }
 
+/**
+ * @brief 读取相关的数据
+ * 
+ * @param lpBuf 
+ * @param nSize 
+ * @param nCount 
+ * @param fp 
+ * @return int 
+ */
 int CLoginAccountList::_fread(void* lpBuf, int nSize, int nCount, FILE* fp)
 {
 	int nRet = fread(lpBuf, nSize, nCount, fp);
@@ -264,6 +385,15 @@ int CLoginAccountList::_fread(void* lpBuf, int nSize, int nCount, FILE* fp)
 	return nRet;
 }
 
+/**
+ * @brief 写入相关的数据
+ * 
+ * @param lpBuf 
+ * @param nSize 
+ * @param nCount 
+ * @param fp 
+ * @return int 
+ */
 int CLoginAccountList::_fwrite(const void* lpBuf, int nSize, int nCount, FILE* fp)
 {
 	int nLen = nSize*nCount;

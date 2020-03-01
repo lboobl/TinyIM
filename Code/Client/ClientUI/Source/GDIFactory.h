@@ -2,7 +2,8 @@
 /**
  * @file GDIFactory.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief GDI工厂类，暂时不知道用途
+ * @brief GDI工厂类,
+ * TODO: 暂时不知道用途
  * @version 0.1
  * @date 2019-08-08
  * 

@@ -1,18 +1,43 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file GroupInfoDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 群组信息对话框实现类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+#include "stdafx.h"
 #include "GroupInfoDlg.h"
 #include "UI_USER_INFO.h"
+
+/**
+ * @brief Construct a new CGroupInfoDlg::CGroupInfoDlg object
+ * 
+ */
 CGroupInfoDlg::CGroupInfoDlg(void)
 {
-	//m_lpFMGClient = NULL;
 	m_hMainDlg = NULL;
 	m_nGroupCode = 0;
-	m_hDlgIcon = m_hDlgSmallIcon = NULL;
+	m_hDlgIcon = NULL;
+	m_hDlgSmallIcon = NULL;
 }
 
+/**
+ * @brief Destroy the CGroupInfoDlg::CGroupInfoDlg object
+ * 
+ */
 CGroupInfoDlg::~CGroupInfoDlg(void)
 {
 }
 
+/**
+ * @brief 对客户端消息进行预处理
+ * 
+ * @param pMsg 
+ * @return BOOL 
+ */
 BOOL CGroupInfoDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//支持回车键查找
@@ -25,6 +50,13 @@ BOOL CGroupInfoDlg::PreTranslateMessage(MSG* pMsg)
 	return CWindow::IsDialogMessage(pMsg);
 }
 
+/**
+ * @brief 响应初始化对话框的消息
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CGroupInfoDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -66,12 +98,21 @@ BOOL CGroupInfoDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 响应关闭对话框
+ * 
+ */
 void CGroupInfoDlg::OnClose()
 {
 	ShowWindow(SW_HIDE);
 	::PostMessage(m_hMainDlg, WM_CLOSE_GROUP_INFO_DLG, m_nGroupCode, NULL);
 }
 
+
+/**
+ * @brief 响应对话框销毁
+ * 
+ */
 void CGroupInfoDlg::OnDestroy()
 {
 	SetMsgHandled(FALSE);
@@ -95,30 +136,57 @@ void CGroupInfoDlg::OnDestroy()
 	pLoop->RemoveMessageFilter(this);
 }
 
-// “确定”按钮
+
+/**
+ * @brief 响应“确定”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupInfoDlg::OnBtn_Ok(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	SendMessage(WM_CLOSE);
 }
 
-// “取消”按钮
+
+/**
+ * @brief 响应“取消”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CGroupInfoDlg::OnBtn_Cancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	SendMessage(WM_CLOSE);
 }
 
-// 更新群信息
+
+/**
+ * @brief 响应更新群信息
+ * 
+ */
 void CGroupInfoDlg::OnUpdateGroupInfo()
 {
 	UpdateCtrls();
 }
 
-// 更新群号码
+
+/**
+ * @brief 响应更新群号码
+ * 
+ */
 void CGroupInfoDlg::OnUpdateGroupNumber()
 {
 	UpdateCtrls();
 }
 
+/**
+ * @brief 获取群信息指针
+ * 
+ * @return C_UI_GroupInfo* 
+ */
 C_UI_GroupInfo* CGroupInfoDlg::GetGroupInfoPtr()
 {
 	//if (NULL == m_lpFMGClient)
@@ -131,6 +199,10 @@ C_UI_GroupInfo* CGroupInfoDlg::GetGroupInfoPtr()
 		return NULL;
 }
 
+/**
+ * @brief 更新界面的所有控件
+ * 
+ */
 void CGroupInfoDlg::UpdateCtrls()
 {
 	CString strText;
@@ -171,7 +243,12 @@ void CGroupInfoDlg::UpdateCtrls()
 	}
 }
 
-// 初始化
+
+/**
+ * @brief 初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CGroupInfoDlg::Init()
 {
 	m_SkinDlg.SetBgPic(_T("LoginPanel_window_windowBkg.png"), CRect(40, 86, 152, 155));
@@ -281,7 +358,11 @@ BOOL CGroupInfoDlg::Init()
 	return TRUE;
 }
 
-// 反初始化
+
+/**
+ * @brief 反初始化
+ * 
+ */
 void CGroupInfoDlg::UnInit()
 {
 	if (m_staName.IsWindow())

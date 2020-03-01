@@ -1,16 +1,41 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file ImageEx.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 图像扩展类
+ * @version 0.1
+ * @date 2020-03-01
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "ImageEx.h"
 
+/**
+ * @brief Construct a new CImageEx::CImageEx object
+ * 
+ */
 CImageEx::CImageEx(void)
 {
 	m_bIsNinePart = FALSE;
 	::SetRectEmpty(&m_rcNinePart);
 }
 
+/**
+ * @brief Destroy the CImageEx::CImageEx object
+ * 
+ */
 CImageEx::~CImageEx(void)
 {
 }
 
+/**
+ * @brief 从文件中加载图像
+ * 
+ * @param pszFileName 图像文件名
+ * @return BOOL 
+ */
 BOOL CImageEx::LoadFromFile(LPCTSTR pszFileName)
 {
 	HRESULT hr = CImage::Load(pszFileName);
@@ -26,6 +51,12 @@ BOOL CImageEx::LoadFromFile(LPCTSTR pszFileName)
 	}
 }
 
+/**
+ * @brief 从输入流中加载图像
+ * 
+ * @param pStream 输入流数据
+ * @return BOOL 
+ */
 BOOL CImageEx::LoadFromIStream(IStream* pStream)
 {
 	HRESULT hr = CImage::Load(pStream);
@@ -40,6 +71,13 @@ BOOL CImageEx::LoadFromIStream(IStream* pStream)
 	}
 }
 
+/**
+ * @brief 从内存中加载图像数据
+ * 
+ * @param lpBuf 
+ * @param dwSize 
+ * @return BOOL 
+ */
 BOOL CImageEx::LoadFromBuffer(const BYTE* lpBuf, DWORD dwSize)
 {
 	if (NULL == lpBuf || dwSize <= 0)
@@ -73,6 +111,14 @@ BOOL CImageEx::LoadFromBuffer(const BYTE* lpBuf, DWORD dwSize)
 	return bRet;
 }
 
+/**
+ * @brief 从资源中加载图像数据
+ * 
+ * @param hInstance 
+ * @param pszResourceName 
+ * @param pszResType 
+ * @return BOOL 
+ */
 BOOL CImageEx::LoadFromResource(HINSTANCE hInstance, LPCTSTR pszResourceName, LPCTSTR pszResType)
 {
 	HRSRC hRsrc = ::FindResource(hInstance, pszResourceName, pszResType);
@@ -131,11 +177,24 @@ BOOL CImageEx::LoadFromResource(HINSTANCE hInstance, LPCTSTR pszResourceName, LP
 	return bRet;
 }
 
+/**
+ * @brief 从资源ID加载图像
+ * 
+ * @param hInstance 
+ * @param nIDResource 
+ * @param pszResType 
+ * @return BOOL 
+ */
 BOOL CImageEx::LoadFromResource(HINSTANCE hInstance, UINT nIDResource, LPCTSTR pszResType)
 {
 	return LoadFromResource(hInstance, MAKEINTRESOURCE(nIDResource), pszResType);
 }
 
+/**
+ * @brief 设置9部分
+ * TODO: 函数名比较奇怪
+ * @param lpNinePart 
+ */
 void CImageEx::SetNinePart(const RECT* lpNinePart)
 {
 	if ((NULL == lpNinePart) || (0 == lpNinePart->left && 0 == lpNinePart->top
@@ -151,6 +210,13 @@ void CImageEx::SetNinePart(const RECT* lpNinePart)
 	}
 }
 
+/**
+ * @brief 绘制矩形区域的图像
+ * TODO: 函数需要重新命名
+ * @param hDestDC 
+ * @param rectDest 
+ * @return BOOL 
+ */
 BOOL CImageEx::Draw2(HDC hDestDC, const RECT& rectDest)
 {
 	if (m_bIsNinePart)
@@ -167,7 +233,11 @@ BOOL CImageEx::Draw2(HDC hDestDC, const RECT& rectDest)
 	return Draw(hDestDC, rectDest);
 }
 
-// 图像灰度化
+
+/**
+ * @brief 图像灰度化
+ * 
+ */
 void CImageEx::GrayScale()
 {
 	int nWidth = GetWidth();
@@ -192,7 +262,12 @@ void CImageEx::GrayScale()
 	}
 }
 
-// Alpha预乘
+
+/**
+ * @brief Alpha预乘
+ * TODO: 具体作用不清楚
+ * @return BOOL 
+ */
 BOOL CImageEx::AlphaPremultiplication()
 {
 	LPVOID pBitsSrc = NULL;
@@ -225,6 +300,22 @@ BOOL CImageEx::AlphaPremultiplication()
 	return TRUE;
 }
 
+/**
+ * @brief 绘制9部分的图像
+ * TODO: 为什么叫Nine不清楚
+ * @param pleft 
+ * @param ptop 
+ * @param pright 
+ * @param pbottom 
+ * @param hDC 
+ * @param height 
+ * @param width 
+ * @param left 
+ * @param top 
+ * @param right 
+ * @param bottom 
+ * @return BOOL 
+ */
 BOOL CImageEx::DrawNinePartImage(int pleft, int ptop, int pright, int pbottom,
 					   HDC hDC, int height, int width, int left, int top, int right, int bottom)
 {
@@ -303,6 +394,20 @@ BOOL CImageEx::DrawNinePartImage(int pleft, int ptop, int pright, int pbottom,
 	return TRUE;
 }
 
+/**
+ * @brief 绘制9部分的图像
+ * 
+ * @param hDC 
+ * @param x 
+ * @param y 
+ * @param cx 
+ * @param cy 
+ * @param nLeft 
+ * @param nTop 
+ * @param nRight 
+ * @param nBottom 
+ * @return BOOL 
+ */
 BOOL CImageEx::DrawNinePartImage(HDC hDC, int x, int y, int cx, int cy, 
 								 int nLeft, int nTop, int nRight, int nBottom)
 {
@@ -384,7 +489,13 @@ BOOL CImageEx::DrawNinePartImage(HDC hDC, int x, int y, int cx, int cy,
 	return TRUE;
 }
 
-//获取文件类型(通过文件头几个字节获取)
+
+/**
+ * @brief 获取文件类型(通过文件头几个字节获取)
+ * TODO: 返回值待优化,具体的类型需要重新定义
+ * @param lpszFileName 
+ * @return int 
+ */
 int CImageEx::GetFileType(LPCTSTR lpszFileName)
 {
 	unsigned char png_head[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};

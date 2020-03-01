@@ -2,7 +2,7 @@
 /**
  * @file GifImage.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief 用来显示GIF图像的类
  * @version 0.1
  * @date 2019-08-08
  * 

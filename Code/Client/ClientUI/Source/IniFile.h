@@ -1,10 +1,7 @@
-﻿
-/**
- * @brief Ini文件操作类
+﻿/**
+ * @brief 
  * 
  */
-
-
 
 #ifndef _TINY_IM_C_INI_FILE_H_ 
 #define _TINY_IM_C_INI_FILE_H_

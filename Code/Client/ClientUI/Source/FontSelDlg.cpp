@@ -219,7 +219,14 @@ void CFontSelDlg::OnBtn_Italic(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “下划线”按钮
+
+/**
+ * @brief 响应字体风格的“下划线”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnBtn_UnderLine(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	if (BN_PUSHED == uNotifyCode || BN_UNPUSHED == uNotifyCode)
@@ -234,7 +241,14 @@ void CFontSelDlg::OnBtn_UnderLine(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “颜色”按钮
+
+/**
+ * @brief 响应字体“颜色”按钮,修改字体颜色
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CFontSelDlg::OnBtn_Color(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CColorDialog colorDlg=m_userConfig.GetFontColor();
@@ -250,7 +264,12 @@ void CFontSelDlg::OnBtn_Color(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// 初始化字体分类工具栏
+
+/**
+ * @brief 初始化字体分类工具栏
+ * 
+ * @return BOOL 
+ */
 BOOL CFontSelDlg::InitFontClassToolBar()
 {
 	int nIndex = m_tbFontClass.AddItem(ID_GROUP_CHAT_DLG_SYS_FONT_BTN, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
@@ -278,7 +297,12 @@ BOOL CFontSelDlg::InitFontClassToolBar()
 	return TRUE;
 }
 
-// 初始化字体名称组合框
+
+/**
+ * @brief 初始化字体名称组合框
+ * 
+ * @return BOOL 
+ */
 BOOL CFontSelDlg::InitFontNameComboBox()
 {
 	m_cboFontName.SubclassWindow(GetDlgItem(ID_COMBO_FONT_NAME));
@@ -323,7 +347,11 @@ BOOL CFontSelDlg::InitFontNameComboBox()
 	return TRUE;
 }
 
-// 初始化字体大小组合框
+/**
+ * @brief 初始化字体大小组合框
+ * 
+ * @return BOOL 
+ */
 BOOL CFontSelDlg::InitFontSizeComboBox()
 {
 	m_cboFontSize.SubclassWindow(GetDlgItem(ID_COMBO_FONT_SIZE));
@@ -358,7 +386,11 @@ BOOL CFontSelDlg::InitFontSizeComboBox()
 	return TRUE;
 }
 
-// 初始化字体属性工具栏
+/**
+ * @brief 初始化字体属性工具栏
+ * 
+ * @return BOOL 
+ */
 BOOL CFontSelDlg::InitFontAttrToolBar()
 {
 	int nIndex = m_tbFontAttr.AddItem(ID_GROUP_CHAT_DLG_BOLD_BTN, STBI_STYLE_BUTTON|STBI_STYLE_CHECK);
@@ -404,7 +436,12 @@ BOOL CFontSelDlg::InitFontAttrToolBar()
 	return TRUE;
 }
 
-// 初始化
+
+/**
+ * @brief 初始化
+ * 
+ * @return BOOL 
+ */
 BOOL CFontSelDlg::Init()
 {
 	//Dennis Comment
@@ -430,7 +467,10 @@ BOOL CFontSelDlg::Init()
 	return TRUE;
 }
 
-// 反初始化
+/**
+ * @brief 反初始化
+ * 
+ */
 void CFontSelDlg::UnInit()
 {
 	if (m_tbFontClass.IsWindow())
