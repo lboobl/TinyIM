@@ -5,16 +5,24 @@
 ## 0 程序运行的效果展示
 
 1. 用户登录状态
-![UserLogin](https://github.com/DennisThink/TinyIM/blob/master/Doc/UserLoginState.jpg)
+
+![UserLogin](./Doc/UserLoginState.jpg)
 
 2. 用户查找好友
-![FindFriend](https://github.com/DennisThink/TinyIM/blob/master/Doc/FindFriend.jpg)
+
+![FindFriend](./Doc/FindFriend.jpg)
 
 3. 用户添加好友
-![AddFriend](https://github.com/DennisThink/TinyIM/blob/master/Doc/AgreeAddFriend.jpg)
+
+![AddFriend](./Doc/AgreeAddFriend.jpg)
 
 4. 好友聊天
-![FriendChat](https://github.com/DennisThink/TinyIM/blob/master/Doc/FriendChat.jpg)
+
+![FriendChat](./Doc/FriendChat.jpg)
+
+5. 机器人聊天
+
+![RobotChat](./Doc/2019-12-31_183552.jpg)
 
 ## 1. 项目简介
 
