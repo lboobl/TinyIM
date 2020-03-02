@@ -12,6 +12,7 @@
 
 #ifndef _TINY_IM_C_FACE_LIST_H_
 #define _TINY_IM_C_FACE_LIST_H_
+#include "UICommonType.h"
 #include <vector>
 
 

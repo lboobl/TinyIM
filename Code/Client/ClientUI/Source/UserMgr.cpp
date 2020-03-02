@@ -1,4 +1,15 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file UserMgr.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 用户管理类的实现
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "UserMgr.h"
 #include "net/IUProtocolData.h"
 #include "MiniBuffer.h"
@@ -18,12 +29,20 @@ CUserMgr& CUserMgr::GetInstance()
     return user;
 }
 
+/**
+ * @brief Construct a new CUserMgr::CUserMgr object
+ * 
+ */
 CUserMgr::CUserMgr(void)
 {
 	m_hProxyWnd = NULL;
 	m_hCallBackWnd = NULL;
 }
 
+/**
+ * @brief Destroy the CUserMgr::CUserMgr object
+ * 
+ */
 CUserMgr::~CUserMgr(void)
 {
 }

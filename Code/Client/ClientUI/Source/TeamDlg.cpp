@@ -1,7 +1,7 @@
 ﻿/**
  * @file TeamDlg.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 好友分组对话框
+ * @brief 好友分组对话框的实现文件
  * @version 0.1
  * @date 2019-08-04
  * 
@@ -11,18 +11,24 @@
 
 #include "stdafx.h"
 #include "TeamDlg.h"
-//#include "FlamingoClient.h"
 #include "UIText.h"
 #include "Proto.h"
 #include "EncodingUtil.h"
 
+/**
+ * @brief Construct a new CTeamDlg::CTeamDlg object
+ * 
+ */
 CTeamDlg::CTeamDlg()
 {
-	//m_pFMGClient = NULL;
 	m_nOperationType = TEAM_OPERATION_ADD_TEAM;
 	m_nTeamIndex = -1;
 }
 
+/**
+ * @brief Destroy the CTeamDlg::CTeamDlg object
+ * 
+ */
 CTeamDlg::~CTeamDlg()
 {
 

@@ -26,7 +26,7 @@
 
 #include "asioNet/CSessManager.h"
 #include "Proto.h"
-
+#include "Path.h"
 CAppModule _Module;
 
 //关于g_hwndOwner的说明：

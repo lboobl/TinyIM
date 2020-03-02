@@ -12,13 +12,16 @@
 #ifndef _TINY_IM_USER_MGR_H_
 #define _TINY_IM_USER_MGR_H_
 #include "UI_USER_INFO.h"
-//#include "MessageLogger.h"
+
 #include "UserConfig.h"
 #include <map>
 
+//TODO: 需要废弃 BEGIN
 #define GROUP_ID_BASE 0x0FFFFFFF
 
 #define IsGroupTarget(u) ((u >= GROUP_ID_BASE) ? TRUE : FALSE)
+//TODO: 需要废弃 END
+
 
 //当前登录的用户信息
 class CUserMgr
@@ -116,14 +119,14 @@ public:
 	HWND			m_hProxyWnd;
 	HWND			m_hCallBackWnd;		//设置为主窗口对话框
 	
-	C_UI_BuddyInfo		m_UserInfo;
-	C_UI_BuddyList		m_BuddyList;
+	C_UI_BuddyInfo		m_UserInfo;//用户的基本信息
+	C_UI_BuddyList		m_BuddyList;//好友列表
 	
-	C_UI_MessageList	m_MsgList;
+	C_UI_MessageList	m_MsgList;//聊天消息列表
 	//CMessageLogger	m_MsgLogger;
 
-	CGroupList		m_GroupList;
-	C_UI_RecentList		m_RecentList;
+	CGroupList		m_GroupList;//群组列表
+	C_UI_RecentList		m_RecentList;//最近聊天列表
 
 private:
 	std::map<UINT, BuddyInfo*>		m_mapLocalBuddyInfo;

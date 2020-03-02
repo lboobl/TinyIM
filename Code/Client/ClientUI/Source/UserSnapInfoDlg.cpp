@@ -1,4 +1,15 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file UserSnapInfoDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 显示用户或者群组查找结果的对话框的实现文件
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "UserSnapInfoDlg.h"
 #include "UI_USER_INFO.h"
 #include "UserMgr.h"

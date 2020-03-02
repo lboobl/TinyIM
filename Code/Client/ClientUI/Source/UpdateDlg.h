@@ -16,7 +16,6 @@
 #include "SkinLib/SkinLib.h"
 #include <vector>
 
-//class CIUProtocol;
 
 
 //自动解压下载下来的升级包文件，成功返回true，失败返回false

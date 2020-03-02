@@ -1,4 +1,15 @@
-﻿
+﻿/**
+ * @file UserSnapInfoDlg.h
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 显示用户或者群组查找结果的对话框
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+
 #ifndef _TINY_IM_USER_SNAP_INFO_DLG_H_
 #define _TINY_IM_USER_SNAP_INFO_DLG_H_
 
@@ -43,23 +54,23 @@ protected:
 
 private:
 	CSkinDialog			m_SkinDlg;
-	CSkinPictureBox		m_picUserThumb;
-	CSkinStatic			m_staUserAccountName;
-	CSkinStatic			m_staUserNickName;
-	CSkinStatic			m_staOperationDesc;		//操作描述
+	CSkinPictureBox		m_picUserThumb; //用户或群组头像控件
+	CSkinStatic			m_staUserAccountName; //用户账号名控件
+	CSkinStatic			m_staUserNickName;//用户昵称控件
+	CSkinStatic			m_staOperationDesc;		//操作描述控件
 
-	CSkinButton			m_btnOK;
-	CSkinButton			m_btnCancel;
+	CSkinButton			m_btnOK;  //确定按钮
+	CSkinButton			m_btnCancel;//取消按钮
 	
-	UINT				m_uAccountID;
-	UINT				m_uFaceID;
-	CString				m_strAccountName;
-	CString				m_strNickName;
-	CString				m_strOperationDesc;
+	UINT				m_uAccountID;//账号ID(TODO:待删除)
+	UINT				m_uFaceID;//头像ID
+	CString				m_strAccountName;//用户账号
+	CString				m_strNickName;//用户昵称
+	CString				m_strOperationDesc;//操作描述字符串(同意/拒绝)
 
-	CString				m_strOKButtonText;
+	CString				m_strOKButtonText;//OK按钮字符串
 
-	BOOL				m_bEnableOKButton;
+	BOOL				m_bEnableOKButton; //是否允许OK按钮,业务逻辑是什么
 	
 };
 #endif

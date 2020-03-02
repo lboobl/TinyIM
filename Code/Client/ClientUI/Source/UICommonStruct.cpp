@@ -1,7 +1,14 @@
-#include "UICommonStruct.h"
+﻿#include "UICommonStruct.h"
 #include "EncodingUtil.h"
 #include "json11.hpp"
 #include <map>
+
+/**
+ * @brief 将UI编辑框的消息数据,转为可以传递的JSON字符串
+ * 
+ * @param msgList UI编辑框的消息数据
+ * @return std::string 
+ */
 std::string RichEditMsg(const RichEditMsgList& msgList)
 {
 	using namespace json11;
@@ -52,6 +59,13 @@ std::string RichEditMsg(const RichEditMsgList& msgList)
 	return resultJson.dump();
 }
 
+
+/**
+ * @brief 将JOSN格式的消息数据,转为UI消息的数组
+ * 
+ * @param strMsg 
+ * @return RichEditMsgList 
+ */
 RichEditMsgList RichEditMsg(const std::string& strMsg)
 {
 	RichEditMsgList result;

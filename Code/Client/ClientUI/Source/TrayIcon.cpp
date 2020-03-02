@@ -1,8 +1,21 @@
-﻿
+﻿/**
+ * @file TrayIcon.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 托盘区图标的实现文件
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 
 #include "stdafx.h"
 #include "TrayIcon.h"
 
+/**
+ * @brief 托盘区图标数据
+ * 
+ */
 struct TRAYDATA  
 {  
 	HWND hwnd;                                 
@@ -12,6 +25,10 @@ struct TRAYDATA
 	HICON hIcon;                                 
 }; 
 
+/**
+ * @brief Construct a new CTrayIcon::CTrayIcon object
+ * 
+ */
 CTrayIcon::CTrayIcon(void)
 {
 	memset(&m_stNotifyIconData, 0, sizeof(m_stNotifyIconData));
@@ -20,6 +37,10 @@ CTrayIcon::CTrayIcon(void)
 	m_dwTimerId = 0;
 }
 
+/**
+ * @brief Destroy the CTrayIcon::CTrayIcon object
+ * 
+ */
 CTrayIcon::~CTrayIcon(void)
 {
 }

@@ -1,4 +1,15 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file UpdateDlg.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 程序更新对话框的实现类
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "UpdateDlg.h"
 #include "UI_USER_INFO.h"
 #include "FileTool.h"
@@ -9,6 +20,10 @@
 #include <TlHelp32.h>
 #include "Utils.h"
 
+/**
+ * @brief Construct a new CUpdateDlg::CUpdateDlg object
+ * 
+ */
 CUpdateDlg::CUpdateDlg()
 {
 	m_hExitEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -16,11 +31,22 @@ CUpdateDlg::CUpdateDlg()
 	//m_pFMGClient = NULL;
 }
 
+/**
+ * @brief Destroy the CUpdateDlg::CUpdateDlg object
+ * 
+ */
 CUpdateDlg::~CUpdateDlg()
 {
 	::CloseHandle(m_hExitEvent);
 }
 
+/**
+ * @brief 响应初始化对话框
+ * 
+ * @param wndFocus 
+ * @param lInitParam 
+ * @return BOOL 
+ */
 BOOL CUpdateDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
 	ParseFileInfo();
@@ -34,6 +60,11 @@ BOOL CUpdateDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	return TRUE;
 }
 
+/**
+ * @brief 初始化UI
+ * 
+ * @return BOOL 
+ */
 BOOL CUpdateDlg::InitUI()
 {
 	m_SkinDlg.SetBgPic(_T("DlgBg\\GeneralBg.png"));

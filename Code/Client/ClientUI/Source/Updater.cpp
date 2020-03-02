@@ -1,15 +1,35 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file Updater.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 自动升级类的实现文件
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "Updater.h"
 #include "UI_USER_INFO.h"
 #include "EncodingUtil.h"
 #include "Utils.h"
 #include "FileTool.h"
 
+/**
+ * @brief Construct a new Updater:: Updater object
+ * 
+ * @param pFileTask 
+ */
 Updater::Updater(CFileTaskThread* pFileTask)
 {
     m_pFileTask = pFileTask;
 }
 
+/**
+ * @brief Destroy the Updater:: Updater object
+ * 
+ */
 Updater::~Updater()
 {
 	m_aryUpdateFileList.clear();
