@@ -1298,11 +1298,25 @@ BOOL RichEdit_SetSelectionCharFormat(ITextServices* pTextServices, CHARFORMAT& c
 	return (BOOL)lRes;
 }
 
+/**
+ * @brief 替代选中的文本
+ * 
+ * @param pTextServices 
+ * @param lpszNewText 
+ * @param bCanUndo 
+ */
 void RichEdit_ReplaceSel(ITextServices* pTextServices, LPCTSTR lpszNewText, BOOL bCanUndo/* = FALSE*/)
 {
 	pTextServices->TxSendMessage(EM_REPLACESEL, (WPARAM)bCanUndo, (LPARAM)lpszNewText, NULL);
 }
 
+/**
+ * @brief 获取选中的文本
+ * 
+ * @param pTextServices 
+ * @param nStartChar 
+ * @param nEndChar 
+ */
 void RichEdit_GetSel(ITextServices* pTextServices, LONG& nStartChar, LONG& nEndChar)
 {
 	CHARRANGE cr = { 0, 0 };
@@ -1311,6 +1325,14 @@ void RichEdit_GetSel(ITextServices* pTextServices, LONG& nStartChar, LONG& nEndC
 	nEndChar = cr.cpMax;
 }
 
+/**
+ * @brief 设置选中的文本
+ * 
+ * @param pTextServices 
+ * @param nStartChar 
+ * @param nEndChar 
+ * @return int 
+ */
 int RichEdit_SetSel(ITextServices* pTextServices, LONG nStartChar, LONG nEndChar)
 {
 	CHARRANGE cr = { nStartChar, nEndChar };
@@ -1319,7 +1341,19 @@ int RichEdit_SetSel(ITextServices* pTextServices, LONG nStartChar, LONG nEndChar
 	return (int)lRes;
 }
 
-// 设置默认字体
+
+/**
+ * @brief 设置默认字体
+ * 
+ * @param pTextServices 
+ * @param lpFontName 
+ * @param nFontSize 
+ * @param clrText 
+ * @param bBold 
+ * @param bItalic 
+ * @param bUnderLine 
+ * @param bIsLink 
+ */
 void RichEdit_SetDefFont(ITextServices* pTextServices, LPCTSTR lpFontName,	
 						 int nFontSize,	COLORREF clrText, BOOL bBold, 
 						 BOOL bItalic, BOOL bUnderLine, BOOL bIsLink)
@@ -1368,7 +1402,19 @@ void RichEdit_SetDefFont(ITextServices* pTextServices, LPCTSTR lpFontName,
 	RichEdit_SetDefaultCharFormat(pTextServices, cf);
 }
 
-// 设置字体
+
+/**
+ * @brief 设置字体
+ * 
+ * @param pTextServices 
+ * @param lpFontName 
+ * @param nFontSize 
+ * @param clrText 
+ * @param bBold 
+ * @param bItalic 
+ * @param bUnderLine 
+ * @param bIsLink 
+ */
 void RichEdit_SetFont(ITextServices* pTextServices, LPCTSTR lpFontName, int nFontSize,
 					  COLORREF clrText, BOOL bBold, BOOL bItalic, BOOL bUnderLine, BOOL bIsLink)
 {
@@ -1416,7 +1462,14 @@ void RichEdit_SetFont(ITextServices* pTextServices, LPCTSTR lpFontName, int nFon
 	RichEdit_SetSelectionCharFormat(pTextServices, cf);
 }
 
-// 设置左缩进(单位:缇)
+
+/**
+ * @brief 设置左缩进(单位:缇)
+ * 
+ * @param pTextServices 
+ * @param nSize 
+ * @return BOOL 
+ */
 BOOL RichEdit_SetStartIndent(ITextServices* pTextServices, int nSize)
 {
 	PARAFORMAT2 pf2;
@@ -1429,7 +1482,22 @@ BOOL RichEdit_SetStartIndent(ITextServices* pTextServices, int nSize)
 	return (BOOL)lRes;
 }
 
-// 插入表情图片
+
+/**
+ * @brief 插入表情图片
+ * 
+ * @param pTextServices 
+ * @param pTextHost 
+ * @param lpszFileName 
+ * @param nFaceId 
+ * @param nFaceIndex 
+ * @param clrBg 
+ * @param bAutoScale 
+ * @param nReservedWidth 
+ * @param cxImage 
+ * @param cyImage 
+ * @return BOOL 
+ */
 BOOL RichEdit_InsertFace(ITextServices*pTextServices, ITextHost*pTextHost,	
 						 LPCTSTR lpszFileName, int nFaceId,	int nFaceIndex, 
 						 COLORREF clrBg, BOOL bAutoScale, int nReservedWidth, long cxImage/*=0*/, long cyImage/*=0*/)
@@ -1529,7 +1597,13 @@ Ret0:
 	return SUCCEEDED(hr);
 }
 
-// 获取文本
+
+/**
+ * @brief 获取文本
+ * 
+ * @param pTextServices 
+ * @param strText 
+ */
 void RichEdit_GetText(ITextServices* pTextServices, WString& strText)
 {
 	REOBJECT reobject;
@@ -1601,7 +1675,22 @@ void RichEdit_GetText(ITextServices* pTextServices, WString& strText)
 	pRichEditOle->Release();
 }
 
-// 替换选中文本
+
+/**
+ * @brief 替换选中文本
+ * 
+ * @param pTextServices 
+ * @param lpszNewText 
+ * @param lpFontName 
+ * @param nFontSize 
+ * @param clrText 
+ * @param bBold 
+ * @param bItalic 
+ * @param bUnderLine 
+ * @param bIsLink 
+ * @param nStartIndent 
+ * @param bCanUndo 
+ */
 void RichEdit_ReplaceSel(ITextServices* pTextServices, LPCTSTR lpszNewText,	
 						 LPCTSTR lpFontName, int nFontSize,	COLORREF clrText, 
 						 BOOL bBold, BOOL bItalic, BOOL bUnderLine, BOOL bIsLink, 
@@ -1617,6 +1706,14 @@ void RichEdit_ReplaceSel(ITextServices* pTextServices, LPCTSTR lpszNewText,
 	RichEdit_SetSel(pTextServices, lEndChar, lEndChar);
 }
 
+/**
+ * @brief 从文本编辑框中获取图像OLE对象
+ * 
+ * @param pTextServices 
+ * @param pt 
+ * @param pImageOle 
+ * @return BOOL 
+ */
 BOOL RichEdit_GetImageOle(ITextServices* pTextServices, POINT pt, IImageOle** pImageOle)
 {
 	IRichEditOle* pRichEditOle;
@@ -1677,6 +1774,12 @@ BOOL RichEdit_GetImageOle(ITextServices* pTextServices, POINT pt, IImageOle** pI
 	return bRet;
 }
 
+/**
+ * @brief 获取编辑框中用户自定义图像的数量
+ * 
+ * @param pTextServices 
+ * @return int 
+ */
 int RichEdit_GetCustomPicCount(ITextServices* pTextServices)
 {
 	IRichEditOle* pRichEditOle;

@@ -13,9 +13,8 @@
 #ifndef _TINY_IM_C_FACE_LIST_H_
 #define _TINY_IM_C_FACE_LIST_H_
 #include <vector>
-#include "Utils.h"
-#include "Path.h"
-#include "XmlDocument.h"
+
+
 
 /**
  * @brief 用户头像信息

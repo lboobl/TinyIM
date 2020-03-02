@@ -13,10 +13,10 @@
 #ifndef _TINY_IM_SRC_VERSION_H_
 #define _TINY_IM_SRC_VERSION_H_
 
-#define Flamingo_MAJOR_VERSION    1
-#define Flamingo_MINOR_VERSION    0
-#define Flamingo_BUILD_VERSION    $WCREV$
+#define TINY_IM_MAJOR_VERSION    1
+#define TINY_IM_MINOR_VERSION    0
+#define TINY_IM_BUILD_VERSION    $WCREV$
 
-#define Flamingo_VERSION "1.0.0.$WCREV$"
+#define TINY_IM_VERSION "1.0.0.$WCREV$"
 
 #endif

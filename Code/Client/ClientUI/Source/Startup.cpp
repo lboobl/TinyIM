@@ -1,8 +1,13 @@
-﻿/** 
-* 程序入口函数
-* zhangyl 2017.03.16
-**/
-
+﻿/**
+ * @file Startup.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 程序入口的主要相关函数的实现
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 #include "stdafx.h"
 
 #include "resource.h"
@@ -30,9 +35,14 @@ CAppModule _Module;
 //会在失去焦点后默认Z轴变为0，这点特别讨厌。
 HWND	   g_hwndOwner = NULL;	
 
+/**
+ * @brief 创建主窗口
+ * 
+ * @return HWND 
+ */
 HWND CreateOwnerWindow()
 {
-	PCTSTR pszOwnerWindowClass = _T("__Flamingo_Owner__");
+	PCTSTR pszOwnerWindowClass = _T("__TinyIM_Owner__");
 	HINSTANCE hInstance = ::GetModuleHandle(NULL);
 	WNDCLASSEX wcex;
 	wcex.cbSize = sizeof(WNDCLASSEX);
@@ -57,6 +67,12 @@ HWND CreateOwnerWindow()
 	return hOwnerWindow;
 }
 
+/**
+ * @brief 程序运行的主入口函数
+ * 
+ * @param nCmdShow 
+ * @return int 
+ */
 int Run(LPTSTR /*lpstrCmdLine = NULL*/, int nCmdShow/* = SW_SHOWDEFAULT*/)
 {
 	CMessageLoop theLoop;
@@ -83,6 +99,11 @@ int Run(LPTSTR /*lpstrCmdLine = NULL*/, int nCmdShow/* = SW_SHOWDEFAULT*/)
 	return nRet;
 }
 
+/**
+ * @brief 清除过期的日志
+ * 
+ * @param pszFileSuffixName 
+ */
 void ClearExpiredLog(PCTSTR pszFileSuffixName)
 {    
     if (pszFileSuffixName == NULL)
@@ -115,6 +136,11 @@ void ClearExpiredLog(PCTSTR pszFileSuffixName)
 }
 
 
+/**
+ * @brief 初始化套接字
+ * 
+ * @return BOOL 
+ */
 BOOL InitSocket()
 {
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -132,11 +158,23 @@ BOOL InitSocket()
 	return TRUE;
 }
 
+/**
+ * @brief 反初始化套接字
+ * 
+ */
 void UnInitSocket()
 {
 	::WSACleanup();
 }
 
+/**
+ * @brief 程序的main函数
+ * 
+ * @param hInstance 
+ * @param lpstrCmdLine 
+ * @param nCmdShow 
+ * @return int _tWinMain 
+ */
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
 {
 	CreateLogger();

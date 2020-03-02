@@ -1,7 +1,12 @@
-﻿#ifndef _TINY_IM_C_SPLITTER_CTRL_H_
+﻿/**
+ * @brief 动态调整聊天消息区域和历史消息区域的鼠标图标
+ * 
+ */
+
+#ifndef _TINY_IM_C_SPLITTER_CTRL_H_
 #define _TINY_IM_C_SPLITTER_CTRL_H_
 
-//该窗口用于聊天窗口中拖拽发送文本框
+
 class CSplitterCtrl : public CWindowImpl<CSplitterCtrl, CWindow>
 {
 public:

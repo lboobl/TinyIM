@@ -1,7 +1,7 @@
 ﻿/**
  * @file SystemSettingDlg.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief 系统设置对话框的实现文件
  * @version 0.1
  * @date 2019-08-04
  * 
@@ -10,16 +10,23 @@
  */
 #include "stdafx.h"
 #include "SystemSettingDlg.h"
-//#include "FlamingoClient.h"
 #include <assert.h>
 
+/**
+ * @brief Construct a new CSystemSettingDlg::CSystemSettingDlg object
+ * 
+ */
 CSystemSettingDlg::CSystemSettingDlg(void)
 {
-	//m_pFMGClient = NULL;
-	m_hDlgIcon = m_hDlgSmallIcon = NULL;
+	m_hDlgIcon = NULL;
+	m_hDlgSmallIcon = NULL;
 	m_hFont = NULL;
 }
 
+/**
+ * @brief Destroy the CSystemSettingDlg::CSystemSettingDlg object
+ * 
+ */
 CSystemSettingDlg::~CSystemSettingDlg(void)
 {
 }
@@ -267,32 +274,50 @@ void CSystemSettingDlg::OnBtnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 void CSystemSettingDlg::UninitUI()
 {
 	if (m_btnMute.IsWindow())
+	{
 		m_btnMute.DestroyWindow();
+	}	
 
 	if (m_btnAutoReply.IsWindow())
+	{
 		m_btnAutoReply.DestroyWindow();
+	}	
 
 	if (m_edtAutoReply.IsWindow())
+	{
 		m_edtAutoReply.DestroyWindow();
+	}	
 
 	if (m_btnDestroyAfterRead.IsWindow())
+	{
 		m_btnDestroyAfterRead.DestroyWindow();
+	}	
 
 	if (m_cboDurationRead.IsWindow())
+	{
 		m_cboDurationRead.DestroyWindow();
-
+	}
 	if (m_btnRevokeChatMsg.IsWindow())
+	{
 		m_btnRevokeChatMsg.DestroyWindow();
+	}	
 
 	if(m_btnExitPrompt.IsWindow())
+	{
 		m_btnExitPrompt.DestroyWindow();
-
+	}	
 	if(m_btnExitWhenClose.IsWindow())
+	{
 		m_btnExitWhenClose.DestroyWindow();
+	}	
 
 	if (m_btnOK.IsWindow())
+	{
 		m_btnOK.DestroyWindow();
+	}
 
 	if (m_btnCancel.IsWindow())
+	{
 		m_btnCancel.DestroyWindow();
+	}	
 }
