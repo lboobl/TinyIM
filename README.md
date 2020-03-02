@@ -2,7 +2,21 @@
 
 一个能编写聊天机器人的IM。
 
-## 0. 项目简介
+## 0 程序运行的效果展示
+
+1. 用户登录状态
+![UserLogin](https://github.com/DennisThink/TinyIM/blob/master/Doc/UserLoginState.jpg)
+
+2. 用户查找好友
+![FindFriend](https://github.com/DennisThink/TinyIM/blob/master/Doc/FindFriend.jpg)
+
+3. 用户添加好友
+![AddFriend](https://github.com/DennisThink/TinyIM/blob/master/Doc/AgreeAddFriend.jpg)
+
+4. 好友聊天
+![FriendChat](https://github.com/DennisThink/TinyIM/blob/master/Doc/FriendChat.jpg)
+
+## 1. 项目简介
 
 一个基于C++的IM实现     
 TinyIM软件是一款实现文本单聊和文本群聊的IM软件，该软件使用C++语言编写。客户端目前支持Windows平台，后续计划支持Linux和Mac平台，服务端支持Windows、Linux、Mac平台。整个项目主要分为ClientUI,ClientCore,ChatServer三个部分。
@@ -18,7 +32,7 @@ ChatServer主要完成IM服务器的功能。
 文档链接:https://dennisthink.github.io/index.html       
 客户端的界面参考： https://github.com/balloonwj/flamingo
 
-## 1. 支持平台
+## 2. 支持平台
 
 |组件|Windows|Linux|MacOS|
 |---|----|----|----|
@@ -27,7 +41,8 @@ ChatServer主要完成IM服务器的功能。
 |ChatServer|支持|支持|理论支持,暂未测试|
 |ImRobot|支持|支持|理论支持,暂未测试|
 
-## 1.编译介绍
+## 3.编译介绍
+
 TinyIM采用C++语言进行开发,CMake工具进行编译,目前已经在Windows7的64位上使用VS2017编译通过了。
 因为代码中使用了C++11的标准,所以需要使用支持C++11标准的编译器,也就是VS2013以后的版本。
 [Windows平台配置CMake](https://www.dennisthink.com/?p=380)
@@ -54,3 +69,5 @@ ClientUI的代码在```\TinyIM\Code\Client\ClientUI```目录下,
 
 
 ## 4.其他
+
+
