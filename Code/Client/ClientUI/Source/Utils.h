@@ -1,4 +1,13 @@
-﻿
+﻿/**
+ * @file Utils.h
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 部分工具函数的声明
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 #ifndef _TINY_IM_UTIL_H_
 #define _TINY_IM_UTIL_H_
 #include <vector>

@@ -1,4 +1,15 @@
-﻿#include "stdafx.h"
+﻿/**
+ * @file Utils.cpp
+ * @author DennisMi (https://www.dennisthink.com/)
+ * @brief 工具函数的实现
+ * @version 0.1
+ * @date 2020-03-02
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
+#include "stdafx.h"
 #include "Utils.h"
 #include "Path.h"
 #include <Iphlpapi.h>
@@ -11,6 +22,15 @@
 
 using namespace Gdiplus;
 
+/**
+ * @brief 普通字符串转为16进制的字符串
+ * 
+ * @param lpStr 原始字符串
+ * @param nSrcLen 原始字符串长度
+ * @param lpHex 转换后的16进制字符串
+ * @param nDestLen 用来保存16进制字符串的内存长度
+ * @return BOOL 转换结果
+ */
 BOOL ToHexStr(const CHAR* lpStr, int nSrcLen, CHAR* lpHex, int nDestLen)
 {
 	const CHAR cHexTable[] = "0123456789ABCDEF";
@@ -34,6 +54,14 @@ BOOL ToHexStr(const CHAR* lpStr, int nSrcLen, CHAR* lpHex, int nDestLen)
 	return TRUE;
 }
 
+/**
+ * @brief 普通字符串转为16进制的字符串
+ * 
+ * @param lpStr 原始字符串,以‘\0’结尾
+ * @param lpHex 转换后的16进制字符串
+ * @param nLen 用来保存16进制字符串的内存长度
+ * @return BOOL 转换结果
+ */
 BOOL StrToHex(const CHAR* lpStr, CHAR* lpHex, int nLen)
 {
 	const CHAR cHexTable[] = "0123456789ABCDEF";
@@ -57,7 +85,13 @@ BOOL StrToHex(const CHAR* lpStr, CHAR* lpHex, int nLen)
 	return TRUE;
 }
 
-// 16位整型数据网络字节序与正常字节序转换
+
+/**
+ * @brief 16位整型数据网络字节序与正常字节序转换
+ * TODO: 需要确定传入和传出的字节序
+ * @param nValue 
+ * @return u_short 
+ */
 u_short Swap16(u_short nValue)
 {
 	u_short nRetValue = (u_short)((nValue & 0xff00) >> 0x08);
@@ -66,7 +100,13 @@ u_short Swap16(u_short nValue)
 
 }
 
-// 32位整型数据网络字节序与正常字节序转换
+
+/**
+ * @brief 32位整型数据网络字节序与正常字节序转换
+ * TODO: 需要确定传入和传出的字节序
+ * @param nValue 
+ * @return u_long 
+ */
 u_long Swap32(u_long nValue)
 {
 	u_long nRetValue = ((nValue & 0xff000000) >> 0x18);
@@ -77,12 +117,25 @@ u_long Swap32(u_long nValue)
 	return nRetValue;
 }
 
+/**
+ * @brief 将16进制颜色字符串转为颜色结构体
+ * 
+ * @param lpszStr 
+ * @return COLORREF 
+ */
 COLORREF HexStrToRGB(LPCTSTR lpszStr)
 {
 	unsigned long lValue = _tcstoul(lpszStr, NULL, 16);
 	return RGB((lValue & 0xFF0000) >> 16,  (lValue & 0xFF00 ) >> 8, lValue & 0xFF);
 }
 
+/**
+ * @brief 将RGB颜色数值转为16进制的字符串
+ * 
+ * @param color 
+ * @param lpBuf 
+ * @param nLen 
+ */
 void RGBToHexStr(COLORREF color, TCHAR* lpBuf, int nLen)
 {
 	if (NULL == lpBuf || nLen <= 0)
@@ -90,6 +143,12 @@ void RGBToHexStr(COLORREF color, TCHAR* lpBuf, int nLen)
 	wsprintf(lpBuf, _T("%02x%02x%02x"), GetRValue(color), GetGValue(color), GetBValue(color));
 }
 
+/**
+ * @brief 判断某个时间是不是今天
+ * 
+ * @param lTime 
+ * @return BOOL 
+ */
 BOOL IsToday(time_t lTime)
 {
 	time_t lCurTime = time(NULL);
@@ -119,7 +178,15 @@ BOOL IsToday(time_t lTime)
 	//	return FALSE;
 }
 
-//将日期转换成UTC秒数
+
+/**
+ * @brief 将日期转换成UTC秒数
+ * 
+ * @param nYear 
+ * @param nMonth 
+ * @param nDay 
+ * @return time_t 
+ */
 time_t DateToUTCSeconds(long nYear, long nMonth, long nDay)
 {
 	struct tm  T = {0};
@@ -130,7 +197,15 @@ time_t DateToUTCSeconds(long nYear, long nMonth, long nDay)
 	return mktime(&T);
 }
 
-// _T("%Y-%m-%d %H:%M:%S")
+
+/**
+ * @brief 对时间进行格式化
+ * _T("%Y-%m-%d %H:%M:%S")
+ * @param lTime 
+ * @param lpFmt 
+ * @param lpBuf 
+ * @param nLen 
+ */
 void FormatTime(time_t lTime, LPCTSTR lpFmt, TCHAR* lpBuf, int nLen)
 {
 	if (NULL == lpFmt || NULL == lpBuf || nLen <= 0)
@@ -143,6 +218,12 @@ void FormatTime(time_t lTime, LPCTSTR lpFmt, TCHAR* lpBuf, int nLen)
 		_tcsftime(lpBuf, nLen, lpFmt, lpTimeInfo);
 }
 
+/**
+ * @brief 判断某个时间是不是今天
+ * 
+ * @param lpTime 
+ * @return BOOL 
+ */
 BOOL IsToday(SYSTEMTIME* lpTime)
 {
 	if (NULL == lpTime)
@@ -159,7 +240,14 @@ BOOL IsToday(SYSTEMTIME* lpTime)
 		return FALSE;
 }
 
-// 获取文件最后修改时间
+
+/**
+ * @brief 获取文件最后修改时间
+ * 
+ * @param lpszFileName 文件名
+ * @param lpSysTime 修改时间
+ * @return BOOL 获取结果
+ */
 BOOL GetFileLastWriteTime(LPCTSTR lpszFileName, SYSTEMTIME* lpSysTime)
 {
 	BOOL bRet = FALSE;
@@ -186,7 +274,15 @@ BOOL GetFileLastWriteTime(LPCTSTR lpszFileName, SYSTEMTIME* lpSysTime)
 	return bRet;
 }
 
-// 读取整个文件
+
+/**
+ * @brief 读取整个文件
+ * 
+ * @param lpszFileName 被读取的文件名
+ * @param lpData 读取后的数据
+ * @param lSize 读到的数据的大小
+ * @return BOOL 读取结果
+ */
 BOOL File_ReadAll(const TCHAR* lpszFileName, CHAR**lpData, LONG*lSize)
 {
 	if (NULL == lpData || NULL == lSize)
@@ -229,19 +325,40 @@ BOOL File_ReadAll(const TCHAR* lpszFileName, CHAR**lpData, LONG*lSize)
 	}
 }
 
-// 检测指定字符是否是字母(A-Z，a-z)或数字(0-9)
+
+/**
+ * @brief 检测指定字符是否是字母(A-Z，a-z)或数字(0-9)
+ * TODO: 感觉有标准库可以使用
+ * @param cChar 
+ * @return BOOL 
+ */
 BOOL my_isalnum(unsigned char cChar)
 {
 	return ((cChar | 0x20) - 'a') < 26u  || (cChar - '0') < 10u;
 }
 
-// 检测指定字符是否是字母(A-Z，a-z)或数字(0-9)
+
+/**
+ * @brief 检测指定字符是否是字母(A-Z，a-z)或数字(0-9)
+ * 
+ * @param cChar 
+ * @return BOOL 
+ */
 BOOL my_isalnum(wchar_t cChar)
 {
 	return ((cChar | 0x20) - L'a') < 26u  || (cChar - L'0') < 10u;
 }
 
-// 枚举系统字体回调函数
+
+/**
+ * @brief 枚举系统字体回调函数
+ * 
+ * @param lpelf 
+ * @param lpntm 
+ * @param dwFontType 
+ * @param lParam 
+ * @return int EnumSysFontProc 
+ */
 int CALLBACK EnumSysFontProc(const LOGFONT*lpelf, const TEXTMETRIC*lpntm, DWORD dwFontType, LPARAM lParam)
 {
 	if (dwFontType & TRUETYPE_FONTTYPE)
@@ -261,7 +378,13 @@ int CALLBACK EnumSysFontProc(const LOGFONT*lpelf, const TEXTMETRIC*lpntm, DWORD 
 	return TRUE;
 }
 
-// 枚举系统字体
+
+/**
+ * @brief 枚举系统字体
+ * 
+ * @param arrSysFont 
+ * @return BOOL 
+ */
 BOOL EnumSysFont(std::vector<WString>* arrSysFont)
 {
 	if (NULL == arrSysFont)
@@ -274,7 +397,14 @@ BOOL EnumSysFont(std::vector<WString>* arrSysFont)
 	return TRUE;
 }
 
-// 闪烁窗口标题栏
+
+/**
+ * @brief 闪烁窗口标题栏
+ * TODO: 作用是什么？
+ * @param hWnd 
+ * @param nCount 
+ * @return BOOL 
+ */
 BOOL FlashWindowEx(HWND hWnd, int nCount)
 {
 	FLASHWINFO stFlashInfo = {0};
@@ -286,7 +416,13 @@ BOOL FlashWindowEx(HWND hWnd, int nCount)
 	return ::FlashWindowEx(&stFlashInfo);
 }
 
-// 获取系统任务栏区域
+// 
+/**
+ * @brief 获取系统任务栏区域
+ * 
+ * @param lpRect 
+ * @return BOOL 
+ */
 BOOL GetTrayWndRect(RECT* lpRect)
 {
 	if (NULL == lpRect)
@@ -299,6 +435,12 @@ BOOL GetTrayWndRect(RECT* lpRect)
 		return FALSE;
 }
 
+/**
+ * @brief 判断某个字符串是否是数字
+ * 
+ * @param lpStr 
+ * @return BOOL 
+ */
 BOOL IsDigit(const WCHAR* lpStr)
 {
 	for (const WCHAR* p = lpStr;*p != _T('\0'); p++)
@@ -309,6 +451,13 @@ BOOL IsDigit(const WCHAR* lpStr)
 	return TRUE;
 }
 
+/**
+ * @brief ascii字符替换的操作
+ * 
+ * @param strText 
+ * @param lpOldStr 
+ * @param lpNewStr 
+ */
 void Replace(std::string& strText, const CHAR* lpOldStr, const CHAR* lpNewStr)
 {
 	if (NULL == lpOldStr || NULL == lpNewStr)
@@ -325,6 +474,14 @@ void Replace(std::string& strText, const CHAR* lpOldStr, const CHAR* lpNewStr)
 	}
 }
 
+
+/**
+ * @brief Unicode字符替换操作
+ * 
+ * @param strText 
+ * @param lpOldStr 
+ * @param lpNewStr 
+ */
 void Replace(std::wstring& strText, const WCHAR* lpOldStr, const WCHAR* lpNewStr)
 {
 	if (NULL == lpOldStr || NULL == lpNewStr)
@@ -341,41 +498,78 @@ void Replace(std::wstring& strText, const WCHAR* lpOldStr, const WCHAR* lpNewStr
 	}
 }
 
+/**
+ * @brief unicode字符转小写
+ * TODO: 看看有没有标准库支持
+ * @param c 
+ * @return WCHAR 
+ */
 inline WCHAR ToLower(WCHAR c)
 {
 	return (c >= 'A' && c <= 'Z') ? (c + ('a' - 'A')) : c;
 }
 
+/**
+ * @brief unicode字符串转小写(C模式)
+ * 
+ * @param lpText 
+ */
 void ToLower(WCHAR* lpText)
 {
 	for (WCHAR* p = lpText;*p != _T('\0'); p++)
 		*p = ToLower(*p);
 }
 
+/**
+ * @brief unicode字符串转小写(Cpp模式)
+ * 
+ * @param strText 
+ */
 void ToLower(std::wstring& strText)
 {
 	for (std::wstring::iterator i = strText.begin(); i != strText.end(); ++i)
 		*i = ToLower(*i);
 }
 
+/**
+ * @brief unicode字符转大写
+ * 
+ * @param c 
+ * @return WCHAR 
+ */
 inline WCHAR ToUpper(WCHAR c)
 {
 	return (c >= 'a' && c <= 'z') ? (c + ('A' - 'a')) : c;
 }
 
+/**
+ * @brief unicode字符串转大写(C模式)
+ * 
+ * @param lpText 
+ */
 void ToUpper(WCHAR* lpText)
 {
 	for (WCHAR* p = lpText;*p != _T('\0'); p++)
 		*p = ToUpper(*p);
 }
 
+/**
+ * @brief unicode字符串转大写(Cpp模式)
+ * 
+ * @param strText 
+ */
 void ToUpper(std::wstring& strText)
 {
 	for (std::wstring::iterator i = strText.begin(); i != strText.end(); ++i)
 		*i = ToUpper(*i);
 }
 
-// 编码Html特殊字符
+
+/**
+ * @brief 编码Html特殊字符
+ * 
+ * @param strText 
+ */
 void EncodeHtmlSpecialChars(std::wstring& strText)
 {
 	Replace(strText, _T("&"), _T("&amp;"));
@@ -386,7 +580,11 @@ void EncodeHtmlSpecialChars(std::wstring& strText)
 	Replace(strText, _T(" "), _T("&nbsp;"));
 }
 
-// 解码Html特殊字符
+/**
+ * @brief 解码Html特殊字符
+ * 
+ * @param strText 
+ */
 void DecodeHtmlSpecialChars(std::wstring& strText)
 {
 	Replace(strText, _T("&#39;"), _T("'"));
@@ -397,6 +595,14 @@ void DecodeHtmlSpecialChars(std::wstring& strText)
 	Replace(strText, _T("&amp;"), _T("&"));
 }
 
+/**
+ * @brief 获取两个字符之间的字符串
+ * 
+ * @param pStr 
+ * @param cStart 
+ * @param cEnd 
+ * @return WString 
+ */
 WString GetBetweenString(const TCHAR* pStr, TCHAR cStart, TCHAR cEnd)
 {
 	WString strText;
@@ -428,6 +634,15 @@ WString GetBetweenString(const TCHAR* pStr, TCHAR cStart, TCHAR cEnd)
 	return strText;
 }
 
+/**
+ * @brief Get the Between Int object
+ * TODO: 用途不明
+ * @param pStr 
+ * @param cStart 
+ * @param cEnd 
+ * @param nDefValue 
+ * @return int 
+ */
 int GetBetweenInt(const TCHAR* pStr, TCHAR cStart, TCHAR cEnd, int nDefValue/* = 0*/)
 {
 	WString strText = GetBetweenString(pStr, cStart, cEnd);
@@ -437,6 +652,14 @@ int GetBetweenInt(const TCHAR* pStr, TCHAR cStart, TCHAR cEnd, int nDefValue/* =
 		return nDefValue;
 }
 
+/**
+ * @brief Get the Between String object
+ * TODO: 用途不明
+ * @param pStr 
+ * @param pStart 
+ * @param pEnd 
+ * @return WString 
+ */
 WString GetBetweenString(const WCHAR* pStr, const WCHAR* pStart, const WCHAR* pEnd)
 {
 	WString strText;
@@ -470,6 +693,15 @@ WString GetBetweenString(const WCHAR* pStr, const WCHAR* pStart, const WCHAR* pE
 	return strText;
 }
 
+/**
+ * @brief Get the Between Int object
+ * TODO: 用途不明
+ * @param pStr 
+ * @param pStart 
+ * @param pEnd 
+ * @param nDefValue 
+ * @return int 
+ */
 int GetBetweenInt(const WCHAR* pStr, const WCHAR* pStart, 
 				  const WCHAR* pEnd, int nDefValue/* = 0*/)
 {
@@ -480,6 +712,13 @@ int GetBetweenInt(const WCHAR* pStr, const WCHAR* pStart,
 		return nDefValue;
 }
 
+/**
+ * @brief 
+ * TODO: 可能需要删除
+ * @param lpszFileName 
+ * @param bUnregister 
+ * @return BOOL 
+ */
 BOOL DllRegisterServer(LPCTSTR lpszFileName, BOOL bUnregister)
 {
 	typedef HRESULT (WINAPI* FREG)();
@@ -508,16 +747,34 @@ BOOL DllRegisterServer(LPCTSTR lpszFileName, BOOL bUnregister)
 	return bRet;
 }
 
+/**
+ * @brief 可能需要删除
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL DllRegisterServer(LPCTSTR lpszFileName)
 {
 	return DllRegisterServer(lpszFileName, FALSE);
 }
 
+/**
+ * @brief 可能需要删除
+ * 
+ * @param lpszFileName 
+ * @return BOOL 
+ */
 BOOL DllUnregisterServer(LPCTSTR lpszFileName)
 {
 	return DllRegisterServer(lpszFileName, TRUE);
 }
 
+/**
+ * @brief 根据扩展名获取MIME类型
+ * TODO: 调用处不明确
+ * @param lpExtension 
+ * @return WString 
+ */
 WString GetMimeTypeByExtension(const TCHAR* lpExtension)
 {
 	if (NULL == lpExtension)
@@ -545,6 +802,12 @@ WString GetMimeTypeByExtension(const TCHAR* lpExtension)
 		return _T("");	// application/octet-stream
 }
 
+/**
+ * @brief 根据文件扩展名获取文件类型的GUID
+ * TODO: 为什么这么做
+ * @param lpExtension 
+ * @return GUID 
+ */
 GUID GetFileTypeGuidByExtension(const WCHAR* lpExtension)
 {
 	GUID guid = GUID_NULL;
@@ -610,6 +873,12 @@ GUID GetFileTypeGuidByExtension(const WCHAR* lpExtension)
 	return guid;
 }
 
+/**
+ * @brief 根据文件的扩展名获取 Clsid 
+ * TODO: 作用是什么
+ * @param lpExtension 
+ * @return CLSID 
+ */
 CLSID GetEncoderClsidByExtension(const WCHAR* lpExtension)
 {
 	CLSID clsid = CLSID_NULL;
@@ -676,6 +945,12 @@ CLSID GetEncoderClsidByExtension(const WCHAR* lpExtension)
 }
 
 // ImageFormatBMP, ImageFormatJPEG, ImageFormatPNG, ImageFormatGIF, ImageFormatTIFF
+/**
+ * @brief 根据文件类型对象获取CLSID
+ * 
+ * @param guidFileType 
+ * @return CLSID 
+ */
 CLSID GetEncoderClsidByFileType(REFGUID guidFileType)
 {
 	CLSID clsid = CLSID_NULL;
@@ -704,7 +979,13 @@ CLSID GetEncoderClsidByFileType(REFGUID guidFileType)
 	return clsid;
 }
 
-// image/bmp, image/jpeg, image/gif, image/tiff, image/png
+// image/bmp, image/jpeg, image/gif, image/tiff, image/
+/**
+ * @brief 根据MIME类型获取CLSID
+ * 
+ * @param lpMimeType 
+ * @return CLSID 
+ */
 CLSID GetEncoderClsidByMimeType(const WCHAR* lpMimeType)
 {
 	CLSID clsid = CLSID_NULL;
@@ -872,7 +1153,7 @@ BOOL CheckOnlyOneInstance()
 	//		szModulePath[i] = _T('I');
 	//}
 	
-	HANDLE hMutex = ::CreateMutex(NULL, TRUE, _T("HootinaFlamingo2017"));
+	HANDLE hMutex = ::CreateMutex(NULL, TRUE, _T("TinyIM2020"));
 	if(::GetLastError() == ERROR_ALREADY_EXISTS)
 		return FALSE;
 
