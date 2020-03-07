@@ -3,7 +3,7 @@
 #include "CommonMsg.h"
 #include "CMsgPersistentUtil.h"
 #include "SnowFlake.h"
-static CMsgPersistentUtil util("1234");
+static CMsgPersistentUtil util;
 static SnowFlake g_snowFlake(4, 4);
 static std::string MsgId() {
 	return std::to_string(g_snowFlake.nextId());
@@ -55,7 +55,9 @@ TEST_CASE("AddFriendMsg") {
 	recvMsg.m_strMsgId = MsgId();
 	recvMsg.m_strFriendId = UserId();
 	recvMsg.m_strUserId = UserId();
-	CHECK(util.InitDataBase());
+	CFileUtil fileUtil;
+	std::string strCurFolder = fileUtil.GetCurDir();
+	CHECK(util.InitDataBase(strCurFolder));
 	CHECK(util.Save_AddFriendRecvReqMsg(recvMsg));
 	AddFriendRecvReqMsg recvFriendMsg;
 	CHECK(util.Get_AddFriendRecvReqMsg(recvMsg));
@@ -68,7 +70,9 @@ TEST_CASE("AddFriendNotifyMsg") {
 	reqMsg.m_strUserId = UserId();
 	reqMsg.m_strFriendId = UserId();
 	reqMsg.m_option = E_FRIEND_OPTION::E_AGREE_ADD;
-	CHECK(util.InitDataBase());
+	CFileUtil fileUtil;
+	std::string strCurFolder = fileUtil.GetCurDir();
+	CHECK(util.InitDataBase(strCurFolder));
 	CHECK(util.Save_AddFriendNotifyReqMsg(reqMsg));
 	{
 		AddFriendNotifyReqMsg reqGetMsg;
@@ -78,7 +82,9 @@ TEST_CASE("AddFriendNotifyMsg") {
 }
 
 TEST_CASE("FriendChatRecvTextMsgInsert") {
-	CHECK(util.InitDataBase());
+	CFileUtil fileUtil;
+	std::string strCurFolder = fileUtil.GetCurDir();
+	CHECK(util.InitDataBase(strCurFolder));
 	FriendChatRecvTxtReqMsg reqMsg;
 	reqMsg.m_strMsgId = MsgId();
 	reqMsg.m_chatMsg.m_strChatMsgId = MsgId();
@@ -140,7 +146,9 @@ TEST_CASE("GetGroupChatHistoryReq") {
 
 }
 TEST_CASE("GroupChatRecvTextMsgInsert") {
-	CHECK(util.InitDataBase());
+	CFileUtil fileUtil;
+	std::string strCurFolder = fileUtil.GetCurDir();
+	CHECK(util.InitDataBase(strCurFolder));
 	RecvGroupTextMsgReqMsg reqMsg;
 	reqMsg.m_strMsgId = MsgId();
 	reqMsg.m_chatMsg.m_strGroupId = UserId();

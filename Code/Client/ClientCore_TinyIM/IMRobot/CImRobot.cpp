@@ -289,7 +289,7 @@ void CIMRobot::UserLogin()
 		reqMsg.m_strUserName = m_strUserName;
 		reqMsg.m_strPassword = m_strPassWord;
 		reqMsg.m_eNetType = CLIENT_NET_TYPE::C_NET_TYPE_WIFI;
-		reqMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+		reqMsg.m_eOnlineType = CLIENT_STATE::C_STATE_ONLINE;
 		reqMsg.m_eOsType = CLIENT_OS_TYPE::OS_TYPE_WINDOWS;
 		auto rsp = g_httpClient->request("POST", "/user_login", reqMsg.ToString());
 		std::string strRsp = rsp->content.string();

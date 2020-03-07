@@ -85,7 +85,7 @@ UserUnRegisterRspMsg HttpUserUnRegister(const UserUnRegisterReqMsg& reqMsg)
 //		reqMsg.m_strUserName = strUser;
 //		reqMsg.m_strPassword = strUser;
 //		reqMsg.m_eNetType = CLIENT_NET_TYPE::C_NET_TYPE_WIFI;
-//		reqMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+//		reqMsg.m_eOnlineType = CLIENT_STATE::C_STATE_ONLINE;
 //		reqMsg.m_eOsType = CLIENT_OS_TYPE::OS_TYPE_WINDOWS;
 //
 //
@@ -444,7 +444,7 @@ UserUnRegisterRspMsg HttpUserUnRegister(const UserUnRegisterReqMsg& reqMsg)
 //		reqMsg.m_strFileName = "TestFile.cpp";
 //		reqMsg.m_strFromId = strUserId;
 //		reqMsg.m_strToId = strFriendId;
-//		reqMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+//		reqMsg.m_eOnlineType = CLIENT_STATE::C_STATE_ONLINE;
 //
 //
 //		auto rsp = client.request("POST", "/send_file_online_to_friend_req", reqMsg.ToString());
@@ -505,7 +505,7 @@ UserUnRegisterRspMsg HttpUserUnRegister(const UserUnRegisterReqMsg& reqMsg)
 //		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
 //		rspMsg.m_strFromId = reqMsg.m_strFromId;
 //		rspMsg.m_strToId = reqMsg.m_strToId;
-//		rspMsg.m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+//		rspMsg.m_eOnlineType = CLIENT_STATE::C_STATE_ONLINE;
 //		rspMsg.m_eOption = E_FRIEND_OPTION::E_AGREE_ADD;
 //		rspMsg.m_strFileName = reqMsg.m_strFileName;
 //		auto rsp = client.request("POST", "/on_recv_file_online_from_friend_rsp", rspMsg.ToString());
