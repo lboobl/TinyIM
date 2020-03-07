@@ -631,7 +631,7 @@ bool CMySqlConnect::UpdateUser(const T_USER_BEAN& bean)
  * @return true 成功
  * @return false 失败
  */
-bool CMySqlConnect::UpdateUserOnlineState(const std::string strUserId, const CLIENT_ONLINE_TYPE type)
+bool CMySqlConnect::UpdateUserOnlineState(const std::string strUserId, const CLIENT_STATE type)
 {
 	int res = 0;
 	constexpr char strTemplate2[] = "UPDATE T_USER SET F_ON_LINE_STATE='{0}' WHERE F_USER_ID='{1}';";

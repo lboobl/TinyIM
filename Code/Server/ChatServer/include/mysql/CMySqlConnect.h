@@ -45,7 +45,7 @@ public:
 	// 用户基本信息的操作 begin
 	bool SelectUserInfoByName(const std::string userName, T_USER_INFO_BEAN& bean);
 	bool UpdateUserInfo(const T_USER_INFO_BEAN& bean);
-	bool UpdateUserOnlineState(const std::string strUserId, const CLIENT_ONLINE_TYPE);
+	bool UpdateUserOnlineState(const std::string strUserId, const CLIENT_STATE);
 	bool InsertUserInfo(const T_USER_INFO_BEAN& bean);
 	bool GetAllUserName(std::vector<std::string>& userNameVec);
 	// 用户基本信息的操作 end

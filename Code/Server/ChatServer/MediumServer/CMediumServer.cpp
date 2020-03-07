@@ -728,7 +728,7 @@ void CChatServer::CloseSess(const std::shared_ptr<CServerSess>& pSess)
 	}
 	m_clientStateMap.erase(pSess->UserId());
 	m_clientStateMap.insert({ pSess->UserId(),CLIENT_SESS_STATE::SESS_IDLE_STATE });
-	m_util.UpdateUserOnlineState(pSess->UserId(), CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_OFFLINE);
+	m_util.UpdateUserOnlineState(pSess->UserId(), CLIENT_STATE::C_STATE_OFFLINE);
 	m_userIdUdpAddrMap.erase(pSess->UserId());
 }
 
@@ -1909,7 +1909,7 @@ UserLoginRspMsg CChatServer::DoUserLoginReq(const UserLoginReqMsg& reqMsg) {
 			rsp.m_userInfo.m_strSignature = infoBean.m_strF_SIGNATURE;
 		}
 		rsp.m_strUserId = infoBean.m_strF_USER_ID;
-		m_util.UpdateUserOnlineState(userBean.m_strF_USER_ID, CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE);
+		m_util.UpdateUserOnlineState(userBean.m_strF_USER_ID, CLIENT_STATE::C_STATE_ONLINE);
 		return rsp;
 	}
 	else

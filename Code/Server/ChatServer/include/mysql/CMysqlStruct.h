@@ -59,7 +59,7 @@ struct T_USER_INFO_BEAN
 	std::string m_strF_NICK_NAME;//昵称
 	std::string m_strF_SIGNATURE;//个性签名
 	std::string m_strF_FACE_ID;//头像编号
-	CLIENT_ONLINE_TYPE m_eOnlineState;
+	CLIENT_STATE m_eOnlineState;
 };
 
 //好友聊天消息
