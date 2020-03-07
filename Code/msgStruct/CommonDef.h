@@ -364,7 +364,14 @@ UdpMultiCastReq_Type,
 UdpMultiCastRsp_Type,
 
 NotifyGroupMsgReq_Type,
+
 NotifyGroupMsgRsp_Type,
+
+FriendStateChangeNotifyReq_Type,//好友状态改变通知请求
+FriendStateChangeNotifyRsp_Type,//好友状态改变通知回复
+
+GroupMemberStateChangeNotifyReq_Type,//群组成员状态改变通知请求
+GroupMemberStateChangeNotifyRsp_Type,//群组成
 };
 
 //客户端会话状态
