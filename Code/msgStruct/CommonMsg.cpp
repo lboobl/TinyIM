@@ -420,7 +420,7 @@ UserLoginReqMsg::UserLoginReqMsg()
     m_strUserName.clear();
     m_strPassword.clear();
     m_eOsType = CLIENT_OS_TYPE::OS_TYPE_UNKNOWN;
-    m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_OFFLINE;
+    m_eOnlineType = CLIENT_STATE::C_STATE_OFFLINE;
     m_eNetType = CLIENT_NET_TYPE::C_NET_TYPE_UNKNOWN;
 }
 
@@ -497,7 +497,7 @@ bool UserLoginReqMsg::FromString(const std::string &strJson)
 
     if (json["OnlineType"].is_number())
     {
-        m_eOnlineType = static_cast<CLIENT_ONLINE_TYPE>(json["OnlineType"].int_value());
+        m_eOnlineType = static_cast<CLIENT_STATE>(json["OnlineType"].int_value());
     }
     else
     {
@@ -9289,6 +9289,278 @@ bool NotifyGroupMsgRspMsg::FromString(const std::string &strJson)
 	if (json["GroupId"].is_string())
 	{
 		m_strGroupId = json["GroupId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+
+FriendStateChangeNotifyReqMsg::FriendStateChangeNotifyReqMsg()
+{
+	m_type = E_MsgType::FriendStateChangeNotifyReq_Type;
+}
+
+std::string FriendStateChangeNotifyReqMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"FriendId",m_strFriendId},
+			{"State",static_cast<int>(m_friendState)}
+		});
+
+	return clientObj.dump();
+}
+
+bool FriendStateChangeNotifyReqMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["FriendId"].is_string())
+	{
+		m_strFriendId = json["FriendId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["State"].is_number())
+	{
+		m_friendState = static_cast<CLIENT_STATE>(json["State"].int_value());
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+
+
+FriendStateChangeNotifyRspMsg::FriendStateChangeNotifyRspMsg()
+{
+	m_type = E_MsgType::FriendStateChangeNotifyRsp_Type;
+}
+
+std::string FriendStateChangeNotifyRspMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"FriendId",m_strFriendId},
+		});
+
+	return clientObj.dump();
+}
+
+bool FriendStateChangeNotifyRspMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["FriendId"].is_string())
+	{
+		m_strFriendId = json["FriendId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+
+
+
+GroupMemberStateChangeNotifyReqMsg::GroupMemberStateChangeNotifyReqMsg()
+{
+	m_type = E_MsgType::GroupMemberStateChangeNotifyReq_Type;
+}
+
+std::string GroupMemberStateChangeNotifyReqMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"GroupId",m_strGroupId},
+			{"MemberId",m_strMemberId},
+			{"State",static_cast<int>(m_memberState)},
+		});
+
+	return clientObj.dump();
+}
+
+bool GroupMemberStateChangeNotifyReqMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["GroupId"].is_string())
+	{
+		m_strGroupId = json["GroupId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["MemberId"].is_string())
+	{
+		m_strMemberId = json["MemberId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["State"].is_number())
+	{
+		m_memberState = static_cast<CLIENT_STATE>(json["State"].int_value());
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+
+
+GroupMemberStateChangeNotifyRspMsg::GroupMemberStateChangeNotifyRspMsg()
+{
+	m_type = E_MsgType::GroupMemberStateChangeNotifyRsp_Type;
+}
+
+std::string GroupMemberStateChangeNotifyRspMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"GroupId",m_strGroupId},
+			{"MemberId",m_strMemberId},
+		});
+
+	return clientObj.dump();
+}
+
+bool GroupMemberStateChangeNotifyRspMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["GroupId"].is_string())
+	{
+		m_strGroupId = json["GroupId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["MemberId"].is_string())
+	{
+		m_strMemberId = json["MemberId"].string_value();
 	}
 	else
 	{

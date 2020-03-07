@@ -423,18 +423,21 @@ enum class CLIENT_NET_TYPE {
 };
 
 //在线类型
-enum class CLIENT_ONLINE_TYPE {
+enum class CLIENT_STATE {
 	//未知
-	C_ONLINE_TYPE_UNKNOWN,
-	
+	C_STATE_UNKNOWN,
+
 	//在线
-	C_ONLINE_TYPE_ONLINE,
-	
+	C_STATE_ONLINE,
+
 	//离线
-	C_ONLINE_TYPE_OFFLINE,
-	
+	C_STATE_OFFLINE,
+
 	//隐身
-	C_ONLINE_TYPE_INVISIBLE,
+	C_STATE_INVISIBLE,
+
+	//注销
+	C_STATE_UN_REGISTER,
 };
 
 enum class FILE_TRANS_TYPE {
@@ -564,8 +567,8 @@ CHAT_MSG_TYPE ChatType(const std::string strType);
 std::string StringToHex(const std::string& strInput);
 std::string HexToString(const std::string& strInput);
 
-std::string OnLineType(const CLIENT_ONLINE_TYPE onlineType);
-CLIENT_ONLINE_TYPE OnLineType(const std::string strOnlineType);
+std::string OnLineType(const CLIENT_STATE onlineType);
+CLIENT_STATE OnLineType(const std::string strOnlineType);
 
 std::string FriendRelation(const E_FRIEND_RELATION& relation);
 E_FRIEND_RELATION FriendRelation(const std::string& strRelation);

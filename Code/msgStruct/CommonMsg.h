@@ -26,7 +26,7 @@ struct UserBaseInfo {
 	std::string m_strBirthDate; //用户出生日期
 	std::string m_strEmail;     //用户邮箱
 	std::string m_strGender;    //用户性别
-	CLIENT_ONLINE_TYPE m_eOnlineState;//用户在线状态
+	CLIENT_STATE m_eOnlineState;//用户在线状态
 };
 
 //好友分组的基本信息
@@ -355,7 +355,7 @@ public:
 	std::string m_strPassword;//密码
 	CLIENT_OS_TYPE m_eOsType;//操作系统类型
 	CLIENT_NET_TYPE m_eNetType;//网络类型
-	CLIENT_ONLINE_TYPE m_eOnlineType;//在线类型
+	CLIENT_STATE m_eOnlineType;//在线类型
 public:
 	explicit UserLoginReqMsg();
 
@@ -2346,6 +2346,58 @@ public:
 	std::string m_strGroupId;//好友ID
 public:
 	NotifyGroupMsgRspMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class FriendStateChangeNotifyReqMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strFriendId;//好友ID
+	CLIENT_STATE m_friendState;
+public:
+	FriendStateChangeNotifyReqMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class FriendStateChangeNotifyRspMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strFriendId;//好友ID
+public:
+	FriendStateChangeNotifyRspMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class GroupMemberStateChangeNotifyReqMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strGroupId;//群组Id
+	std::string m_strMemberId;//群组成员Id
+	CLIENT_STATE m_memberState;
+public:
+	GroupMemberStateChangeNotifyReqMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class GroupMemberStateChangeNotifyRspMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strGroupId;//群组Id
+	std::string m_strMemberId;//群组成员Id
+public:
+	GroupMemberStateChangeNotifyRspMsg();
 	virtual std::string ToString() const override;
 	virtual bool FromString(const std::string& strJson) override;
 };

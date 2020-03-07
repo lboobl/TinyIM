@@ -471,17 +471,17 @@ std::string HexToString(const std::string& input)
  * @brief 字符串转为在线离线状态
  * 
  * @param strType 字符串
- * @return CLIENT_ONLINE_TYPE 在线离线状态 
+ * @return CLIENT_STATE 在线离线状态 
  */
-CLIENT_ONLINE_TYPE OnLineType(const std::string strType)
+CLIENT_STATE OnLineType(const std::string strType)
 {
 	if (strType == "ON_LINE")
 	{
-		return CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+		return CLIENT_STATE::C_STATE_ONLINE;
 	}
 	else
 	{
-		return CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_OFFLINE;
+		return CLIENT_STATE::C_STATE_OFFLINE;
 	}
 }
 
@@ -491,11 +491,11 @@ CLIENT_ONLINE_TYPE OnLineType(const std::string strType)
  * @param onLineType 在线离线状态
  * @return std::string 在线状态的字符串表示
  */
-std::string OnLineType(const CLIENT_ONLINE_TYPE onLineType)
+std::string OnLineType(const CLIENT_STATE onLineType)
 {
 	switch (onLineType)
 	{
-	case CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE:
+	case CLIENT_STATE::C_STATE_ONLINE:
 	{
 		return "ON_LINE";
 	}break;
