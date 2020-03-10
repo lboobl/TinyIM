@@ -39,18 +39,7 @@ public:
 	int		   m_nRetryTimes;	//当作为发送数据项时重试次数。
 };
 
-//class CRegisterRequest : public CWndMsgBase
-//{
-//public:
-//	CRegisterRequest();
-//	virtual ~CRegisterRequest();
-//
-//public:
-//	char m_szAccountName[64];
-//	char m_szNickName[64];
-//	char m_szPassword[64];
-//	
-//};
+
 
 /**
  * @brief GUI的注册回复消息(注册结果)
@@ -68,17 +57,7 @@ public:
 	char m_szAccount[64];//用户账号
 };
 
-//class CLoginRequest : public CWndMsgBase
-//{
-//public:
-//	CLoginRequest();
-//	virtual ~CLoginRequest();
-//public:
-//	char		m_szAccountName[64];
-//	char		m_szPassword[64];
-//	long		m_nStatus;
-//	LOGIN_TYPE	m_nLoginType;	//登录类型：0表示使用手机号登入，1表示使用账号登入
-//};
+
 
 /**
  * @brief GUI登录结果消息
@@ -105,36 +84,7 @@ public:
 	E_UI_ONLINE_STATUS m_nStatus;//用户在线状态
 };
 
-//class CUserBasicInfoRequest : public CWndMsgBase
-//{
-//public:
-//	CUserBasicInfoRequest();
-//	virtual ~CUserBasicInfoRequest();
-//
-//public:
-//	std::set<UINT> m_setAccountID;
-//};
 
-//class CUserBasicInfoResult : public CWndMsgBase
-//{
-//public:
-//	CUserBasicInfoResult();
-//	virtual ~CUserBasicInfoResult();
-//
-//public:
-//    //key是分组的名字，value是该组好友的集合
-//	std::map<std::string, std::list<UserBasicInfo_ST*>> m_mapUserBasicInfo;
-//};
-
-//class CChangeUserStatusRequest : public CWndMsgBase
-//{
-//public:
-//    CChangeUserStatusRequest();
-//	virtual  ~CChangeUserStatusRequest();
-//
-//public:
-//    int32_t m_nNewStatus;
-//};
 
 //Dennis Begin
 //好友聊天消息
@@ -165,91 +115,6 @@ public:
 	CBuddyChatUiMsg m_uiMsg;//好友聊天的消息
 };
 
-//class CGroupBasicInfoRequest : public CWndMsgBase
-//{
-//public:
-//    CGroupBasicInfoRequest();
-//	virtual ~CGroupBasicInfoRequest();
-//
-//public:
-//    int  m_groupid;
-//};
-
-//class CGroupBasicInfoResult : public CWndMsgBase
-//{
-//public:
-//    CGroupBasicInfoResult();
-//    ~CGroupBasicInfoResult();
-//
-//public:
-//    int                       m_groupid;
-//    std::list<UserBasicInfo_ST*> m_listUserBasicInfo;
-//};
-
-//class CUserExtendInfoRequest : public CWndMsgBase
-//{
-//public:
-//	CUserExtendInfoRequest();
-//	~CUserExtendInfoRequest();
-//
-//public:
-//	std::set<UINT> m_setAccountID;
-//};
-
-//class CUserExtendInfoResult : public CWndMsgBase
-//{
-//public:
-//	CUserExtendInfoResult();
-//	~CUserExtendInfoResult();
-//public:
-//	std::list<UserExtendInfo_ST*> m_listUserExtendInfo;
-//};
-
-//class CLoginUserFriendsIDRequest : public CWndMsgBase
-//{
-//public:
-//	CLoginUserFriendsIDRequest();
-//	~CLoginUserFriendsIDRequest();
-//
-//public:
-//	UINT m_uAccountID;
-//};
-
-//class CLoginUserFriendsIDResult : public CWndMsgBase
-//{
-//public:
-//	CLoginUserFriendsIDResult();
-//	~CLoginUserFriendsIDResult();
-//
-//public:
-//	UINT				m_uAccountID;
-//	std::set<UINT>		m_setFriendIDs;
-//	std::set<UINT>		m_setGroupIDs;
-//};
-
-//class CFriendStatus : public CWndMsgBase
-//{
-//public:
-//	CFriendStatus();
-//	~CFriendStatus();
-//
-//public:
-//	UINT	m_uAccountID;
-//	long	m_nStatus;
-//    long    m_nClientType;
-//    int     m_type;
-//};
-
-//class CFindFriendRequest : public CWndMsgBase
-//{
-//public:
-//	CFindFriendRequest();
-//	~CFindFriendRequest();
-//
-//public:
-//	char m_szAccountName[64];
-//	long m_nType;				//查找类型
-//};
 
 /**
  * @brief GUI的查找好友结果消息
@@ -268,16 +133,6 @@ public:
 	char m_szNickName[64];//用户昵称
 };
 
-//class COperateFriendRequest : public CWndMsgBase
-//{
-//public:
-//	COperateFriendRequest();
-//	~COperateFriendRequest();
-//
-//public:
-//	UINT m_uAccountID;
-//	UINT m_uCmd;
-//};
 
 /**
  * @brief GUI添加好友的结果消息
@@ -315,52 +170,6 @@ public:
 };
 
 
-//class CAddTeamInfoRequest : public CWndMsgBase
-//{
-//public:
-//    CAddTeamInfoRequest();
-//    ~CAddTeamInfoRequest();
-//
-//public:
-//    int          m_opType;          //操作类型
-//    std::wstring m_strNewTeamName;
-//    std::wstring m_strOldTeamName;  
-//};
-
-//class CAddTeamInfoResult : public CWndMsgBase
-//{
-//public:
-//    CAddTeamInfoResult();
-//    ~CAddTeamInfoResult();
-//
-//public:
-//    int          m_opType;          //操作类型  
-//};
-
-//class CMoveFriendRequest : public CWndMsgBase
-//{
-//public:
-//    CMoveFriendRequest();
-//    ~CMoveFriendRequest();
-//
-//public:
-//    int          m_nFriendID;          //操作类型
-//    std::wstring m_strNewTeamName;
-//    std::wstring m_strOldTeamName;
-//};
-
-//class CSentChatMessage : public CWndMsgBase
-//{
-//public:
-//	CSentChatMessage();
-//	~CSentChatMessage();
-//
-//public:
-//	CMsgItem* m_pMsgItem;
-//	HWND	  m_hwndChat;
-//};
-
-
 /**
  * @TODO: 暂时没有用到[考虑之后删除]
  * @brief GUI消息[]
@@ -383,53 +192,7 @@ public:
 
 };
 
-//class CRecvChatMessage : public CWndMsgBase
-//{
-//public:
-//	CRecvChatMessage();
-//	~CRecvChatMessage();
-//
-//public:
-//	UINT  m_uMsgID;			//消息ID
-//	UINT  m_uSenderID;		//发送人ID
-//	UINT  m_uTargetID;		//接收者ID
-//	UINT  m_uMsgBodySize;	//消息正文内容长度
-//	char* m_pszMsgBody;		//消息正文内容
-//};
 
-//class CModifyPasswordRequest : public CWndMsgBase
-//{
-//public:
-//	CModifyPasswordRequest();
-//	~CModifyPasswordRequest();
-//
-//public:
-//	char m_szOldPassword[64];
-//	char m_szNewPassword[64];
-//};
-
-//class CModifyPasswordResult : public CWndMsgBase
-//{
-//public:
-//	CModifyPasswordResult();
-//	~CModifyPasswordResult();
-//
-//public:
-//	long	m_nResultCode;
-//};
-
-//class CCreateNewGroupRequest
-//class CCreateNewGroupRequest : public CWndMsgBase
-//{
-//public:
-//	CCreateNewGroupRequest();
-//	~CCreateNewGroupRequest();
-//
-//public:
-//	char m_szGroupName[64];
-//};
-
-//class CCreateGroupResult
 
 /**
  * @brief GUI创建群组的结果的消息
@@ -448,107 +211,6 @@ public:
 	char	m_szAccount[32];//用户ID
 };
 
-//class CModifyFriendMakeNameRequest
-//class CModifyFriendMakeNameRequest : public CWndMsgBase
-//{
-//public:
-//    CModifyFriendMakeNameRequest();
-//    ~CModifyFriendMakeNameRequest();
-//
-//public:
-//    UINT	m_uFriendID;
-//    TCHAR   m_szNewMarkName[64];
-//};
-
-//class CModifyFriendMakeNameResult
-//class CModifyFriendMakeNameResult : public CWndMsgBase
-//{
-//public:
-//    CModifyFriendMakeNameResult();
-//    ~CModifyFriendMakeNameResult();
-//
-//public:
-//    UINT	m_uFriendID;
-//    //char	m_szNewMarkName[64];
-//};
-
-//class CHeartbeatMessageRequest : public CWndMsgBase
-//{
-//public:
-//	CHeartbeatMessageRequest();
-//	~CHeartbeatMessageRequest();
-//};
-
-//class CHeartbeatMessageResult : public CWndMsgBase
-//{
-//public:
-//	~CHeartbeatMessageResult();
-//	CHeartbeatMessageResult();
-//};
-
-//class CUpdateLogonUserInfoRequest
-//class CUpdateLogonUserInfoRequest : public CWndMsgBase
-//{
-//public:
-//	CUpdateLogonUserInfoRequest();
-//	~CUpdateLogonUserInfoRequest();
-//
-//public:
-//	char	m_szNickName[64];
-//	char    m_szSignature[512];
-//	UINT	m_uGender;
-//	long	m_nBirthday;
-//	char    m_szAddress[64];
-//	char    m_szPhone[32];
-//	char    m_szMail[48];
-//	UINT	m_uFaceID;
-//	TCHAR   m_szCustomFace[MAX_PATH];
-//	BOOL    m_bUseCustomThumb;				//是否使用自定义头像
-//};
-
-//class CUpdateLogonUserInfoResult
-//class CUpdateLogonUserInfoResult : public CWndMsgBase
-//{
-//public:
-//	CUpdateLogonUserInfoResult();
-//	~CUpdateLogonUserInfoResult();
-//
-//public:
-//    char	m_szNickName[64];
-//    char    m_szSignature[512];
-//    UINT	m_uGender;
-//    long	m_nBirthday;
-//    char    m_szAddress[64];
-//    char    m_szPhone[32];
-//    char    m_szMail[48];
-//    UINT	m_uFaceID;
-//    char    m_szCustomFace[MAX_PATH];
-//    BOOL    m_bUseCustomThumb;
-//};
-
-//class CTargetInfoChangeResult
-//class CTargetInfoChangeResult : public CWndMsgBase
-//{
-//public:
-//	CTargetInfoChangeResult();
-//	~CTargetInfoChangeResult();
-//
-//public:
-//	UINT m_uAccountID;
-//
-//};
-
-//class CScreenshotInfo
-//{
-//public:
-//    CScreenshotInfo();
-//    ~CScreenshotInfo();
-//
-//public:
-//    std::string m_strBmpHeader;
-//    std::string m_strBmpData;
-//    UINT        m_targetId;
-//};
 
 /*
 文件传输速率消息
@@ -608,7 +270,7 @@ public:
 	char m_szUserId[16];//用户ID
 	char m_szFriendId[16];//好友ID
 	char m_szFileName[256];//文件名称
-	CLIENT_ONLINE_TYPE m_eOnlineType;//[在线/离线]传输
+	CLIENT_STATE m_eOnlineType;//[在线/离线]传输
 };
 
 /**
@@ -643,7 +305,7 @@ public:
 	char m_szUserId[16];//用户ID
 	char m_szFriendId[16];//好友ID
 	char m_szFileName[256];//文件名称
-	CLIENT_ONLINE_TYPE m_eOnlineType;//文件传输在线/离线
+	CLIENT_STATE m_eOnlineType;//文件传输在线/离线
 	E_FRIEND_OPTION m_eOption;//用户选择
 };
 

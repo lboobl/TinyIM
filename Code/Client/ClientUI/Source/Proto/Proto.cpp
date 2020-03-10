@@ -423,6 +423,11 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 	}
 }
 
+/**
+ * @brief 处理文件传输进度通知请求消息
+ * 
+ * @param reqMsg 文件传输进度通知请求消息
+ */
 void CMsgProto::HandleFileTransProcessNotifyReq(const FileTransProgressNotifyReqMsg& reqMsg)
 {
 	C_WND_MSG_FileProcessMsg * pResult = new C_WND_MSG_FileProcessMsg();
@@ -446,6 +451,7 @@ void CMsgProto::HandleFileTransProcessNotifyReq(const FileTransProgressNotifyReq
 		}
 	}
 }
+
 /**
  * @brief 获取和某个好友的聊天消息，显示历史消息记录的时候使用
  * 
@@ -466,7 +472,7 @@ CBuddyChatUiMsgVector CMsgProto::GetBuddyMsgList(const std::string strFriendId)
 	}
 }
 
-//根据好友ID获取好友信息
+
 /**
  * @brief 根据好友ID获取好友信息
  * 
@@ -544,7 +550,12 @@ void CMsgProto::HandleFriendUnReadNotifyReq(const std::shared_ptr<TransBaseMsg_t
 	}
 }
 
-
+/**
+ * @brief Core的用户信息转为UI的用户信息
+ * 
+ * @param userInfo core的用户信息
+ * @return C_UI_BuddyInfo UI的用户信息
+ */
 C_UI_BuddyInfo CoreToUI(const UserBaseInfo& userInfo)
 {
 	C_UI_BuddyInfo result;
@@ -556,7 +567,7 @@ C_UI_BuddyInfo CoreToUI(const UserBaseInfo& userInfo)
 	result.m_strUserName = EncodeUtil::Utf8ToUnicode(userInfo.m_strUserName);
 
 
-	if (userInfo.m_eOnlineState == CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE)
+	if (userInfo.m_eOnlineState == CLIENT_STATE::C_STATE_ONLINE)
 	{
 		result.m_nStatus = E_UI_ONLINE_STATUS::STATUS_ONLINE;
 	}
@@ -570,6 +581,7 @@ C_UI_BuddyInfo CoreToUI(const UserBaseInfo& userInfo)
 
 	return result;
 }
+
 /**
  * @brief 处理获取好友列表的回复
  * 
@@ -688,6 +700,14 @@ bool CMsgProto::SendAddFriendRecvAsnyc(const std::string friendName,const std::s
 	return pSess->SendMsg(&trans);
 }
 
+/**
+ * @brief 好友间发送离线文件
+ * 
+ * @param strFriendId 好友ID
+ * @param strFileName 文件名
+ * @return true 成功
+ * @return false 失败
+ */
 bool CMsgProto::SendFriendOffLineFile(const std::string strFriendId, std::string strFileName)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
@@ -702,7 +722,7 @@ bool CMsgProto::SendFriendOffLineFile(const std::string strFriendId, std::string
 }
 
 /**
- * @brief 发送 发送文件 请求
+ * @brief 好友间发送在线文件
  * 
  * @param strFriendId 好友ID
  * @param strFileName 文件名
@@ -884,11 +904,11 @@ void CMsgProto::HandleFriendRecvFileReq(const std::shared_ptr<TransBaseMsg_t> pO
 		strcpy_s(pResult->m_szFileName, reqMsg.m_strFileName.c_str());
 		if (reqMsg.m_transMode == FILE_TRANS_TYPE::UDP_OFFLINE_MODE)
 		{
-			pResult->m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_OFFLINE;
+			pResult->m_eOnlineType = CLIENT_STATE::C_STATE_OFFLINE;
 		}
 		else
 		{
-			pResult->m_eOnlineType = CLIENT_ONLINE_TYPE::C_ONLINE_TYPE_ONLINE;
+			pResult->m_eOnlineType = CLIENT_STATE::C_STATE_ONLINE;
 		}
 		if (item != m_msgMap.end())
 		{
@@ -1111,6 +1131,13 @@ bool CMsgProto::GetFriendList() {
 	}
 }
 
+/**
+ * @brief 发送删除好友的消息
+ * 
+ * @param strFriendId 好友ID
+ * @return true 成功
+ * @return false 失败
+ */
 bool CMsgProto::SendRemoveFriend(const std::string strFriendId)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
@@ -1141,6 +1168,15 @@ bool CMsgProto::SendAddToGroupReq(const std::string strGroupId)
 		return pSess->SendMsg(&trans);
 	}
 }
+
+/**
+ * @brief 发送文件开始消息
+ * 
+ * @param strFriendId 好友ID
+ * @param strFileName 文件名
+ * @return true 成功
+ * @return false 失败
+ */
 bool CMsgProto::SendFileDataBeginReq(const std::string strFriendId, const std::string strFileName)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
@@ -1157,6 +1193,11 @@ bool CMsgProto::SendFileDataBeginReq(const std::string strFriendId, const std::s
 	}
 }
 
+/**
+ * @brief 处理发送文件回复消息
+ * TODO: 在上一步完成消息的反序列化
+ * @param pOrgMsg 
+ */
 void CMsgProto::HandleFileSendDataRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
 {
 	FileSendDataBeginRsp rspMsg;
@@ -1166,28 +1207,13 @@ void CMsgProto::HandleFileSendDataRsp(const std::shared_ptr<TransBaseMsg_t> pOrg
 		}
 	}
 }
+
 /**
- * @brief 发送文本聊天
+ * @brief UI的聊天数据转Core的聊天数据
  * 
- * @param strFriendName 好友ID
- * @param strContext 文本消息
- * @return true 
- * @return false 
+ * @param richMsg 
+ * @return ChatMsgElemVec 
  */
-//bool CMsgProto::SendChatTxtMsg(const std::string strFriendName, const std::string strContext, const C_UI_FontInfo font)
-//{
-//	auto pSess = SourceServer::CSessManager::GetManager();
-//	{
-//		FriendChatSendTxtReqMsg reqMsg;
-//		reqMsg.m_strSenderId = m_strUserId;
-//		reqMsg.m_strReceiverId = strFriendName;
-//		reqMsg.m_strContext = strContext;
-//		reqMsg.m_fontInfo = UiToCore(font);
-//	
-//		TransBaseMsg_t trans(reqMsg.GetMsgType(), reqMsg.ToString());
-//		return pSess->SendMsg(&trans);
-//	}
-//}
 ChatMsgElemVec UiToCore(const RichEditMsgList& richMsg)
 {
 	ChatMsgElemVec result;
@@ -1226,6 +1252,12 @@ ChatMsgElemVec UiToCore(const RichEditMsgList& richMsg)
 	return result;
 }
 
+/**
+ * @brief core的聊天消息数据转为UI使用的聊天消息数据
+ * 
+ * @param coreMsgVec ClientCore使用的聊天数据
+ * @return RichEditMsgList UI界面使用的聊天数据
+ */
 RichEditMsgList CoreToUi(const ChatMsgElemVec& coreMsgVec)
 {
 	RichEditMsgList result;
@@ -1261,13 +1293,22 @@ RichEditMsgList CoreToUi(const ChatMsgElemVec& coreMsgVec)
 	return result;
 }
 
-bool CMsgProto::SendChatTxtMsg(const std::string strFriendName, RichEditMsgList msgList, const C_UI_FontInfo font)
+/**
+ * @brief 发送好友聊天消息
+ * 
+ * @param strFriendId 好友ID 
+ * @param msgList RichEdit的聊天消息列表
+ * @param font 字体信息
+ * @return true 成功
+ * @return false 失败
+ */
+bool CMsgProto::SendChatTxtMsg(const std::string strFriendId, RichEditMsgList msgList, const C_UI_FontInfo font)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
 	{
 		FriendChatSendTxtReqMsg reqMsg;
 		reqMsg.m_strSenderId = m_strUserId;
-		reqMsg.m_strReceiverId = strFriendName;
+		reqMsg.m_strReceiverId = strFriendId;
 		reqMsg.m_strContext = MsgElemVec(UiToCore(msgList));
 		reqMsg.m_fontInfo = UiToCore(font);
 		TransBaseMsg_t trans(reqMsg.GetMsgType(), reqMsg.ToString());
@@ -1282,6 +1323,12 @@ bool CMsgProto::SendChatTxtMsg(const std::string strFriendName, RichEditMsgList 
 	//}
 	return true;
 }
+
+/**
+ * @brief 处理获取群聊消息的回复
+ * 
+ * @param pOrgMsg 
+ */
 void CMsgProto::HandleGetGroupChatHistory(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
 {
 	GetGroupChatHistoryRsp rspMsg;
@@ -1314,6 +1361,14 @@ void CMsgProto::HandleGetGroupChatHistory(const std::shared_ptr<TransBaseMsg_t> 
 	}
 }
 
+/**
+ * @brief 获取群聊的消息记录
+ * 
+ * @param strGroupId 群组Id
+ * @param eDirection 获取聊天记录的方向(首页、上一页、下一页、末页)
+ * @return true 成功
+ * @return false 失败
+ */
 bool CMsgProto::GetGroupHistoryReq(const std::string strGroupId, const HISTORY_DIRECTION eDirection)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
@@ -1348,6 +1403,15 @@ bool CMsgProto::GetGroupHistoryReq(const std::string strGroupId, const HISTORY_D
 	return false;
 }
 
+/**
+ * @brief 处理获取消息记录的请求
+ * 
+ * @param strFriendId 好友ID
+ * @param strChatMsgId 当前的消息记录ID
+ * @param eDirection 获取聊天记录的方向(首页、上一页、下一页、末页)
+ * @return true 成功
+ * @return false 失败
+ */
 bool CMsgProto::GetChatHistoryReq(const std::string strFriendId, const std::string strChatMsgId, const HISTORY_DIRECTION eDirection)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
@@ -1381,6 +1445,8 @@ bool CMsgProto::GetChatHistoryReq(const std::string strFriendId, const std::stri
 	}
 	return false;
 }
+
+
 /**
  * @brief 发送收到文本消息之后的回复
  * 
@@ -1773,6 +1839,13 @@ void CMsgProto::HandleDestroyGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> p
 
 }
 
+/**
+ * @brief 发送退出群组消息
+ * 
+ * @param strGroupId 群组ID
+ * @return true 
+ * @return false 
+ */
 bool CMsgProto::SendQuitFromGroupReq(const std::string strGroupId)
 {
 	auto pSess = SourceServer::CSessManager::GetManager();
@@ -1805,13 +1878,16 @@ bool CMsgProto::SendGetGroupList()
 	}
 }
 
+
+
 /**
  * @brief 发送群组文本消息
  * 
- * @param strGroupId 
- * @param strContext 
- * @return true 
- * @return false 
+ * @param strGroupId 群组id
+ * @param msgList RichEdit的消息内容数组
+ * @param font 字体信息
+ * @return true 发送成功
+ * @return false 发送失败
  */
 bool CMsgProto::SendGroupChatTextMsg(const std::string strGroupId, RichEditMsgList msgList, const C_UI_FontInfo font)
 {

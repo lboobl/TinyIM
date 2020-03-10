@@ -30,7 +30,7 @@
 #include "EncodingUtil.h"
 #include "UIText.h"
 
-#include "net/Msg.h"
+//#include "net/Msg.h"
 #include "Proto.h"
 #include "UIDefaultValue.h"
 #pragma comment(lib, "winmm.lib")

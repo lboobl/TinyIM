@@ -12,18 +12,6 @@ CWndMsgBase::~CWndMsgBase()
 {
 }
 
-//CRegisterRequest::CRegisterRequest()
-//{
-//	m_uType = NET_DATA_REGISTER;
-//	memset(m_szAccountName, 0, sizeof(m_szAccountName));
-//	memset(m_szNickName, 0, sizeof(m_szNickName));
-//	memset(m_szPassword, 0, sizeof(m_szPassword));
-//}
-//
-//CRegisterRequest::~CRegisterRequest()
-//{
-//
-//}
 
 //class C_WND_MSG_RegisterRequest
 C_WND_MSG_RegisterRequest::C_WND_MSG_RegisterRequest()
@@ -39,18 +27,7 @@ C_WND_MSG_RegisterRequest::~C_WND_MSG_RegisterRequest()
 
 }
 
-//CLoginRequest::CLoginRequest()
-//{
-//	m_uType = NET_DATA_LOGIN;
-//	memset(m_szAccountName, 0, sizeof(m_szAccountName));
-//	memset(m_szPassword, 0, sizeof(m_szPassword));
-//	m_nStatus = E_UI_ONLINE_STATUS::STATUS_ONLINE;
-//	m_nLoginType = LOGIN_USE_MOBILE_NUMBER;
-//}
 
-//CLoginRequest::~CLoginRequest()
-//{
-//}
 
 //class C_WND_MSG_LoginResult
 C_WND_MSG_LoginResult::C_WND_MSG_LoginResult()
@@ -76,131 +53,6 @@ C_WND_MSG_LoginResult::~C_WND_MSG_LoginResult()
 
 }
 
-//CUserBasicInfoRequest::CUserBasicInfoRequest()
-//{
-//	m_uType = NET_DATA_USER_BASIC_INFO;
-//}
-//
-//CUserBasicInfoRequest::~CUserBasicInfoRequest()
-//{
-//	
-//}
-
-//class CUserBasicInfoResult
-//CUserBasicInfoResult::CUserBasicInfoResult()
-//{
-//	m_uType = NET_DATA_USER_BASIC_INFO;
-//}
-//
-//CUserBasicInfoResult::~CUserBasicInfoResult()
-//{
-//
-//}
-
-//CChangeUserStatusRequest::CChangeUserStatusRequest()
-//{
-//    m_uType = NET_DATA_CHANGE_STATUS;
-//    m_nNewStatus = 0;
-//}
-//
-//CChangeUserStatusRequest::~CChangeUserStatusRequest()
-//{
-//    
-//}
-
-//class CGroupBasicInfoRequest
-//CGroupBasicInfoRequest::CGroupBasicInfoRequest()
-//{
-//    m_uType = NET_DATA_GROUP_BASIC_INFO;
-//}
-//
-//CGroupBasicInfoRequest::~CGroupBasicInfoRequest()
-//{
-//
-//}
-
-//class CGroupBasicInfoResult
-//CGroupBasicInfoResult::CGroupBasicInfoResult()
-//{
-//    m_uType = NET_DATA_GROUP_BASIC_INFO;
-//}
-//
-//CGroupBasicInfoResult::~CGroupBasicInfoResult()
-//{
-//
-//}
-
-//class CUserExtendInfoRequest
-//CUserExtendInfoRequest::CUserExtendInfoRequest()
-//{
-//	m_uType = NET_DATA_USER_EXTEND_INFO;
-//}
-//
-//CUserExtendInfoRequest::~CUserExtendInfoRequest()
-//{
-//	
-//}
-
-//class CLoginUserExtendInfo
-//CUserExtendInfoResult::CUserExtendInfoResult()
-//{
-//	m_uType = NET_DATA_USER_EXTEND_INFO;
-//}
-//
-//CUserExtendInfoResult::~CUserExtendInfoResult()
-//{
-//
-//}
-
-//class CLoginUserFriendsID
-//CLoginUserFriendsIDRequest::CLoginUserFriendsIDRequest()
-//{
-//	m_uType = NET_DATA_FRIENDS_ID;
-//	m_uAccountID = 0;
-//}
-//
-//CLoginUserFriendsIDRequest::~CLoginUserFriendsIDRequest()
-//{
-//
-//}
-
-//CLoginUserFriendsIDResult::CLoginUserFriendsIDResult()
-//{
-//	m_uType = NET_DATA_FRIENDS_ID;
-//	m_uAccountID = 0;
-//}
-//
-//CLoginUserFriendsIDResult::~CLoginUserFriendsIDResult()
-//{
-//
-//}
-
-//class CFriendStatus
-//CFriendStatus::CFriendStatus()
-//{
-//	m_uType = NET_DATA_FRIENDS_STATUS;
-//	m_uAccountID = 0;
-//	m_nStatus = 0;
-//    m_nClientType = 0;
-//    m_type = 0;
-//}
-//
-//CFriendStatus::~CFriendStatus()
-//{
-//}
-
-//class CFindFriendRequest
-//CFindFriendRequest::CFindFriendRequest()
-//{
-//	m_uType = NET_DATA_FIND_FRIEND;
-//	memset(m_szAccountName, 0, sizeof(m_szAccountName));
-//	m_nType = 0;
-//}
-//
-//CFindFriendRequest::~CFindFriendRequest()
-//{
-//
-//}
 
 C_WND_MSG_FindFriendResult::C_WND_MSG_FindFriendResult()
 {
@@ -215,19 +67,6 @@ C_WND_MSG_FindFriendResult::~C_WND_MSG_FindFriendResult()
 {
 
 }
-
-//class COperateFriendRequest
-//COperateFriendRequest::COperateFriendRequest()
-//{
-//	m_uType = NET_DATA_OPERATE_FRIEND;
-//	m_uAccountID = 0;
-//	m_uCmd = -1;
-//}
-//
-//COperateFriendRequest::~COperateFriendRequest()
-//{
-//
-//}
 
 //class C_WND_MSG_OperateFriendResult
 C_WND_MSG_OperateFriendResult::C_WND_MSG_OperateFriendResult()
@@ -259,43 +98,6 @@ C_WND_MSG_AddFriendNotifyRequest::~C_WND_MSG_AddFriendNotifyRequest()
 }
 
 
-//class CAddTeamInfoRequest
-//CAddTeamInfoRequest::CAddTeamInfoRequest()
-//{
-//    m_uType = NET_DATA_OPERATE_TEAM;
-//    m_opType = -1;
-//}
-//
-//CAddTeamInfoRequest::~CAddTeamInfoRequest()
-//{
-//
-//}
-//
-////class CMoveFriendRequest
-//CMoveFriendRequest::CMoveFriendRequest()
-//{
-//    m_uType = NET_DATA_MOVE_FRIEND;
-//    m_nFriendID = -1;
-//}
-//
-//CMoveFriendRequest::~CMoveFriendRequest()
-//{
-//
-//}
-//
-////class CSentChatMessage
-//CSentChatMessage::CSentChatMessage()
-//{
-//	m_uType = NET_DATA_CHAT_MSG;
-//	m_pMsgItem = NULL;
-//	m_hwndChat = NULL;
-//}
-//
-//CSentChatMessage::~CSentChatMessage()
-//{
-//
-//}
-
 //class C_WND_MSG_SentChatConfirmImageMessage
 C_WND_MSG_SentChatConfirmImageMessage::C_WND_MSG_SentChatConfirmImageMessage()
 {
@@ -305,7 +107,6 @@ C_WND_MSG_SentChatConfirmImageMessage::C_WND_MSG_SentChatConfirmImageMessage()
 	m_pszConfirmBody = NULL;
 	m_uConfirmBodySize = 0;
 	m_uSenderID = 0;
-	//m_uTargetID = 0;
 }
 
 C_WND_MSG_SentChatConfirmImageMessage::~C_WND_MSG_SentChatConfirmImageMessage()
@@ -313,58 +114,7 @@ C_WND_MSG_SentChatConfirmImageMessage::~C_WND_MSG_SentChatConfirmImageMessage()
 
 }
 
-//class CRecvChatMessage
-//CRecvChatMessage::CRecvChatMessage()
-//{
-//	m_uType = NET_DATA_CHAT_MSG;
-//	m_uMsgID = 0;
-//	m_uSenderID = 0;
-//	m_uTargetID = 0;
-//	m_uMsgBodySize = 0;
-//	m_pszMsgBody = NULL;
-//}
-//
-//CRecvChatMessage::~CRecvChatMessage()
-//{
-//	if(m_pszMsgBody != NULL)
-//		delete m_pszMsgBody;
-//}
-//
-////class CModifyPassword
-//CModifyPasswordRequest::CModifyPasswordRequest()
-//{
-//	m_uType = NET_DATA_MODIFY_PASSWORD;
-//	memset(m_szOldPassword, 0, sizeof(m_szOldPassword));
-//	memset(m_szNewPassword, 0, sizeof(m_szNewPassword));
-//}
-//
-//CModifyPasswordRequest::~CModifyPasswordRequest()
-//{
-//}
-//
-////class CModifyPasswordResult
-//CModifyPasswordResult::CModifyPasswordResult()
-//{
-//	m_uType = NET_DATA_MODIFY_PASSWORD;
-//	m_nResultCode = 0;
-//}
-//
-//CModifyPasswordResult::~CModifyPasswordResult()
-//{
-//
-//}
-//
-////class CCreateNewGroupRequest
-//CCreateNewGroupRequest::CCreateNewGroupRequest()
-//{
-//	m_uType = NET_DATA_CREATE_NEW_GROUP;
-//	memset(m_szGroupName, 0, sizeof(m_szGroupName));
-//}
-//
-//CCreateNewGroupRequest::~CCreateNewGroupRequest()
-//{
-//
-//}
+
 
 //class CCreateGroupResult
 C_WND_MSG_CreateNewGroupResult::C_WND_MSG_CreateNewGroupResult()
@@ -380,114 +130,7 @@ C_WND_MSG_CreateNewGroupResult::~C_WND_MSG_CreateNewGroupResult()
 {
 }
 
-//class CModifyFriendMakeNameRequest
-//CModifyFriendMakeNameRequest::CModifyFriendMakeNameRequest()
-//{
-//    m_uType = NET_DATA_MODIFY_FRIEND_MARKNAME;
-//    m_uFriendID = -1;
-//    memset(m_szNewMarkName, 0, sizeof(m_szNewMarkName));
-//}
-//
-//CModifyFriendMakeNameRequest::~CModifyFriendMakeNameRequest()
-//{
-//
-//}
-//
-////class CModifyFriendMakeNameResult
-//CModifyFriendMakeNameResult::CModifyFriendMakeNameResult()
-//{
-//}
-//
-//CModifyFriendMakeNameResult::~CModifyFriendMakeNameResult()
-//{
-//}
-//
-////class CHeartbeatMessageRequest
-//CHeartbeatMessageRequest::CHeartbeatMessageRequest()
-//{
-//	m_uType = NET_DATA_HEARTBEAT;
-//}
-//
-//CHeartbeatMessageRequest::~CHeartbeatMessageRequest()
-//{
-//	
-//}
-//
-////class CHeartbeatMessageResult
-//CHeartbeatMessageResult::CHeartbeatMessageResult()
-//{
-//	m_uType = NET_DATA_HEARTBEAT;
-//}
-//
-//CHeartbeatMessageResult::~CHeartbeatMessageResult()
-//{
-//
-//}
 
-//class CUpdateLogonUserInfoRequest
-//CUpdateLogonUserInfoRequest::CUpdateLogonUserInfoRequest()
-//{
-//	m_uType = NET_DATA_UPDATE_LOGON_USER_INFO;
-//	memset(m_szNickName, 0, sizeof(m_szNickName));
-//	memset(m_szSignature, 0, sizeof(m_szSignature));
-//	m_uGender = 0;
-//	m_nBirthday = 0;
-//	memset(m_szAddress, 0, sizeof(m_szAddress));
-//	memset(m_szPhone, 0, sizeof(m_szPhone));
-//	memset(m_szMail, 0, sizeof(m_szMail));
-//	m_uFaceID = 0;
-//	memset(m_szCustomFace, 0, sizeof(m_szCustomFace));
-//	m_bUseCustomThumb = FALSE;
-//}
-//
-//CUpdateLogonUserInfoRequest::~CUpdateLogonUserInfoRequest()
-//{
-//}
-//
-////class CUpdateLogonUserInfoResult
-//CUpdateLogonUserInfoResult::CUpdateLogonUserInfoResult()
-//{
-//	m_uType = NET_DATA_UPDATE_LOGON_USER_INFO;
-//    m_uType = NET_DATA_UPDATE_LOGON_USER_INFO;
-//    memset(m_szNickName, 0, sizeof(m_szNickName));
-//    memset(m_szSignature, 0, sizeof(m_szSignature));
-//    m_uGender = 0;
-//    m_nBirthday = 0;
-//    memset(m_szAddress, 0, sizeof(m_szAddress));
-//    memset(m_szPhone, 0, sizeof(m_szPhone));
-//    memset(m_szMail, 0, sizeof(m_szMail));
-//    m_uFaceID = 0;
-//    memset(m_szCustomFace, 0, sizeof(m_szCustomFace));
-//    m_bUseCustomThumb = FALSE;
-//}
-//
-//CUpdateLogonUserInfoResult::~CUpdateLogonUserInfoResult()
-//{
-//
-//}
-//
-////class CTargetInfoChangeResult
-//CTargetInfoChangeResult::CTargetInfoChangeResult()
-//{
-//	m_uType = NET_DATA_TARGET_INFO_CHANGE;
-//	m_uAccountID = 0;
-//}
-//
-//CTargetInfoChangeResult::~CTargetInfoChangeResult()
-//{
-//
-//}
-//
-////class CScreenshot
-//CScreenshotInfo::CScreenshotInfo() : m_targetId(0)
-//{
-//
-//}
-//
-//CScreenshotInfo::~CScreenshotInfo()
-//{
-//    
-//}
 
 //class C_WND_MSG_FileItemRequest
 C_WND_MSG_FileItemRequest::C_WND_MSG_FileItemRequest()

@@ -21,7 +21,7 @@
 #include "GDIFactory.h"
 #include "EncodingUtil.h"
 #include "IULog.h"
-#include "net/Msg.h"
+//#include "net/Msg.h"
 #include "net/IUProtocolData.h"
 #include "Proto.h"
 

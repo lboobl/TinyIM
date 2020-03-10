@@ -116,9 +116,8 @@ SET(ENCODE_UTIL_SOURCE_FILE ./Source/EncodingUtil.h ./Source/EncodingUtil.cpp)
 
 SET(UI_NET_SOURCE_FILE ./Source/UI_USER_INFO.h  ./Source/UI_USER_INFO.cpp)
 
-SET(NET_SOURCE_FILE ./Source/net/Msg.h ./Source/net/FileMsg.h
+SET(NET_SOURCE_FILE 
 ./Source/net/IUProtocolData.h ./Source/net/IUProtocolData.cpp
-./Source/net/protocolstream.h ./Source/net/protocolstream.cpp
 ./Source/Proto/Proto.h  ./Source/Proto/Proto.cpp
 ./Source/asioNet/include/thirdparty/json11/json11.cpp
 ./Source/asioNet/CClientSess.cpp
