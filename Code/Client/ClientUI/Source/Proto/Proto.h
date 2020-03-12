@@ -146,45 +146,45 @@ private:
 
 	void HandleUserRegisterRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
 	void HandleUserLoginRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleFriendUnReadNotifyReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleUserKickOffReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleFriendUnReadNotifyReq(const FriendUnReadNotifyReqMsg& reqMsg);
+	void HandleUserKickOffReq(const UserKickOffReqMsg& reqMsg);
 	void HandleFindFriendRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleGetFriendListRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleAddFriendRecvReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleAddFriendNotifyReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleSendChatTxtRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
-	void HandleRecvChatTxtReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleGetFriendListRsp(const GetFriendListRspMsg& rspMsg);
+	void HandleAddFriendRecvReq(const AddFriendRecvReqMsg& reqMsg);
+	void HandleAddFriendNotifyReq(const AddFriendNotifyReqMsg& reqMsg);
+	void HandleSendChatTxtRsp(const FriendChatSendTxtRspMsg& rspMsg);
+	void HandleRecvChatTxtReq(const FriendChatRecvTxtReqMsg& reqMsg);
 	void HandleNetRecoverReportMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
 	void HandleNetFailedMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
 
 	void HandleFileTransProcessNotifyReq(const FileTransProgressNotifyReqMsg& reqMsg);
 	
-	void HandleCreateGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleCreateGroupRspMsg(const CreateGroupRspMsg& rspMsg);
 
-	void HandleDestroyGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleDestroyGroupRspMsg(const DestroyGroupRspMsg &rspMsg);
 
-	void HandleGetGroupListRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleGetGroupListRspMsg(const GetGroupListRspMsg& rspMsg);
 	
-	void HandleFindGroupRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleFindGroupRsp(const FindGroupRspMsg& rspMsg);
 
-	void HandleLogoutRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleLogoutRspMsg(const UserLogoutRspMsg& rspMsg);
 
-	void HandleSendGroupTextRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleSendGroupTextRspMsg(const SendGroupTextMsgRspMsg& rspMsg);
 
-	void HandleAddToGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleAddToGroupRspMsg(const AddToGroupRspMsg& rspMsg);
 
-	void HandleRecvGroupTextMsgReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleRecvGroupTextMsgReq(const RecvGroupTextMsgReqMsg& reqMsg);
 
-	void HandleFriendSendFileRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleFriendSendFileRsp(const FriendSendFileMsgRspMsg rspMsg);
 
-	void HandleFriendRecvFileReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleFriendRecvFileReq(const FriendRecvFileMsgReqMsg& reqMsg);
 	
-	void HandleFriendNotifyFileReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleFriendNotifyFileReq(const FriendNotifyFileMsgReqMsg& reqMsg);
 	
 	void HandleFileSendDataRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
 	void HandleUpdateFriendListNotifyReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
 	
-	void HandleGetFriendChatHistory(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
+	void HandleGetFriendChatHistory(const GetFriendChatHistoryRsp& rspMsg);
 
 	void HandleGetGroupChatHistory(const std::shared_ptr<TransBaseMsg_t> pOrgMsg);
 	ID_HANDLE_MAP m_msgMap;      //消息类型和窗口句柄的对应关系表,收到消息的时候进行PostMessage

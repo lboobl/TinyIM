@@ -96,11 +96,11 @@ static std::shared_ptr<CMsgProto> g_MsgProtoIns=nullptr;
 
 CMsgProto::CMsgProto() {
 		
-		m_bRecvRegisterRsp = false;
+	m_bRecvRegisterRsp = false;
 		
-		m_bRecLoginRsp = false;
-		m_eOnLineStatus = E_UI_ONLINE_STATUS::STATUS_OFFLINE;
-		ms_loger = CreateLogger();
+	m_bRecLoginRsp = false;
+	m_eOnLineStatus = E_UI_ONLINE_STATUS::STATUS_OFFLINE;
+	ms_loger = CreateLogger();
 }
 
 /**
@@ -108,17 +108,17 @@ CMsgProto::CMsgProto() {
  * 
  */
 void CMsgProto::Init() {
-		m_startTime = 0;
-		auto pSess = SourceServer::CSessManager::GetManager();
-		auto pIn = shared_from_this();
-		pSess->SetTimeOutCallBack([this, pIn]()->void {
-			OnTimeOut();
-		});
+	m_startTime = 0;
+	auto pSess = SourceServer::CSessManager::GetManager();
+	auto pIn = shared_from_this();
+	pSess->SetTimeOutCallBack([this, pIn]()->void {
+		OnTimeOut();
+	});
 
-		pSess->SetMsgCallBack(
-			[this, pIn](const TransBaseMsg_t* pMsg)->bool {
-			return OnMsgBack(pMsg);
-		});
+	pSess->SetMsgCallBack(
+		[this, pIn](const TransBaseMsg_t* pMsg)->bool {
+		return OnMsgBack(pMsg);
+	});
 }
 
 /**
@@ -326,16 +326,32 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 		HandleFindFriendRsp(pOrgMsg);
 	}break;
 	case E_MsgType::AddFriendRecvReq_Type: {
-		HandleAddFriendRecvReq(pOrgMsg);
+		AddFriendRecvReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleAddFriendRecvReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::AddFriendNotifyReq_Type: {
-		HandleAddFriendNotifyReq(pOrgMsg);
+		AddFriendNotifyReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleAddFriendNotifyReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::GetFriendListRsp_Type: {
-		HandleGetFriendListRsp(pOrgMsg);
+		GetFriendListRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleGetFriendListRsp(rspMsg);
+		}
 	}break;
 	case E_MsgType::FriendChatReceiveTxtMsgReq_Type: {
-		HandleRecvChatTxtReq(pOrgMsg);
+		FriendChatRecvTxtReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleRecvChatTxtReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::NetRecoverReport_Type:
 	{
@@ -348,55 +364,107 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 	}break;
 	case E_MsgType::CreateGroupRsp_Type:
 	{
-		HandleCreateGroupRspMsg(pOrgMsg);
+		CreateGroupRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleCreateGroupRspMsg(rspMsg);
+		}
 	}break;
 	case E_MsgType::DestroyGroupRsp_Type:
 	{
-		HandleDestroyGroupRspMsg(pOrgMsg);
+		DestroyGroupRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleDestroyGroupRspMsg(rspMsg);
+		}
 	}break;
 	case E_MsgType::GetGroupListRsp_Type:
 	{
-		HandleGetGroupListRspMsg(pOrgMsg);
+		GetGroupListRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleGetGroupListRspMsg(rspMsg);
+		}
 	}break;
 	case E_MsgType::UserLogoutRsp_Type:
 	{
-		HandleLogoutRspMsg(pOrgMsg);
+		UserLogoutRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleLogoutRspMsg(rspMsg);
+		}
 	}break;
 	case E_MsgType::FindGroupRsp_Type:
 	{
-		HandleFindGroupRsp(pOrgMsg);
+		FindGroupRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleFindGroupRsp(rspMsg);
+		}
 	}break;
 	case E_MsgType::RecvGroupTextMsgReq_Type:
 	{
-		HandleRecvGroupTextMsgReq(pOrgMsg);
+		RecvGroupTextMsgReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleRecvGroupTextMsgReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::FriendSendFileMsgRsp_Type:
 	{
-		HandleFriendSendFileRsp(pOrgMsg);
+		FriendSendFileMsgRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleFriendSendFileRsp(rspMsg);
+		}
 	}break;
 	case E_MsgType::FriendNotifyFileMsgReq_Type:
 	{
-		HandleFriendNotifyFileReq(pOrgMsg);
+		FriendNotifyFileMsgReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleFriendNotifyFileReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::FriendRecvFileMsgReq_Type:
 	{
-		HandleFriendRecvFileReq(pOrgMsg);
+		FriendRecvFileMsgReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleFriendRecvFileReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::UserKickOffReq_Type:
 	{
-		HandleUserKickOffReq(pOrgMsg);
+		UserKickOffReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleUserKickOffReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::FriendUnReadMsgNotifyReq_Type:
 	{
-		HandleFriendUnReadNotifyReq(pOrgMsg);
+		FriendUnReadNotifyReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleFriendUnReadNotifyReq(reqMsg);
+		}
 	}break;
 	case E_MsgType::SendGroupTextMsgRsp_Type:
 	{
-		HandleSendGroupTextRspMsg(pOrgMsg);
+		SendGroupTextMsgRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleSendGroupTextRspMsg(rspMsg);
+		}
 	}break;
 	case E_MsgType::FriendChatSendTxtMsgRsp_Type:
 	{
-		HandleSendChatTxtRsp(pOrgMsg);
+		FriendChatSendTxtRspMsg rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleSendChatTxtRsp(rspMsg);
+		}
 	}break;
 	case E_MsgType::UpdateFriendListNotifyReq_Type:
 	{
@@ -404,7 +472,11 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 	}break;
 	case E_MsgType::GetFriendChatHistoryRsp_Type:
 	{
-		HandleGetFriendChatHistory(pOrgMsg);
+		GetFriendChatHistoryRsp rspMsg;
+		if (rspMsg.FromString(pOrgMsg->to_string()))
+		{
+			HandleGetFriendChatHistory(rspMsg);
+		}
 	}break;
 	case E_MsgType::GetGroupChatHistoryRsp_Type:
 	{
@@ -508,24 +580,21 @@ E_UI_ONLINE_STATUS CMsgProto::GetStatus()
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleRecvGroupTextMsgReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleRecvGroupTextMsgReq(const RecvGroupTextMsgReqMsg& reqMsg)
 {
-	RecvGroupTextMsgReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string())) {
+	{
+		C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
+		pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(reqMsg.m_chatMsg.m_strSenderId));
+		pResult->m_strSenderId = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strSenderId);
+		pResult->m_strContext = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strContext);
+		pResult->m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
+		pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
+		pResult->m_stFontInfo = CoreToUi(reqMsg.m_chatMsg.m_fontInfo);
+		pResult->m_strMsgTime = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strMsgTime);
+		auto item = m_msgMap.find(reqMsg.GetMsgType());
+		if (item != m_msgMap.end())
 		{
-			C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
-			pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(reqMsg.m_chatMsg.m_strSenderId));
-			pResult->m_strSenderId = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strSenderId);
-			pResult->m_strContext = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strContext);
-			pResult->m_strGroupId = reqMsg.m_chatMsg.m_strGroupId;
-			pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
-			pResult->m_stFontInfo = CoreToUi(reqMsg.m_chatMsg.m_fontInfo);
-			pResult->m_strMsgTime = EncodeUtil::Utf8ToUnicode(reqMsg.m_chatMsg.m_strMsgTime);
-			auto item = m_msgMap.find(reqMsg.GetMsgType());
-			if (item != m_msgMap.end())
-			{
-				::PostMessage(item->second, FMG_MSG_RECV_GROUP_MSG, 0, (LPARAM)(pResult));
-			}
+			::PostMessage(item->second, FMG_MSG_RECV_GROUP_MSG, 0, (LPARAM)(pResult));
 		}
 	}
 }
@@ -535,10 +604,8 @@ void CMsgProto::HandleRecvGroupTextMsgReq(const std::shared_ptr<TransBaseMsg_t> 
  * 
  * @param pOrgMsg 未读消息通知
  */
-void CMsgProto::HandleFriendUnReadNotifyReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleFriendUnReadNotifyReq(const FriendUnReadNotifyReqMsg& reqMsg)
 {
-	FriendUnReadNotifyReqMsg reqMsg;
-	if(reqMsg.FromString(pOrgMsg->to_string()))
 	{
 		FriendUnReadNotifyRspMsg rspMsg;
 		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
@@ -587,42 +654,39 @@ C_UI_BuddyInfo CoreToUI(const UserBaseInfo& userInfo)
  * 
  * @param pOrgMsg 好友列表回复
  */
-void CMsgProto::HandleGetFriendListRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
-	GetFriendListRspMsg rspMsg;
+void CMsgProto::HandleGetFriendListRsp(const GetFriendListRspMsg& rspMsg) {
 	{
 		m_BuddyList.m_arrBuddyTeamInfo.clear();
 	}
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
-		int nTeamIndex = 0;
-		for (auto teamItem : rspMsg.m_teamVec)
+	int nTeamIndex = 0;
+	for (auto teamItem : rspMsg.m_teamVec)
+	{
+		C_UI_BuddyTeamInfo * teamInfo = new C_UI_BuddyTeamInfo();
+		teamInfo->m_strName = EncodeUtil::Utf8ToUnicode(teamItem.m_strTeamName);
+		teamInfo->m_strTeamId = teamItem.m_strTeamId;
+		for (auto userItem : teamItem.m_teamUsers)
 		{
-			C_UI_BuddyTeamInfo * teamInfo = new C_UI_BuddyTeamInfo();
-			teamInfo->m_strName = EncodeUtil::Utf8ToUnicode(teamItem.m_strTeamName);
-			teamInfo->m_strTeamId = teamItem.m_strTeamId;
-			for (auto userItem : teamItem.m_teamUsers)
-			{
-				C_UI_BuddyInfo * pBuddyInfo = new C_UI_BuddyInfo();
-				m_friendInfoMap.insert({ userItem.m_strUserId,userItem });
-				*pBuddyInfo = CoreToUI(userItem);
-				pBuddyInfo->m_nTeamIndex = nTeamIndex;
-				teamInfo->m_arrBuddyInfo.push_back(pBuddyInfo);
-			}
-			nTeamIndex++;
-			m_BuddyList.m_arrBuddyTeamInfo.push_back(teamInfo);
+			C_UI_BuddyInfo * pBuddyInfo = new C_UI_BuddyInfo();
+			m_friendInfoMap.insert({ userItem.m_strUserId,userItem });
+			*pBuddyInfo = CoreToUI(userItem);
+			pBuddyInfo->m_nTeamIndex = nTeamIndex;
+			teamInfo->m_arrBuddyInfo.push_back(pBuddyInfo);
 		}
-		//m_userManager.AddFriend()
-		auto item = m_msgMap.find(rspMsg.GetMsgType());
-		if (item != m_msgMap.end()) {
-			::PostMessage(item->second, FMG_MSG_UPDATE_BUDDY_LIST, 0, 0);
-		}
-		{
-			UpdateFriendListNotifyRspMsg notifyRsp;
-			notifyRsp.m_strMsgId = m_strUserId;
-			notifyRsp.m_strUserId = m_strUserId;
-			auto pSess = SourceServer::CSessManager::GetManager();
-			TransBaseMsg_t trans(notifyRsp.GetMsgType(), notifyRsp.ToString());
-			pSess->SendMsg(&trans);
-		}
+		nTeamIndex++;
+		m_BuddyList.m_arrBuddyTeamInfo.push_back(teamInfo);
+	}
+	//m_userManager.AddFriend()
+	auto item = m_msgMap.find(rspMsg.GetMsgType());
+	if (item != m_msgMap.end()) {
+		::PostMessage(item->second, FMG_MSG_UPDATE_BUDDY_LIST, 0, 0);
+	}
+	{
+		UpdateFriendListNotifyRspMsg notifyRsp;
+		notifyRsp.m_strMsgId = m_strUserId;
+		notifyRsp.m_strUserId = m_strUserId;
+		auto pSess = SourceServer::CSessManager::GetManager();
+		TransBaseMsg_t trans(notifyRsp.GetMsgType(), notifyRsp.ToString());
+		pSess->SendMsg(&trans);
 	}
 
 }
@@ -632,21 +696,19 @@ void CMsgProto::HandleGetFriendListRsp(const std::shared_ptr<TransBaseMsg_t> pOr
  * 
  * @param pOrgMsg 添加好友通知请求
  */
-void CMsgProto::HandleAddFriendNotifyReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
-	AddFriendNotifyReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string())) {
-		auto item = m_msgMap.find(reqMsg.GetMsgType());
-		if (item != m_msgMap.end())
-		{
-			C_WND_MSG_AddFriendNotifyRequest * pResult = new C_WND_MSG_AddFriendNotifyRequest();
-			pResult->m_nRetryTimes = 0;
-			strcpy_s(pResult->m_szUserName, reqMsg.m_strUserId.c_str());
-			strcpy_s(pResult->m_szFriendName, reqMsg.m_strFriendId.c_str());
-			strcpy_s(pResult->m_szFriendNickName, reqMsg.m_strFriendId.c_str());
-			strcpy_s(pResult->m_szMsgId, reqMsg.m_strMsgId.c_str());
-			pResult->m_eOption = reqMsg.m_option;
-			::PostMessage(item->second, FMG_MSG_ADD_FRIEND_NOTIFY_REQ, 0, (LPARAM)pResult);
-		}
+void CMsgProto::HandleAddFriendNotifyReq(const AddFriendNotifyReqMsg& reqMsg) {
+
+	auto item = m_msgMap.find(reqMsg.GetMsgType());
+	if (item != m_msgMap.end())
+	{
+		C_WND_MSG_AddFriendNotifyRequest * pResult = new C_WND_MSG_AddFriendNotifyRequest();
+		pResult->m_nRetryTimes = 0;
+		strcpy_s(pResult->m_szUserName, reqMsg.m_strUserId.c_str());
+		strcpy_s(pResult->m_szFriendName, reqMsg.m_strFriendId.c_str());
+		strcpy_s(pResult->m_szFriendNickName, reqMsg.m_strFriendId.c_str());
+		strcpy_s(pResult->m_szMsgId, reqMsg.m_strMsgId.c_str());
+		pResult->m_eOption = reqMsg.m_option;
+		::PostMessage(item->second, FMG_MSG_ADD_FRIEND_NOTIFY_REQ, 0, (LPARAM)pResult);
 	}
 }
 
@@ -656,20 +718,17 @@ void CMsgProto::HandleAddFriendNotifyReq(const std::shared_ptr<TransBaseMsg_t> p
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleAddFriendRecvReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
-	AddFriendRecvReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string())) {
-		auto item = m_msgMap.find(reqMsg.GetMsgType());
-		if (item != m_msgMap.end())
-		{
-			C_WND_MSG_OperateFriendResult * pResult = new C_WND_MSG_OperateFriendResult();
-			pResult->m_nRetryTimes = 0;
-			strcpy_s(pResult->m_szAccountName, reqMsg.m_strUserId.c_str());
-			strcpy_s(pResult->m_szNickName, reqMsg.m_strUserId.c_str());
-			strcpy_s(pResult->m_szMsgId, reqMsg.m_strMsgId.c_str());
-			pResult->m_uCmd = E_UI_OPERATE_FRIEND::Apply;
-			::PostMessage(item->second, FMG_MSG_RECVADDFRIENDREQUSET, 0, (LPARAM)pResult);
-		}
+void CMsgProto::HandleAddFriendRecvReq(const AddFriendRecvReqMsg& reqMsg) {
+	auto item = m_msgMap.find(reqMsg.GetMsgType());
+	if (item != m_msgMap.end())
+	{
+		C_WND_MSG_OperateFriendResult * pResult = new C_WND_MSG_OperateFriendResult();
+		pResult->m_nRetryTimes = 0;
+		strcpy_s(pResult->m_szAccountName, reqMsg.m_strUserId.c_str());
+		strcpy_s(pResult->m_szNickName, reqMsg.m_strUserId.c_str());
+		strcpy_s(pResult->m_szMsgId, reqMsg.m_strMsgId.c_str());
+		pResult->m_uCmd = E_UI_OPERATE_FRIEND::Apply;
+		::PostMessage(item->second, FMG_MSG_RECVADDFRIENDREQUSET, 0, (LPARAM)pResult);
 	}
 }
 
@@ -839,9 +898,7 @@ bool CMsgProto::SendFindGroupReq(const std::string strGroupId) {
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleFindGroupRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
-	FindGroupRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
+void CMsgProto::HandleFindGroupRsp(const FindGroupRspMsg& rspMsg) {
 		auto item = m_msgMap.find(rspMsg.GetMsgType());
 	
 		if (item != m_msgMap.end())
@@ -861,7 +918,6 @@ void CMsgProto::HandleFindGroupRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg
 			}
 			::PostMessage(item->second, FMG_MSG_FINDFREIND, 0, (LPARAM)pResult);
 		}
-	}
 }
 
 /**
@@ -869,21 +925,18 @@ void CMsgProto::HandleFindGroupRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleFriendSendFileRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleFriendSendFileRsp(const FriendSendFileMsgRspMsg rspMsg)
 {
-	FriendSendFileMsgRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
-		auto item = m_msgMap.find(pOrgMsg->GetType());
-		C_WND_MSG_FileSendRsp * pResult = new C_WND_MSG_FileSendRsp();
-		pResult->m_eErrCode = rspMsg.m_eErrCode;
-		strcpy_s(pResult->m_szMsgId, rspMsg.m_strMsgId.c_str());
-		strcpy_s(pResult->m_szUserId, rspMsg.m_strUserId.c_str());
-		strcpy_s(pResult->m_szFriendId, rspMsg.m_strFriendId.c_str());
-		strcpy_s(pResult->m_szFileName, rspMsg.m_strFileName.c_str());
-		if (item != m_msgMap.end())
-		{
-			::PostMessage(item->second, FMG_MSG_FRIEND_FILE_SEND_RSP, 0, (LPARAM)pResult);
-		}
+	auto item = m_msgMap.find(rspMsg.GetMsgType());
+	C_WND_MSG_FileSendRsp * pResult = new C_WND_MSG_FileSendRsp();
+	pResult->m_eErrCode = rspMsg.m_eErrCode;
+	strcpy_s(pResult->m_szMsgId, rspMsg.m_strMsgId.c_str());
+	strcpy_s(pResult->m_szUserId, rspMsg.m_strUserId.c_str());
+	strcpy_s(pResult->m_szFriendId, rspMsg.m_strFriendId.c_str());
+	strcpy_s(pResult->m_szFileName, rspMsg.m_strFileName.c_str());
+	if (item != m_msgMap.end())
+	{
+		::PostMessage(item->second, FMG_MSG_FRIEND_FILE_SEND_RSP, 0, (LPARAM)pResult);
 	}
 }
 
@@ -892,12 +945,10 @@ void CMsgProto::HandleFriendSendFileRsp(const std::shared_ptr<TransBaseMsg_t> pO
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleFriendRecvFileReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleFriendRecvFileReq(const FriendRecvFileMsgReqMsg& reqMsg)
 {
-	FriendRecvFileMsgReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string())) {
-		auto item = m_msgMap.find(pOrgMsg->GetType());
-		C_WND_MSG_FileRecvReq * pResult = new C_WND_MSG_FileRecvReq();
+	C_WND_MSG_FileRecvReq * pResult = new C_WND_MSG_FileRecvReq();
+	{
 		strcpy_s(pResult->m_szMsgId, reqMsg.m_strMsgId.c_str());
 		strcpy_s(pResult->m_szUserId, reqMsg.m_strUserId.c_str());
 		strcpy_s(pResult->m_szFriendId, reqMsg.m_strFriendId.c_str());
@@ -910,6 +961,10 @@ void CMsgProto::HandleFriendRecvFileReq(const std::shared_ptr<TransBaseMsg_t> pO
 		{
 			pResult->m_eOnlineType = CLIENT_STATE::C_STATE_ONLINE;
 		}
+	}
+
+	{
+		auto item = m_msgMap.find(reqMsg.GetMsgType());
 		if (item != m_msgMap.end())
 		{
 			::PostMessage(item->second, FMG_MSG_FRIEND_FILE_RECV_REQ, 0, (LPARAM)pResult);
@@ -922,11 +977,10 @@ void CMsgProto::HandleFriendRecvFileReq(const std::shared_ptr<TransBaseMsg_t> pO
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleFriendNotifyFileReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleFriendNotifyFileReq(const FriendNotifyFileMsgReqMsg& reqMsg)
 {
-	FriendNotifyFileMsgReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string())) {
-		auto item = m_msgMap.find(pOrgMsg->GetType());
+	{
+		auto item = m_msgMap.find(reqMsg.GetMsgType());
 		C_WND_MSG_FileNotifyReq * pResult = new C_WND_MSG_FileNotifyReq();
 		strcpy_s(pResult->m_szMsgId, reqMsg.m_strMsgId.c_str());
 		strcpy_s(pResult->m_szUserId, reqMsg.m_strUserId.c_str());
@@ -1006,19 +1060,6 @@ void CMsgProto::HandleUserLoginRsp(const std::shared_ptr< TransBaseMsg_t> pOrgMs
 		EncodeUtil::Utf8ToUnicode(m_userLoginRsp.m_userInfo.m_strUserName.c_str(), m_loginResult.m_szAccountName,32);
 		EncodeUtil::Utf8ToUnicode(m_userLoginRsp.m_userInfo.m_strNickName.c_str(), m_loginResult.m_szNickName, 32);
 		EncodeUtil::Utf8ToUnicode(m_userLoginRsp.m_userInfo.m_strSignature.c_str(), m_loginResult.m_szSignature, 256);
-
-		/*auto item = m_msgMap.find(pOrgMsg->GetType());
-		if(item != m_msgMap.end())
-		{
-			if (m_userLoginRsp.Valid() && m_userLoginRsp.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
-			{
-				::PostMessage(item->second, FMG_MSG_LOGIN_RESULT, 0, (LPARAM)(0));
-			}
-			else
-			{
-				::PostMessage(item->second, FMG_MSG_LOGIN_RESULT, 0, (LPARAM)(LOGIN_FAILED));
-			}
-		}*/
 	}
 }
 
@@ -1027,12 +1068,8 @@ void CMsgProto::HandleUserLoginRsp(const std::shared_ptr< TransBaseMsg_t> pOrgMs
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleAddToGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleAddToGroupRspMsg(const AddToGroupRspMsg& rspMsg)
 {
-	AddToGroupRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
-
-	}
 }
 
 /**
@@ -1040,16 +1077,13 @@ void CMsgProto::HandleAddToGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOr
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleLogoutRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleLogoutRspMsg(const UserLogoutRspMsg& rspMsg)
 {
-	UserLogoutRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
-		if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED) {
-			m_eOnLineStatus = E_UI_ONLINE_STATUS::STATUS_OFFLINE;
-		}
-		std::error_code ec;
-		SourceServer::CSessManager::GetManager()->Stop(ec);
+	if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED) {
+		m_eOnLineStatus = E_UI_ONLINE_STATUS::STATUS_OFFLINE;
 	}
+	std::error_code ec;
+	SourceServer::CSessManager::GetManager()->Stop(ec);
 }
 
 
@@ -1475,38 +1509,34 @@ void CMsgProto::HandleUpdateFriendListNotifyReq(const std::shared_ptr<TransBaseM
 	GetFriendList();
 }
 
-void CMsgProto::HandleGetFriendChatHistory(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleGetFriendChatHistory(const GetFriendChatHistoryRsp& rspMsg)
 {
-	GetFriendChatHistoryRsp rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
-		
 
-		if (!rspMsg.m_msgHistory.empty())
+	if (!rspMsg.m_msgHistory.empty())
+	{
+		m_friendChatLogMap.erase(rspMsg.m_strFriendId);
+		LogMsgPair secondValue;
+		secondValue.m_strFirstMsgId = rspMsg.m_msgHistory.begin()->m_strChatMsgId;
+		secondValue.m_strLastMsgId = rspMsg.m_msgHistory.rbegin()->m_strChatMsgId;
+		m_friendChatLogMap.insert({rspMsg.m_strFriendId,secondValue});
+	}
+	for (const auto& item : (rspMsg.m_msgHistory))
+	{
+		auto WndItem = m_msgMap.find(rspMsg.GetMsgType());
+		C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();
+		pResult->m_uiMsg = CoreMsgToUiMsg(item);
+		if (item.m_strSenderId == m_strUserId)
 		{
-			m_friendChatLogMap.erase(rspMsg.m_strFriendId);
-			LogMsgPair secondValue;
-			secondValue.m_strFirstMsgId = rspMsg.m_msgHistory.begin()->m_strChatMsgId;
-			secondValue.m_strLastMsgId = rspMsg.m_msgHistory.rbegin()->m_strChatMsgId;
-			m_friendChatLogMap.insert({rspMsg.m_strFriendId,secondValue});
+			pResult->m_strSender = item.m_strReceiverId;
 		}
-		for (const auto& item : (rspMsg.m_msgHistory))
+		else
 		{
-			auto WndItem = m_msgMap.find(rspMsg.GetMsgType());
-			C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();
-			pResult->m_uiMsg = CoreMsgToUiMsg(item);
-			if (item.m_strSenderId == m_strUserId)
-			{
-				pResult->m_strSender = item.m_strReceiverId;
-			}
-			else
-			{
-				pResult->m_strSender = item.m_strSenderId;
-			}
+			pResult->m_strSender = item.m_strSenderId;
+		}
 
-			if (WndItem != m_msgMap.end())
-			{
-				::PostMessage(WndItem->second, FMT_MSG_FRIEND_CHAT_HISTORY, 0, (LPARAM)pResult);
-			}
+		if (WndItem != m_msgMap.end())
+		{
+			::PostMessage(WndItem->second, FMT_MSG_FRIEND_CHAT_HISTORY, 0, (LPARAM)pResult);
 		}
 	}
 }
@@ -1517,40 +1547,37 @@ void CMsgProto::HandleGetFriendChatHistory(const std::shared_ptr<TransBaseMsg_t>
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleSendChatTxtRsp(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleSendChatTxtRsp(const FriendChatSendTxtRspMsg& rspMsg)
 {
-	FriendChatSendTxtRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
 
+
+	{
+		auto item = m_msgMap.find(rspMsg.GetMsgType());
+		C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();
+		pResult->m_strSender = rspMsg.m_chatMsg.m_strReceiverId;
+		pResult->m_uiMsg = CoreMsgToUiMsg(rspMsg.m_chatMsg);
+
+		if (item != m_msgMap.end())
 		{
-			auto item = m_msgMap.find(rspMsg.GetMsgType());
-			C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();
-			pResult->m_strSender = rspMsg.m_chatMsg.m_strReceiverId;
-			pResult->m_uiMsg = CoreMsgToUiMsg(rspMsg.m_chatMsg);
+			::PostMessage(item->second, FMG_MSG_RECV_FRIEND_TEXT_MSG, 0, (LPARAM)pResult);
+		}
+	}
 
-			if (item != m_msgMap.end())
+	{
+		{
+			auto item = m_friendMsgMap.find(rspMsg.m_chatMsg.m_strReceiverId);
+			CBuddyChatUiMsg newMsg = this->CoreMsgToUiMsg(rspMsg.m_chatMsg);
+			if (item != m_friendMsgMap.end())
 			{
-				::PostMessage(item->second, FMG_MSG_RECV_FRIEND_TEXT_MSG, 0, (LPARAM)pResult);
+				item->second.push_back(newMsg);
+			}
+			else
+			{
+				CBuddyChatUiMsgVector msgVec;
+				msgVec.push_back(newMsg);
+				m_friendMsgMap.insert({ rspMsg.m_chatMsg.m_strReceiverId,msgVec });
 			}
 		}
-
-		{
-			{
-				auto item = m_friendMsgMap.find(rspMsg.m_chatMsg.m_strReceiverId);
-				CBuddyChatUiMsg newMsg = this->CoreMsgToUiMsg(rspMsg.m_chatMsg);
-				if (item != m_friendMsgMap.end())
-				{
-					item->second.push_back(newMsg);
-				}
-				else
-				{
-					CBuddyChatUiMsgVector msgVec;
-					msgVec.push_back(newMsg);
-					m_friendMsgMap.insert({ rspMsg.m_chatMsg.m_strReceiverId,msgVec });
-				}
-			}
-		}
-
 	}
 }
 
@@ -1663,24 +1690,20 @@ std::string CMsgProto::GetFriendName(const std::string strFriendId)
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleRecvChatTxtReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleRecvChatTxtReq(const FriendChatRecvTxtReqMsg& reqMsg)
 {
+	auto item = m_msgMap.find(reqMsg.GetMsgType());
+	C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();
+	pResult->m_strSender = reqMsg.m_chatMsg.m_strSenderId;
+	pResult->m_uiMsg = CoreMsgToUiMsg(reqMsg.m_chatMsg);
 
-	FriendChatRecvTxtReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string())) {
-		auto item = m_msgMap.find(reqMsg.GetMsgType());
-		C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();
-		pResult->m_strSender = reqMsg.m_chatMsg.m_strSenderId;
-		pResult->m_uiMsg = CoreMsgToUiMsg(reqMsg.m_chatMsg);
+	if (item != m_msgMap.end())
+	{
+		::PostMessage(item->second,FMG_MSG_RECV_FRIEND_TEXT_MSG, 0, (LPARAM)pResult);
+	}
+	else
+	{
 
-		if (item != m_msgMap.end())
-		{
-			::PostMessage(item->second,FMG_MSG_RECV_FRIEND_TEXT_MSG, 0, (LPARAM)pResult);
-		}
-		else
-		{
-
-		}
 	}
 }
 
@@ -1811,21 +1834,18 @@ bool CMsgProto::SendDestroyGroupReq(const std::string strUserName, const std::st
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleCreateGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleCreateGroupRspMsg(const CreateGroupRspMsg& rspMsg)
 {
-	CreateGroupRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string())) {
-		C_WND_MSG_CreateNewGroupResult * pResult = new C_WND_MSG_CreateNewGroupResult;
-		pResult->m_uError = 0;
-		strcpy_s(pResult->m_szGroupName,rspMsg.m_strGroupName.c_str());
-		strcpy_s(pResult->m_szGroupId, rspMsg.m_strGroupId.c_str());
+	C_WND_MSG_CreateNewGroupResult * pResult = new C_WND_MSG_CreateNewGroupResult;
+	pResult->m_uError = 0;
+	strcpy_s(pResult->m_szGroupName,rspMsg.m_strGroupName.c_str());
+	strcpy_s(pResult->m_szGroupId, rspMsg.m_strGroupId.c_str());
 
-		auto item = m_msgMap.find(pOrgMsg->GetType());
+	auto item = m_msgMap.find(rspMsg.GetMsgType());
 
-		if (item != m_msgMap.end())
-		{
-			::PostMessage(item->second, FMG_MSG_CREATE_NEW_GROUP_RESULT, 0, (LPARAM)pResult);
-		}
+	if (item != m_msgMap.end())
+	{
+		::PostMessage(item->second, FMG_MSG_CREATE_NEW_GROUP_RESULT, 0, (LPARAM)pResult);
 	}
 }
 
@@ -1834,7 +1854,7 @@ void CMsgProto::HandleCreateGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pO
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleDestroyGroupRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleDestroyGroupRspMsg(const DestroyGroupRspMsg &rspMsg)
 {
 
 }
@@ -1907,37 +1927,34 @@ bool CMsgProto::SendGroupChatTextMsg(const std::string strGroupId, RichEditMsgLi
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleGetGroupListRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleGetGroupListRspMsg(const GetGroupListRspMsg& rspMsg)
 {
 	{
-		GetGroupListRspMsg rspMsg;
+
 		m_GroupList.m_arrGroupInfo.clear();
 		int nIndex = 1;
-		if (rspMsg.FromString(pOrgMsg->to_string())) {
-			for (const auto groupItem : rspMsg.m_GroupList) {
-				auto pInfo = new C_UI_GroupInfo();
-				pInfo->m_strGroupId = groupItem.m_strGroupId;
-				pInfo->m_strAccount = EncodeUtil::Utf8ToUnicode(groupItem.m_strGroupId);
-				pInfo->m_strName = EncodeUtil::Utf8ToUnicode(groupItem.m_strGroupName);
-				{
+		for (const auto groupItem : rspMsg.m_GroupList) {
+			auto pInfo = new C_UI_GroupInfo();
+			pInfo->m_strGroupId = groupItem.m_strGroupId;
+			pInfo->m_strAccount = EncodeUtil::Utf8ToUnicode(groupItem.m_strGroupId);
+			pInfo->m_strName = EncodeUtil::Utf8ToUnicode(groupItem.m_strGroupName);
+			{
 
-					for (const auto buddyItem : groupItem.m_GroupUsers) {
-						C_UI_BuddyInfo * pBuddyInfo = new C_UI_BuddyInfo();
-						*pBuddyInfo = CoreToUI(buddyItem);
-			
-						pBuddyInfo->m_uUserIndex = nIndex;
-						nIndex++;
-						pInfo->m_arrMember.push_back(pBuddyInfo);
-						{
-							m_friendInfoMap.erase(buddyItem.m_strUserId);
-							m_friendInfoMap.insert({ buddyItem.m_strUserId,buddyItem });
-						}
+				for (const auto buddyItem : groupItem.m_GroupUsers) {
+					C_UI_BuddyInfo * pBuddyInfo = new C_UI_BuddyInfo();
+					*pBuddyInfo = CoreToUI(buddyItem);
+
+					pBuddyInfo->m_uUserIndex = nIndex;
+					nIndex++;
+					pInfo->m_arrMember.push_back(pBuddyInfo);
+					{
+						m_friendInfoMap.erase(buddyItem.m_strUserId);
+						m_friendInfoMap.insert({ buddyItem.m_strUserId,buddyItem });
 					}
 				}
-				m_GroupList.m_arrGroupInfo.push_back(pInfo);
 			}
+			m_GroupList.m_arrGroupInfo.push_back(pInfo);
 		}
-
 		auto item = m_msgMap.find(rspMsg.GetMsgType());
 		if (item != m_msgMap.end()) {
 			::PostMessage(item->second, FMG_MSG_UPDATE_GROUP_LIST, 0, 0);
@@ -1957,22 +1974,18 @@ void CMsgProto::HandleGetGroupListRspMsg(const std::shared_ptr<TransBaseMsg_t> p
  * 
  * @param pOrgMsg 用户被踢消息请求
  */
-void CMsgProto::HandleUserKickOffReq(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleUserKickOffReq(const UserKickOffReqMsg& reqMsg)
 {
-	UserKickOffReqMsg reqMsg;
-	if (reqMsg.FromString(pOrgMsg->to_string()))
-	{
-		UserKickOffRspMsg rspMsg;
-		rspMsg.m_strMsgId = reqMsg.m_strMsgId;
-		rspMsg.m_strUserId = reqMsg.m_strUserId;
-		TransBaseMsg_t trans(rspMsg.GetMsgType(), rspMsg.ToString());
-		auto pSess = SourceServer::CSessManager::GetManager();
-		pSess->SendMsg(&trans);
+	UserKickOffRspMsg rspMsg;
+	rspMsg.m_strMsgId = reqMsg.m_strMsgId;
+	rspMsg.m_strUserId = reqMsg.m_strUserId;
+	TransBaseMsg_t trans(rspMsg.GetMsgType(), rspMsg.ToString());
+	auto pSess = SourceServer::CSessManager::GetManager();
+	pSess->SendMsg(&trans);
 
-		auto item = m_msgMap.find(reqMsg.GetMsgType());
-		if (item != m_msgMap.end()) {
-			::PostMessage(item->second, FMG_MSG_KICK_MSG, 0, 0);
-		}
+	auto item = m_msgMap.find(reqMsg.GetMsgType());
+	if (item != m_msgMap.end()) {
+		::PostMessage(item->second, FMG_MSG_KICK_MSG, 0, 0);
 	}
 }
 
@@ -1981,23 +1994,19 @@ void CMsgProto::HandleUserKickOffReq(const std::shared_ptr<TransBaseMsg_t> pOrgM
  * 
  * @param pOrgMsg 
  */
-void CMsgProto::HandleSendGroupTextRspMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg)
+void CMsgProto::HandleSendGroupTextRspMsg(const SendGroupTextMsgRspMsg& rspMsg)
 {
-	SendGroupTextMsgRspMsg rspMsg;
-	if (rspMsg.FromString(pOrgMsg->to_string()))
+	C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
+	pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(m_strUserId));
+	pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(rspMsg.m_chatMsg.m_strSenderId);
+	pResult->m_strContext = EncodeUtil::Utf8ToUnicode(rspMsg.m_chatMsg.m_strContext);
+	pResult->m_strGroupId = rspMsg.m_chatMsg.m_strGroupId;
+	pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
+	pResult->m_stFontInfo = CoreToUi(rspMsg.m_chatMsg.m_fontInfo);
+	pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(rspMsg.m_chatMsg.m_strMsgTime);
+	auto item = m_msgMap.find(rspMsg.GetMsgType());
+	if (item != m_msgMap.end())
 	{
-		C_UI_GroupMessage* pResult = new C_UI_GroupMessage();
-		pResult->m_strSenderName = EncodeUtil::Utf8ToUnicode(GetFriendName(m_strUserId));
-		pResult->m_strSenderId = EncodeUtil::AnsiToUnicode(rspMsg.m_chatMsg.m_strSenderId);
-		pResult->m_strContext = EncodeUtil::Utf8ToUnicode(rspMsg.m_chatMsg.m_strContext);
-		pResult->m_strGroupId = rspMsg.m_chatMsg.m_strGroupId;
-		pResult->m_eType = E_UI_CONTENT_TYPE::CONTENT_TYPE_TEXT;
-		pResult->m_stFontInfo = CoreToUi(rspMsg.m_chatMsg.m_fontInfo);
-		pResult->m_strMsgTime = EncodeUtil::AnsiToUnicode(rspMsg.m_chatMsg.m_strMsgTime);
-		auto item = m_msgMap.find(rspMsg.GetMsgType());
-		if (item != m_msgMap.end())
-		{
-			::PostMessage(item->second, FMG_MSG_RECV_GROUP_MSG, 0, (LPARAM)(pResult));
-		}
+		::PostMessage(item->second, FMG_MSG_RECV_GROUP_MSG, 0, (LPARAM)(pResult));
 	}
 }
