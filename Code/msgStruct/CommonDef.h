@@ -372,6 +372,10 @@ FriendStateChangeNotifyRsp_Type,//好友状态改变通知回复
 
 GroupMemberStateChangeNotifyReq_Type,//群组成员状态改变通知请求
 GroupMemberStateChangeNotifyRsp_Type,//群组成
+
+FriendFileTransResultNotifyReq_Type,//好友文件传输结果的通知
+
+GroupFileTransResultNotifyReq_Type，//群组文件传输结果的通知
 };
 
 //客户端会话状态
@@ -531,6 +535,12 @@ enum class FILE_TRANS_DIRECTION
 	E_RECV_FILE,
 };
 
+//文件传输结果
+enum class FILE_TRANS_RESULT
+{
+	E_TRANS_SUCCEED,
+	E_TRANS_FAILED,
+};
 //消息记录的方向
 enum class HISTORY_DIRECTION
 {

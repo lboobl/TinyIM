@@ -6788,7 +6788,7 @@ std::string FileVerifyRspMsg::ToString() const
     {
         {"Code", static_cast<int>(m_eErrCode)},
         {"MsgId", m_strMsgId},
-        {"UserId",m_strMsgId},
+        {"UserId",m_strUserId},
         {"FriendId",m_strFriendId},
         {"FileId", m_nFileId},
         {"FileName", m_strFileName},
@@ -9503,12 +9503,100 @@ bool GroupMemberStateChangeNotifyReqMsg::FromString(const std::string &strJson)
 
 
 
-GroupMemberStateChangeNotifyRspMsg::GroupMemberStateChangeNotifyRspMsg()
+FriendTransFileResultNotifyReqMsg::FriendTransFileResultNotifyReqMsg()
+{
+	m_type = E_MsgType::FriendFileTransResultNotifyReq_Type;
+}
+
+std::string FriendTransFileResultNotifyReqMsg::ToString() const
+{
+	using namespace json11;
+	Json clientObj = Json::object(
+		{
+			{"MsgId", m_strMsgId},
+			{"UserId", m_strUserId},
+			{"FriendId",m_strFriendId},
+			{"FileName",m_strFile},
+			{"TransDirect",static_cast<int>(m_eDirect)},
+			{"TransResult",static_cast<int>(m_eResult)}
+		});
+
+	return clientObj.dump();
+}
+
+bool FriendTransFileResultNotifyReqMsg::FromString(const std::string &strJson)
+{
+	std::string err;
+	using namespace json11;
+	auto json = Json::parse(strJson, err);
+	if (!err.empty())
+	{
+		return false;
+	}
+	if (json["MsgId"].is_string())
+	{
+		m_strMsgId = json["MsgId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["UserId"].is_string())
+	{
+		m_strUserId = json["UserId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["FriendId"].is_string())
+	{
+		m_strFriendId = json["FriendId"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+	
+	if (json["FileName"].is_string())
+	{
+		m_strFile = json["FileName"].string_value();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["TransDirect"].is_number())
+	{
+		m_eDirect = static_cast<FILE_TRANS_DIRECTION>(json["TransDirect"].int_value());
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["TransResult"].is_number())
+	{
+		m_eResult = static_cast<FILE_TRANS_RESULT>(json["TransResult"].int_value());
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+GroupTransFileResultNotifyReqMsg::GroupTransFileResultNotifyReqMsg()
 {
 	m_type = E_MsgType::GroupMemberStateChangeNotifyRsp_Type;
 }
 
-std::string GroupMemberStateChangeNotifyRspMsg::ToString() const
+std::string GroupTransFileResultNotifyReqMsg::ToString() const
 {
 	using namespace json11;
 	Json clientObj = Json::object(
@@ -9516,13 +9604,15 @@ std::string GroupMemberStateChangeNotifyRspMsg::ToString() const
 			{"MsgId", m_strMsgId},
 			{"UserId", m_strUserId},
 			{"GroupId",m_strGroupId},
-			{"MemberId",m_strMemberId},
+			{"FileName",m_strFile},
+			{"TransDirect",static_cast<int>(m_eDirect)},
+			{"TransResult",static_cast<int>(m_eResult)}
 		});
 
 	return clientObj.dump();
 }
 
-bool GroupMemberStateChangeNotifyRspMsg::FromString(const std::string &strJson)
+bool GroupTransFileResultNotifyReqMsg::FromString(const std::string &strJson)
 {
 	std::string err;
 	using namespace json11;
@@ -9558,13 +9648,98 @@ bool GroupMemberStateChangeNotifyRspMsg::FromString(const std::string &strJson)
 		return false;
 	}
 
-	if (json["MemberId"].is_string())
+	if (json["FileName"].is_string())
 	{
-		m_strMemberId = json["MemberId"].string_value();
+		m_strFile = json["FileName"].string_value();
 	}
 	else
 	{
 		return false;
 	}
+
+	if (json["TransDirect"].is_number())
+	{
+		m_eDirect = static_cast<FILE_TRANS_DIRECTION>(json["TransDirect"].int_value());
+	}
+	else
+	{
+		return false;
+	}
+
+	if (json["TransResult"].is_number())
+	{
+		m_eResult = static_cast<FILE_TRANS_RESULT>(json["TransResult"].int_value());
+	}
+	else
+	{
+		return false;
+	}
+
 	return true;
 }
+
+//GroupMemberStateChangeNotifyRspMsg::GroupMemberStateChangeNotifyRspMsg()
+//{
+//	m_type = E_MsgType::GroupMemberStateChangeNotifyRsp_Type;
+//}
+//
+//std::string GroupMemberStateChangeNotifyRspMsg::ToString() const
+//{
+//	using namespace json11;
+//	Json clientObj = Json::object(
+//		{
+//			{"MsgId", m_strMsgId},
+//			{"UserId", m_strUserId},
+//			{"GroupId",m_strGroupId},
+//			{"MemberId",m_strMemberId},
+//		});
+//
+//	return clientObj.dump();
+//}
+//
+//bool GroupMemberStateChangeNotifyRspMsg::FromString(const std::string &strJson)
+//{
+//	std::string err;
+//	using namespace json11;
+//	auto json = Json::parse(strJson, err);
+//	if (!err.empty())
+//	{
+//		return false;
+//	}
+//	if (json["MsgId"].is_string())
+//	{
+//		m_strMsgId = json["MsgId"].string_value();
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//
+//	if (json["UserId"].is_string())
+//	{
+//		m_strUserId = json["UserId"].string_value();
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//
+//	if (json["GroupId"].is_string())
+//	{
+//		m_strGroupId = json["GroupId"].string_value();
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//
+//	if (json["MemberId"].is_string())
+//	{
+//		m_strMemberId = json["MemberId"].string_value();
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//	return true;
+//}

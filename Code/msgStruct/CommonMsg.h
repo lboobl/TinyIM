@@ -2401,6 +2401,36 @@ public:
 	virtual std::string ToString() const override;
 	virtual bool FromString(const std::string& strJson) override;
 };
+
+class FriendTransFileResultNotifyReqMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strFriendId;//好友ID
+	std::string m_strFile;//群组成员Id
+	FILE_TRANS_DIRECTION m_eDirect;//文件传输方向
+	FILE_TRANS_RESULT m_eResult;
+public:
+	FriendTransFileResultNotifyReqMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
+
+class GroupTransFileResultNotifyReqMsg :public BaseMsg
+{
+public:
+	std::string m_strMsgId;//消息ID
+	std::string m_strUserId;//用户ID
+	std::string m_strGroupId;//群组ID
+	std::string m_strFile;//群组成员Id
+	FILE_TRANS_DIRECTION m_eDirect;//文件传输方向
+	FILE_TRANS_RESULT m_eResult;
+public:
+	GroupTransFileResultNotifyReqMsg();
+	virtual std::string ToString() const override;
+	virtual bool FromString(const std::string& strJson) override;
+};
 /**
  * @brief 服务器配置
  * 
