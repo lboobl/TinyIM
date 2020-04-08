@@ -1297,6 +1297,7 @@ void CBuddyChatDlg::OnOpenTransferFileItem(UINT uNotifyCode, int nID, CWindow wn
 /**
  * @brief 响应工具栏的点击消息
  * 
+ * TODO: 此处的Menu索引值待优化
  * @param pnmh 
  * @return LRESULT 
  */
@@ -1323,7 +1324,7 @@ LRESULT CBuddyChatDlg::OnToolbarDropDown(LPNMHDR pnmh)
 
 	case IDC_BTN_SEND_FILE:
 	{
-		nIndex = 1;
+		nIndex = 0;
 		m_tbTop.ClientToScreen(&rc);
 	}break;	
 		
@@ -3839,6 +3840,12 @@ void CBuddyChatDlg::AddMsgToSendEdit(LPCTSTR lpText)
 	m_richSend.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 }
 
+
+void CBuddyChatDlg::AddNotifyMsgToRecvEdit(const CString& strMsg)
+{
+	RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
+	RichEdit_ReplaceSel(m_richRecv.m_hWnd, strMsg, _T("微软雅黑"), 10, RGB(255, 0, 0), FALSE, FALSE, FALSE, FALSE, 0);
+}
 
 /**
  * @brief 插入自动回复的内容

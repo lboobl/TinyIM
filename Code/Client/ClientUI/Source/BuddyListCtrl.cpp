@@ -2117,8 +2117,8 @@ void CBuddyListCtrl::DrawBuddyItemInBigIcon(HDC hDC, int nTeamIndex, int nIndex)
 		}
         else
         {
-           // strName1.Format(_T("%s(%s)"), lpItem->m_strNickName, lpItem->m_strUTalkNum);
-            //strName1 = lpItem->m_strNickName;
+           strName1.Format(_T("%s(%s)"), lpItem->m_strMarkName, lpItem->m_strNickName);
+           strName1 = lpItem->m_strNickName;
         }
 	}
 	else if(lpItem->m_nDisplayMode == BLCTRL_DISPLAY_SHOW_NICKNAME)

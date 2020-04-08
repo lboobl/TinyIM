@@ -309,6 +309,23 @@ public:
 	E_FRIEND_OPTION m_eOption;//用户选择
 };
 
+
+/**
+ * @brief GUI发送文件的通知消息[接收方做出选择以后,通知发送方]
+ *
+ */
+class C_WND_MSG_SendFileResult :public CWndMsgBase
+{
+public:
+	C_WND_MSG_SendFileResult();
+	~C_WND_MSG_SendFileResult();
+public:
+	char m_szMsgId[32];//消息ID
+	char m_szUserId[16];//用户ID
+	char m_szFriendId[16];//好友ID
+	char m_szFileName[256];//文件名称
+	bool m_bResult;
+};
 /**
  * @brief GUI文件上传结果
  * 

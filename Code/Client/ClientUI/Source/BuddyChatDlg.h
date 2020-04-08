@@ -251,7 +251,7 @@ private:
 	
 	void AddMsgToRecvEdit(C_UI_BuddyMessage* lpBuddyMsg);
 
-
+	void AddNotifyMsgToRecvEdit(const CString& strMsg);
 	void OnRecvMsgToHandle(const HWND recvHandle,const CBuddyChatUiMsg& msg);
 	void InsertAutoReplyContent();
 
@@ -264,12 +264,12 @@ private:
 
 	void DisplayFileTransfer(BOOL bShow);
 	//void AnalyseContent(WString& strContent, HWND hRichWnd=NULL);
-	BOOL HandleShake(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	BOOL HandleText(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	BOOL HandleFontInfo(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	BOOL HandleSysFaceId(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	BOOL HandleCustomPic(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	BOOL HandleFile(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
+	//BOOL HandleShake(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
+	//BOOL HandleText(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
+	//BOOL HandleFontInfo(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
+	//BOOL HandleSysFaceId(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
+	//BOOL HandleCustomPic(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
+	//BOOL HandleFile(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
 	
 	BOOL HandleFileDragResult(PCTSTR lpszFileName);
 	BOOL SendOfflineFile(PCTSTR pszFileName);

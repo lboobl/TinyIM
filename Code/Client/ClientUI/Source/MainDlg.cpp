@@ -120,6 +120,7 @@ CMainDlg::CMainDlg(void) :m_userMgr(CUserMgr::GetInstance()), m_userCfg(CUserCon
 	m_bShowTrayMenu = false;
 }
 
+//TODO: 此处的配置初始化代码待优化
 bool CMainDlg::InitNetConnect()
 {
 	{
@@ -5187,7 +5188,7 @@ void CMainDlg::UpdateBuddyTreeCtrl()
 				m_BuddyListCtrl.SetBuddyItemHeadPic(nTeamIndex, nIndex, strThumbPath, bGray);
 				
 				//SetBuddyItemOnline最后一个参数是上线动画
-				//m_BuddyListCtrl.SetBuddyItemOnline(nTeamIndex, nIndex, !bGray, bOnlineFlash);
+				m_BuddyListCtrl.SetBuddyItemOnline(nTeamIndex, nIndex, !bGray,FALSE);
                 /*if (lpBuddyInfo->m_nStatus == online_type_android_cellular || lpBuddyInfo->m_nStatus == online_type_android_wifi)
 				{
 					strThumbPath.Format(_T("%sImage\\mobile_online.png"), g_szHomePath);
