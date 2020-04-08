@@ -137,6 +137,34 @@ namespace ClientCore
 		}
 	}
 
+
+	/*
+	获取收到的文件的列表
+	*/
+	void CHttpServer::Get_RecvFileList(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
+	{
+
+	}
+
+	void CHttpServer::Get_DownLoadFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
+	{
+
+	}
+
+	void CHttpServer::Get_GroupFileList(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
+	{
+
+	}
+
+	void CHttpServer::Get_DownLoadGroupFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
+	{
+
+	}
+
+	void CHttpServer::Post_UpLoadGroupFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
+	{
+
+	}
 	/**
 	 * @brief 处理获取随机用户名的请求
 	 *

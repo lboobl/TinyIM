@@ -677,6 +677,8 @@ bool CMediumServer::HandleHttpMsg(const BaseMsg* pMsg)
 		auto pSess = GetClientSess(msg->m_strUserId);
 		if (pSess)
 		{
+			std::string strHash = m_fileUtil.CalcHash(msg->m_strFileName);
+			m_hashTypeMap.insert({ strHash,FILE_TYPE::FILE_TYPE_FILE });
 			pSess->SendMsg(pMsg);
 		}
 	}break;
@@ -1139,6 +1141,40 @@ void CMediumServer::HandleFileVerifyReq(const FileVerifyReqMsg& msg)
 		pSess->SendMsg(pSend);
 	}
 
+	{
+		auto pGuiSess = Get_GUI_Sess(rspMsg.m_strUserId);
+		FriendTransFileResultNotifyReqMsg notifyReq;
+		notifyReq.m_strMsgId = m_httpServer->GenerateMsgId();
+		notifyReq.m_strUserId = rspMsg.m_strUserId;
+		notifyReq.m_strFriendId = rspMsg.m_strFriendId;
+		notifyReq.m_strFile = rspMsg.m_strFileName;
+		notifyReq.m_eDirect = FILE_TRANS_DIRECTION::E_RECV_FILE;
+		if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
+		{
+			auto item = m_hashTypeMap.find(rspMsg.m_strFileHash);
+			if (item != m_hashTypeMap.end())
+			{
+				if (item->second == FILE_TYPE::FILE_TYPE_FILE)
+				{
+					notifyReq.m_eResult = FILE_TRANS_RESULT::E_TRANS_SUCCEED;
+					pGuiSess->SendMsg(&notifyReq);
+				}
+			}
+		}
+		else
+		{
+			auto item = m_hashTypeMap.find(rspMsg.m_strFileHash);
+			if (item != m_hashTypeMap.end())
+			{
+				if (item->second == FILE_TYPE::FILE_TYPE_FILE)
+				{
+					notifyReq.m_eResult = FILE_TRANS_RESULT::E_TRANS_FAILED;
+					pGuiSess->SendMsg(&notifyReq);
+				}
+			}
+		}
+	}
+
 }
 
 /**
@@ -1164,6 +1200,40 @@ void CMediumServer::HSB_FileVerifyRsp(const std::shared_ptr<CClientSess>& pClien
 			if (item != m_groupSendWaitMsgMap.end()) {
 				pClientSess->SendMsg(&(item->second));
 				m_groupSendWaitMsgMap.erase(rspMsg.m_strFileHash);
+			}
+		}
+	}
+
+	{
+		auto pGuiSess = Get_GUI_Sess(rspMsg.m_strUserId);
+		FriendTransFileResultNotifyReqMsg notifyReq;
+		notifyReq.m_strMsgId = m_httpServer->GenerateMsgId();
+		notifyReq.m_strUserId = rspMsg.m_strUserId;
+		notifyReq.m_strFriendId = rspMsg.m_strFriendId;
+		notifyReq.m_strFile = rspMsg.m_strFileName;
+		notifyReq.m_eDirect = FILE_TRANS_DIRECTION::E_SEND_FILE;
+		if (rspMsg.m_eErrCode == ERROR_CODE_TYPE::E_CODE_SUCCEED)
+		{
+			auto item = m_hashTypeMap.find(rspMsg.m_strFileHash);
+			if (item != m_hashTypeMap.end())
+			{
+				if (item->second == FILE_TYPE::FILE_TYPE_FILE)
+				{
+					notifyReq.m_eResult = FILE_TRANS_RESULT::E_TRANS_SUCCEED;
+					pGuiSess->SendMsg(&notifyReq);
+				}
+			}
+		}
+		else
+		{
+			auto item = m_hashTypeMap.find(rspMsg.m_strFileHash);
+			if (item != m_hashTypeMap.end())
+			{
+				if (item->second == FILE_TYPE::FILE_TYPE_FILE)
+				{
+					notifyReq.m_eResult = FILE_TRANS_RESULT::E_TRANS_FAILED;
+					pGuiSess->SendMsg(&notifyReq);
+				}
 			}
 		}
 	}
@@ -2057,6 +2127,20 @@ bool CMediumServer::HandleSendForward(const std::shared_ptr<CServerSess>& pServe
 				HSF_SendGroupTextMsgReqMsg(pServerSess, reqMsg);
 			}
 		}break;
+		case E_MsgType::FriendSendFileMsgReq_Type:
+		{
+			FriendSendFileMsgReqMsg reqMsg;
+			if (reqMsg.FromString(msg.to_string()))
+			{
+				auto pSess = GetClientSess(reqMsg.m_strUserId);
+				if (pSess)
+				{
+					std::string strHash = m_fileUtil.CalcHash(reqMsg.m_strFileName);
+					m_hashTypeMap.insert({ strHash,FILE_TYPE::FILE_TYPE_FILE });
+					pSess->SendMsg(&reqMsg);
+				}
+			}
+		}break;
 		default:
 		{
 			//对于原始消息，原封不动的转发
@@ -2660,7 +2744,7 @@ void CMediumServer::HSB_FileDownLoadRsp(const std::shared_ptr<CClientSess>& pCli
 			HandleGroupRecvImageByHash(pClientSess, strFileName, rspMsg.m_strFileHash);
 		}
 	}
-	else
+	else 
 	{
 		if(!m_waitImageMsgMap.empty())
 		{

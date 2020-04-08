@@ -160,6 +160,10 @@ namespace ClientCore {
 		void Post_DestroyFriendTeamReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
 		void Post_MoveFriendToTeamReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
 		void Get_RandomUserNameReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
+
+		void Get_RecvFileList(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
+
+		void Get_DownLoadFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
 		//void Get_SendFileOnlineRsp(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
 
 		void Get_RecvFileOnlineReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
@@ -197,6 +201,13 @@ namespace ClientCore {
 
 		void Get_SearchChatMsgReq(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
 		
+		void Get_GroupFileList(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
+
+		void Get_DownLoadGroupFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
+
+		void Post_UpLoadGroupFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request);
+		//Group Msg End
+
 		void Init(const int port);
 
 		std::string GetHttpParamUserId(std::shared_ptr<HttpServer::Request> request);

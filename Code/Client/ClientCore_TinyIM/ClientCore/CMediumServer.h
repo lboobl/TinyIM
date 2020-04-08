@@ -211,7 +211,7 @@ private:
 	std::map<std::string, IpPortCfg> m_userIdUdpAddrMap;
 	std::map<std::string, std::string> m_fileHashMsgIdMap;
 	std::vector<std::string> m_fileHashTransVec;
-
+	std::map<std::string, FILE_TYPE> m_hashTypeMap;
 	long long m_timeCount;
 	int m_nNoSessTimeCount;
 	std::map<std::string, CMsgPersistentUtil_SHARED_PTR> m_UserId_MsgPersistentUtilMap;
