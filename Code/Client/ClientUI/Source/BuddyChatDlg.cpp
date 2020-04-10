@@ -3840,11 +3840,30 @@ void CBuddyChatDlg::AddMsgToSendEdit(LPCTSTR lpText)
 	m_richSend.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 }
 
-
+void CBuddyChatDlg::OnFileTransResult(C_WND_MSG_FriendFileResult* pMsg)
+{
+	if (pMsg)
+	{
+		CString strFileName = EncodeUtil::Utf8ToUnicode(pMsg->m_szFileName);
+		CString strResult;
+		if (pMsg->m_eResult == FILE_TRANS_RESULT::E_TRANS_SUCCEED)
+		{
+			strResult = _T("文件传输成功");
+		}
+		else
+		{
+			strResult = _T("文件传输失败");
+		}
+		AddNotifyMsgToRecvEdit(strFileName+strResult);
+	}
+}
 void CBuddyChatDlg::AddNotifyMsgToRecvEdit(const CString& strMsg)
 {
 	RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
 	RichEdit_ReplaceSel(m_richRecv.m_hWnd, strMsg, _T("微软雅黑"), 10, RGB(255, 0, 0), FALSE, FALSE, FALSE, FALSE, 0);
+	RichEdit_ReplaceSel(m_richRecv.m_hWnd, _T("\r\n"));
+	RichEdit_SetStartIndent(m_richRecv.m_hWnd, 0);
+	::PostMessage(m_richRecv.m_hWnd, WM_VSCROLL, SB_BOTTOM, 0);
 }
 
 /**

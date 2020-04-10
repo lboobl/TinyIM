@@ -135,6 +135,7 @@ public:
 	void OnFileNotifyReqMsg(C_WND_MSG_FileNotifyReq * pMsg);							// 接收好友消息
 	void OnSendFileProcess(C_WND_MSG_FileProcessMsg* pMsg);
 	void OnRecvFileProcess(C_WND_MSG_FileProcessMsg* pMsg);
+	void OnFileTransResult(C_WND_MSG_FriendFileResult* pMsg);
 	void OnUpdateBuddyNumber();													// 更新好友号码通知
 	void OnUpdateBuddySign();													// 更新好友签名通知
 	void OnUpdateBuddyHeadPic();												// 更新好友头像通知

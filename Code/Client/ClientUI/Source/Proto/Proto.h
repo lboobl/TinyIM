@@ -159,6 +159,8 @@ private:
 
 	void HandleFileTransProcessNotifyReq(const FileTransProgressNotifyReqMsg& reqMsg);
 	
+	void HandleFriendFileTransResultNotifyReq(const FriendTransFileResultNotifyReqMsg& reqMsg);
+
 	void HandleCreateGroupRspMsg(const CreateGroupRspMsg& rspMsg);
 
 	void HandleDestroyGroupRspMsg(const DestroyGroupRspMsg &rspMsg);

@@ -4641,7 +4641,19 @@ void CMainDlg::ShowUserInfoDlg(UINT nUTalkUin, BOOL bShow)
 	}
 }
 
-
+LRESULT CMainDlg::OnRecvFriendFileTransResultNotifyMsg(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	C_WND_MSG_FriendFileResult * pMsg = (C_WND_MSG_FriendFileResult*)(lParam);
+	if (pMsg)
+	{
+		auto item = m_mapBuddyChatDlg.find(pMsg->m_szFriendId);
+		if (item != m_mapBuddyChatDlg.end())
+		{
+			item->second->OnFileTransResult(pMsg);
+		}
+	}
+	return 0;
+}
 /**
  * @brief 显示好友信息对话框
  * TODO: 显示好友资料对话框
@@ -6518,6 +6530,7 @@ void CMainDlg::InitMsgTypeMap()
 		m_netProto->AddMap(E_MsgType::GetFriendChatHistoryRsp_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::GetGroupChatHistoryRsp_Type, m_hWnd);
 		m_netProto->AddMap(E_MsgType::FileTransProgressNotifyReq_Type, m_hWnd);
+		m_netProto->AddMap(E_MsgType::FriendFileTransResultNotifyReq_Type, m_hWnd);
 	}
 }
 

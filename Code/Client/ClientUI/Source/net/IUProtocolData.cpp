@@ -246,7 +246,7 @@ C_WND_MSG_FileNotifyReq::~C_WND_MSG_FileNotifyReq()
 }
 
 
-C_WND_MSG_SendFileResult::C_WND_MSG_SendFileResult()
+C_WND_MSG_FriendFileResult::C_WND_MSG_FriendFileResult()
 {
 	memset(m_szMsgId, 0, sizeof(m_szMsgId));
 	memset(m_szUserId, 0, sizeof(m_szUserId));
@@ -254,7 +254,7 @@ C_WND_MSG_SendFileResult::C_WND_MSG_SendFileResult()
 	memset(m_szFileName, 0, sizeof(m_szFileName));
 }
 
-C_WND_MSG_SendFileResult::~C_WND_MSG_SendFileResult()
+C_WND_MSG_FriendFileResult::~C_WND_MSG_FriendFileResult()
 {
 
 }

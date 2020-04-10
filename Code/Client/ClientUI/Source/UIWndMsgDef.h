@@ -92,6 +92,7 @@
 #define		FMG_MSG_FRIEND_FILE_NOTIFY_REQ  WM_USER + 452  //好友接收文件通知
 #define		FMT_MSG_FRIEND_CHAT_HISTORY     WM_USER + 453  //好友历史消息、
 #define     FMT_MSG_GROUP_CHAT_HISTORY      WM_USER + 454
+#define		FMT_MSG_FRIEND_FILE_TRANS_RESULT WM_USER + 455 //好友传递文件结果消息
 //Dennis Think
 
 

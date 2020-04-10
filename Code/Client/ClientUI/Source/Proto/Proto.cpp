@@ -489,9 +489,34 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 			HandleFileTransProcessNotifyReq(reqMsg);
 		}
 	}break;
+	case E_MsgType::FriendFileTransResultNotifyReq_Type:
+	{
+		FriendTransFileResultNotifyReqMsg reqMsg;
+		if (reqMsg.FromString(pOrgMsg->to_string())) {
+			HandleFriendFileTransResultNotifyReq(reqMsg);
+		}
+	}break;
 	default: {
 		ERR(ms_loger, "Unhandle MsgType:{} Msg:{} [{} {}]", MsgType(pOrgMsg->GetType()), pOrgMsg->to_string(), __FILENAME__, __LINE__);
 	}break;
+	}
+}
+
+
+void CMsgProto::HandleFriendFileTransResultNotifyReq(const FriendTransFileResultNotifyReqMsg& reqMsg)
+{
+	C_WND_MSG_FriendFileResult * pResult = new C_WND_MSG_FriendFileResult();
+	{
+		strcpy_s(pResult->m_szUserId, reqMsg.m_strUserId.c_str());
+		strcpy_s(pResult->m_szFriendId, reqMsg.m_strFriendId.c_str());
+		strcpy_s(pResult->m_szFileName, reqMsg.m_strFile.c_str());
+		pResult->m_eDirect = reqMsg.m_eDirect;
+		pResult->m_eResult = reqMsg.m_eResult;
+	}
+	auto item = m_msgMap.find(reqMsg.GetMsgType());
+	if (item != m_msgMap.end())
+	{
+		::PostMessage(item->second, FMT_MSG_FRIEND_FILE_TRANS_RESULT, 0, (LPARAM)(pResult));
 	}
 }
 
