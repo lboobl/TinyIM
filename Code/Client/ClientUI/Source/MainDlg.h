@@ -150,43 +150,21 @@ public:
 		COMMAND_ID_HANDLER_EX(IDM_REFRESH_GROUP_LIST,OnMenu_RefreshGroupList) //刷新群组列表
         COMMAND_ID_HANDLER_EX(IDM_EXIT_GROUP, OnMenu_ExitGroup)					//右键菜单退出该群
 
-		//显示昵称和账户、显示昵称、显示账号、显示清爽资料
-		//COMMAND_RANGE_HANDLER_EX(ID_32911, ID_32914, OnMenu_ShowNameChoice)
-        
-        //网络错误
-        MESSAGE_HANDLER_EX(FMG_MSG_NET_ERROR, OnNetError)
 
+        //网络错误
 		MESSAGE_HANDLER_EX(FMG_MSG_LOGIN_RESULT, OnLoginResult)
 		MESSAGE_HANDLER_EX(FMG_MSG_LOGOUT_RESULT, OnLogoutResult)
 
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_BUDDY_INFO, OnUpdateBuddyInfo)		 //更新用户信息
-		//MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_BUDDY_NUMBER, OnUpdateBuddyNumber)	 //更新用户昵称(TODO: 名字要改)
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_BUDDY_HEADPIC, OnUpdateBuddyHeadPic)
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_BUDDY_SIGN, OnUpdateBuddySign)
 		MESSAGE_HANDLER_EX(FMG_MSG_SELF_STATUS_CHANGE, OnSelfStatusChange)
 
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_CHATDLG_USERINFO, OnUpdateChatDlgOnlineStatus)			//更新聊天窗口中用户状态
 		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_BUDDY_LIST, OnUpdateBuddyList)		 //更新好友列表信息
 		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GROUP_LIST, OnUpdateGroupList)
 		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_RECENT_LIST, OnUpdateRecentList)	 //更新最近联系人列表
-		//MESSAGE_HANDLER_EX(FMG_MSG_GROUP_MSG, OnGroupMsg)
-		//MESSAGE_HANDLER_EX(FMG_MSG_SESS_MSG, OnSessMsg)
-		MESSAGE_HANDLER_EX(FMG_MSG_STATUS_CHANGE_MSG, OnStatusChangeMsg)
+
 		MESSAGE_HANDLER_EX(FMG_MSG_KICK_MSG, OnKickMsg)
         MESSAGE_HANDLER_EX(FMG_MSG_SCREENSHOT, OnScreenshotMsg)
         
-		MESSAGE_HANDLER_EX(FMG_MSG_SYS_GROUP_MSG, OnSysGroupMsg)
-		
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GMEMBER_NUMBER, OnUpdateGMemberNumber)
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GROUP_NUMBER, OnUpdateGroupNumber)
-		
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GMEMBER_SIGN, OnUpdateGMemberSign)
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GMEMBER_INFO, OnUpdateGMemberInfo)
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GROUP_INFO, OnUpdateGroupInfo)				//更新群信息
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GMEMBER_HEADPIC, OnUpdateGMemberHeadPic)
-		MESSAGE_HANDLER_EX(FMG_MSG_UPDATE_GROUP_HEADPIC, OnUpdateGroupHeadPic)
-		MESSAGE_HANDLER_EX(FMG_MSG_CHANGE_STATUS_RESULT, OnChangeStatusResult)
-		
+
 		//Dennis Think Begin
 		MESSAGE_HANDLER_EX(FMG_MSG_ADDFREIND, OnSendAddFriendRequestResult)			//自己加好友是否发送成功
 		MESSAGE_HANDLER_EX(FMG_MSG_RECVADDFRIENDREQUSET, OnRecvAddFriendRequest)		//收到加好友相关通知
@@ -207,7 +185,6 @@ public:
 		MESSAGE_HANDLER_EX(FMT_MSG_GROUP_CHAT_HISTORY,OnRecvGroupHistoryMsg)
 
 		MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_PROGRESS, OnSendFileProgress)
-		//MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_RESULT, OnSendFileResult)
 		MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_PROGRESS, OnRecvFileProgress)
 		MESSAGE_HANDLER_EX(FMT_MSG_FRIEND_FILE_TRANS_RESULT,OnRecvFriendFileTransResultNotifyMsg)
 		//Dennis Think End
@@ -321,7 +298,6 @@ private:
 	bool StartLogin(BOOL bAutoLogin = FALSE);
 	void CloseAllDlg();
 
-    LRESULT OnNetError(UINT uMsg, WPARAM wParam, LPARAM lParam);    
 	LRESULT OnLoginResult(UINT uMsg, WPARAM wParam, LPARAM lParam);			// 登录返回消息
 	LRESULT OnLogoutResult(UINT uMsg, WPARAM wParam, LPARAM lParam);		// 注销返回消息
 	LRESULT OnGoOffline(UINT uMsg, WPARAM wParam, LPARAM lParam);			// 下线
@@ -332,23 +308,11 @@ private:
 	LRESULT OnBuddyMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);			// 好友消息
 	LRESULT OnGroupMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);			// 群消息
 	LRESULT OnSessMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);				// 临时会话消息
-	LRESULT OnStatusChangeMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);		// 好友状态改变消息
 	LRESULT OnKickMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);				// 被踢下线消息
     LRESULT OnScreenshotMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);		// 屏幕截图消息   
-	LRESULT OnSysGroupMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);			// 群系统消息
+
 	LRESULT OnUpdateBuddyNumber(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新好友号码
-	LRESULT OnUpdateGMemberNumber(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新群成员号码_
-	LRESULT OnUpdateGroupNumber(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新群号码
-	LRESULT OnUpdateBuddySign(UINT uMsg, WPARAM wParam, LPARAM lParam);		// 更新好友个性签名
-	LRESULT OnUpdateGMemberSign(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新群成员个性签名
-	LRESULT OnUpdateBuddyInfo(UINT uMsg, WPARAM wParam, LPARAM lParam);		// 更新好友信息
-	LRESULT OnUpdateChatDlgOnlineStatus(UINT uMsg, WPARAM wParam, LPARAM lParam);	////更新聊天窗口中好友的在线与离线状态	
-	LRESULT OnUpdateGMemberInfo(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新群成员信息
-	LRESULT OnUpdateGroupInfo(UINT uMsg, WPARAM wParam, LPARAM lParam);		// 更新群信息
-	LRESULT OnUpdateBuddyHeadPic(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新好友头像图片
-	LRESULT OnUpdateGMemberHeadPic(UINT uMsg, WPARAM wParam, LPARAM lParam);// 更新群成员头像图片
-	LRESULT OnUpdateGroupHeadPic(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新群头像图片
-	LRESULT OnChangeStatusResult(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 改变在线状态返回消息
+
 	LRESULT OnSendAddFriendRequestResult(UINT uMsg, WPARAM wParam, LPARAM lParam);//加好友向服务器发请求的成败结果
 	LRESULT OnRecvAddFriendRequest(UINT uMsg, WPARAM wParam, LPARAM lParam);// 收到加好友的请求
 	LRESULT OnAddFriendNotifyRequest(UINT uMsg, WPARAM wParam, LPARAM lParam);// 收到加好友结果的通知的请求
@@ -391,13 +355,6 @@ private:
 	void ShowGMemberInfoDlg(UINT nGroupCode, UINT nUTalkUin, BOOL bShow);
 	void ShowGroupInfoDlg(const std::string& strGroupId, BOOL bShow);
 
-	void NotifyBuddyChatDlg(UINT nUTalkUin, UINT uMsg);						// 通知好友聊天窗口更新
-	void NotifyGroupChatDlg(UINT nGroupCode,								// 通知群聊天窗口更新
-		UINT uMsg, WPARAM wParam, LPARAM lParam);
-	void NotifySessChatDlg(UINT nUTalkUin, UINT uMsg);						// 通知临时会话聊天窗口更新
-	void NotifyBuddyInfoDlg(UINT nUTalkUin, UINT uMsg);						// 通知好友信息窗口更新
-	void NotifyGMemberInfoDlg(UINT nGroupCode, UINT nUTalkUin, UINT uMsg);	// 通知群成员信息窗口更新
-	void NotifyGroupInfoDlg(UINT nGroupCode, UINT uMsg);					// 通知群信息窗口更新
 
 	void UpdateBuddyTreeCtrl();
 	void BuddyListSortOnStaus();											//根据在线和离线状态排列好友列表
@@ -436,7 +393,7 @@ private:
 	void SaveCurrentLogonUserToFile();										//将当前登录的账户保存到文件中
 	void DeleteCurrentUserFromFile();										//从文件中删除当前登录的账户
 
-	BOOL IsFilesTransferring();												//聊天对话框是否有文件正在进行传输
+	//BOOL IsFilesTransferring();												//聊天对话框是否有文件正在进行传输
 
 
 	//Dennis Begin
@@ -474,7 +431,6 @@ private:
 	CSkinEdit               m_edtSearch;                                    //查找按钮
 	CSkinPictureBox			m_picHead;                                      //个人头像
 	
-	//BOOL					m_bPicHeadPress;
 
 	CSkinStatic				m_staNickName;									//个人昵称静态展示
 	
