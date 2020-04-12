@@ -29,33 +29,11 @@
 #include "ChatDlgCommon.h"
 #include "EncodingUtil.h"
 #include "UIText.h"
-
-//#include "net/Msg.h"
 #include "Proto.h"
 #include "UIDefaultValue.h"
 #pragma comment(lib, "winmm.lib")
 
 extern HWND g_hwndOwner;
-
-
-//主菜单各个子菜单索引号
-enum MAIN_PANEL_MEMU
-{
-	MAIN_PANEL_STATUS_SUBMENU_INDEX,
-	MAIN_PANEL_TRAYICON_SUBMENU_INDEX,//这个是什么
-	MAIN_PANEL_TRAYICON_SUBMENU2_INDEX,//这个是什么
-	MAIN_PANEL_RECENT_SUBMENU_INDEX,
-	MAIN_PANEL_BUDDYLIST_SUBMENU_INDEX,
-	MAIN_PANEL_GROUP_SUBMENU_INDEX,
-	MAIN_PANEL_BUDDYLIST_CONTEXT_SUBMENU_INDEX,
-	MAIN_PANEL_MAIN_SUBMENU_INDEX,
-	MAIN_PANEL_LOCK_SUBMENU_INDEX,
-	MAIN_PANEL_RECENTLIST_CONTEXT_SUBMENU_INDEX,
-	MAIN_PANEL_GROUPLIST_CONTEXT_SUBMENU_INDEX,
-	MAIN_PANEL_BUDDYLIST_TEAM_CONTEXT_SUBMENU_INDEX,
-	MAIN_PANEL_BUDDYLIST_BLANK_CONTEXT_SUBMENU_INDEX,
-	MAIN_PANEL_GROUPLIST_BLANK_CONTEXT_SUBMENU_INDEX
-};
 
 static std::mutex g_mutex;
 
@@ -984,17 +962,17 @@ BOOL CMainDlg::InitUI()
 		_T("Status\\invisible.png"), _T("Status\\imoffline.png"), _T("lock20.png"),
 		_T("groupmainpage.png") };
 
-	CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_STATUS_SUBMENU_INDEX);
-	for (int i = 0; i < 9; i++)
-	{
-		PopupMenu.SetIcon(dwMenuIDs[i], FALSE, strFileNames[i], strFileNames[i]);
-	}
+	CSkinMenu PopupMenu;// = m_SkinMenu.GetSubMenu(MAIN_PANEL_STATUS_SUBMENU_INDEX);
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	PopupMenu.SetIcon(dwMenuIDs[i], FALSE, strFileNames[i], strFileNames[i]);
+	//}
 
-	PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_TRAYICON_SUBMENU2_INDEX);
-	for (int i = 0; i < 9; i++)
-	{
-		PopupMenu.SetIcon(dwMenuIDs[i], FALSE, strFileNames[i], strFileNames[i]);
-	}
+	//PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_TRAYICON_SUBMENU2_INDEX);
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	PopupMenu.SetIcon(dwMenuIDs[i], FALSE, strFileNames[i], strFileNames[i]);
+	//}
 
 	PopupMenu = m_SkinMenu.GetSubMenu(3);
 	PopupMenu.SetIcon(0, TRUE, _T("modehead.png"), _T("modehead.png"));
@@ -1854,8 +1832,8 @@ LRESULT CMainDlg::OnRecentListRButtonUp(LPNMHDR pnmh)
 	CPoint pt;
 	GetCursorPos(&pt);
 
-	CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_RECENTLIST_CONTEXT_SUBMENU_INDEX);
-	PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);
+	/*CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(MAIN_PANEL_RECENTLIST_CONTEXT_SUBMENU_INDEX);
+	PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, m_hWnd);*/
 
 	return (LRESULT)1;
 }
@@ -3814,74 +3792,74 @@ void CMainDlg::ShowBuddyInfoDlg(const std::string strFriendId, BOOL bShow)
 }
 
 //
-/**
- * @brief 显示群成员信息的对话框
- * 
- * TODO: 优化掉bool变量
- * @param nGroupCode 群组唯一标识
- * @param nUTalkUin 用户唯一标识
- * @param bShow 
- */
-void CMainDlg::ShowGMemberInfoDlg(UINT nGroupCode, UINT nUTalkUin, BOOL bShow)
-{
-	if (0 == nGroupCode || 0 == nUTalkUin)
-		return;
-
-	if (bShow)
-	{
-		CGMemberInfoMapKey key;
-		key.m_nGroupCode = nGroupCode;
-		key.m_nUTalkUin = nUTalkUin;
-		std::map<CGMemberInfoMapKey, CBuddyInfoDlg*>::iterator iter;
-		iter = m_mapGMemberInfoDlg.find(key);
-		if (iter != m_mapGMemberInfoDlg.end())
-		{
-			CBuddyInfoDlg* lpBuddyInfoDlg = iter->second;
-			if (lpBuddyInfoDlg != NULL)
-			{
-				if (!lpBuddyInfoDlg->IsWindow())
-					lpBuddyInfoDlg->Create(NULL);
-				lpBuddyInfoDlg->ShowWindow(SW_SHOW);
-				::SetForegroundWindow(lpBuddyInfoDlg->m_hWnd);
-			}
-		}
-		else
-		{
-			CBuddyInfoDlg* lpBuddyInfoDlg = new CBuddyInfoDlg;
-			if (lpBuddyInfoDlg != NULL)
-			{
-				m_mapGMemberInfoDlg[key] = lpBuddyInfoDlg;
-				//lpBuddyInfoDlg->m_lpFMGClient = &m_FMGClient;
-				//lpBuddyInfoDlg->m_hMainDlg = m_hWnd;
-				lpBuddyInfoDlg->m_nUTalkUin = nUTalkUin;
-				//lpBuddyInfoDlg->m_bIsGMember = TRUE;
-				//lpBuddyInfoDlg->m_nGroupCode = nGroupCode;
-				lpBuddyInfoDlg->Create(NULL);
-				lpBuddyInfoDlg->ShowWindow(SW_SHOW);
-				::SetForegroundWindow(lpBuddyInfoDlg->m_hWnd);
-			}
-		}
-	}
-	else
-	{
-		CGMemberInfoMapKey key;
-		key.m_nGroupCode = nGroupCode;
-		key.m_nUTalkUin = nUTalkUin;
-		std::map<CGMemberInfoMapKey, CBuddyInfoDlg*>::iterator iter;
-		iter = m_mapGMemberInfoDlg.find(key);
-		if (iter != m_mapGMemberInfoDlg.end())
-		{
-			CBuddyInfoDlg* lpBuddyInfoDlg = iter->second;
-			if (lpBuddyInfoDlg != NULL)
-			{
-				if (lpBuddyInfoDlg->IsWindow())
-					lpBuddyInfoDlg->DestroyWindow();
-				delete lpBuddyInfoDlg;
-			}
-			m_mapGMemberInfoDlg.erase(iter);
-		}
-	}
-}
+///**
+// * @brief 显示群成员信息的对话框
+// * 
+// * TODO: 优化掉bool变量
+// * @param nGroupCode 群组唯一标识
+// * @param nUTalkUin 用户唯一标识
+// * @param bShow 
+// */
+//void CMainDlg::ShowGMemberInfoDlg(UINT nGroupCode, UINT nUTalkUin, BOOL bShow)
+//{
+//	if (0 == nGroupCode || 0 == nUTalkUin)
+//		return;
+//
+//	if (bShow)
+//	{
+//		CGMemberInfoMapKey key;
+//		key.m_nGroupCode = nGroupCode;
+//		key.m_nUTalkUin = nUTalkUin;
+//		std::map<CGMemberInfoMapKey, CBuddyInfoDlg*>::iterator iter;
+//		iter = m_mapGMemberInfoDlg.find(key);
+//		if (iter != m_mapGMemberInfoDlg.end())
+//		{
+//			CBuddyInfoDlg* lpBuddyInfoDlg = iter->second;
+//			if (lpBuddyInfoDlg != NULL)
+//			{
+//				if (!lpBuddyInfoDlg->IsWindow())
+//					lpBuddyInfoDlg->Create(NULL);
+//				lpBuddyInfoDlg->ShowWindow(SW_SHOW);
+//				::SetForegroundWindow(lpBuddyInfoDlg->m_hWnd);
+//			}
+//		}
+//		else
+//		{
+//			CBuddyInfoDlg* lpBuddyInfoDlg = new CBuddyInfoDlg;
+//			if (lpBuddyInfoDlg != NULL)
+//			{
+//				m_mapGMemberInfoDlg[key] = lpBuddyInfoDlg;
+//				//lpBuddyInfoDlg->m_lpFMGClient = &m_FMGClient;
+//				//lpBuddyInfoDlg->m_hMainDlg = m_hWnd;
+//				lpBuddyInfoDlg->m_nUTalkUin = nUTalkUin;
+//				//lpBuddyInfoDlg->m_bIsGMember = TRUE;
+//				//lpBuddyInfoDlg->m_nGroupCode = nGroupCode;
+//				lpBuddyInfoDlg->Create(NULL);
+//				lpBuddyInfoDlg->ShowWindow(SW_SHOW);
+//				::SetForegroundWindow(lpBuddyInfoDlg->m_hWnd);
+//			}
+//		}
+//	}
+//	else
+//	{
+//		CGMemberInfoMapKey key;
+//		key.m_nGroupCode = nGroupCode;
+//		key.m_nUTalkUin = nUTalkUin;
+//		std::map<CGMemberInfoMapKey, CBuddyInfoDlg*>::iterator iter;
+//		iter = m_mapGMemberInfoDlg.find(key);
+//		if (iter != m_mapGMemberInfoDlg.end())
+//		{
+//			CBuddyInfoDlg* lpBuddyInfoDlg = iter->second;
+//			if (lpBuddyInfoDlg != NULL)
+//			{
+//				if (lpBuddyInfoDlg->IsWindow())
+//					lpBuddyInfoDlg->DestroyWindow();
+//				delete lpBuddyInfoDlg;
+//			}
+//			m_mapGMemberInfoDlg.erase(iter);
+//		}
+//	}
+//}
 
 
 /**
@@ -4766,21 +4744,21 @@ void CMainDlg::CloseAllDlg()
 		m_mapBuddyInfoDlg.clear();
 	}
 
-	//关闭群组成员信息对话框
-	{
-		std::map<CGMemberInfoMapKey, CBuddyInfoDlg*>::iterator iter;
-		for (iter = m_mapGMemberInfoDlg.begin(); iter != m_mapGMemberInfoDlg.end(); iter++)
-		{
-			CBuddyInfoDlg* lpBuddyInfoDlg = iter->second;
-			if (lpBuddyInfoDlg != NULL)
-			{
-				if (lpBuddyInfoDlg->IsWindow())
-					lpBuddyInfoDlg->DestroyWindow();
-				delete lpBuddyInfoDlg;
-			}
-		}
-		m_mapGMemberInfoDlg.clear();
-	}
+	////关闭群组成员信息对话框
+	//{
+	//	std::map<CGMemberInfoMapKey, CBuddyInfoDlg*>::iterator iter;
+	//	for (iter = m_mapGMemberInfoDlg.begin(); iter != m_mapGMemberInfoDlg.end(); iter++)
+	//	{
+	//		CBuddyInfoDlg* lpBuddyInfoDlg = iter->second;
+	//		if (lpBuddyInfoDlg != NULL)
+	//		{
+	//			if (lpBuddyInfoDlg->IsWindow())
+	//				lpBuddyInfoDlg->DestroyWindow();
+	//			delete lpBuddyInfoDlg;
+	//		}
+	//	}
+	//	m_mapGMemberInfoDlg.clear();
+	//}
 
 	//关闭群组信息对话框
 	{
@@ -5254,10 +5232,6 @@ void CMainDlg::DoMsgList()
 				{
 					DoAddFriendNotifyReqMsg(dynamic_cast<C_WND_MSG_AddFriendNotifyRequest*>(m_msgList[i]));
 				}break;
-				/*case E_UI_NET_DATA_TYPE::NET_DATA_FRIEND_RECV_TEXT_REQ:
-				{
-					DoRecvFriendChatTextMsg(dynamic_cast<C_WND_MSG_BuddyTextMessage*>(m_msgList[i]));
-				}break;*/
 				default:
 				{
 

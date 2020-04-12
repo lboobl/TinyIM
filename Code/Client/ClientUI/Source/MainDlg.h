@@ -44,32 +44,12 @@ enum MAINPANEL_STATUS
     MAINPANEL_STATUS_USERGOOFFLINE //主面板用户主动下线
 };
 
-class CGMemberInfoMapKey
-{
-public:
-	CGMemberInfoMapKey(void):m_nGroupCode(0), m_nUTalkUin(0){}
-	~CGMemberInfoMapKey(void){}
-
-public:
-	bool operator < (const CGMemberInfoMapKey& rhs) const
-	{
-		if(m_nGroupCode < rhs.m_nGroupCode) return true;
-		if(m_nGroupCode > rhs.m_nGroupCode) return false;
-		return  m_nUTalkUin < rhs.m_nUTalkUin;
-	}
-
-public:
-	UINT m_nGroupCode;
-	UINT m_nUTalkUin;
-};
-
 class CBuddyChatDlg;
 class CBuddyInfoDlg;
 class CGroupChatDlg;
 class CGroupInfoDlg;
 
 class CFindFriendDlg;
-class CRemoteDesktopDlg;
 
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 		public CMessageFilter, public CIdleHandler
@@ -475,7 +455,7 @@ private:
 
 
 	std::map<std::string, CBuddyInfoDlg*> m_mapBuddyInfoDlg;//好友信息对话框MAP
- 	std::map<CGMemberInfoMapKey, CBuddyInfoDlg*> m_mapGMemberInfoDlg;//群成员信息对话框MAP
+
 	std::map<std::string, CGroupInfoDlg*> m_mapGroupInfoDlg;//群组信息对话框MAP
 
 	CFaceList						m_FaceList;
