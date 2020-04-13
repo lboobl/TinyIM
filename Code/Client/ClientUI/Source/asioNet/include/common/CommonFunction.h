@@ -25,7 +25,7 @@
 std::string unified_path(const char* path)
 {
 	char chpath[MAX_PATH];
-	GetModuleFileName(NULL, (LPSTR)chpath, sizeof(chpath));
+	GetModuleFileNameA(NULL, (LPSTR)chpath, sizeof(chpath));
 	std::string strPath = std::string(chpath);
 	strPath = strPath.substr(0,strPath.rfind("\\")+1);
 	return strPath + std::string(path);
@@ -153,7 +153,6 @@ ParseParamResult ParseParam(int argc,char * argv[],GenerateCfgFileFunc func)
             result.m_cmd=ServerCmd::CMD_INFO;
         } else if(!strcmp(argv[i],"-v")){
             std::cout<<g_SERVER_VERSION<<std::endl;
-	        std::cout<<"Debug: "<<DEBUG<<std::endl;
             result.m_bReturn = true;	
 		} else if(!strcmp(argv[i],"-start"))
 		{

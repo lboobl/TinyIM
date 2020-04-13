@@ -31,12 +31,7 @@ LRESULT CAboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 	m_SkinDlg.SubclassWindow(m_hWnd);
 	m_SkinDlg.MoveWindow(0, 0, 430, 450,FALSE);
 
-    CIniFile iniFile;
-    CString strIniFilePath(g_szHomePath);
-    strIniFilePath += _T("config\\flamingo.ini");
-    TCHAR szAboutDlgTitle[64] = { 0 };
-    iniFile.ReadString(_T("ui"), _T("aboutdlgtitle"), UI_ABOUTWND_TITLE, szAboutDlgTitle, ARRAYSIZE(szAboutDlgTitle), strIniFilePath);
-    m_SkinDlg.SetTitleText(szAboutDlgTitle);
+    m_SkinDlg.SetTitleText(EncodeUtil::Utf8ToUnicode(m_config.m_strAboutDlgTitle).c_str());
 
 	HDC hDlgBgDc = m_SkinDlg.GetBgDC();
 	m_staAboutInfo.SubclassWindow(GetDlgItem(IDC_ABOUT_Flamingo));
@@ -53,43 +48,22 @@ LRESULT CAboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 	m_hyperLinkVersion.SetVisitedLinkColor(RGB(22, 112, 235));
     
     //加载公司网址链接
-    TCHAR szCompanyURLLink[256] = { 0 };
-    iniFile.ReadString(_T("ui"), _T("companyurllink"), UI_COMPANY_LINK, szCompanyURLLink, ARRAYSIZE(szCompanyURLLink), strIniFilePath);
-    m_hyperLinkVersion.SetHyperLink(szCompanyURLLink);
+    m_hyperLinkVersion.SetHyperLink(EncodeUtil::Utf8ToUnicode(m_config.m_strCompanyUrlLink).c_str());
 
 	CenterWindow(::GetDesktopWindow());
 
-    TCHAR szCopyrightText[256] = { 0 };
-    iniFile.ReadString(_T("ui"), _T("copyrighttext"), UI_COPYRIGHT_TEXT, szCopyrightText, ARRAYSIZE(szCopyrightText), strIniFilePath);
-    m_hyperLinkVersion.SetWindowText(szCopyrightText);
+    m_hyperLinkVersion.SetWindowText(EncodeUtil::Utf8ToUnicode(m_config.m_strCopyRight).c_str());
 			
-    TCHAR szCompanyname[256] = { 0 };
-    iniFile.ReadString(_T("ui"), _T("defaultcompanyname"), UI_DEFAULT_COMPANYNAME, szCompanyname, ARRAYSIZE(szCompanyname), strIniFilePath);
-    CString strText = szCompanyname;
 
-    CString strAboutInfoPath;
-    strAboutInfoPath.Format(_T("%sconfig\\AboutInfo.txt"), g_szHomePath);
-    CTinyImFile file;
-    if (file.Open(strAboutInfoPath, FALSE))
-    {
-        const char* pBuffer = file.Read();
-        if (pBuffer != NULL)
-        {
-            EncodeUtil::AnsiToUnicode(pBuffer, strText.GetBuffer(file.GetSize() * 2), file.GetSize() * 2);
-            strText.ReleaseBuffer();
-        }
-    }   
-
-	if(strText.IsEmpty())
-	{
-        return FALSE;
-    }
-
-	m_staAboutInfo.SetWindowText(strText);
+	m_staAboutInfo.SetWindowText(EncodeUtil::Utf8ToUnicode(m_config.m_strAboutInfo).c_str());
 
 	return TRUE;
 }
 
+void CAboutDlg::SetAboutConfig(const CAboutDlgMsgConfig& config)
+{
+	m_config = config;
+}
 /**
  * @brief 关闭对话框
  * 

@@ -7,6 +7,4 @@ static std::string g_SERVER_VERSION = "v0.0.1 " + std::string(__DATE__) + " " + 
 #else
 static std::string g_SERVER_VERSION = "v0.0.1 "+ std::string(__DATE__)+" "+std::string(__TIME__)+" "+std::string(__VERSION__);
 #endif
-
-#define DEBUG 0
 #endif

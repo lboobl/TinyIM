@@ -29,6 +29,7 @@
 #include "Proto.h"
 #include <vector>
 #include "UIWndMsgDef.h"
+#include "TinyIMConfig.h"
 //分组菜单ID基数
 #define TEAM_MENU_ITEM_BASE       0xF001
 
@@ -515,5 +516,8 @@ private:
 	bool CreateGroupChatDlg(const std::string strGroupId);
 
 	bool InitNetConnect();
+	void LoadConfig();
+private:
+	CAboutDlgMsgConfig m_aboutCfg;
 };
 #endif

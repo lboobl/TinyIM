@@ -31,6 +31,8 @@
 #include "UIText.h"
 #include "Proto.h"
 #include "UIDefaultValue.h"
+#include "CommonFunction.h"
+#include "json11/json11.hpp"
 #pragma comment(lib, "winmm.lib")
 
 extern HWND g_hwndOwner;
@@ -66,6 +68,45 @@ BOOL CMainDlg::OnIdle()
 	return FALSE;
 }
 
+void CMainDlg::LoadConfig()
+{
+	std::string strJson;
+	std::string strJsonFilePath = unified_path("config\\TinyIM.json");
+	load_txtfile(strJsonFilePath.c_str(),strJson);
+	{
+		std::string strErr;
+		json11::Json cfgJson = json11::Json::parse(strJson, strErr);
+		if (cfgJson["AboutDlg"].is_object())
+		{
+			auto aboutJson = cfgJson["AboutDlg"];
+			{
+				if (aboutJson["Title"].is_string())
+				{
+					m_aboutCfg.m_strAboutDlgTitle = aboutJson["Title"].string_value();
+				}
+
+				if (aboutJson["UrlLink"].is_string())
+				{
+					m_aboutCfg.m_strCompanyUrlLink = aboutJson["UrlLink"].string_value();
+				}
+
+				if (aboutJson["CopyRight"].is_string())
+				{
+					m_aboutCfg.m_strCopyRight = aboutJson["CopyRight"].string_value();
+				}
+
+				if (aboutJson["CompanyName"].is_string())
+				{
+					m_aboutCfg.m_strDefaultCompanyName = aboutJson["CompanyName"].string_value();
+				}
+				if (aboutJson["AboutInfo"].is_string())
+				{
+					m_aboutCfg.m_strAboutInfo = aboutJson["AboutInfo"].string_value();
+				}
+			}
+		}
+	}
+}
 /**
  * @brief Construct a new CMainDlg::CMainDlg object
  * 
@@ -92,6 +133,7 @@ CMainDlg::CMainDlg(void) :m_userMgr(CUserMgr::GetInstance()), m_userCfg(CUserCon
 	memset(&m_stAccountInfo, 0, sizeof(m_stAccountInfo));
 	m_nLoginTryTimes = 0;
 
+	LoadConfig();
 	InitNetConnect();
 
 	//
@@ -594,6 +636,7 @@ void CMainDlg::OnDestroy()
 void CMainDlg::OnAppAbout(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	CAboutDlg dlg;
+	dlg.SetAboutConfig(m_aboutCfg);
 	dlg.DoModal(m_hWnd, NULL);
 }
 
