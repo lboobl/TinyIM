@@ -497,7 +497,7 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 		}
 	}break;
 	default: {
-		ERR(ms_loger, "Unhandle MsgType:{} Msg:{} [{} {}]", MsgType(pOrgMsg->GetType()), pOrgMsg->to_string(), __FILENAME__, __LINE__);
+ 		ERR(ms_loger, "Unhandle MsgType:{} Msg:{} [{} {}]", MsgType(pOrgMsg->GetType()), pOrgMsg->to_string(), __FILENAME__, __LINE__);
 	}break;
 	}
 }

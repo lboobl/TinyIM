@@ -519,5 +519,6 @@ private:
 	void LoadConfig();
 private:
 	CAboutDlgMsgConfig m_aboutCfg;
+	CTinyServerConfig m_serverCfg;
 };
 #endif

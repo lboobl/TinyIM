@@ -105,6 +105,20 @@ void CMainDlg::LoadConfig()
 				}
 			}
 		}
+
+		if (cfgJson["Server"].is_object())
+		{
+			auto serverJson = cfgJson["Server"];
+			if (serverJson["ip"].is_string())
+			{
+				m_serverCfg.m_strClientCoreIp = serverJson["ip"].string_value();
+			}
+
+			if (serverJson["port"].is_number())
+			{
+				m_serverCfg.m_nClientCorePort = serverJson["port"].int_value();
+			}
+		}
 	}
 }
 /**
@@ -144,24 +158,10 @@ CMainDlg::CMainDlg(void) :m_userMgr(CUserMgr::GetInstance()), m_userCfg(CUserCon
 bool CMainDlg::InitNetConnect()
 {
 	{
-		std::string strServerIp = "127.0.0.1";
-		int serverPort = 9000;
-		{
-			CIniFile iniFile;
-			CString strIniPath(g_szHomePath);
-			strIniPath += _T("config\\flamingo.ini");
-			CString strTemp;
-			iniFile.ReadString(_T("server"), _T("server"), _T("flamingo.hootina.org"), strTemp.GetBuffer(64), 64, strIniPath);
-			strTemp.ReleaseBuffer();
-			strServerIp = EncodeUtil::UnicodeToUtf8(strTemp);
-			iniFile.ReadString(_T("server"), _T("port"), _T("20000"), strTemp.GetBuffer(32), 32, strIniPath);
-			strTemp.ReleaseBuffer();
-			serverPort = std::atoi(EncodeUtil::UnicodeToUtf8(strTemp));
-		}
 		m_netProto = CMsgProto::GetInstance();
 		if (m_netProto)
 		{
-			m_netProto->SetIpPort(strServerIp, serverPort);
+			m_netProto->SetIpPort(m_serverCfg.m_strClientCoreIp,m_serverCfg.m_nClientCorePort);
 			m_netProto->StartConnect();
 		}
 	}
