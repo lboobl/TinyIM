@@ -19,8 +19,7 @@
 #include "Utils.h"
 #include "GDIFactory.h"
 #include "EncodingUtil.h"
-//#include "net/protocolstream.h"
-//#include "net/Msg.h"
+
 #include "UIText.h"
 #include "FileTool.h"
 #include "UIDefaultValue.h"
@@ -287,26 +286,6 @@ void CBuddyChatDlg::OnRecvLogMsg(const CBuddyChatUiMsg& msg)
 	OnRecvMsgToHandle(m_richMsgLog.m_hWnd, msg);
 }
 
-/**
- * @brief 更新好友号码通知
- * 
- */
-void CBuddyChatDlg::OnUpdateBuddyNumber()
-{
-	UpdateData();
-	UpdateBuddyNameCtrl();
-}
-
-/**
- * @brief 更新好友签名通知
- * 
- */
-void CBuddyChatDlg::OnUpdateBuddySign()
-{
-	UpdateData();
-	UpdateBuddySignCtrl();
-}
-
 
 /**
  * @brief 更新好友头像通知
@@ -446,8 +425,6 @@ BOOL CBuddyChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
                 pfnChangeWindowMessageFilter(m_hWnd, WM_DROPFILES, MSGFLT_ALLOW, NULL);
                 pfnChangeWindowMessageFilter(m_hWnd, 0x0049, MSGFLT_ALLOW, NULL);
 
-                //pfnChangeWindowMessageFilter(m_richSend.m_hWnd, WM_DROPFILES, MSGFLT_ALLOW, NULL);
-                //pfnChangeWindowMessageFilter(m_richSend.m_hWnd, 0x0049, MSGFLT_ALLOW, NULL);
             }
             FreeLibrary(hModUser32);       
         }
@@ -455,15 +432,8 @@ BOOL CBuddyChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 
 	//允许拖拽文件进窗口
 	::DragAcceptFiles(m_hWnd, TRUE); 
-    //::DragAcceptFiles(m_richSend.m_hWnd, TRUE);
 	//PostMessage(WM_SET_DLG_INIT_FOCUS, 0, 0);		// 设置对话框初始焦点
 	SetTimer(1001, 300, NULL);
-	
-	//CalculateMsgLogCountAndOffset();
-
-	//Dennis Mask
-	//if(m_userConfig.IsEnableShowLastMsgInChatDlg())
-	//	ShowLastMsgInRecvRichEdit();
 
 
 	return TRUE;
@@ -587,9 +557,6 @@ void CBuddyChatDlg::OnSize(UINT nType, CSize size)
 {
 	OnSizeShowHistory();
 	ResizeImageInRecvRichEdit();
-
-
-	//SetMsgHandled(TRUE);
 }
 
 
@@ -615,27 +582,6 @@ void CBuddyChatDlg::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(nIDEvent);
 	}
 }
-
-
-/**
- * @brief 响应文件拖拽消息
- * 
- * @param hDropInfo 
- */
-void CBuddyChatDlg::OnDropFiles(HDROP hDropInfo)
-{ 
-	UINT nFileNum = ::DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0); // 拖拽文件个数  
-    TCHAR szFileName[MAX_PATH]={0};  
-    for (UINT i=0; i<nFileNum; ++i)    
-    {  
-		::DragQueryFile(hDropInfo, i, szFileName, MAX_PATH);//获得拖曳的文件名  
-        HandleFileDragResult(szFileName);    
-    }  
-    DragFinish(hDropInfo);      //释放hDropInfo  
-
-    //InvalidateRect(hwnd, NULL, TRUE); 
-}
-
 
 /**
  * @brief 处理文件拖拽结果
@@ -766,17 +712,6 @@ void CBuddyChatDlg::OnDestroy()
 	pLoop->RemoveMessageFilter(this);
 }
 
-/**
- * @brief “好友名称”超链接控件
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnLnk_BuddyName(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	//::PostMessage(m_hMainDlg, WM_SHOW_BUDDYINFODLG, NULL, m_nUTalkUin);
-}
 
 /**
  * @brief “字体选择工具栏”按钮
@@ -842,44 +777,6 @@ void CBuddyChatDlg::OnBtn_Face(UINT uNotifyCode, int nID, CWindow wndCtl)
 }
 
 
-/**
- * @brief 响应"窗口抖动"
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- * 
- * 参考：http://www.rupeng.com/forum/thread-6423-1-1.html
- */
-void CBuddyChatDlg::OnShakeWindow(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	//Dennis Mask
-	//if (m_lpFMGClient->IsOffline())
-	//{
-    //    MessageBox(_T("您已经处于离线状态，无法发送窗口抖动，请上线后再次尝试。"), g_strAppTitle.c_str());
-	//	return;
-//	}
-	
-  /*  CString strInfo(_T("                                            ☆您发送了一个窗口抖动☆\r\n"));
-    time_t nNow = time(NULL);
-    //发生窗口抖动的最小时间间隔是5秒
-    if (nNow - m_nLastSendShakeWindowTime <= 5)
-    {
-        strInfo = _T("                                        ☆您发送的窗口抖动过于频繁，请稍后再发。☆\r\n");
-    }
-    else
-    {
-        m_nLastSendShakeWindowTime = nNow;
-        ShakeWindow(m_hWnd, 1);
-       // m_lpFMGClient->SendBuddyMsg(m_LoginUserId, m_strUserName.GetString(), m_UserId, m_strBuddyName.GetString(), nNow, _T("/s[\"1\"]"), m_hWnd);
-    }
-
-	RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
-    RichEdit_ReplaceSel(m_richRecv.m_hWnd, strInfo, _T("微软雅黑"), 10, RGB(0,0,0), FALSE, FALSE, FALSE, FALSE, 0);
-	m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-	*/
-}
-
 
 /**
  * @brief 响应“发送图片”按钮
@@ -910,38 +807,6 @@ void CBuddyChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 		
 		_RichEdit_InsertFace(m_richSend.m_hWnd, fileDlg.m_ofn.lpstrFile, -1, -1);
 		m_richSend.SetFocus();
-	}
-}
-
-
-/**
- * @brief 响应“截屏”按钮
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnBtn_ScreenShot(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	DWORD dwSucceedExitCode = 2;
-	CString strCatchScreen;
-	strCatchScreen.Format(_T("%sCatchScreen.exe %u"), g_szHomePath, dwSucceedExitCode);
-	STARTUPINFO si = {0};
-	PROCESS_INFORMATION pi = {0};
-	if(!CreateProcess(NULL, strCatchScreen.GetBuffer(), NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
-	{
-        ::MessageBox(m_hWnd, _T("启动截图工具失败！"), g_strAppTitle.c_str(), MB_OK | MB_ICONERROR);
-	}
-	if(pi.hProcess != NULL)
-	{
-		::WaitForSingleObject(pi.hProcess, INFINITE);
-		
-		dwSucceedExitCode = 0;
-
-		if(::GetExitCodeProcess(pi.hProcess, &dwSucceedExitCode) && dwSucceedExitCode==2)
-		{
-			m_richSend.PasteSpecial(CF_TEXT);
-		}	
 	}
 }
 
@@ -986,73 +851,6 @@ void CBuddyChatDlg::OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 			::SetWindowPos(m_SkinDlg.m_hWnd, NULL, 0, 0, rtWindow.Width()-RIGHT_CHAT_WINDOW_WIDTH, rtWindow.Height(), SWP_NOMOVE|SWP_NOZORDER);
 		}			
 	}
-}
-
-//
-/**
- * @brief 显示文件传输控件
- * 
- * @param bShow 是否显示
- */
-void CBuddyChatDlg::DisplayFileTransfer(BOOL bShow)
-{
-	//if(bShow)
-	//{
-	//	m_TabMgr.Active(m_FileTransferCtrl.m_hWnd);
-	//}	
-	////文件传输界面已经存在了，则激活文件传输窗口
-	//if(bShow && m_bFileTransferVisible)	
-	//{
-	//	return;
-	//}	
-
-	//m_bFileTransferVisible = bShow;
-
-	////获取当前窗口在屏幕的位置	
-	//CRect rtWindow;
-	//GetWindowRect(&rtWindow);
-
-	//if(m_bFileTransferVisible)
-	//{
-	//	m_SkinDlg.SetBgPic(CHAT_EXPAND_BG_IMAGE_NAME, CRect(4, 100, 445, 32));
-	//	
-	//	if(m_TabMgr.GetItemCount() <= 0)
-	//	{
-	//		::SetWindowPos(m_SkinDlg.m_hWnd,
-	//						NULL,
-	//						0, 
-	//						0, 
-	//						rtWindow.Width()+RIGHT_CHAT_WINDOW_WIDTH, 
-	//						rtWindow.Height(), 
-	//						SWP_NOMOVE|SWP_NOZORDER);
-	//	}	
-	//	
-	//	//m_tbMid.SetItemText(m_nMsgLogIndexInToolbar, _T("<<"));
-	//	m_TabMgr.AddItem(_T("传送文件"), m_FileTransferCtrl.m_hWnd, FALSE);
-	//	//m_TabMgr.ShowWindow(SW_SHOW);
-	//	ShowFileTransferCtrl(TRUE);
-	//}
-	//else
-	//{
-	//	//m_tbMid.SetItemText(m_nMsgLogIndexInToolbar, _T(">>"));
-	//	//如果文件队列中已经没有文件在传输了，则隐藏文件传输控件
-	//	if(m_FileTransferCtrl.GetItemCount() == 0)
-	//	{
-	//		m_TabMgr.RemoveItem(m_FileTransferCtrl.m_hWnd);
-	//		ShowFileTransferCtrl(FALSE);
-	//	}
-
-	//	m_SkinDlg.SetBgPic(CHAT_BG_IMAGE_NAME, CRect(4, 100, 4, 32));
-	//	//AtlTrace(_T("rtWindow.Width()-RIGHT_CHAT_WINDOW_WIDTH=%d\n"), rtWindow.Width()-RIGHT_CHAT_WINDOW_WIDTH);
-	//	if(m_TabMgr.GetItemCount() <= 0)
-	//	{
-	//		m_bMsgLogWindowVisible = TRUE;	
-	//		SendMessage(WM_COMMAND, ID_BUDDY_DLG_SHOW_LOG_MSG_BTN, 0);
-	//		//::SetWindowPos(m_SkinDlg.m_hWnd, NULL, 0, 0, rtWindow.Width()-RIGHT_CHAT_WINDOW_WIDTH, rtWindow.Height(), SWP_NOMOVE|SWP_NOZORDER);
-	//		m_bMsgLogWindowVisible = FALSE;
-	//	}
-
-	//}
 }
 
 /**
@@ -1157,18 +955,6 @@ void CBuddyChatDlg::OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow 
 }
 
 
-/**
- * @brief 响应"自动回复"
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnAutoReply(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	m_bEnableAutoReply = !m_bEnableAutoReply;
-}
-
 
 /**
  * @brief 响应“关闭”按钮
@@ -1264,35 +1050,6 @@ void CBuddyChatDlg::OnBtn_Arrow(UINT uNotifyCode, int nID, CWindow wndCtl)
 			rc.left, rc.bottom + 4, m_hWnd, &rc);
 	}
 }
-
-
-/**
- * @brief 响应 "打开文件传输项"
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnOpenTransferFileItem(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	if(m_strLinkUrl.IsEmpty())
-	{
-		return;
-	}	
-
-	if(nID == IDM_OPEN_FILE)
-	{
-		::ShellExecute(NULL, _T("open"), m_strLinkUrl, NULL, NULL, SW_SHOWNORMAL);
-	}	
-	else if(nID == IDM_OPEN_DIRECTORY)
-	{
-		//参考：http://zhidao.baidu.com/link?url=uEc51-5yf52fP2PHVl7mvAx2CpA8s1R5j8cyCWhYR8AaNE7KQaswGoguJtCI-ZlXMtiD02Iq6K_hBrbCvXoHfGy8ez3t3KtdHeIydox8wDu
-		CString strCmdLine;
-		strCmdLine.Format(_T("/n,/select,%s"), m_strLinkUrl);
-		::ShellExecute(NULL, _T("open"), _T("explorer.exe"), strCmdLine, NULL, SW_SHOWNORMAL);
-	}
-}
-
 
 /**
  * @brief 响应工具栏的点击消息
@@ -1435,47 +1192,6 @@ LRESULT CBuddyChatDlg::OnSetDlgInitFocus(UINT uMsg, WPARAM wParam, LPARAM lParam
 	return 0;
 }
 
-
-
-/**
- * @brief 响应“接收消息”富文本框链接点击消息
- * 
- * @param pnmh 
- * @return LRESULT 
- */
-LRESULT CBuddyChatDlg::OnRichEdit_Recv_Link(LPNMHDR pnmh)
-{
-	//CString strUrl;
-
-	if (pnmh->code == EN_LINK)
-	{
-		ENLINK*pLink = (ENLINK*)pnmh;
-		if (pLink->msg == WM_LBUTTONUP)
-		{
-			m_richRecv.SetSel(pLink->chrg);
-			m_richRecv.GetSelText(m_strLinkUrl);
-
-			//TODO 判断是否为超链接，此处代码需要重构
-			if ( (m_strLinkUrl.Left(7).MakeLower()==_T("http://")) || 
-			     (m_strLinkUrl.Left(8).MakeLower()==_T("https://")) ||
-				 ((m_strLinkUrl.GetLength() >= 7) && (m_strLinkUrl.Left(4).MakeLower()==_T("www."))))
-			{
-				::ShellExecute(NULL, _T("open"), m_strLinkUrl, NULL, NULL, SW_SHOWNORMAL);
-			}
-			else if(::PathFileExists(m_strLinkUrl))
-			{
-				DWORD dwPos = GetMessagePos();
-				CPoint point(GET_X_LPARAM(dwPos), GET_Y_LPARAM(dwPos));
-
-				CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(12);
-				PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, m_hWnd);
-			}
-		}
-	}
-	return 0;
-}
-
-
 /**
  * @brief 响应富文本框发送粘贴的消息
  * 
@@ -1566,18 +1282,6 @@ void CBuddyChatDlg::OnMenu_SelAll(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-
-/**
- * @brief 响应“清屏”菜单，完成接收框的清屏
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnMenu_Clear(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	m_richRecv.SetWindowText(_T(""));
-}
 
 
 /**
@@ -1734,28 +1438,7 @@ void CBuddyChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 }	
 
 
-/**
- * @brief 响应消息导出按钮
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnMenu_ExportMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-}
 
-/**
- * @brief 响应查找消息记录
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnMenu_FindInMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	//查找消息记录
-}
 
 
 /**
@@ -2194,7 +1877,6 @@ void CBuddyChatDlg::OnSizeShowRightArea(const CRect& rcRightShowArea)
 				if (IsFilesTransferring())
 				{
 					m_TabMgr.AddItem(_T("文件传输"), m_FileTransferCtrl.m_hWnd, TRUE);
-					DisplayFileTransfer(TRUE);
 					ShowFileTransferCtrl(TRUE);
 				}
 			}
@@ -2278,7 +1960,6 @@ BOOL CBuddyChatDlg::SendOfflineFile(PCTSTR pszFileName)
 		strFileTypeThumbs += _T(".png");
 
 		m_richMsgLog.ShowWindow(SW_HIDE);
-		DisplayFileTransfer(TRUE);
 
 		CString strImage;
 		long nItemID = m_FileTransferCtrl.AddItem();
@@ -2343,7 +2024,6 @@ BOOL CBuddyChatDlg::RecvOfflineFile(PCTSTR lpszDownloadName, PCTSTR pszFileName,
 	{
 		m_richMsgLog.ShowWindow(SW_HIDE);
 	}	
-	DisplayFileTransfer(TRUE);
 	
 	CString strImage;
 	long nItemID = m_FileTransferCtrl.AddItem();
@@ -3223,8 +2903,7 @@ LRESULT CBuddyChatDlg::OnBtn_FileTransfer(LPNMHDR pnmh)
 		}
 		
 		m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-		m_FileTransferCtrl.RemoveItemByID(pNMHDREx->nID);
-		DisplayFileTransfer(FALSE);	
+		m_FileTransferCtrl.RemoveItemByID(pNMHDREx->nID);	
 		return 1;
 	}
 	

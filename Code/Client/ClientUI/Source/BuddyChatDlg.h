@@ -59,17 +59,12 @@ public:
 		MSG_WM_MOVE(OnMove)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_TIMER(OnTimer)
-		MSG_WM_DROPFILES(OnDropFiles)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
 
-		COMMAND_HANDLER_EX(ID_PIC_HEAD, BN_CLICKED, OnLnk_BuddyName)			//点击头像按钮
-		COMMAND_HANDLER_EX(ID_LINK_BUDDY_NAME, BN_CLICKED, OnLnk_BuddyName)
 		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_FONT_BTN, OnBtn_Font)
-		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_FACE_BTN, OnBtn_Face)
-		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_SHAKE_WINDOW_BTN, OnShakeWindow)								//窗口抖动
+		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_FACE_BTN, OnBtn_Face)						
 		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_IMAGE, OnBtn_Image)
-		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_SCREEN_SHOT_BTN, OnBtn_ScreenShot)							//截图工具
 		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_SHOW_LOG_MSG_BTN, OnBtn_MsgLog)								//消息记录
 		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_SAVE_AS_BTN, OnBtn_SaveAs)
 
@@ -77,14 +72,11 @@ public:
 		
 		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_PRESS_ENTER_MENU, OnPressEnterMenuItem)					//回车键发送消息
 		COMMAND_ID_HANDLER_EX(ID_BUDDY_DLG_PRESS_CTRL_ENTER_MENU, OnPressCtrlEnterMenuItem)				//Ctrl+回车发送消息
-		COMMAND_ID_HANDLER_EX(IDM_AUTO_REPLY, OnAutoReply);
 
 		COMMAND_HANDLER_EX(ID_BTN_CLOSE, BN_CLICKED, OnBtn_Close)
 		COMMAND_ID_HANDLER_EX(ID_BTN_SEND, OnBtn_Send)
 		COMMAND_HANDLER_EX(ID_BTN_ARROW, BN_CLICKED, OnBtn_Arrow)
 
-		COMMAND_ID_HANDLER_EX(IDM_OPEN_FILE, OnOpenTransferFileItem)
-		COMMAND_ID_HANDLER_EX(IDM_OPEN_DIRECTORY, OnOpenTransferFileItem)
 
 		NOTIFY_HANDLER_EX(ID_TOOL_BAR_TOP, TBN_DROPDOWN, OnToolbarDropDown)
 		NOTIFY_HANDLER_EX(ID_TOOL_BAR_MID, TBN_DROPDOWN, OnToolbarDropDown)
@@ -105,17 +97,16 @@ public:
 		//MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_RESULT, OnRecvFileResult)
 		
 
-		NOTIFY_HANDLER_EX(ID_RICH_EDIT_RECV, EN_LINK, OnRichEdit_Recv_Link)
+
 		NOTIFY_HANDLER_EX(ID_RICH_EDIT_SEND, EN_PASTE, OnRichEdit_Send_Paste)
 		COMMAND_ID_HANDLER_EX(ID_MENU_CUT, OnMenu_Cut)
 		COMMAND_ID_HANDLER_EX(ID_MENU_COPY, OnMenu_Copy)
 		COMMAND_ID_HANDLER_EX(ID_MENU_PASTE, OnMenu_Paste)
 		COMMAND_ID_HANDLER_EX(ID_MENU_SELECT_ALL, OnMenu_SelAll)
-		COMMAND_ID_HANDLER_EX(ID_MENU_CLEAR, OnMenu_Clear)
+
 		COMMAND_RANGE_HANDLER_EX(ID_MENU_ZOOM_RATIO_400, ID_MENU_ZOOM_RATIO_50, OnMenu_ZoomRatio)
 		COMMAND_ID_HANDLER_EX(ID_MENU_SAVE_AS, OnMenu_SaveAs)
-		COMMAND_ID_HANDLER_EX(IDM_EXPORT_MSG_LOG, OnMenu_ExportMsgLog)			//导出消息记录
-		COMMAND_ID_HANDLER_EX(IDM_FIND_IN_MSG_LOG, OnMenu_FindInMsgLog)			//查找消息记录
+
 		COMMAND_ID_HANDLER_EX(IDM_CLEAR_MSG_LOG, OnMenu_ClearMsgLog)				//清除消息记录
 		COMMAND_ID_HANDLER_EX(IDM_DELETE_SELECT_MSG_LOG, OnMenu_DeleteSelectMsgLog)//删除选中消息记录
 		COMMAND_ID_HANDLER_EX(IDM_SEND_FILE, OnMenu_SendFile)					//发送文件
@@ -152,16 +143,12 @@ private:
 	void OnMove(CPoint ptPos);
 	void OnSize(UINT nType, CSize size);
 	void OnTimer(UINT_PTR nIDEvent);
-	void OnDropFiles(HDROP hDropInfo);
 	void OnClose();
 	void OnDestroy();
 
-	void OnLnk_BuddyName(UINT uNotifyCode, int nID, CWindow wndCtl);			// “好友名称”超链接控件
 	void OnBtn_Font(UINT uNotifyCode, int nID, CWindow wndCtl);					// “字体选择工具栏”按钮
 	void OnBtn_Face(UINT uNotifyCode, int nID, CWindow wndCtl);					// “表情”按钮
-	void OnShakeWindow(UINT uNotifyCode, int nID, CWindow wndCtl);				// “窗口抖动”按钮
 	void OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl);				// “发送图片”按钮
-	void OnBtn_ScreenShot(UINT uNotifyCode, int nID, CWindow wndCtl);			// 截图工具
 	void OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);				// “消息记录”按钮
 	void OnBtn_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl);				// “点击另存为”按钮
 
@@ -171,8 +158,6 @@ private:
 	void OnBtn_Send(UINT uNotifyCode, int nID, CWindow wndCtl);					// “发送”按钮
 	void OnBtn_Arrow(UINT uNotifyCode, int nID, CWindow wndCtl);				// “箭头”按钮
 
-	void OnOpenTransferFileItem(UINT uNotifyCode, int nID, CWindow wndCtl);		// 接受文件成功以后的“打开”与“打开文件夹”菜单项
-	
 	void OnPressEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl);		//回车键发送消息
 	void OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl);	//Ctrl+回车发送消息
 	void OnAutoReply(UINT uNotifyCode, int nID, CWindow wndCtl);				// 自动回复菜单
@@ -199,10 +184,10 @@ private:
  	void OnMenu_Copy(UINT uNotifyCode, int nID, CWindow wndCtl);	// “复制”菜单
  	void OnMenu_Paste(UINT uNotifyCode, int nID, CWindow wndCtl);	// “粘贴”菜单
  	void OnMenu_SelAll(UINT uNotifyCode, int nID, CWindow wndCtl);	// “全部选择”菜单
- 	void OnMenu_Clear(UINT uNotifyCode, int nID, CWindow wndCtl);	// “清屏”菜单
+
 	void OnMenu_ZoomRatio(UINT uNotifyCode, int nID, CWindow wndCtl);// “显示比例”菜单
 	void OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl);	// “另存为”菜单
-	void OnMenu_ExportMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);//“导出消息记录”菜单
+
 	void OnMenu_FindInMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl); //“查找消息记录”菜单
 	void OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);//“删除选中消息记录”菜单
 	void OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl); //“清空消息记录”菜单
@@ -262,15 +247,6 @@ private:
 
 	BOOL GetImageDisplaySizeInRichEdit(PCTSTR pszFileName, HWND hWnd, long& nWidth, long& nHeight);	//获取富文本控件中图片的显示的尺寸
 	void ResizeImageInRecvRichEdit();
-
-	void DisplayFileTransfer(BOOL bShow);
-	//void AnalyseContent(WString& strContent, HWND hRichWnd=NULL);
-	//BOOL HandleShake(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	//BOOL HandleText(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	//BOOL HandleFontInfo(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	//BOOL HandleSysFaceId(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	//BOOL HandleCustomPic(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
-	//BOOL HandleFile(LPCTSTR& p, WString& strText, std::vector<C_UI_Content*>& arrContent);
 	
 	BOOL HandleFileDragResult(PCTSTR lpszFileName);
 	BOOL SendOfflineFile(PCTSTR pszFileName);
