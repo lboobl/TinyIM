@@ -497,7 +497,7 @@ void CMsgProto::HandleMsg(const std::shared_ptr<TransBaseMsg_t> pOrgMsg) {
 		}
 	}break;
 	default: {
- 		ERR(ms_loger, "Unhandle MsgType:{} Msg:{} [{} {}]", MsgType(pOrgMsg->GetType()), pOrgMsg->to_string(), __FILENAME__, __LINE__);
+  		ERR(ms_loger, "Unhandle MsgType:{} Msg:{} [{} {}]", MsgType(pOrgMsg->GetType()), pOrgMsg->to_string(), __FILENAME__, __LINE__);
 	}break;
 	}
 }
@@ -1574,8 +1574,6 @@ void CMsgProto::HandleGetFriendChatHistory(const GetFriendChatHistoryRsp& rspMsg
  */
 void CMsgProto::HandleSendChatTxtRsp(const FriendChatSendTxtRspMsg& rspMsg)
 {
-
-
 	{
 		auto item = m_msgMap.find(rspMsg.GetMsgType());
 		C_WND_MSG_BuddyTextMessage * pResult = new C_WND_MSG_BuddyTextMessage();

@@ -375,7 +375,8 @@ std::string EncodeUtil::UnicodeToUtf8(const std::wstring& strUnicode)
     char* lpszUtf8 = EncodeUtil::UnicodeToUtf8(strUnicode.c_str());
     if (lpszUtf8 != NULL)
     {
-        strUtf8 = lpszUtf8;
+        std::string strTmp = std::string(lpszUtf8);
+		strUtf8 = strTmp;
         delete[]lpszUtf8;
     }
 
@@ -389,7 +390,8 @@ std::wstring EncodeUtil::Utf8ToUnicode(const std::string& strUtf8)
     wchar_t* lpszUnicode = EncodeUtil::Utf8ToUnicode(strUtf8.c_str());
     if (lpszUnicode != NULL)
     {
-        strUnicode = lpszUnicode;
+		std::wstring strTmp = std::wstring(lpszUnicode);
+		strUnicode = strTmp;
         delete[]lpszUnicode;
     }
 

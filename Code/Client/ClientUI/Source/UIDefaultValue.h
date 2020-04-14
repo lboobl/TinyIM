@@ -38,6 +38,7 @@ const long GROUP_DLG_NOTICE_HEIGHT = 180; //公告的高度
 const double GROUP_DLG_RECV_EDIT_PERCENT = 0.7; //左侧区域接收部分占比
 const long GROUP_DLG_STATIC_TEXT_HEIGHT = 20;
 
+const double BUDDY_DLG_RECV_EDIT_HEIGHT_PERCENT = 0.6;//左侧区域接收区占比
 
 const int MAX_TEAM_COUNT = 20 ;//最大好友分组和群分组数
 

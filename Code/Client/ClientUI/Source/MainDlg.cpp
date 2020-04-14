@@ -1783,12 +1783,11 @@ LRESULT CMainDlg::OnGroupListDblClk(LPNMHDR pnmh)
 	int nIndex = 0 ;
 	m_GroupListCtrl.GetCurSelIndex(nTeamIndex, nIndex);
 
-	//if (nTeamIndex != -1 && nIndex != -1)
-	//{
-	//	UINT nGroupCode = m_GroupListCtrl.GetBuddyItemID(nTeamIndex, nIndex);
-	//	std::string strGroupId = m_GroupListCtrl.GetBuddyItemUserId(nTeamIndex, nIndex);
-	//	ShowGroupChatDlg(strGroupId, TRUE);
-	//}	
+	if (nTeamIndex != -1 && nIndex != -1)
+	{
+		std::string strGroupId = m_GroupListCtrl.GetBuddyItemUserId(nTeamIndex, nIndex);
+		ShowGroupChatDlg(strGroupId, TRUE);
+	}	
 	return 0;
 }
 
@@ -3643,8 +3642,8 @@ void CMainDlg::ShowBuddyChatDlg(const std::string& strUserId)
 			{
 				lpBuddyChatDlg->Create(NULL);
 			}
-			//lpBuddyChatDlg->ShowWindow(SW_SHOW);
-			lpBuddyChatDlg->ShowWindow(SW_RESTORE);
+			lpBuddyChatDlg->ShowWindow(SW_SHOW);
+			//lpBuddyChatDlg->ShowWindow(SW_RESTORE);
 			::SetForegroundWindow(lpBuddyChatDlg->m_hWnd);
 		}
 	}

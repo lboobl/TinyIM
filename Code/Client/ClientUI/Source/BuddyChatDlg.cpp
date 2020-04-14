@@ -193,7 +193,7 @@ void CBuddyChatDlg::OnRecvMsgToHandle(const HWND recvHandle, const CBuddyChatUiM
 
 		//处理内容部分
 		{
-			std::string strJson = EncodeUtil::UnicodeToAnsi(msg.m_strContent);
+			std::string strJson = EncodeUtil::UnicodeToUtf8(msg.m_strContent);
 			RichEditMsgList msgList = CoreToUi(MsgElemVec(strJson));
 				//RichEditMsg(strJson);
 			RichEdit_SetSel(recvHandle, -1, -1);
@@ -589,7 +589,7 @@ void CBuddyChatDlg::OnSize(UINT nType, CSize size)
 	ResizeImageInRecvRichEdit();
 
 
-	SetMsgHandled(TRUE);
+	//SetMsgHandled(TRUE);
 }
 
 
@@ -2010,10 +2010,10 @@ void CBuddyChatDlg::OnSizeShowLeftArea(const CRect& rcLeftShowArea)
 	}
 	{
 		//消息接收区
-		long recvEditHeight = static_cast<long>(rcLeftShowArea.Height()*GROUP_DLG_RECV_EDIT_PERCENT) - 2;
+		long recvEditHeight = static_cast<long>(rcLeftShowArea.Height()*BUDDY_DLG_RECV_EDIT_HEIGHT_PERCENT) - 2;
 		CRect rcRecvEdit(
 			CPoint(rcLeftShowArea.left + GROUP_DLG_OUT_BORDER_WIDTH,
-				rcLeftShowArea.top),
+				rcLeftShowArea.top + GROUP_DLG_TOOL_BAR_HEIGHT),
 			CSize(rcLeftShowArea.Width(),
 				recvEditHeight));
 		{
@@ -2203,8 +2203,7 @@ void CBuddyChatDlg::OnSizeShowRightArea(const CRect& rcRightShowArea)
 }
 void CBuddyChatDlg::OnSizeShowHistory()
 {
-	OnSizeSetWindowSize();
-
+	//OnSizeSetWindowSize();
 	SetMsgHandled(FALSE);
 
 	CRect rcClient;
@@ -2241,15 +2240,14 @@ void CBuddyChatDlg::OnSizeShowHistory()
 				rcShowArea.top),
 			CSize(GROUP_DLG_MSG_LOG_WIDTH,
 				rcShowArea.Height() - GROUP_DLG_OUT_BORDER_WIDTH));
-
 		OnSizeShowRightArea(rcRightShowArea);
-		//OnSizeHideRightArea();
 	}
 	else
 	{
 		OnSizeShowLeftArea(rcShowArea);
 		OnSizeHideRightArea();
 	}
+	//SetMsgHandled(TRUE);
 }
 
 /**
