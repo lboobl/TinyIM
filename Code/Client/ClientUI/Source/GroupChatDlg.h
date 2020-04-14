@@ -47,7 +47,7 @@ public:
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_MOUSEMOVE(OnMouseMove)
 		MSG_WM_TIMER(OnTimer)
-		MSG_WM_DROPFILES(OnDropFiles)
+		//MSG_WM_DROPFILES(OnDropFiles)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
 
@@ -90,14 +90,12 @@ public:
 		COMMAND_ID_HANDLER_EX(ID_MENU_VIEW_INFO, OnMenu_ViewInfo)
 		COMMAND_ID_HANDLER_EX(ID_MENU_SEND_MSG, OnMenu_SendMsg)
 
-		COMMAND_ID_HANDLER_EX(IDM_CLEAR_MSG_LOG, OnMenu_ClearMsgLog)				//删除所有消息记录
-		COMMAND_ID_HANDLER_EX(IDM_DELETE_SELECT_MSG_LOG, OnMenu_DeleteSelectMsgLog)//删除选中消息记录
 
 		MESSAGE_HANDLER_EX(FMG_MSG_SENDCHATMSG_RESULT, OnSendChatMsgResult)	
 
 		MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_PROGRESS, OnSendFileProgress)
 		MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_RESULT, OnSendFileResult)
-		MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_PROGRESS, OnRecvFileProgress)
+		//MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_PROGRESS, OnRecvFileProgress)
 		MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_RESULT, OnRecvFileResult)
 	END_MSG_MAP()
 
@@ -122,7 +120,6 @@ private:
 	void OnMouseMove(UINT nFlags, CPoint point);
 	void OnSize(UINT nType, CSize size);
 	void OnTimer(UINT_PTR nIDEvent);
-	void OnDropFiles(HDROP hDropInfo);
 	void OnClose();
 	void OnDestroy();
 
@@ -160,8 +157,8 @@ private:
 	void OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl);	// “另存为”菜单
 	void OnMenu_ViewInfo(UINT uNotifyCode, int nID, CWindow wndCtl);// “查看资料”菜单
 	void OnMenu_SendMsg(UINT uNotifyCode, int nID, CWindow wndCtl);	// “发送消息”菜单
-	void OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);//“删除选中消息记录”菜单
-	void OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl); //“清空消息记录”菜单
+	//void OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);//“删除选中消息记录”菜单
+	//void OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl); //“清空消息记录”菜单
 
 	void OnPressEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl);		//回车键发送消息
 	void OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl);	//Ctrl+回车发送消息
@@ -170,7 +167,6 @@ private:
 
 	LRESULT OnSendFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	LRESULT OnRecvFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT OnRecvFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	
 	BOOL OnRichEdit_MouseMove(MSG* pMsg);		// 发送/接收文本框的鼠标移动消息
@@ -193,7 +189,6 @@ private:
 
 	void ShowMsgLogButtons(BOOL bShow);
 
-	void CalculateMsgLogCountAndOffset();
 
 	void SetHotRgn();
 
@@ -235,9 +230,6 @@ private:
 	void ResizeImageInRecvRichEdit();
 	BOOL GetImageDisplaySizeInRichEdit(PCTSTR pszFileName, HWND hWnd, long& nWidth, long& nHeight);	//按窗口尺寸来缩放图片大小
 
-    void SendConfirmMessage(const CUploadFileResult* pUploadFileResult);
-
-	void RecordWindowSize();
 	void ReCaculateCtrlPostion(long nMouseY);
 
 	void OnRecvToHandle(const HWND recvHandle, C_UI_GroupMessage* pGroupMsg);

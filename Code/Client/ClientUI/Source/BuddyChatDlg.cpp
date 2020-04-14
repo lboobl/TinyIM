@@ -1000,6 +1000,7 @@ void CBuddyChatDlg::OnBtn_Send(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 
 	//最大消息长度
+	//TOOD: 固
 	if(strText.length() > 1800)
 	{
 		::MessageBox(m_hWnd, _T("您发送的内容太长，请分条发送！"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
@@ -1438,77 +1439,6 @@ void CBuddyChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 }	
 
 
-
-
-
-/**
- * @brief 响应"删除选中消息记录"菜单
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	if(IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除选中的消息记录吗？"), _T("删除确认"), MB_YESNO|MB_ICONWARNING))
-	{
-		return;
-	}	
-	
-	m_richMsgLog.SetReadOnly(FALSE);
-	m_richMsgLog.Cut();
-	INPUT Input={0};
-
-	::SendMessage(m_richMsgLog.m_hWnd, WM_KEYDOWN, VK_BACK, 0);
-	m_richMsgLog.SetReadOnly(TRUE);
-
-	//判断剪贴板的数据格式是否可以处理。
-	if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
-	{
-		return;
-	} 
-	// Open the clipboard.  
-	if (!::OpenClipboard(m_richMsgLog.m_hWnd))  
-	{
-		return;  
-	}	
-
-	HGLOBAL hMem = ::GetClipboardData(CF_UNICODETEXT);;
-	LPCTSTR lpStr = NULL;
-	if(hMem != NULL)  
-	{
-		lpStr = (LPCTSTR)::GlobalLock(hMem);
-		if (lpStr != NULL)
-		{
-			//显示输出。
-			::OutputDebugString(lpStr);
-			//释放锁内存。
-			::GlobalUnlock(hMem);
-		}
-	}
-	::CloseClipboard();
-}
-
-
-/**
- * @brief 响应清除聊天记录
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CBuddyChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	if(IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除与该好友的所有消息记录吗？"), _T("删除确认"), MB_YESNO|MB_ICONWARNING))
-	{
-		return;
-	}	
-	
-	m_richMsgLog.SetWindowText(_T(""));
-	m_richRecv.SetWindowText(_T(""));
-	m_staMsgLogPage.SetWindowText(_T("0/0"));
-}
-
 void CBuddyChatDlg::SendFileOnLine(CString strFileName)
 {
 	std::string strStdFileName = EncodeUtil::UnicodeToAnsi(strFileName.GetBuffer());
@@ -1516,6 +1446,7 @@ void CBuddyChatDlg::SendFileOnLine(CString strFileName)
 	pSess->SendFriendOnLineFileMediumTransMode(this->m_strFriendId ,strStdFileName);
 	strFileName.ReleaseBuffer();
 }
+
 void CBuddyChatDlg::SendFileOnLineP2P(CString strFileName) 
 {
 	std::string strStdFileName = EncodeUtil::UnicodeToAnsi(strFileName.GetBuffer());

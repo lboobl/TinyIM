@@ -38,6 +38,7 @@ CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 	m_hRBtnDownWnd = NULL;
 	memset(&m_ptRBtnDown, 0, sizeof(m_ptRBtnDown));
 	m_pLastImageOle = NULL;
+	//TODO: 魔数在头文件定义
 	m_cxPicBarDlg = 122;
 	m_cyPicBarDlg = 24;
 
@@ -164,118 +165,7 @@ void CGroupChatDlg::OnUpdateGroupInfo()
 	UpdateGroupMemberList();			// 更新群成员列表
 }
 
-/**
- * @brief 更新群号码
- * TODO: 可能需要去掉
- */
-void CGroupChatDlg::OnUpdateGroupNumber()
-{
-	UpdateData();						// 更新信息
-	UpdateGroupNameCtrl();				// 更新群名称控件
-}
 
-
-/**
- * @brief 更新群头像
- * 
- */
-void CGroupChatDlg::OnUpdateGroupHeadPic()
-{
-	WString strFileName;
-	//if (m_lpFMGClient != NULL && m_nGroupNumber != 0)
-	//	strFileName = m_lpFMGClient->GetGroupHeadPicFullName(m_nGroupNumber);
-	if (!Hootina::CPath::IsFileExist(strFileName.c_str()))
-	{
-		strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DefGroupHeadPic.png");
-	}
-	m_picHead.SetBitmap(strFileName.c_str());
-	m_picHead.Invalidate();
-}
-
-
-/**
- * @brief 响应更新群成员号码
- * TODO: 暂时不知道用在什么业务上,后期考虑去掉
- * @param wParam 
- * @param lParam 
- */
-void CGroupChatDlg::OnUpdateGMemberNumber(WPARAM wParam, LPARAM lParam)
-{
-	UINT nGroupCode = (UINT)wParam;
-	UINT nUTalkUin = (UINT)lParam;
-
-	C_UI_BuddyInfo* lpBuddyInfo = NULL;
-	if ( (NULL == lpBuddyInfo)  )
-	{
-		return;
-	}
-
-	CString strNickName;
-	CString strText;
-	CString strFileName;
-
-	strNickName = lpBuddyInfo->m_strNickName.c_str();
-
-	//strText.Format(_T("%s(%u)"), strNickName, lpBuddyInfo->m_uUserID);
-
-	//TODO 判断是否需要头像变灰，多处重复
-	BOOL bGray = FALSE;
-	if ((lpBuddyInfo->m_nStatus == E_UI_ONLINE_STATUS::STATUS_OFFLINE) ||
-		(lpBuddyInfo->m_nStatus == E_UI_ONLINE_STATUS::STATUS_INVISIBLE))
-	{
-		bGray = TRUE;
-	}
-	//strFileName = m_lpFMGClient->GetSessHeadPicFullName(lpBuddyInfo->m_uUserID).c_str();
-
-	int nItem = FindMemberListByUin(nUTalkUin);
-	if (nItem != -1)
-	{
-		m_GroupMemberListCtrl.SetItemText(nItem, 0, strText);
-		if (Hootina::CPath::IsFileExist(strFileName))
-		{
-			m_GroupMemberListCtrl.SetItemImage(nItem, 0, strFileName, bGray);
-		}
-	}
-}
-
-/**
- * @brief 更新群成员头像
- * TODO: 暂时没有支持响应的功能
- * @param wParam 
- * @param lParam 
- */
-void CGroupChatDlg::OnUpdateGMemberHeadPic(WPARAM wParam, LPARAM lParam)
-{
-	UINT nGroupCode = (UINT)wParam;
-	UINT nUTalkUin = (UINT)lParam;
-
-	C_UI_BuddyInfo* lpBuddyInfo = NULL;
-	if ((NULL == lpBuddyInfo) )
-	{
-		return;
-	}
-		
-
-	BOOL bGray = FALSE;
-	if ( (lpBuddyInfo->m_nStatus == E_UI_ONLINE_STATUS::STATUS_OFFLINE) ||
-		 (lpBuddyInfo->m_nStatus == E_UI_ONLINE_STATUS::STATUS_INVISIBLE) )
-	{
-		bGray = TRUE;
-	}
-
-	CString strFileName;// = m_lpFMGClient->GetSessHeadPicFullName(lpBuddyInfo->m_uUserID).c_str();
-	if (!Hootina::CPath::IsFileExist(strFileName))
-	{
-		return;
-	}
-
-
-	int nItem = FindMemberListByUin(nUTalkUin);
-	if (nItem != -1)
-	{
-		m_GroupMemberListCtrl.SetItemImage(nItem, 0, strFileName, bGray);
-	}
-}
 
 
 /**
@@ -307,6 +197,7 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	//允许拖拽文件进窗口
 	::DragAcceptFiles(m_hWnd, TRUE); 
 
+	//TODO: 作用
 	SetHotRgn();
 
 	C_UI_GroupInfo* lpGroupInfo = nullptr;
@@ -327,11 +218,12 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	}
 
 	PostMessage(WM_SET_DLG_INIT_FOCUS, 0, 0);		// 设置对话框初始焦点
+	//TODO: 定时器优化
 	SetTimer(1001, 300, NULL);
 
 	//m_bPressEnterToSendMessage = m_lpFMGClient->m_UserConfig.IsEnablePressEnterToSend();
 
-	CalculateMsgLogCountAndOffset();
+	//CalculateMsgLogCountAndOffset();
 
 	//if(m_lpFMGClient->m_UserConfig.IsEnableShowLastMsgInChatDlg())
 		ShowLastMsgInRecvRichEdit();
@@ -669,73 +561,12 @@ void CGroupChatDlg::OnSizeShowMsgHistory()
 				}
 			}
 		}
-		
-		//右边显示区域分解
-		//{
-		//	//群公告信息
-		//	CRect rcGroupNotice(
-		//		CPoint(rcRightShowArea.left,
-		//			rcRightShowArea.top),
-		//		CSize(rcRightShowArea.Width(),
-		//			GROUP_DLG_NOTICE_HEIGHT));
-		//	{
-		//		CRect rcNoticeTitle(
-		//			CPoint(rcRightShowArea.left,
-		//				rcRightShowArea.top),
-		//			CSize(rcRightShowArea.Width(),
-		//				GROUP_DLG_STATIC_TEXT_HEIGHT));
-		//		if (m_staMemoTitle.IsWindow())
-		//		{
-		//			//m_staMemoTitle.ShowWindow(HIDE_WINDOW);
-		//			m_staMemoTitle.MoveWindow(rcNoticeTitle, TRUE);
-		//		}
-
-		//		CRect rcNoticeEdit(
-		//			CPoint(rcNoticeTitle.left,
-		//				rcNoticeTitle.bottom),
-		//			CSize(rcRightShowArea.Width(),
-		//				GROUP_DLG_NOTICE_HEIGHT - GROUP_DLG_STATIC_TEXT_HEIGHT));
-		//		if (m_edtMemo.IsWindow())
-		//		{
-		//			//m_edtMemo.ShowWindow(HIDE_WINDOW);
-		//			m_edtMemo.MoveWindow(rcNoticeEdit, TRUE);
-		//		}
-		//	}
-		//	//群成员列表
-		//	CRect rcGroupMember(
-		//		CPoint(rcRightShowArea.left,
-		//			rcGroupNotice.bottom),
-		//		CSize(rcRightShowArea.Width(),
-		//			rcRightShowArea.Height() - GROUP_DLG_NOTICE_HEIGHT));
-		//	{
-		//		CRect rcMemberTitle(
-		//			CPoint(rcRightShowArea.left,
-		//				rcGroupNotice.bottom),
-		//			CSize(rcRightShowArea.Width(),
-		//				GROUP_DLG_STATIC_TEXT_HEIGHT));
-		//		if (m_staMemberTitle.IsWindow())
-		//		{
-		//			m_staMemberTitle.MoveWindow(rcMemberTitle, TRUE);
-		//		}
-
-		//		CRect rcMemberList(
-		//			CPoint(rcRightShowArea.left,
-		//				rcMemberTitle.bottom),
-		//			CSize(rcRightShowArea.Width(),
-		//				rcGroupMember.Height() - rcMemberTitle.Height()));
-
-		//		if (m_GroupMemberListCtrl.IsWindow())
-		//		{
-		//			m_GroupMemberListCtrl.MoveWindow(rcMemberList, TRUE);
-		//		}
-		//	}
-		//}
 	}
 }
 
 /**
  * @brief 响应隐藏历史消息的情况,群聊消息的窗口大小改变
- * 
+ * TODO: OnSizeShowMsgHistory 合并 
  */
 void CGroupChatDlg::OnSizeNotShowMsgHistory()
 {
@@ -1112,7 +943,7 @@ void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
  */
 void CGroupChatDlg::OnClose()
 {
-	RecordWindowSize();
+	//RecordWindowSize();
 	//::PostMessage(m_lpFMGClient->m_UserMgr.m_hCallBackWnd, WM_CLOSE_GROUPCHATDLG, (WPARAM)m_nGroupCode, 0);
 	//关闭聊天窗口时，保持主窗口为前景窗口。
 	//::SetForegroundWindow(m_lpFMGClient->m_UserMgr.m_hCallBackWnd);
@@ -2161,50 +1992,50 @@ BOOL CGroupChatDlg::OnRichEdit_RBtnDown(MSG* pMsg)
  * @param uNotifyCode 
  * @param nID 
  * @param wndCtl 
- */
-void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除选中的消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
-	{
-		return;
-	}
-
-	m_richMsgLog.SetReadOnly(FALSE);
-	m_richMsgLog.Cut();
-	INPUT Input={0};
-
-	::SendMessage(m_richMsgLog.m_hWnd, WM_KEYDOWN, VK_BACK, 0);
-	m_richMsgLog.SetReadOnly(TRUE);
-	//m_richSend.PasteSpecial(CF_TEXT);
-
-	//判断剪贴板的数据格式是否可以处理。
-	if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
-	{
-		return;
-	} 
-	// Open the clipboard.  
-	if (!::OpenClipboard(m_richMsgLog.m_hWnd))
-	{
-		return;
-	}
-
-	HGLOBAL hMem = ::GetClipboardData(CF_UNICODETEXT);;
-	LPCTSTR lpStr = NULL;
-	if(hMem != NULL)  
-	{
-		lpStr = (LPCTSTR)::GlobalLock(hMem);
-		if (lpStr != NULL)
-		{
-			//显示输出。
-			//::OutputDebugString(lpStr);
-			//释放锁内存。
-			::GlobalUnlock(hMem);
-		}
-	}
-	::CloseClipboard();
-	//用sql语句去删除SQLite数据库中对应的消息记录
-}
-
+// */
+//void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
+//{
+//	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除选中的消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
+//	{
+//		return;
+//	}
+//
+//	m_richMsgLog.SetReadOnly(FALSE);
+//	m_richMsgLog.Cut();
+//	INPUT Input={0};
+//
+//	::SendMessage(m_richMsgLog.m_hWnd, WM_KEYDOWN, VK_BACK, 0);
+//	m_richMsgLog.SetReadOnly(TRUE);
+//	//m_richSend.PasteSpecial(CF_TEXT);
+//
+//	//判断剪贴板的数据格式是否可以处理。
+//	if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
+//	{
+//		return;
+//	} 
+//	// Open the clipboard.  
+//	if (!::OpenClipboard(m_richMsgLog.m_hWnd))
+//	{
+//		return;
+//	}
+//
+//	HGLOBAL hMem = ::GetClipboardData(CF_UNICODETEXT);;
+//	LPCTSTR lpStr = NULL;
+//	if(hMem != NULL)  
+//	{
+//		lpStr = (LPCTSTR)::GlobalLock(hMem);
+//		if (lpStr != NULL)
+//		{
+//			//显示输出。
+//			//::OutputDebugString(lpStr);
+//			//释放锁内存。
+//			::GlobalUnlock(hMem);
+//		}
+//	}
+//	::CloseClipboard();
+//	//用sql语句去删除SQLite数据库中对应的消息记录
+//}
+//
 
 /**
  * @brief 响应“清空聊天记录”的菜单消息
@@ -2213,18 +2044,18 @@ void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow
  * @param nID 
  * @param wndCtl 
  */
-void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除该群的所有消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
-	{
-		return;
-	}
-
-	m_richMsgLog.SetWindowText(_T(""));
-	m_richRecv.SetWindowText(_T(""));
-	m_staMsgLogPage.SetWindowText(_T("0/0"));
-}
-
+//void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
+//{
+//	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除该群的所有消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
+//	{
+//		return;
+//	}
+//
+//	m_richMsgLog.SetWindowText(_T(""));
+//	m_richRecv.SetWindowText(_T(""));
+//	m_staMsgLogPage.SetWindowText(_T("0/0"));
+//}
+//
 
 
 /**
@@ -2994,25 +2825,7 @@ BOOL CGroupChatDlg::UnInit()
 }
 
 
-/**
- * @brief 
- * TODO: 待删除
- * @param nUTalkUin 
- * @return int 
- */
-int CGroupChatDlg::FindMemberListByUin(UINT nUTalkUin)
-{
-	int nCount = m_GroupMemberListCtrl.GetItemCount();
-	for (int i = 0; i < nCount; i++)
-	{
-		UINT nUTalkUin2 = (UINT)m_GroupMemberListCtrl.GetItemData(i, 0);
-		if (nUTalkUin2 == nUTalkUin)
-		{
-			return i;
-		}
-	}
-	return -1;
-}
+
 
 
 /**
@@ -3324,7 +3137,7 @@ LRESULT CGroupChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
             //图片发送成功，追加上传图片成功消息
             else
             {
-                SendConfirmMessage(pResult);
+                //SendConfirmMessage(pResult);
             }
 		}
 	}
@@ -3335,37 +3148,7 @@ LRESULT CGroupChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-/**
- * @brief 响应接收文件进度
- * 
- * @param uMsg 
- * @param wParam 
- * @param lParam 
- * @return LRESULT 
- */
-LRESULT CGroupChatDlg::OnRecvFileProgress(UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	/*FileProgress* pFileProgress = (FileProgress*)lParam;
-	if(pFileProgress == NULL)
-		return 0;
 
-	long nPercent = pFileProgress->nPercent;
-	std::map<CString, long>::const_iterator iter = m_mapRecvFileInfo.find(pFileProgress->szDestPath);
-	delete pFileProgress;
-
-	if (iter == m_mapRecvFileInfo.end())
-	{
-		return 0;
-	}
-
-	long nIndex = nPercent / 10;
-	RichEdit_SetSel(m_richRecv.m_hWnd, iter->second, iter->second+1);
-	CString strProgressFile;
-	strProgressFile.Format(_T("%sImage\\FileProgress\\percent%d.png"), g_szHomePath, nIndex);
-	_RichEdit_InsertFace(m_richRecv.m_hWnd, strProgressFile, -1, -1);
-	*/
-	return 1;
-}
 
 /**
  * @brief 响应接收文件结果
@@ -3413,15 +3196,6 @@ LRESULT CGroupChatDlg::OnRecvFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
-/**
- * @brief 发送文件上传确认消息
- * 
- * TODO: 具体的业务逻辑待分析
- * @param pUploadFileResult 
- */
-void CGroupChatDlg::SendConfirmMessage(const CUploadFileResult* pUploadFileResult)
-{
-}
 
 
 /**
@@ -3456,7 +3230,7 @@ void CGroupChatDlg::CloseMsgLogBrowser()
 
 	ShowMsgLogButtons(FALSE);
 
-	CalculateMsgLogCountAndOffset();
+	//CalculateMsgLogCountAndOffset();
 	{
 		m_RightTabCtrl.ShowWindow(SW_SHOW);
 		m_staGroupCategory.ShowWindow(SW_SHOW);
@@ -3501,30 +3275,6 @@ void CGroupChatDlg::ResizeImageInRecvRichEdit()
 
 	arrImageInfo.clear();
 
-}
-
-/**
- * @brief 记录窗口大小
- * 
- */
-void CGroupChatDlg::RecordWindowSize()
-{
-	if (IsZoomed() || IsIconic())
-	{
-		return;
-	}
-
-	CRect rtWindow;
-	GetWindowRect(&rtWindow);
-	if (m_bMsgLogWindowVisible)
-	{
-		//m_lpFMGClient->m_UserConfig.SetGroupDlgWidth(rtWindow.Width() - GROUP_MSG_LOG_WIDTH);
-	}
-	else
-	{
-		//m_lpFMGClient->m_UserConfig.SetGroupDlgWidth(rtWindow.Width());
-	}
-	//m_lpFMGClient->m_UserConfig.SetGroupDlgHeight(rtWindow.Height());		
 }
 
 /**
@@ -3618,82 +3368,7 @@ BOOL CGroupChatDlg::GetImageDisplaySizeInRichEdit(PCTSTR pszFileName, HWND hWnd,
 	return TRUE;
 }
 
-/**
- * @brief 响应拖拽文件
- * 
- * @param hDropInfo 
- */
-void CGroupChatDlg::OnDropFiles(HDROP hDropInfo)
-{ 
-	UINT nFileNum = ::DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0); // 拖拽文件个数  
-    TCHAR szFileName[MAX_PATH];  
-    for (UINT i=0; i<nFileNum; ++i)    
-    {  
-		::DragQueryFile(hDropInfo, i, szFileName, MAX_PATH);//获得拖曳的文件名  
-        HandleFileDragResult(szFileName);    
-    }  
-    DragFinish(hDropInfo);      //释放hDropInfo  
 
-    //InvalidateRect(hwnd, NULL, TRUE); 
-}
-
-/**
- * @brief 处理文件拖拽结果
- * 
- * @param lpszFileName 
- * @return BOOL 
- */
-BOOL CGroupChatDlg::HandleFileDragResult(PCTSTR lpszFileName)
-{
-	if(lpszFileName == NULL) 
-		return FALSE;
-	
-	//如果是文件夹，则发送文件夹
-	if(Hootina::CPath::IsDirectory(lpszFileName))
-	{
-		//TODO: 发送文件夹
-		return TRUE;
-	}
-
-	CString strFileExtension(Hootina::CPath::GetExtension(lpszFileName).c_str());
-	strFileExtension.MakeLower();
-	
-	//如果是图片格式，则插入图片
-	if( strFileExtension==_T("jpg")  ||
-		strFileExtension==_T("jpeg") ||
-	    strFileExtension==_T("png")  ||
-	    strFileExtension==_T("bmp")  ||
-		strFileExtension==_T("gif") )
-	{
-		/*UINT64 nFileSize = IUGetFileSize2(lpszFileName);
-		if(nFileSize > MAX_CHAT_IMAGE_SIZE)
-		{
-			::MessageBox(m_hWnd, _T("图片大小超过10M，请使用截图工具。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-			return FALSE;
-		}*/
-		
-		_RichEdit_InsertFace(m_richSend.m_hWnd, lpszFileName, -1, -1);
-		m_richSend.SetFocus();
-		return TRUE;
-	}
-	//TODO: 将来用于支持群文件功能
-	//else
-	//{
-	//	return SendOfflineFile(lpszFileName);
-	//}
-
-
-	return FALSE;
-}
-
-/**
- * @brief 计算消息记录的总数和偏移量
- * 
- */
-void CGroupChatDlg::CalculateMsgLogCountAndOffset()
-{
-
-}
 
 
 /**
