@@ -2806,6 +2806,7 @@ BOOL CBuddyChatDlg::InitMidToolBar()
 			_T("aio_toolbar_down.png"), CRect(3, 3, 3, 3));
 	}
 
+	if(false)
 	{
 		nIndex = m_tbMid.AddItem(ID_BUDDY_DLG_SHOW_LOG_MSG_BTN, STBI_STYLE_BUTTON);
 		m_nMsgLogIndexInToolbar = nIndex;
