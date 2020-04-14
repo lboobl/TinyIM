@@ -1862,7 +1862,7 @@ FriendChatSendTxtRspMsg CChatServer::DoFriendChatSendTxtReq(const FriendChatSend
 		msg.m_strF_FROM_ID = reqMsg.m_strSenderId;
 		msg.m_strF_TO_ID = reqMsg.m_strReceiverId;
 		msg.m_eChatMsgType = CHAT_MSG_TYPE::E_CHAT_TEXT_TYPE;
-		msg.m_strF_MSG_CONTEXT = EncodeUtil::AnsiToUtf8(reqMsg.m_strContext);
+		msg.m_strF_MSG_CONTEXT = reqMsg.m_strContext;
 		msg.m_strF_OTHER_INFO = reqMsg.m_fontInfo.ToString();
 		msg.m_strF_CREATE_TIME = CTimeUtil::GetYMD_HMS_Time();
 		m_util.InsertFriendChatMsg(msg);
