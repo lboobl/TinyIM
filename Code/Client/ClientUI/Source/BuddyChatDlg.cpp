@@ -429,53 +429,8 @@ BOOL CBuddyChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
             FreeLibrary(hModUser32);       
         }
     }
-
-	//允许拖拽文件进窗口
-	::DragAcceptFiles(m_hWnd, TRUE); 
-	//PostMessage(WM_SET_DLG_INIT_FOCUS, 0, 0);		// 设置对话框初始焦点
-	SetTimer(1001, 300, NULL);
-
-
 	return TRUE;
 }
-
-
-/**
- * @brief 响应拷贝数据到发送对话框
- * 
- * @param wnd 
- * @param pCopyDataStruct 
- * @return BOOL 
- */
-BOOL CBuddyChatDlg::OnCopyData(CWindow wnd, PCOPYDATASTRUCT pCopyDataStruct)
-{
-	if (NULL == pCopyDataStruct)
-	{
-		return FALSE;
-	}	
-
-	switch (pCopyDataStruct->dwData)
-	{
-	case IPC_CODE_MSG_LOG_PASTE:			// 消息记录浏览窗口粘贴消息
-		{
-			if (pCopyDataStruct->lpData != NULL && pCopyDataStruct->cbData > 0)
-			{
-				AddMsgToSendEdit((LPCTSTR)pCopyDataStruct->lpData);
-			}	
-		}
-		break;
-
-	case IPC_CODE_MSG_LOG_EXIT:			// 消息记录浏览窗口退出消息
-		{
-			m_tbMid.SetItemCheckState(13, FALSE);
-			m_tbMid.Invalidate();
-		}
-		break;
-	}
-
-	return TRUE;
-}
-
 /**
  * @brief 
  * 
@@ -557,30 +512,6 @@ void CBuddyChatDlg::OnSize(UINT nType, CSize size)
 {
 	OnSizeShowHistory();
 	ResizeImageInRecvRichEdit();
-}
-
-
-/**
- * @brief 响应定时器
- * 
- * @param nIDEvent 定时器编号
- */
-void CBuddyChatDlg::OnTimer(UINT_PTR nIDEvent)
-{
-	if (1001 == nIDEvent)
-	{
-		//OnRecvMsg(m_nUTalkUin, NULL);	// 显示消息
-		KillTimer(nIDEvent);
-		SetTimer(1002, 300, NULL);
-	}
-	else if (nIDEvent == 1002)
-	{
-		if (!m_FontSelDlg.IsWindow())
-		{
-			m_FontSelDlg.Create(m_hWnd);
-		}	
-		KillTimer(nIDEvent);
-	}
 }
 
 /**

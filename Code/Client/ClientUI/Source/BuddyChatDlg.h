@@ -51,14 +51,12 @@ public:
 
 	BEGIN_MSG_MAP_EX(CBuddyChatDlg)
 		MSG_WM_INITDIALOG(OnInitDialog)
-		MSG_WM_COPYDATA(OnCopyData)
 		MSG_WM_MEASUREITEM(OnMeasureItem)
 		MSG_WM_DRAWITEM(OnDrawItem)
 		MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
 		MSG_WM_MOUSEMOVE(OnMouseMove)
 		MSG_WM_MOVE(OnMove)
 		MSG_WM_SIZE(OnSize)
-		MSG_WM_TIMER(OnTimer)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
 
@@ -133,14 +131,12 @@ public:
 	void DataMatchInit();//完成数据的初始化操作
 private:
 	BOOL OnInitDialog(CWindow wndFocus, LPARAM lInitParam);
-	BOOL OnCopyData(CWindow wnd, PCOPYDATASTRUCT pCopyDataStruct);
 	void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void OnGetMinMaxInfo(LPMINMAXINFO lpMMI);
 	void OnMouseMove(UINT nFlags, CPoint point);
 	void OnMove(CPoint ptPos);
 	void OnSize(UINT nType, CSize size);
-	void OnTimer(UINT_PTR nIDEvent);
 	void OnClose();
 	void OnDestroy();
 

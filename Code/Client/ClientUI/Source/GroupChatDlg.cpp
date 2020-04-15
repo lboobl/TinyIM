@@ -34,24 +34,27 @@ CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 	m_lpCascadeWinManager = NULL;
 	m_hMainDlg = NULL;
 
-	m_hDlgIcon = m_hDlgSmallIcon = NULL;
+	m_hDlgIcon = NULL;
+	m_hDlgSmallIcon = NULL;
 	m_hRBtnDownWnd = NULL;
+
 	memset(&m_ptRBtnDown, 0, sizeof(m_ptRBtnDown));
 	m_pLastImageOle = NULL;
 	//TODO: 魔数在头文件定义
-	m_cxPicBarDlg = 122;
-	m_cyPicBarDlg = 24;
+	m_cxPicBarDlg = GROUP_DLG_PIC_BAR_DLG_WIDTH;
+	m_cyPicBarDlg = GROUP_DLG_PIC_BAR_DLG_HEIGHT;
 
 	m_strGroupName = _T("群名称");
-	m_nMemberCnt = m_nOnlineMemberCnt = 0;
+	m_nMemberCnt = 0;
+	m_nOnlineMemberCnt = 0;
 
 
 	m_HotRgn = NULL;
 
 	m_bPressEnterToSendMessage = TRUE;
 	m_bMsgLogWindowVisible = FALSE;
+
 	m_nMsgLogIndexInToolbar = -1;
-	
 	m_nMsgLogRecordOffset = 1;	
 	m_nMsgLogCurrentPageIndex = 0;
 
@@ -186,35 +189,14 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	ATLASSERT(pLoop != NULL);
 	pLoop->AddMessageFilter(this);
 
-	//m_FontSelDlg.m_pFMGClient = m_lpFMGClient;
 	Init();
-
-	//允许拖拽文件进窗口
-	::DragAcceptFiles(m_hWnd, TRUE); 
 
 	//TODO: 作用
 	SetHotRgn();
 
-	C_UI_GroupInfo* lpGroupInfo = nullptr;
-	if (lpGroupInfo != nullptr)
-	{
-		//if (!lpGroupInfo->IsHasGroupInfo())		// 更新群信息
-			OnUpdateGroupInfo();
-
-		if (!lpGroupInfo->IsHasGroupNumber())	// 更新群号码
-		{
-			//m_lpFMGClient->UpdateGroupNum(m_nGroupCode);
-		}
-		else									// 更新群头像
-		{
-			//if (m_lpFMGClient->IsNeedUpdateGroupHeadPic(lpGroupInfo->m_nGroupNumber))
-			//	m_lpFMGClient->UpdateGroupHeadPic(m_nGroupCode, lpGroupInfo->m_nGroupNumber);
-		}
-	}
-
 	PostMessage(WM_SET_DLG_INIT_FOCUS, 0, 0);		// 设置对话框初始焦点
 	//TODO: 定时器优化
-	SetTimer(1001, 300, NULL);
+	//SetTimer(1001, 300, NULL);
 
 	
 	OnSizeNotShowMsgHistory();
@@ -907,22 +889,22 @@ void CGroupChatDlg::OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow 
  * TODO: 注意定时器ID重构
  * @param nIDEvent 定时器ID
  */
-void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
-{
-	if (nIDEvent == 1001)
-	{
-		KillTimer(nIDEvent);
-		SetTimer(1002, 300, NULL);
-	}
-	else if (nIDEvent == 1002)
-	{
-		if (!m_FontSelDlg.IsWindow())
-		{
-			m_FontSelDlg.Create(m_hWnd);
-		}
-		KillTimer(nIDEvent);
-	}
-}
+//void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
+//{
+//	if (nIDEvent == 1001)
+//	{
+//		KillTimer(nIDEvent);
+//		SetTimer(1002, 300, NULL);
+//	}
+//	else if (nIDEvent == 1002)
+//	{
+//		if (!m_FontSelDlg.IsWindow())
+//		{
+//			m_FontSelDlg.Create(m_hWnd);
+//		}
+//		KillTimer(nIDEvent);
+//	}
+//}
 
 /**
  * @brief 响应群聊对话框关闭

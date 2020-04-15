@@ -45,6 +45,9 @@ const int MAX_TEAM_COUNT = 20 ;//最大好友分组和群分组数
 const int MAX_SIGN_LENGTH= 127;//个性签名最长字符数
 
 const int HOT_KEY_SHOW_MSG = 1001;//消息提取热键的ID
+
+const int GROUP_DLG_PIC_BAR_DLG_WIDTH = 122;//群组聊天对话框工具栏宽度122
+const int GROUP_DLG_PIC_BAR_DLG_HEIGHT = 24;//群组聊天对话框工具栏高度24
 //Dennis End
 
 

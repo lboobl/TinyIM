@@ -46,7 +46,7 @@ public:
 		MSG_WM_MOVE(OnMove)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_MOUSEMOVE(OnMouseMove)
-		MSG_WM_TIMER(OnTimer)
+		//MSG_WM_TIMER(OnTimer)
 		//MSG_WM_DROPFILES(OnDropFiles)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
@@ -90,7 +90,6 @@ public:
 
 		MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_PROGRESS, OnSendFileProgress)
 		MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_RESULT, OnSendFileResult)
-		//MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_PROGRESS, OnRecvFileProgress)
 		MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_RESULT, OnRecvFileResult)
 	END_MSG_MAP()
 
@@ -114,7 +113,7 @@ private:
 	void OnMove(CPoint ptPos);
 	void OnMouseMove(UINT nFlags, CPoint point);
 	void OnSize(UINT nType, CSize size);
-	void OnTimer(UINT_PTR nIDEvent);
+	//void OnTimer(UINT_PTR nIDEvent);
 	void OnClose();
 	void OnDestroy();
 
