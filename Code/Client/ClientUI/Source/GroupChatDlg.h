@@ -259,8 +259,6 @@ private:
 
 	BOOL					m_bMsgLogWindowVisible;  //是否显示历史消息控件
 	long					m_nMsgLogIndexInToolbar;
-
-	//CMessageLogger			m_MsgLogger;				// 消息记录
 	long					m_nMsgLogRecordOffset;		//当前消息记录的偏移量+1
 	long					m_nMsgLogCurrentPageIndex;	//消息记录当前页码
 	//历史消息记录相关 End
@@ -273,10 +271,9 @@ private:
 	HWND					m_hRBtnDownWnd;//TODO
 	POINT					m_ptRBtnDown;//TODO 
 	IImageOle*				m_pLastImageOle;//TODO
-	int						m_cxPicBarDlg;//TODO 
-	int                     m_cyPicBarDlg;//TODO 
+	int						m_cxPicBarDlg;//图片工具对话框的X坐标 
+	int                     m_cyPicBarDlg;//图片工具对话框的Y坐标
 
-	CString					m_strCurLink;//TODO
 
 	CString					m_strGroupName;//群组名
 
@@ -285,8 +282,6 @@ private:
 
 	HRGN					m_HotRgn;
 
-	std::map<CString, long>	m_mapSendFileInfo;		//发送文件队列，键是文件名，如果键值为-1则是文件；如果键值大于0则是图片在窗口位置的索引
-	std::map<CString, long>	m_mapRecvFileInfo;		//接收文件队列，键是文件显示名，键值为-1是收取的离线文件；键值大于1是收取的聊天图片应插入的位置索引
 
 	BOOL					m_bPressEnterToSendMessage;	//TRUE按回车键发送消息, FALSE按Ctrl+Enter发送消息
 

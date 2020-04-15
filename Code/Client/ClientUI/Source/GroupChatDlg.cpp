@@ -40,7 +40,7 @@ CGroupChatDlg::CGroupChatDlg(void):m_userConfig(CUserConfig::GetInstance())
 
 	memset(&m_ptRBtnDown, 0, sizeof(m_ptRBtnDown));
 	m_pLastImageOle = NULL;
-	//TODO: 魔数在头文件定义
+
 	m_cxPicBarDlg = GROUP_DLG_PIC_BAR_DLG_WIDTH;
 	m_cyPicBarDlg = GROUP_DLG_PIC_BAR_DLG_HEIGHT;
 
@@ -195,10 +195,7 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	SetHotRgn();
 
 	PostMessage(WM_SET_DLG_INIT_FOCUS, 0, 0);		// 设置对话框初始焦点
-	//TODO: 定时器优化
-	//SetTimer(1001, 300, NULL);
 
-	
 	OnSizeNotShowMsgHistory();
 	return TRUE;
 }
@@ -884,27 +881,6 @@ void CGroupChatDlg::OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow 
 }
 
 
-/**
- * @brief 响应定时器
- * TODO: 注意定时器ID重构
- * @param nIDEvent 定时器ID
- */
-//void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
-//{
-//	if (nIDEvent == 1001)
-//	{
-//		KillTimer(nIDEvent);
-//		SetTimer(1002, 300, NULL);
-//	}
-//	else if (nIDEvent == 1002)
-//	{
-//		if (!m_FontSelDlg.IsWindow())
-//		{
-//			m_FontSelDlg.Create(m_hWnd);
-//		}
-//		KillTimer(nIDEvent);
-//	}
-//}
 
 /**
  * @brief 响应群聊对话框关闭
@@ -912,10 +888,6 @@ void CGroupChatDlg::OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow 
  */
 void CGroupChatDlg::OnClose()
 {
-	//RecordWindowSize();
-	//::PostMessage(m_lpFMGClient->m_UserMgr.m_hCallBackWnd, WM_CLOSE_GROUPCHATDLG, (WPARAM)m_nGroupCode, 0);
-	//关闭聊天窗口时，保持主窗口为前景窗口。
-	//::SetForegroundWindow(m_lpFMGClient->m_UserMgr.m_hCallBackWnd);
 	DestroyWindow();
 }
 
@@ -1032,13 +1004,6 @@ void CGroupChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 	fileDlg.m_ofn.lpstrTitle = _T("打开图片");
 	if (fileDlg.DoModal() == IDOK)
 	{
-	/*	UINT64 nFileSize = IUGetFileSize2(fileDlg.m_ofn.lpstrFile);
-		if(nFileSize > MAX_CHAT_IMAGE_SIZE)
-		{
-			::MessageBox(m_hWnd, _T("图片大小超过10M，请使用截图工具。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-			return;
-		}*/
-
 		_RichEdit_InsertFace(m_richSend.m_hWnd, fileDlg.m_ofn.lpstrFile, -1, -1);
 		m_richSend.SetFocus();
 	}
@@ -2686,37 +2651,6 @@ LRESULT CGroupChatDlg::OnSendFileProgress(UINT uMsg, WPARAM wParam, LPARAM lPara
  */
 LRESULT CGroupChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	CUploadFileResult* pResult = (CUploadFileResult*)lParam;
-	if (pResult == NULL)
-	{
-		return (LRESULT)0;
-	}
-
-	E_UI_SEND_FILE_RESULT eResult = static_cast<E_UI_SEND_FILE_RESULT>(wParam);
-	//上传图片结果
-	std::map<CString, long>::const_iterator iter=m_mapSendFileInfo.find(pResult->m_szLocalName);
-	if(iter == m_mapSendFileInfo.end())
-	{
-		if(pResult->m_nFileType == E_UI_FILE_ITEM_TYPE::FILE_ITEM_UPLOAD_CHAT_IMAGE)
-		{
-			if(eResult == E_UI_SEND_FILE_RESULT::SEND_FILE_FAILED)
-			{
-				//AtlTrace(_T("Fail to send file:%s.\n"), pResult->m_szLocalName);
-				TCHAR szInfo[MAX_PATH] = {0};
-				_stprintf_s(szInfo, ARRAYSIZE(szInfo), _T("                                            ☆发送图片[%s]失败，请重试！☆\r\n"), ::PathFindFileName(pResult->m_szLocalName));
-				RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
-				RichEdit_ReplaceSel(m_richRecv.m_hWnd, szInfo, _T("微软雅黑"), 10, RGB(255,0,0), FALSE, FALSE, FALSE, FALSE, 0);
-			}
-            //图片发送成功，追加上传图片成功消息
-            else
-            {
-                //SendConfirmMessage(pResult);
-            }
-		}
-	}
-	
-	delete pResult;
-
 	return 1;
 }
 
@@ -2733,39 +2667,6 @@ LRESULT CGroupChatDlg::OnSendFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
  */
 LRESULT CGroupChatDlg::OnRecvFileResult(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	C_WND_MSG_FileItemRequest* pFileItem = (C_WND_MSG_FileItemRequest*)lParam;
-	
-	if (pFileItem == NULL)
-	{
-		return 0;
-	}
-
-	std::map<CString, long>::const_iterator iter = m_mapRecvFileInfo.find(pFileItem->m_szFilePath);
-	if (iter == m_mapRecvFileInfo.end())
-	{
-		return 0;
-	}
-	E_UI_RECV_FILE_RESULT eResult = static_cast<E_UI_RECV_FILE_RESULT>(wParam);
-	//聊天图片下载结果
-	if(iter->second > 0)
-	{
-		if(eResult == E_UI_RECV_FILE_RESULT::RECV_FILE_SUCCESS)
-		{
-			RichEdit_SetSel(m_richRecv.m_hWnd, iter->second, iter->second+1);
-			_RichEdit_InsertFace(m_richRecv.m_hWnd, pFileItem->m_szFilePath, -1, -1);
-		}
-		else if(eResult == E_UI_RECV_FILE_RESULT::RECV_FILE_FAILED)
-		{
-			RichEdit_SetSel(m_richRecv.m_hWnd, iter->second, iter->second+1);
-			WString strFileName = Hootina::CPath::GetAppPath() + _T("Image\\DownloadFailed.gif");
-			_RichEdit_InsertFace(m_richRecv.m_hWnd, strFileName.c_str(), -1, -1);
-		}
-	}
-
-	m_richRecv.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-	m_mapRecvFileInfo.erase(iter);
-	
-
 	return 1;
 }
 
@@ -2790,7 +2691,6 @@ void CGroupChatDlg::OpenMsgLogBrowser()
 		m_GroupMemberListCtrl.ShowWindow(SW_HIDE);
 	}
 	m_richMsgLog.Invalidate(TRUE);
-	//CalculateMsgLogCountAndOffset();
 }
 
 /**
@@ -2803,7 +2703,6 @@ void CGroupChatDlg::CloseMsgLogBrowser()
 
 	ShowMsgLogButtons(FALSE);
 
-	//CalculateMsgLogCountAndOffset();
 	{
 		m_RightTabCtrl.ShowWindow(SW_SHOW);
 		m_staGroupCategory.ShowWindow(SW_SHOW);
