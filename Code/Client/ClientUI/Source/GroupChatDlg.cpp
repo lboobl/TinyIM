@@ -157,12 +157,9 @@ BOOL CGroupChatDlg::PreTranslateMessage(MSG* pMsg)
  */
 void CGroupChatDlg::OnUpdateGroupInfo()
 {
-	UpdateData();						// 更新信息
 
 	UpdateDlgTitle();					// 更新对话框标题
 	UpdateGroupNameCtrl();				// 更新群名称控件
-	UpdateGroupMemo();					// 更新群公告
-	UpdateGroupMemberList();			// 更新群成员列表
 }
 
 
@@ -190,8 +187,6 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	pLoop->AddMessageFilter(this);
 
 	//m_FontSelDlg.m_pFMGClient = m_lpFMGClient;
-
-	UpdateData();
 	Init();
 
 	//允许拖拽文件进窗口
@@ -220,13 +215,6 @@ BOOL CGroupChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	PostMessage(WM_SET_DLG_INIT_FOCUS, 0, 0);		// 设置对话框初始焦点
 	//TODO: 定时器优化
 	SetTimer(1001, 300, NULL);
-
-	//m_bPressEnterToSendMessage = m_lpFMGClient->m_UserConfig.IsEnablePressEnterToSend();
-
-	//CalculateMsgLogCountAndOffset();
-
-	//if(m_lpFMGClient->m_UserConfig.IsEnableShowLastMsgInChatDlg())
-		ShowLastMsgInRecvRichEdit();
 
 	
 	OnSizeNotShowMsgHistory();
@@ -923,7 +911,6 @@ void CGroupChatDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == 1001)
 	{
-		UpdateGroupMemberList();		// 更新群成员列表
 		KillTimer(nIDEvent);
 		SetTimer(1002, 300, NULL);
 	}
@@ -983,17 +970,6 @@ void CGroupChatDlg::OnDestroy()
 }
 
 
-/**
- * @brief 响应“群名称”超链接控件点击
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CGroupChatDlg::OnLnk_GroupName(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	//PostMessage(m_hMainDlg, WM_SHOW_GROUP_INFO_DLG, m_nGroupCode, NULL);
-}
 
 /**
  * @brief 响应“字体选择工具栏”按钮
@@ -1086,29 +1062,6 @@ void CGroupChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-
-/**
- * @brief 响应“来消息不提示”按钮
- * TODO: 考虑去掉
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CGroupChatDlg::OnBtn_MsgNotPrompt(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	CSkinMenu PopupMenu = PopupMenu = m_SkinMenu.GetSubMenu(1).GetSubMenu(5);
-	if (PopupMenu.IsMenu())
-	{
-		CRect rcBtn;
-		m_tbMid.GetItemRectByIndex(10, rcBtn);
-		m_tbMid.ClientToScreen(&rcBtn);
-		PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_VERTICAL, 
-			rcBtn.left, 
-			rcBtn.bottom + 4,
-			m_hWnd,
-			&rcBtn);
-	}
-}
 
 
 /**
@@ -1350,72 +1303,6 @@ LRESULT CGroupChatDlg::OnSetDlgInitFocus(UINT uMsg, WPARAM wParam, LPARAM lParam
 	m_richSend.SetFocus();
 	return 0;
 }
-
-/**
- * @brief 响应“接收消息”富文本框链接点击消息
- * 
- * @param pnmh 
- * @return LRESULT 
- */
-LRESULT CGroupChatDlg::OnRichEdit_Recv_Link(LPNMHDR pnmh)
-{
-	if (pnmh->code == EN_LINK)
-	{
-		ENLINK*pLink = (ENLINK*)pnmh;
-		if (pLink->msg == WM_LBUTTONUP)
-		{
-			m_richRecv.SetSel(pLink->chrg);
-			m_richRecv.GetSelText(m_strCurLink);
-
-			if (m_strCurLink.Left(7).MakeLower() == _T("http://") || m_strCurLink.Left(8).MakeLower() == _T("https://") ||
-				(m_strCurLink.GetLength() >= 7 && m_strCurLink.Left(4).MakeLower() == _T("www.")))
-			{
-				::ShellExecute(NULL, _T("open"), m_strCurLink, NULL, NULL, SW_SHOWNORMAL);
-			}
-			else
-			{
-				C_UI_GroupInfo* pGroupInfo = nullptr;
-				if (pGroupInfo == nullptr)
-				{
-					return 0;
-				}
-				
-				C_UI_BuddyInfo* pBuddyInfo = pGroupInfo->GetMemberByAccount(m_strCurLink);
-				if (pBuddyInfo == NULL)
-				{
-					return 0;
-				}
-				
-				DWORD dwPos = GetMessagePos();
-				CPoint point(LOWORD(dwPos), HIWORD(dwPos));
-
-				CSkinMenu PopupMenu = m_SkinMenu.GetSubMenu(6);
-				PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, m_hWnd);
-			}
-		}
-	}
-	return 0;
-}
-
-
-/**
- * @brief 发送“粘贴”到发送对话框的消息
- * 
- * @param pnmh 
- * @return LRESULT 
- */
-LRESULT CGroupChatDlg::OnRichEdit_Send_Paste(LPNMHDR pnmh)
-{
-	NMRICHEDITOLECALLBACK* lpOleNotify = (NMRICHEDITOLECALLBACK*)pnmh;
-	if (  (lpOleNotify != NULL) && 
-		  (lpOleNotify->hdr.code == EN_PASTE) && 
-		  (lpOleNotify->hdr.hwndFrom == m_richSend.m_hWnd) )
-	{
-		//AddMsgToSendEdit(lpOleNotify->lpszText);
-	}
-	return 0;
-}
-
 
 /**
  * @brief 响应“群成员”列表双击消息
@@ -1690,108 +1577,6 @@ void CGroupChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-
-/**
- * @brief  响应“查看资料”菜单,根据消息来源的不同窗口,分为查看用户资料和群组资料
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CGroupChatDlg::OnMenu_ViewInfo(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	DWORD dwPos = GetMessagePos();
-	CPoint point(LOWORD(dwPos), HIWORD(dwPos));
-
-	HWND hWnd = ::WindowFromPoint(point);
-	UINT nUTalkUin = 0;
-	if (hWnd == m_richRecv.m_hWnd)
-	{
-		C_UI_GroupInfo* lpGroupInfo = nullptr;
-		if (lpGroupInfo != nullptr)
-		{
-			C_UI_BuddyInfo* lpBuddyInfo = lpGroupInfo->GetMemberByAccount(m_strCurLink);
-			if (lpBuddyInfo == NULL)
-			{
-				return;
-			}
-			nUTalkUin = lpBuddyInfo->m_uUserIndex;		
-		}
-	}
-	else if (hWnd == m_GroupMemberListCtrl.m_hWnd)
-	{
-		int nCurSel = m_GroupMemberListCtrl.GetCurSelItemIndex();
-		if (nCurSel < 0)
-		{
-			return;
-		}
-
-		nUTalkUin = (UINT)m_GroupMemberListCtrl.GetItemData(nCurSel, 0);	
-	}
-
-	if (nUTalkUin == 0)
-	{
-		return;
-	}
-
-	{
-		::MessageBox(m_hWnd, _T("暂不支持查看非好友的资料。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-	}
-}
-
-/**
- * @brief 响应“发送消息”的右键弹出菜单,根据选择的窗口决定是群组消息还是好友消息
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-void CGroupChatDlg::OnMenu_SendMsg(UINT uNotifyCode, int nID, CWindow wndCtl)
-{
-	DWORD dwPos = GetMessagePos();
-	CPoint point(LOWORD(dwPos), HIWORD(dwPos));
-
-	HWND hWnd = ::WindowFromPoint(point);
-	UINT nUTalkUin = 0;
-	if (hWnd == m_richRecv.m_hWnd)
-	{
-		C_UI_GroupInfo* lpGroupInfo = nullptr;
-		if (lpGroupInfo != nullptr)
-		{
-			C_UI_BuddyInfo* lpBuddyInfo = lpGroupInfo->GetMemberByAccount(m_strCurLink);
-			if (lpBuddyInfo == NULL)
-			{
-				return;
-			}
-
-			nUTalkUin = lpBuddyInfo->m_uUserIndex;
-		}
-	}
-	else if (hWnd == m_GroupMemberListCtrl.m_hWnd)
-	{
-		int nCurSel = m_GroupMemberListCtrl.GetCurSelItemIndex();
-		if (nCurSel < 0)
-		{
-			return;
-		}
-
-		nUTalkUin = (UINT)m_GroupMemberListCtrl.GetItemData(nCurSel, 0);	
-	}
-	
-	if (nUTalkUin == 0)
-	{
-		return;
-	}
-
-	//if(m_lpFMGClient->m_UserMgr.IsFriend(nUTalkUin))
-	//	::SendMessage(m_hMainDlg, WM_SHOW_BUDDYCHATDLG, 0, nUTalkUin);
-	//else if(nUTalkUin == m_lpFMGClient->m_UserMgr.m_UserInfo.m_uUserID)
-	//	::MessageBox(m_hWnd, _T("不能和自己聊天。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-	//else
-	//	::MessageBox(m_hWnd, _T("暂且不支持临时会话，您必须加对方为好友以后才能与之会话。"), g_strAppTitle.c_str(), MB_OK|MB_ICONINFORMATION);
-}
-
-
 /**
  * @brief 响应 “发送/接收” 文本框的鼠标移动消息
  * 
@@ -1987,94 +1772,6 @@ BOOL CGroupChatDlg::OnRichEdit_RBtnDown(MSG* pMsg)
 
 
 /**
- * @brief 响应“删除选中消息记录”菜单消息
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
-// */
-//void CGroupChatDlg::OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-//{
-//	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除选中的消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
-//	{
-//		return;
-//	}
-//
-//	m_richMsgLog.SetReadOnly(FALSE);
-//	m_richMsgLog.Cut();
-//	INPUT Input={0};
-//
-//	::SendMessage(m_richMsgLog.m_hWnd, WM_KEYDOWN, VK_BACK, 0);
-//	m_richMsgLog.SetReadOnly(TRUE);
-//	//m_richSend.PasteSpecial(CF_TEXT);
-//
-//	//判断剪贴板的数据格式是否可以处理。
-//	if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
-//	{
-//		return;
-//	} 
-//	// Open the clipboard.  
-//	if (!::OpenClipboard(m_richMsgLog.m_hWnd))
-//	{
-//		return;
-//	}
-//
-//	HGLOBAL hMem = ::GetClipboardData(CF_UNICODETEXT);;
-//	LPCTSTR lpStr = NULL;
-//	if(hMem != NULL)  
-//	{
-//		lpStr = (LPCTSTR)::GlobalLock(hMem);
-//		if (lpStr != NULL)
-//		{
-//			//显示输出。
-//			//::OutputDebugString(lpStr);
-//			//释放锁内存。
-//			::GlobalUnlock(hMem);
-//		}
-//	}
-//	::CloseClipboard();
-//	//用sql语句去删除SQLite数据库中对应的消息记录
-//}
-//
-
-/**
- * @brief 响应“清空聊天记录”的菜单消息
- * 
- * @param uNotifyCode 
- * @param nID 
- * @param wndCtl 
- */
-//void CGroupChatDlg::OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
-//{
-//	if (IDYES != ::MessageBox(m_hWnd, _T("删除的消息记录无法恢复，确实要删除该群的所有消息记录吗？"), _T("删除确认"), MB_YESNO | MB_ICONWARNING))
-//	{
-//		return;
-//	}
-//
-//	m_richMsgLog.SetWindowText(_T(""));
-//	m_richRecv.SetWindowText(_T(""));
-//	m_staMsgLogPage.SetWindowText(_T("0/0"));
-//}
-//
-
-
-/**
- * @brief 更新信息
- * 
- */
-void CGroupChatDlg::UpdateData()
-{
-	C_UI_GroupInfo* lpGroupInfo = nullptr;
-	if (lpGroupInfo != nullptr)
-	{
-		m_nMemberCnt = lpGroupInfo->GetMemberCount();
-		m_nOnlineMemberCnt = lpGroupInfo->GetOnlineMemberCount();
-		m_strGroupName = lpGroupInfo->m_strName.c_str();
-	}
-}
-
-
-/**
  * @brief 更新群聊对话框标题栏,群名称修改后会被调用
  * 
  */
@@ -2092,110 +1789,6 @@ void CGroupChatDlg::UpdateDlgTitle()
 BOOL CGroupChatDlg::UpdateGroupNameCtrl()
 {
 	m_lnkGroupName.SetLabel(m_strGroupName);
-	return TRUE;
-}
-
-/**
- * @brief 更新群公告
- * 
- * @return BOOL 
- */
-BOOL CGroupChatDlg::UpdateGroupMemo()
-{
-	m_edtMemo.SetWindowText(_T("暂无公告"));
-	C_UI_GroupInfo* lpGroupInfo = nullptr;
-	if (lpGroupInfo != nullptr)
-	{
-		if (!lpGroupInfo->m_strMemo.empty())
-		{
-			m_edtMemo.SetWindowText(lpGroupInfo->m_strMemo.c_str());
-		}
-	}
-	return TRUE;
-}
-
-/**
- * @brief 更新群成员列表
- * 
- * @return BOOL 
- */
-BOOL CGroupChatDlg::UpdateGroupMemberList()
-{
-	C_UI_GroupInfo* lpGroupInfo = nullptr;
-	if (nullptr == lpGroupInfo)
-	{
-		return FALSE;
-	}
-
-	lpGroupInfo->Sort();
-
-	CString strText, strNickName, strFileName;
-
- 	long nOnlineMemberCnt = 0;
-	long nMemberCnt = 0;
-
-	m_GroupMemberListCtrl.SetRedraw(FALSE);
-	m_GroupMemberListCtrl.DeleteAllItems();
-	BOOL bGray = TRUE;
-	for (int i = 0; i < lpGroupInfo->GetMemberCount(); i++)
-	{
-		C_UI_BuddyInfo* lpBuddyInfo = lpGroupInfo->GetMember(i);
-		if (lpBuddyInfo == NULL || lpBuddyInfo->m_strNickName.empty() || lpBuddyInfo->m_strAccount.empty())
-		{
-			continue;
-		}
-		
-		//当前用户
-		
-		strText.Format(_T("%s(%s)"), lpBuddyInfo->m_strNickName.c_str(), lpBuddyInfo->m_strAccount.c_str());
-
-		if( lpBuddyInfo->m_nStatus!= E_UI_ONLINE_STATUS::STATUS_OFFLINE && 
-			lpBuddyInfo->m_nStatus!= E_UI_ONLINE_STATUS::STATUS_INVISIBLE)
-		{
-			bGray = FALSE;
-			++nOnlineMemberCnt;
-		}
-		else
-		{
-			bGray = TRUE;
-		}
-
-		if (lpBuddyInfo->m_bUseCustomFace && lpBuddyInfo->m_bCustomFaceAvailable)
-		{
-			//trFileName.Format(_T("%s%d.png"), m_lpFMGClient->m_UserMgr.GetCustomUserThumbFolder().c_str(), lpBuddyInfo->m_uUserID);
-		}
-		else
-		{
-			strFileName.Format(_T("%sImage\\UserThumbs\\%u.png"), g_szHomePath, lpBuddyInfo->m_nFace);
-		}
-		
-		if (!Hootina::CPath::IsFileExist(strFileName))
-		{
-			if (!bGray)
-			{
-				strFileName = (Hootina::CPath::GetAppPath() + _T("Image\\DefGMemberHeadPic16x16.png")).c_str();
-			}
-			else
-			{
-				strFileName = (Hootina::CPath::GetAppPath() + _T("Image\\DefGMemberGrayHeadPic16x16.png")).c_str();
-			}
-			bGray = FALSE;
-		}
-		
-		m_GroupMemberListCtrl.InsertItem(nMemberCnt, strText, strFileName, bGray, DT_LEFT, 0);
-
-		//LOG_INFO("GroupMemberInfo: AccountID=%u, AccountName=%s, NickName=%s, Gray=%d.",
-		//			lpBuddyInfo->m_uUserID, lpBuddyInfo->m_strAccount.c_str(), lpBuddyInfo->m_strNickName.c_str(), bGray);
-
-		++nMemberCnt;
-		
-	}
-
-	strText.Format(_T("  群成员(%d/%d)"), nOnlineMemberCnt, nMemberCnt);
-	m_staMemberTitle.SetWindowText(strText);
-	m_GroupMemberListCtrl.SetRedraw(TRUE);
-	m_GroupMemberListCtrl.Invalidate();
-
 	return TRUE;
 }
 
@@ -2331,7 +1924,6 @@ void CGroupChatDlg::OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 		else
 		{
 			m_SkinDlg.MoveWindow(rtWindow.left, rtWindow.top, rtWindow.Width() + GROUP_DLG_MSG_LOG_WIDTH, rtWindow.Height(), FALSE);
-			//m_SkinDlg.MoveWindow(rtWindow.left, rtWindow.top, rtWindow.Width()+RIGHT_CHAT_WINDOW_WIDTH, rtWindow.Height(),FALSE);
 		}
 
 
@@ -2649,7 +2241,6 @@ BOOL CGroupChatDlg::Init()
 
 	UpdateGroupNameCtrl();	// 更新群名称控件
 	UpdateDlgTitle();		// 更新对话框标题
-	UpdateGroupMemo();		// 更新群公告
 
 	m_Accelerator.LoadAccelerators(ID_ACCE_CHATDLG);
 
@@ -3410,70 +3001,7 @@ void CGroupChatDlg::OnMsgLogPage(UINT uNotifyCode, int nID, CWindow wndCtl)
 		}
 	}
 
-	
-	////AtlTrace(_T("Offset: %d, PageIndex: %d, TotalPage: %d\n"), m_nMsgLogRecordOffset, m_nMsgLogCurrentPageIndex, nPageCount);
-	//CString strPageInfo;
-	//strPageInfo.Format(_T("%d/%d"), m_nMsgLogCurrentPageIndex, nPageCount);
-	//m_staMsgLogPage.SetWindowText(strPageInfo);
-	//m_staMsgLogPage.Invalidate(FALSE);
-
 	OpenMsgLogBrowser();
-}
-
-
-/**
- * @brief 在接收消息的富文本框中显示最后一条消息
- * 
- */
-void CGroupChatDlg::ShowLastMsgInRecvRichEdit()
-{
-	CString strMsgFile;// (m_lpFMGClient->GetMsgLogFullName().c_str());
-	strMsgFile.Replace(_T("\\"), _T("/"));
-
-	//消息记录中用户未读的消息个数
-	long nMsgCntUnread = 0;
-	C_UI_MessageList* lpMsgList = NULL;// = m_lpFMGClient->GetMessageList();
-	if(lpMsgList != NULL)
-	{
-		C_UI_MessageSender* lpMsgSender = NULL;// lpMsgList->GetMsgSender(E_UI_CHAT_MSG_TYPE::FMG_MSG_TYPE_GROUP, m_nGroupCode);
-		if (lpMsgSender != NULL)
-		{
-			nMsgCntUnread = lpMsgSender->GetMsgCount();
-		}
-	}
-	
-	long nTotalCount = 0;// (long)m_MsgLogger.GetGroupMsgLogCount(m_nGroupCode);
-	//将未读消息从历史记录中去除
-	nTotalCount -= nMsgCntUnread;
-	if (nTotalCount < 0)
-	{
-		nTotalCount = 0;
-	}
-
-	if (nTotalCount == 0)
-	{
-		return;
-	}
-
-	UINT nRows = 5;
-	if ((UINT)nTotalCount < nRows)
-	{
-		nRows = (UINT)nTotalCount;
-	}
-
-	//std::vector<GROUP_MSG_LOG*> arrMsgLog;
-	//从消息记录文件中获取消息记录
-	long cntArrMsgLog = 0;
-	if (nTotalCount > 5)
-	{
-		//cntArrMsgLog = m_MsgLogger.ReadGroupMsgLog(m_nGroupCode, nTotalCount - 5, nRows, arrMsgLog);
-	}
-	else
-	{
-		//cntArrMsgLog = m_MsgLogger.ReadGroupMsgLog(m_nGroupCode, 0, nRows, arrMsgLog);
-	}
-	//添加到消息记录富文本控件中
-	//AddMsgToRecvEdit(arrMsgLog);
 }
 
 /**

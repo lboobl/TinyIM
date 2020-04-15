@@ -107,8 +107,6 @@ public:
 		COMMAND_RANGE_HANDLER_EX(ID_MENU_ZOOM_RATIO_400, ID_MENU_ZOOM_RATIO_50, OnMenu_ZoomRatio)
 		COMMAND_ID_HANDLER_EX(ID_MENU_SAVE_AS, OnMenu_SaveAs)
 
-		//COMMAND_ID_HANDLER_EX(IDM_CLEAR_MSG_LOG, OnMenu_ClearMsgLog)				//清除消息记录
-		//COMMAND_ID_HANDLER_EX(IDM_DELETE_SELECT_MSG_LOG, OnMenu_DeleteSelectMsgLog)//删除选中消息记录
 		COMMAND_ID_HANDLER_EX(IDM_SEND_FILE, OnMenu_SendFile)					//发送文件
 		COMMAND_ID_HANDLER_EX(IDM_SEND_OFF_LINE_FILE, OnMenu_SendOfflineFile)		//发送离线文件
 		COMMAND_ID_HANDLER_EX(IDM_SEND_FILE_P2P, OnSendFileP2p)
@@ -254,7 +252,6 @@ private:
 
     void SendConfirmMessage(const CUploadFileResult* pUploadFileResult);
 
-	void ShowLastMsgInRecvRichEdit();
 
 	void RecordWindowSize();
 	void ReCaculateCtrlPostion(long nMouseY);

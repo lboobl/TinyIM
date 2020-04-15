@@ -51,13 +51,12 @@ public:
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
 
-		COMMAND_HANDLER_EX(ID_LINK_GROUP_NAME, BN_CLICKED, OnLnk_GroupName)
+
 		COMMAND_ID_HANDLER_EX(ID_GROUP_CHAT_DLG_FONT_BTN, OnBtn_Font)
 		COMMAND_ID_HANDLER_EX(ID_GROUP_CHAT_DLG_FACE_BTN, OnBtn_Face)
 		COMMAND_ID_HANDLER_EX(ID_GROUP_CHAT_DLG_IMAGE_BTN, OnBtn_Image)
 		COMMAND_ID_HANDLER_EX(ID_GROUP_CHAT_DLG_SCREEN_SHOT_BTN, OnBtn_ScreenShot)
 		COMMAND_ID_HANDLER_EX(ID_GROUP_CHAT_DLG_MSG_LOG_BTN, OnBtn_MsgLog)
-		COMMAND_HANDLER_EX(ID_GROUP_CHAT_DLG_MSG_PROMPT_BTN, BN_CLICKED, OnBtn_MsgNotPrompt)
 		COMMAND_ID_HANDLER_EX(ID_GROUP_CHAT_DLG_SAVE_AS_BTN, OnBtn_SaveAs)
 
 		COMMAND_HANDLER_EX(ID_BTN_CLOSE, BN_CLICKED, OnBtn_Close)
@@ -76,8 +75,6 @@ public:
 		MESSAGE_HANDLER_EX(FACE_CTRL_SEL, OnFaceCtrlSel)
 		MESSAGE_HANDLER_EX(WM_SET_DLG_INIT_FOCUS, OnSetDlgInitFocus)
 
-		NOTIFY_HANDLER_EX(ID_RICH_EDIT_RECV, EN_LINK, OnRichEdit_Recv_Link)
-		NOTIFY_HANDLER_EX(ID_RICH_EDIT_SEND, EN_PASTE, OnRichEdit_Send_Paste)
 		NOTIFY_HANDLER_EX(ID_LIST_MERBER, NM_DBLCLK, OnGMemberList_DblClick)
 		NOTIFY_HANDLER_EX(ID_LIST_MERBER, NM_RCLICK, OnGMemberList_RClick)
 		COMMAND_ID_HANDLER_EX(ID_MENU_CUT, OnMenu_Cut)
@@ -87,8 +84,6 @@ public:
 		COMMAND_ID_HANDLER_EX(ID_MENU_CLEAR, OnMenu_Clear)
 		COMMAND_RANGE_HANDLER_EX(ID_MENU_ZOOM_RATIO_400, ID_MENU_ZOOM_RATIO_50, OnMenu_ZoomRatio)
 		COMMAND_ID_HANDLER_EX(ID_MENU_SAVE_AS, OnMenu_SaveAs)
-		COMMAND_ID_HANDLER_EX(ID_MENU_VIEW_INFO, OnMenu_ViewInfo)
-		COMMAND_ID_HANDLER_EX(ID_MENU_SEND_MSG, OnMenu_SendMsg)
 
 
 		MESSAGE_HANDLER_EX(FMG_MSG_SENDCHATMSG_RESULT, OnSendChatMsgResult)	
@@ -123,11 +118,10 @@ private:
 	void OnClose();
 	void OnDestroy();
 
-	void OnLnk_GroupName(UINT uNotifyCode, int nID, CWindow wndCtl);// “群名称”超链接控件
 	void OnBtn_Font(UINT uNotifyCode, int nID, CWindow wndCtl);		// “字体选择工具栏”按钮
 	void OnBtn_Face(UINT uNotifyCode, int nID, CWindow wndCtl);		// “表情”按钮
 	void OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl);	// “发送图片”按钮
-	void OnBtn_MsgNotPrompt(UINT uNotifyCode, int nID, CWindow wndCtl);	// “来消息不提示”按钮
+
 	void OnBtn_ScreenShot(UINT uNotifyCode, int nID, CWindow wndCtl);	// 截图工具
 	void OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);	// “消息记录”按钮
 	void OnBtn_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl);	// “点击另存为”按钮
@@ -143,9 +137,8 @@ private:
 	LRESULT OnUpdateFontInfo(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 更新字体信息
 	LRESULT OnFaceCtrlSel(UINT uMsg, WPARAM wParam, LPARAM lParam);		// “表情”控件选取消息
 	LRESULT OnSetDlgInitFocus(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 设置对话框初始焦点
-	
-	LRESULT OnRichEdit_Recv_Link(LPNMHDR pnmh);						//	“接收消息”富文本框链接点击消息
-	LRESULT OnRichEdit_Send_Paste(LPNMHDR pnmh);
+
+
 	LRESULT OnGMemberList_DblClick(LPNMHDR pnmh);					// “群成员”列表双击消息
 	LRESULT OnGMemberList_RClick(LPNMHDR pnmh);						// “群成员”列表右键单击消息
 	void OnMenu_Cut(UINT uNotifyCode, int nID, CWindow wndCtl);		// “剪切”菜单
@@ -155,10 +148,6 @@ private:
 	void OnMenu_Clear(UINT uNotifyCode, int nID, CWindow wndCtl);	// “清屏”菜单
 	void OnMenu_ZoomRatio(UINT uNotifyCode, int nID, CWindow wndCtl);// “显示比例”菜单
 	void OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl);	// “另存为”菜单
-	void OnMenu_ViewInfo(UINT uNotifyCode, int nID, CWindow wndCtl);// “查看资料”菜单
-	void OnMenu_SendMsg(UINT uNotifyCode, int nID, CWindow wndCtl);	// “发送消息”菜单
-	//void OnMenu_DeleteSelectMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl);//“删除选中消息记录”菜单
-	//void OnMenu_ClearMsgLog(UINT uNotifyCode, int nID, CWindow wndCtl); //“清空消息记录”菜单
 
 	void OnPressEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl);		//回车键发送消息
 	void OnPressCtrlEnterMenuItem(UINT uNotifyCode, int nID, CWindow wndCtl);	//Ctrl+回车发送消息
@@ -177,8 +166,6 @@ private:
 	void UpdateData();					// 更新信息
 	void UpdateDlgTitle();				// 更新对话框标题栏
 	BOOL UpdateGroupNameCtrl();			// 更新群名称控件
-	BOOL UpdateGroupMemo();				// 更新群公告
-	BOOL UpdateGroupMemberList();		// 更新群成员列表
 
 	BOOL InitTopToolBar();				// 初始化Top工具栏
 	BOOL InitMidToolBar();				// 初始化Middle工具栏
@@ -213,8 +200,6 @@ private:
 	void AddTextToRecvEdit(const std::string strContext);
 	void AddSendTextToRecvEdit(const CString& strContext);
 	//Dennis End
-
-	void ShowLastMsgInRecvRichEdit();
 
 	void OpenMsgLogBrowser();			// 打开消息记录浏览窗口
 	void CloseMsgLogBrowser();			// 关闭消息记录浏览窗口

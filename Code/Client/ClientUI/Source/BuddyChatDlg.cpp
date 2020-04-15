@@ -3714,14 +3714,7 @@ LRESULT CBuddyChatDlg::OnSendChatMsgResult(UINT uMsg, WPARAM wParam, LPARAM lPar
 }
 
 
-/**
- * @brief 显示接收到的最后一条消息
- * 
- */
-void CBuddyChatDlg::ShowLastMsgInRecvRichEdit()
-{
-	
-}
+
 
 void CBuddyChatDlg::OnSizeHideRightArea()
 {
