@@ -8,6 +8,9 @@
  * @copyright Copyright (c) 2019
  * 
  */
+#ifndef _TINY_IM_CUSTOM_MSG_DEF_H_
+#define _TINY_IM_CUSTOM_MSG_DEF_H_
+
 
 #define			WM_TRAYICON_NOTIFY			WM_USER + 1		// 系统托盘图标通知消息
 #define			WM_SHOW_BUDDY_CHAT_DLG		WM_USER + 2		// 显示好友会话聊天对话框消息
@@ -37,3 +40,5 @@
 
 #define			IPC_CODE_MSG_LOG_PASTE		1		// 消息记录浏览窗口粘贴消息
 #define			IPC_CODE_MSG_LOG_EXIT		2		// 消息记录浏览窗口退出消息
+
+#endif
