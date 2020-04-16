@@ -14,7 +14,6 @@
 #define _TINY_IM_C_ADD_FRIEND_CONFIRM_DLG_H_
 #include "resource.h"
 #include "SkinLib/SkinLib.h"
-//#include "FlamingoClient.h"
 
 class CAddFriendConfirmDlg : public CDialogImpl<CAddFriendConfirmDlg>
 {

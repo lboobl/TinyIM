@@ -18,7 +18,7 @@
 #include "Utils.h"
 #include "UserConfig.h"
 
-#define		WM_UPDATE_FONTINFO		WM_USER + 2
+
 
 extern C_UI_FontInfo g_fontInfo;				// 字体信息
 extern TCHAR g_cHotKey;						// 提取消息热键

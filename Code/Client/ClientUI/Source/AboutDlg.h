@@ -35,6 +35,6 @@ private:
 	CSkinDialog		m_SkinDlg;//对话框类
 	CSkinStatic		m_staAboutInfo;//关于信息
 	CSkinHyperLink	m_hyperLinkVersion;//公司或者版本的链接
-	CAboutDlgMsgConfig m_config;
+	CAboutDlgMsgConfig m_config;//关于对话框的配置信息
 };
 #endif

@@ -88,11 +88,7 @@ public:
 		MESSAGE_HANDLER_EX(WM_SET_DLG_INIT_FOCUS, OnSetDlgInitFocus)
 
 		MESSAGE_HANDLER_EX(FMG_MSG_SENDCHATMSG_RESULT, OnSendChatMsgResult)	//给好友发消息的反馈结果
-		//MESSAGE_HANDLER_EX(FMG_MSG_RECVFILE_REQUEST, OnRequestRecvFile)		//请求接受文件
-		//MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_PROGRESS, OnSendFileProgress)
-		//MESSAGE_HANDLER_EX(FMG_MSG_SEND_FILE_RESULT, OnSendFileResult)
-		//MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_PROGRESS, OnRecvFileProgress)
-		//MESSAGE_HANDLER_EX(FMG_MSG_RECV_FILE_RESULT, OnRecvFileResult)
+
 		
 
 
@@ -312,9 +308,6 @@ private:
 	//文件传输“窗口”控件
 	CSkinPictureBox		m_SendFileThumbPicture;		//文件图标
 	CSkinStatic			m_staSendFileDesc;			//文件描述（文件名+大小）
-	//CProgressBarCtrl	m_ProgressSendFile;			//文件进度条
-	//CSkinHyperLink		m_lnkSendOffline;			//转离线发送按钮
-	//CSkinHyperLink		m_lnkSendFileCancel;		//取消发送按钮
 
 	CFileTransferCtrl	m_FileTransferCtrl; //文件传输控件
 
@@ -340,7 +333,6 @@ private:
 	int					m_cyPicBarDlg;//图片高度
 	int					m_nMsgLogIndexInToolbar;	//消息记录在toolbar上的索引
 
-	//CMessageLogger		m_MsgLogger;				// 消息记录
 	CString				m_strBuddyName;			//好友名，界面显示使用
 	CString				m_strBuddySign;			//好友签名,界面显示使用
 	CString				m_strUserName;			//用户名,界面显示使用

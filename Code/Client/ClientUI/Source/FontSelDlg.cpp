@@ -13,6 +13,7 @@
 #include "FontSelDlg.h"
 #include "UIDefaultValue.h"
 #include "UserConfig.h"
+#include "UIWndMsgDef.h"
 static C_UI_FontInfo g_fontInfo;		// 字体信息
 TCHAR g_cHotKey = _T('D');	// 提取消息热键
 

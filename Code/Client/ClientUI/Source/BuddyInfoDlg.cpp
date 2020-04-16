@@ -8,7 +8,6 @@
 
 CBuddyInfoDlg::CBuddyInfoDlg(void)
 {
-	m_nUTalkUin = 0;
 	m_hDlgIcon = NULL;
 	m_hDlgSmallIcon = NULL;
 }

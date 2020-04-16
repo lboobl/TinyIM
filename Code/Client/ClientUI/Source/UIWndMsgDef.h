@@ -7,7 +7,7 @@
 #ifndef _TINY_IM_UI_WND_MSG_DEF_H_
 #define _TINY_IM_UI_WND_MSG_DEF_H_
 
-
+#define		WM_UPDATE_FONTINFO				WM_USER + 2             // 字体更新信息
 #define     FMG_MSG_NET_ERROR               WM_USER + 50            // 网络错误
 
 #define		FMG_MSG_LOGIN_RESULT			WM_USER + 100		    // 登录返回消息

@@ -16,8 +16,6 @@
 #include "SkinLib/SkinLib.h"
 
 
-
-
 class CBuddyInfoDlg : public CDialogImpl<CBuddyInfoDlg>, public CMessageFilter
 {
 public:
@@ -49,8 +47,6 @@ private:
 	void UnInit();		// 反初始化
 
 public:
-
-	UINT				m_nUTalkUin;//聊天ID
 
 private:
 	CSkinDialog			m_SkinDlg;//对话框
