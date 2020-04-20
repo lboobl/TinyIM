@@ -17,11 +17,12 @@
 
 
 #ifdef _WIN32
+
 /**
- * @brief 
+ * @brief ascii的字符串转为Unicode编码
  * 
- * @param lpszStr 
- * @return wchar_t* 
+ * @param lpszStr ascii字符串
+ * @return wchar_t* 转换后的unicode字符串(使用完毕后要释放)
  */
 wchar_t* EncodeUtil::AnsiToUnicode(const char* lpszStr)
 {
@@ -50,6 +51,13 @@ wchar_t* EncodeUtil::AnsiToUnicode(const char* lpszStr)
     return lpUnicode;
 }
 
+
+/**
+ * @brief unicode字符串转为ascii字符串
+ * 
+ * @param lpszStr unicode的字符串
+ * @return char* 转换后的ascii字符串(使用完毕后要释放)
+ */
 char* EncodeUtil::UnicodeToAnsi(const wchar_t* lpszStr)
 {
     char* lpAnsi;
@@ -77,6 +85,12 @@ char* EncodeUtil::UnicodeToAnsi(const wchar_t* lpszStr)
     return lpAnsi;
 }
 
+/**
+ * @brief ascii格式的字符串转为utf8格式的字符串
+ * 
+ * @param lpszStr ascii格式的字符
+ * @return char* utf8格式的字符串
+ */
 char* EncodeUtil::AnsiToUtf8(const char* lpszStr)
 {
     wchar_t* lpUnicode;
@@ -130,6 +144,13 @@ char* EncodeUtil::AnsiToUtf8(const char* lpszStr)
     return lpUtf8;
 }
 
+
+/**
+ * @brief utf8格式的字符串转为ascii格式的字符串
+ * 
+ * @param lpszStr utf8格式的字符串
+ * @return char* ascii格式的字符串
+ */
 char* EncodeUtil::Utf8ToAnsi(const char* lpszStr)
 {
     wchar_t* lpUnicode;
@@ -183,6 +204,13 @@ char* EncodeUtil::Utf8ToAnsi(const char* lpszStr)
     return lpAnsi;
 }
 
+
+/**
+ * @brief Unicode格式的字符串转为utf8格式的字符串
+ * 
+ * @param lpszStr unicode格式的字符串
+ * @return char* utf8格式的字符串
+ */
 char* EncodeUtil::UnicodeToUtf8(const wchar_t* lpszStr)
 {
     char* lpUtf8;
@@ -210,6 +238,13 @@ char* EncodeUtil::UnicodeToUtf8(const wchar_t* lpszStr)
     return lpUtf8;
 }
 
+
+/**
+ * @brief utf8格式的字符串转为unicode格式的字符串
+ * 
+ * @param lpszStr utf8格式的字符串
+ * @return wchar_t* unicode格式的字符串
+ */
 wchar_t* EncodeUtil::Utf8ToUnicode(const char* lpszStr)
 {
     wchar_t* lpUnicode;
@@ -237,18 +272,45 @@ wchar_t* EncodeUtil::Utf8ToUnicode(const char* lpszStr)
     return lpUnicode;
 }
 
+/**
+ * @brief ascii格式的字符串转为unicode格式的
+ * 
+ * @param lpszAnsi ascii格式的字符串
+ * @param lpszUnicode 转换后的unicode格式的字符串
+ * @param nLen ascii的字符串的长度
+ * @return true 转换成功
+ * @return false 转换失败
+ */
 bool EncodeUtil::AnsiToUnicode(const char* lpszAnsi, wchar_t* lpszUnicode, int nLen)
 {
     int nRet = ::MultiByteToWideChar(CP_ACP, 0, lpszAnsi, -1, lpszUnicode, nLen);
     return (0 == nRet) ? FALSE : TRUE;
 }
 
+/**
+ * @brief unicode格式的字符串转为ascii格式的字符串
+ * 
+ * @param lpszUnicode unicode字符串
+ * @param lpszAnsi 转换后的ascii字符串
+ * @param nLen unicode字符串的长度
+ * @return true 转换成功
+ * @return false 转换失败
+ */
 bool EncodeUtil::UnicodeToAnsi(const wchar_t* lpszUnicode, char* lpszAnsi, int nLen)
 {
     int nRet = ::WideCharToMultiByte(CP_ACP, 0, lpszUnicode, -1, lpszAnsi, nLen, NULL, NULL);
     return (0 == nRet) ? FALSE : TRUE;
 }
 
+/**
+ * @brief ascii格式转为utf8格式的字符串
+ * 
+ * @param lpszAnsi ascii格式的字符串
+ * @param lpszUtf8 utf8格式的字符串
+ * @param nLen 
+ * @return true 转换成功 
+ * @return false 转换失败
+ */
 bool EncodeUtil::AnsiToUtf8(const char* lpszAnsi, char* lpszUtf8, int nLen)
 {
     wchar_t* lpszUnicode = EncodeUtil::AnsiToUnicode(lpszAnsi);
@@ -288,6 +350,12 @@ bool EncodeUtil::Utf8ToUnicode(const char* lpszUtf8, wchar_t* lpszUnicode, int n
 }
 
 
+/**
+ * @brief ascii格式的字符串转为unicode格式的字符串
+ * 
+ * @param strAnsi ascii格式的字符串
+ * @return std::wstring unicode格式的字符串
+ */
 std::wstring EncodeUtil::AnsiToUnicode(const std::string& strAnsi)
 {
     std::wstring strUnicode;
@@ -301,6 +369,13 @@ std::wstring EncodeUtil::AnsiToUnicode(const std::string& strAnsi)
 
     return strUnicode;
 }
+
+/**
+ * @brief unicode格式的字符串转为ascii格式的字符串
+ * 
+ * @param strUnicode unicode格式的字符串
+ * @return std::string ascii格式的字符串
+ */
 std::string EncodeUtil::UnicodeToAnsi(const std::wstring& strUnicode)
 {
     std::string strAnsi;
@@ -315,6 +390,12 @@ std::string EncodeUtil::UnicodeToAnsi(const std::wstring& strUnicode)
     return strAnsi;
 }
 
+/**
+ * @brief ascii格式的字符串转为utf8格式
+ * 
+ * @param strAnsi ascii字符串
+ * @return std::string utf8格式的字符串
+ */
 std::string EncodeUtil::AnsiToUtf8(const std::string& strAnsi)
 {
     std::string strUtf8;
@@ -329,6 +410,12 @@ std::string EncodeUtil::AnsiToUtf8(const std::string& strAnsi)
     return strUtf8;
 }
 
+/**
+ * @brief utf8格式的字符串转为ascii格式
+ * 
+ * @param strUtf8 utf8格式的字符串
+ * @return std::string ascii格式的字符串
+ */
 std::string EncodeUtil::Utf8ToAnsi(const std::string& strUtf8)
 {
     std::string strAnsi;
@@ -343,6 +430,12 @@ std::string EncodeUtil::Utf8ToAnsi(const std::string& strUtf8)
     return strAnsi;
 }
 
+/**
+ * @brief Unicode格式字符串转为utf8格式
+ * 
+ * @param strUnicode unicode格式的字符串
+ * @return std::string utf8格式的字符串
+ */
 std::string EncodeUtil::UnicodeToUtf8(const std::wstring& strUnicode)
 {
     std::string strUtf8;
@@ -357,6 +450,13 @@ std::string EncodeUtil::UnicodeToUtf8(const std::wstring& strUnicode)
     return strUtf8;
 }
 
+
+/**
+ * @brief UTF8格式的字符串转为unicode格式
+ * 
+ * @param strUtf8 utf8格式的字符串
+ * @return std::wstring unicode格式的字符串
+ */
 std::wstring EncodeUtil::Utf8ToUnicode(const std::string& strUtf8)
 {
     std::wstring strUnicode;
@@ -371,25 +471,56 @@ std::wstring EncodeUtil::Utf8ToUnicode(const std::string& strUtf8)
     return strUnicode;
 }
 #else
+/**
+ * @brief ascii格式的字符串转为unicode格式的
+ * 
+ * @param strAnsi ascii格式的字符串
+ * @return std::wstring unicode格式的字符串
+ */
 std::wstring EncodeUtil::AnsiToUnicode(const std::string& strAnsi)
 {
     return Utf8ToUnicode(strAnsi);
 }
+
+/**
+ * @brief unicode格式的字符串转为ascii格式的
+ * 
+ * @param strUnicode unicode格式的字符串
+ * @return std::string ascii格式的字符串
+ */
 std::string EncodeUtil::UnicodeToAnsi(const std::wstring& strUnicode)
 {
     return UnicodeToUtf8(strUnicode);
 }
 
+/**
+ * @brief ascii格式的字符串转为utf8格式的
+ * 
+ * @param strAnsi ascii格式的字符串
+ * @return std::string utf8格式的字符串
+ */
 std::string EncodeUtil::AnsiToUtf8(const std::string& strAnsi)
 {
     return UnicodeToUtf8(AnsiToUnicode(strAnsi));
 }
 
+/**
+ * @brief utf8格式的字符串转为ascii格式的
+ * 
+ * @param strUtf8 utf8格式的字符串
+ * @return std::string ascii格式的字符串
+ */
 std::string EncodeUtil::Utf8ToAnsi(const std::string& strUtf8)
 {
    return UnicodeToAnsi(Utf8ToUnicode(strUtf8));
 }
 
+/**
+ * @brief unicode编码的字符串转为utf8编码的字符串
+ * 
+ * @param strUnicode unicode编码的字符串
+ * @return std::string utf8编码的字符串
+ */
 std::string EncodeUtil::UnicodeToUtf8(const std::wstring& strUnicode)
 {
     using convert_typeX = std::codecvt_utf8<wchar_t>;
@@ -397,6 +528,13 @@ std::string EncodeUtil::UnicodeToUtf8(const std::wstring& strUnicode)
     return convertX.to_bytes(strUnicode);
 }
 
+
+/**
+ * @brief unicode编码的字符串转为utf8编码的字符串
+ * 
+ * @param strUtf8 utf8编码的字符串
+ * @return std::wstring 
+ */
 std::wstring EncodeUtil::Utf8ToUnicode(const std::string& strUtf8)
 {
     using convert_typeX = std::codecvt_utf8<wchar_t>;
@@ -404,69 +542,3 @@ std::wstring EncodeUtil::Utf8ToUnicode(const std::string& strUtf8)
     return convertX.from_bytes(strUtf8);
 }
 #endif
-//int EncodeUtil::code_convert(char* from_charset, char* to_charset, char* inbuf, size_t inlen, char* outbuf, size_t& outlen)
-//{
-//    iconv_t cd;
-//    char** pin = &inbuf;
-//    char** pout = &outbuf;
-//
-//    cd = iconv_open(to_charset, from_charset);
-//    if (cd == 0)
-//        return false;
-//
-//    memset(outbuf, 0, outlen);
-//
-//    if (iconv(cd, pin, &inlen, pout, &outlen) == -1)
-//        return false;
-//
-//    iconv_close(cd);
-//    return true;
-//}
-//
-//bool EncodeUtil::Utf8ToGbk(char *inbuf, size_t inlen, char *outbuf, size_t outlen)
-//{
-//    return code_convert("utf-8", "gbk", inbuf, inlen, outbuf, outlen);
-//}
-//
-//bool EncodeUtil::GbkToUtf8(char* inbuf, size_t inlen, char* outbuf, size_t outlen)
-//{
-//    return code_convert("gbk", "utf-8", inbuf, inlen, outbuf, outlen);
-//}
-//
-//bool EncodeUtil::Utf8ToGbk2(char* inbuf, size_t inlen, char* outbuf, size_t& outlen)
-//{
-//    return code_convert("gbk", "utf-8", inbuf, inlen, outbuf, outlen);
-//}
-//
-//int EncodeUtil::GbkToUtf8(char* utfstr, const char* srcstr, int maxutfstrlen)
-//{
-//    if (NULL == srcstr)
-//        return -1;
-//
-//    //首先先将gbk编码转换为unicode编码
-//    if (NULL == setlocale(LC_ALL, "zh_CN.gbk"))//设置转换为unicode前的码,当前为gbk编码
-//        return -1;
-//
-//    int unicodelen = mbstowcs(NULL, srcstr, 0);//计算转换后的长度
-//    if (unicodelen <= 0)
-//        return -1;
-//
-//    wchar_t* unicodestr = (wchar_t *)calloc(sizeof(wchar_t), unicodelen + 1);
-//    mbstowcs(unicodestr, srcstr, strlen(srcstr));//将gbk转换为unicode
-//
-//    //将unicode编码转换为utf8编码
-//    if (NULL == setlocale(LC_ALL, "zh_CN.utf8"))//设置unicode转换后的码,当前为utf8
-//        return -1;
-//
-//    int utflen = wcstombs(NULL, unicodestr, 0);//计算转换后的长度
-//    if (utflen <= 0)
-//        return -1;
-//    else if (utflen >= maxutfstrlen)//判断空间是否足够
-//        return -1;
-//
-//    wcstombs(utfstr, unicodestr, utflen);
-//    utfstr[utflen] = 0;//添加结束符
-//    free(unicodestr);
-//
-//    return utflen;
-//}

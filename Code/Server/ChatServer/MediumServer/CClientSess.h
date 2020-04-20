@@ -1,7 +1,7 @@
 ﻿/**
  * @file CClientSess.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief ClientSess的头文件,ClientSess是用于连接到远端服务器的Sess
  * @version 0.1
  * @date 2019-07-20
  * 

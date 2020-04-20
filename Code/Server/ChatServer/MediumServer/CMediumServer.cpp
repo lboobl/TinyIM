@@ -3401,6 +3401,11 @@ void CChatServer::HandleFileDataSendReq(const std::shared_ptr<CServerSess>& pSes
 	pSess->SendMsg(&pMsg);
 }
 
+/**
+ * @brief 获取图片的路径
+ * 
+ * @return std::string 获取服务器保存图片的文件夹
+ */
 std::string CChatServer::GetImageDir()
 {
 	std::string strImageDir = m_fileUtil.GetCurDir() + "Image\\";
@@ -3411,6 +3416,11 @@ std::string CChatServer::GetImageDir()
 	return strImageDir;
 }
 
+/**
+ * @brief 获取服务器保存文件的文件夹
+ * 
+ * @return std::string 保存文件的文件夹
+ */
 std::string CChatServer::GetFileDir()
 {
 	std::string strFileDir = m_fileUtil.GetCurDir() + "File\\";
