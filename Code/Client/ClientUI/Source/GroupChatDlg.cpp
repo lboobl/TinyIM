@@ -771,8 +771,9 @@ void CGroupChatDlg::OnSize(UINT nType, CSize size)
 
 
 /**
- * @brief 
- * TODO:函数不明白干嘛的,好像是合并什么区域
+ * @brief 合并矩形区域
+ * 
+ * 通过CombineRgn函数知道了这个函数的功能是将控件的区域求并集,最终得到对话框的区域大小
  */
 void CGroupChatDlg::SetHotRgn()
 {
