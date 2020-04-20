@@ -1,7 +1,7 @@
 ﻿/**
  * @file MainFunc.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief TCP连接到服务器的MainFunc实现
  * @version 0.1
  * @date 2020-01-13
  * 

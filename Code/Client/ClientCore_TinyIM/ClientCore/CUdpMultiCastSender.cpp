@@ -1,7 +1,7 @@
-/**
+ï»¿/**
  * @file CUdpMultiCastSender.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief UDPµÄÊÕ·¢Êı¾İµÄÀàÊµÏÖÎÄ¼ş
+ * @brief UDPçš„æ”¶å‘æ•°æ®çš„ç±»å®ç°æ–‡ä»¶
  * @version 0.1
  * @date 2019-12-27
  *
@@ -33,7 +33,7 @@ namespace ClientCore {
 	}
 
 	/**
-	 * @brief ´ÓUDP¶ÁÈ¡Êı¾İ
+	 * @brief ä»UDPè¯»å–æ•°æ®
 	 *
 	 */
 	void CUdpMultiCastSender::do_read()
@@ -64,10 +64,10 @@ namespace ClientCore {
 	}
 
 	/**
-	 * @brief ´¦ÀíÊÕµ½µÄUDPÏûÏ¢
+	 * @brief å¤„ç†æ”¶åˆ°çš„UDPæ¶ˆæ¯
 	 *
-	 * @param endPt UDPÏûÏ¢µÄ·¢ËÍÕßµÄµØÖ·
-	 * @param pMsg UDPÏûÏ¢
+	 * @param endPt UDPæ¶ˆæ¯çš„å‘é€è€…çš„åœ°å€
+	 * @param pMsg UDPæ¶ˆæ¯
 	 */
 	void CUdpMultiCastSender::handle_msg(const asio::ip::udp::endpoint endPt, TransBaseMsg_t* pMsg)
 	{
@@ -77,7 +77,7 @@ namespace ClientCore {
 
 
 	/**
-	 * @brief ·¢ËÍÏûÏ¢µ½UDP·şÎñÆ÷
+	 * @brief å‘é€æ¶ˆæ¯åˆ°UDPæœåŠ¡å™¨
 	 *
 	 * @param pMsg
 	 */
@@ -88,11 +88,11 @@ namespace ClientCore {
 
 
 	/**
-	 * @brief ·¢ËÍÏûÏ¢µ½¶ÔÓ¦µÄIPºÍ¶Ë¿Ú
+	 * @brief å‘é€æ¶ˆæ¯åˆ°å¯¹åº”çš„IPå’Œç«¯å£
 	 *
-	 * @param strIp UDPµÄIP
-	 * @param port UDPµÄ¶Ë¿Ú
-	 * @param pMsg ´ı·¢ËÍµÄÏûÏ¢
+	 * @param strIp UDPçš„IP
+	 * @param port UDPçš„ç«¯å£
+	 * @param pMsg å¾…å‘é€çš„æ¶ˆæ¯
 	 */
 	void CUdpMultiCastSender::send_msg(const std::string strIp, const int port, const BaseMsg* pMsg)
 	{
@@ -109,10 +109,10 @@ namespace ClientCore {
 	}
 
 	/**
-	 * @brief »ñÈ¡UDPµØÖ·µÄ×Ö·û´®±íÊ¾
+	 * @brief è·å–UDPåœ°å€çš„å­—ç¬¦ä¸²è¡¨ç¤º
 	 *
-	 * @param endPt UDPµØÖ·
-	 * @return std::string µØÖ·µÄ×Ö·û´®±íÊ¾
+	 * @param endPt UDPåœ°å€
+	 * @return std::string åœ°å€çš„å­—ç¬¦ä¸²è¡¨ç¤º
 	 */
 	std::string CUdpMultiCastSender::EndPoint(const asio::ip::udp::endpoint endPt)
 	{
@@ -121,7 +121,7 @@ namespace ClientCore {
 	}
 
 	/**
-	 * @brief ·¢ËÍUDPÏûÏ¢
+	 * @brief å‘é€UDPæ¶ˆæ¯
 	 *
 	 * @param endPt
 	 * @param pMsg
@@ -133,7 +133,7 @@ namespace ClientCore {
 	}
 
 	/**
-	 * @brief ·¢ËÍUDPÏûÏ¢
+	 * @brief å‘é€UDPæ¶ˆæ¯
 	 *
 	 * @param endPt
 	 * @param pMsg

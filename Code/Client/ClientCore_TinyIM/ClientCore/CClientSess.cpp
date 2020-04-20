@@ -167,12 +167,24 @@ int CClientSess::do_read()
 	}
 	return 0;
 }
+
+/**
+ * @brief 发送消息
+ * 
+ * @param pMsg 待发送的消息
+ * @return true 发送成功
+ * @return false 发送失败
+ */
 bool CClientSess::SendMsg(const BaseMsg* pMsg)
 {
 	auto pSend = std::make_shared<TransBaseMsg_t>(pMsg->GetMsgType(), pMsg->ToString());
 	return SendMsg(pSend);
 }
 
+/**
+ * @brief Destroy the CClientSess::CClientSess object
+ * 
+ */
 CClientSess::~CClientSess()
 {
 	if (IsConnect())

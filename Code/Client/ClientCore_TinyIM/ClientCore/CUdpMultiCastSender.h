@@ -1,7 +1,7 @@
-/**
+ï»¿/**
  * @file CUdpClient.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief UDPÊÕ·¢Êı¾İµÄÀàÍ·ÎÄ¼ş
+ * @brief UDPæ”¶å‘æ•°æ®çš„ç±»å¤´æ–‡ä»¶
  * @version 0.1
  * @date 2019-12-27
  *

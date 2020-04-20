@@ -1140,6 +1140,12 @@ bool CMsgPersistentUtil::Delete_FileByHash(const std::string strFileHash)
 
 #define SAFE_FREE_PTR(x) if(x){ x->clearBindings(); delete x;x=nullptr;}
 
+/**
+ * @brief 关闭SQLite数据库连接,释放相关的对象
+ * 
+ * @return true 关闭成功
+ * @return false 关闭失败
+ */
 bool CMsgPersistentUtil::CloseDataBase()
 {
 	SAFE_FREE_PTR(m_pFriendChatCreate)

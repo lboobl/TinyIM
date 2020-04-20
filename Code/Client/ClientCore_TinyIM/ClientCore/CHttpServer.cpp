@@ -137,30 +137,56 @@ namespace ClientCore
 		}
 	}
 
-
-	/*
-	获取收到的文件的列表
-	*/
+	/**
+	 * @brief 处理获取收到的文件的列表的GET请求
+	 * 
+	 * @param response 
+	 * @param request 
+	 */
 	void CHttpServer::Get_RecvFileList(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 
 	}
 
+	/**
+	 * @brief 处理下载好友文件的GET请求
+	 * 
+	 * @param response 
+	 * @param request 
+	 */
 	void CHttpServer::Get_DownLoadFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 
 	}
 
+	/**
+	 * @brief 处理获取群文件列表的GET请求
+	 * 
+	 * @param response 
+	 * @param request 
+	 */
 	void CHttpServer::Get_GroupFileList(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 
 	}
 
+	/**
+	 * @brief 处理下载群文件的请求消息
+	 * 
+	 * @param response 
+	 * @param request 
+	 */
 	void CHttpServer::Get_DownLoadGroupFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 
 	}
 
+	/**
+	 * @brief 处理上传群文件的POST请求
+	 * 
+	 * @param response 
+	 * @param request 
+	 */
 	void CHttpServer::Post_UpLoadGroupFile(std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request)
 	{
 

@@ -1,7 +1,7 @@
 ﻿/**
  * @file CMultiCastCoreServer.h
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 总控类
+ * @brief UDP多播模式的总控类头文件
  * @version 0.1
  * @date 2019-08-30
  * 

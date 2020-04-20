@@ -1,7 +1,7 @@
 ﻿/**
  * @file CMultiCastCoreServer.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief UDP多播模式的主控类实现文件
  * @version 0.1
  * @date 2019-09-12
  * 
@@ -3060,6 +3060,12 @@ CUdpClient_PTR CMultiCastCoreServer::GetUdpSess(const std::string strUserId) {
 	}
 }
 
+/**
+ * @brief 处理用户注册请求,直接返回注册成功
+ * 
+ * @param reqMsg 用户注册请求
+ * @return UserRegisterRspMsg 用户注册回复
+ */
 UserRegisterRspMsg CMultiCastCoreServer::DoUserRegisterReq(const UserRegisterReqMsg& reqMsg)
 {
 	UserRegisterRspMsg rspMsg;
@@ -3072,6 +3078,12 @@ UserRegisterRspMsg CMultiCastCoreServer::DoUserRegisterReq(const UserRegisterReq
 	return rspMsg;
 }
 
+/**
+ * @brief 处理用户注销请求,直接返回注销成功
+ * 
+ * @param reqMsg 用户注销请求
+ * @return UserUnRegisterRspMsg 用户注销回复
+ */
 UserUnRegisterRspMsg  CMultiCastCoreServer::DoUserUnRegisterReq(const UserUnRegisterReqMsg& reqMsg)
 {
 	UserUnRegisterRspMsg rspMsg;
@@ -3084,6 +3096,12 @@ UserUnRegisterRspMsg  CMultiCastCoreServer::DoUserUnRegisterReq(const UserUnRegi
 	return rspMsg;
 }
 
+/**
+ * @brief 直接处理用户登录请求,返回登录成功
+ * 
+ * @param reqMsg 用户登录请求
+ * @return UserLoginRspMsg 用户登录回复
+ */
 UserLoginRspMsg CMultiCastCoreServer::DoUserLoginReq(const UserLoginReqMsg& reqMsg)
 {
 	UserLoginRspMsg rspMsg;
@@ -3097,6 +3115,12 @@ UserLoginRspMsg CMultiCastCoreServer::DoUserLoginReq(const UserLoginReqMsg& reqM
 	return rspMsg;
 }
 
+/**
+ * @brief 处理用户退出登录请求,直接退出登录成功
+ * 
+ * @param reqMsg 退出登录请求
+ * @return UserLogoutRspMsg 退出登录回复
+ */
 UserLogoutRspMsg CMultiCastCoreServer::DoUserLogoutReq(const UserLogoutReqMsg& reqMsg)
 {
 	UserLogoutRspMsg rspMsg;
@@ -3109,6 +3133,12 @@ UserLogoutRspMsg CMultiCastCoreServer::DoUserLogoutReq(const UserLogoutReqMsg& r
 	return rspMsg;
 }
 
+/**
+ * @brief 直接处理添加好友请求,回复添加好友成功
+ * 
+ * @param reqMsg 添加好友请求
+ * @return AddFriendSendRspMsg 添加好友回复 
+ */
 AddFriendSendRspMsg CMultiCastCoreServer::DoUserAddFriendReq(const AddFriendSendReqMsg& reqMsg)
 {
 	AddFriendSendRspMsg rspMsg;
@@ -3122,6 +3152,12 @@ AddFriendSendRspMsg CMultiCastCoreServer::DoUserAddFriendReq(const AddFriendSend
 	return rspMsg;
 }
 
+/**
+ * @brief 
+ * TODO: 此函数应该不会用到,需要在测试的时候验证
+ * @param reqMsg 
+ * @return AddFriendRecvReqMsg 
+ */
 AddFriendRecvReqMsg CMultiCastCoreServer::DoUserAddFriendRecvReq(const AddFriendRecvReqMsg& reqMsg)
 {
 	AddFriendRecvReqMsg rspMsg;
@@ -3134,6 +3170,12 @@ AddFriendRecvReqMsg CMultiCastCoreServer::DoUserAddFriendRecvReq(const AddFriend
 }
  
 
+/**
+ * @brief 直接处理查找好友请求,返回查找成功
+ * 
+ * @param reqMsg 
+ * @return FindFriendRspMsg 
+ */
 FindFriendRspMsg CMultiCastCoreServer::DoFindFriendReq(const FindFriendReqMsg& reqMsg)
 {
 	FindFriendRspMsg rspMsg;
@@ -3146,6 +3188,12 @@ FindFriendRspMsg CMultiCastCoreServer::DoFindFriendReq(const FindFriendReqMsg& r
 	return rspMsg;
 }
 
+/**
+ * @brief 直接处理添加好友通知请求,返回添加通知成功
+ * 
+ * @param reqMsg 添加好友通知请求
+ * @return AddFriendNotifyReqMsg 添加好友通知
+ */
 AddFriendNotifyReqMsg CMultiCastCoreServer::DoAddFriendNotifyReq(const AddFriendNotifyReqMsg& reqMsg)
 {
 	AddFriendNotifyReqMsg rspMsg;

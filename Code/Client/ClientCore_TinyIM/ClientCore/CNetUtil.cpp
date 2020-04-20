@@ -1,4 +1,4 @@
-#include "CNetUtil.h"
+﻿#include "CNetUtil.h"
 #ifdef WIN32
 #include <winsock2.h>
 #include <iphlpapi.h>
@@ -10,13 +10,24 @@
 #define FREE(x) HeapFree(GetProcessHeap(), 0, (x))
 #endif
 
+/**
+ * @brief IP地址的数据结构
+ * 
+ */
 struct IpStruct 
 {
-	std::string m_strIpAddr;//IP��ַ
-	std::string m_strNetMask;//��������
-	std::string m_strNetGate;//Ĭ������
+	std::string m_strIpAddr;//IP地址
+	std::string m_strNetMask;//子网掩码
+	std::string m_strNetGate;//默认网关
 };
 
+/**
+ * @brief 是否是一个好的ip地址
+ * 
+ * @param value IP地址
+ * @return true 是好的ip地址
+ * @return false 不是好的ip地址
+ */
 static bool IsGoodIpStruct(const IpStruct& value)
 {
 	if (value.m_strIpAddr == "0.0.0.0")
@@ -38,6 +49,12 @@ static bool IsGoodIpStruct(const IpStruct& value)
 	return true;
 }
 
+/**
+ * @brief 获取IP地址对应的UDP广播地址
+ * 
+ * @param value IP地址
+ * @return std::string UDP广播地址
+ */
 std::string ConvertToUdpMultiCast(const IpStruct& value)
 {
 	if (IsGoodIpStruct(value))
@@ -58,6 +75,11 @@ std::string ConvertToUdpMultiCast(const IpStruct& value)
 }
 
 #ifdef WIN32
+/**
+ * @brief 获取本机网卡的所有IP地址
+ * 
+ * @return std::vector<IpStruct> 所有IP地址信息
+ */
 static std::vector<IpStruct> GetAllIpStruct()
 {
 	std::vector<IpStruct> result;
@@ -207,12 +229,22 @@ static std::vector<IpStruct> GetAllIpStruct()
 }
 #endif
 
+/**
+ * @brief 获取所有的IP地址
+ * 
+ * @return std::vector<std::string> 所有的IP地址
+ */
 std::vector<std::string> CNetUtil::GetAllIpAddr()
 {
 	std::vector<std::string> ipVec;
 	return ipVec;
 }
 
+/**
+ * @brief 获取所有的UDP广播地址
+ * 
+ * @return std::vector<std::string> UDP广播地址的数组
+ */
 std::vector<std::string> CNetUtil::GetUdpMultiCastIpAddrVec()
 {
 	std::vector<std::string> ipVec;

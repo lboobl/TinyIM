@@ -3337,11 +3337,24 @@ bool CMediumServer::HandleSendBack(const std::shared_ptr<CClientSess>& pClientSe
 	return true;
 }
 
+/**
+ * @brief 保存用户id和用户名称的对应关系
+ * 
+ * @param strUserId 用户id
+ * @param strUserName 用户名称
+ */
 void CMediumServer::SetUserIdUserName(const std::string strUserId, const std::string strUserName)
 {
 	m_userId_UserNameMap.erase(strUserId);
 	m_userId_UserNameMap.insert({ strUserId,strUserName });
 }
+
+/**
+ * @brief 根据用户ID获取用户的名称
+ * 
+ * @param strUserId 用户ID
+ * @return std::string 用户名称
+ */
 std::string CMediumServer::GetUserNameById(const std::string strUserId)
 {
 	auto item = m_userId_UserNameMap.find(strUserId);
@@ -3355,6 +3368,12 @@ std::string CMediumServer::GetUserNameById(const std::string strUserId)
 	}
 }
 
+/**
+ * @brief 根据用户ID获取保存用户文件的主目录
+ * 
+ * @param strUserId 用户ID
+ * @return std::string 保存用户文件的目录
+ */
 std::string CMediumServer::GetUserMainFolder(const std::string strUserId)
 {
 	std::string strUserName = GetUserNameById(strUserId);
@@ -3368,6 +3387,12 @@ std::string CMediumServer::GetUserMainFolder(const std::string strUserId)
 	}
 }
 
+/**
+ * @brief 根据用户ID获取保存用户聊天记录图片的路径
+ * 
+ * @param strUserId 用户id
+ * @return std::string 聊天记录的图片路径
+ */
 std::string CMediumServer::GetUserImageDir(const std::string strUserId)
 {
 	std::string strUserName = GetUserNameById(strUserId);
@@ -3395,6 +3420,12 @@ std::string CMediumServer::GetUserFileDir(const std::string strUserId)
 	}
 }
 
+/**
+ * @brief 根据用户id获取保存其对应的聊天记录的SQLite数据库文件名称
+ * 
+ * @param strUserId 用户ID
+ * @return std::string 用户聊天记录SQLite文件
+ */
 std::string CMediumServer::GetUserDataBaseFileName(const std::string strUserId)
 {
 	std::string strUserName = GetUserNameById(strUserId);

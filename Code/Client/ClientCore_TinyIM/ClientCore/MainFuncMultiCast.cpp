@@ -1,7 +1,7 @@
 ﻿/**
  * @file MainFunc.cpp
  * @author DennisMi (https://www.dennisthink.com/)
- * @brief 
+ * @brief UDP广播模式的MainFunc
  * @version 0.1
  * @date 2020-01-13
  * 
