@@ -28,6 +28,7 @@
 #include "planform.h"
 #include "CMsgPersistentUtil.h"
 #include "CFileUtil.h"
+#include "CFileTransSpeedUtil.h"
 namespace ClientCore
 {
 using tcp = asio::ip::tcp;

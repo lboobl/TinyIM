@@ -88,6 +88,7 @@ set(TCP_CORE_FILES
 
 		./MainFunc.h
 )
+SET(FILE_SPEED_FILE ./CFileTransSpeedUtil.h ./CFileTransSpeedUtil.cpp)
 
 SET(SQLITE_CPP_SOURCE ../include/thirdparty/SQLiteCpp/sqlite3/sqlite3.c
 ../include/thirdparty/SQLiteCpp/src/Backup.cpp
@@ -110,7 +111,8 @@ ${HTTP_FILES}
 ${DAEMON_FILES}
 ${MSG_STRUCT_FILES}
 ${MULTI_CAST_SESS_FILES}
-${UDP_MAIN_FILES})
+${UDP_MAIN_FILES}
+${FILE_SPEED_FILE})
 
 add_executable(ClientCore MediumServer.cpp ${TCP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
 add_executable(MultiCastCore MediumServer.cpp ${UDP_SERVER_FILES}  ${SQLITE_CPP_SOURCE})
