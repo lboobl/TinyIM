@@ -74,7 +74,7 @@ CGroupChatDlg::~CGroupChatDlg(void)
 {
 }
 
-//
+
 /**
  * @brief 预处理消息
  * 
@@ -164,9 +164,6 @@ void CGroupChatDlg::OnUpdateGroupInfo()
 	UpdateDlgTitle();					// 更新对话框标题
 	UpdateGroupNameCtrl();				// 更新群名称控件
 }
-
-
-
 
 /**
  * @brief 响应初始化对话框

@@ -297,7 +297,7 @@ void CBuddyChatDlg::OnUpdateBuddyHeadPic()
 	BOOL bGray = FALSE;
 	BOOL bMobile = FALSE;
 	CString strThumbPath;
-	C_UI_BuddyInfo* pBuddyInfo = GetBuddyInfoPtr();
+	C_UI_BuddyInfo* pBuddyInfo = NULL;
 	if(pBuddyInfo != NULL)
 	{
 		nFaceID = pBuddyInfo->m_nFace;
@@ -431,9 +431,10 @@ BOOL CBuddyChatDlg::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
     }
 	return TRUE;
 }
+
 /**
  * @brief 
- * 
+ * TODO: 作用待明确
  * @param nIDCtl 
  * @param lpMeasureItemStruct 
  */
@@ -741,7 +742,13 @@ void CBuddyChatDlg::OnBtn_Image(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }
 
-// “消息记录”按钮
+/**
+ * @brief 响应“消息记录”按钮
+ * 
+ * @param uNotifyCode 
+ * @param nID 
+ * @param wndCtl 
+ */
 void CBuddyChatDlg::OnBtn_MsgLog(UINT uNotifyCode, int nID, CWindow wndCtl)
 {
 	m_bMsgLogWindowVisible = !m_bMsgLogWindowVisible;
@@ -1369,7 +1376,11 @@ void CBuddyChatDlg::OnMenu_SaveAs(UINT uNotifyCode, int nID, CWindow wndCtl)
 	}
 }	
 
-
+/**
+ * @brief 执行在线发送文件模式
+ * 
+ * @param strFileName 待发送的文件名
+ */
 void CBuddyChatDlg::SendFileOnLine(CString strFileName)
 {
 	std::string strStdFileName = EncodeUtil::UnicodeToAnsi(strFileName.GetBuffer());
@@ -1378,6 +1389,11 @@ void CBuddyChatDlg::SendFileOnLine(CString strFileName)
 	strFileName.ReleaseBuffer();
 }
 
+/**
+ * @brief 执行使用在线P2P模式发送文件
+ * 
+ * @param strFileName 待发送的文件名
+ */
 void CBuddyChatDlg::SendFileOnLineP2P(CString strFileName) 
 {
 	std::string strStdFileName = EncodeUtil::UnicodeToAnsi(strFileName.GetBuffer());
@@ -1481,16 +1497,32 @@ void CBuddyChatDlg::OnMenu_SendFileSettings(UINT uNotifyCode, int nID, CWindow w
 
 }
 
+/**
+ * @brief 是否显示聊天记录
+ * 
+ * @return true 
+ * @return false 
+ */
 bool CBuddyChatDlg::IsShowHistory()
 {
 	return m_bMsgLogWindowVisible;
 }
 
+/**
+ * @brief 是否显示文件传输
+ * 
+ * @return true 
+ * @return false 
+ */
 bool CBuddyChatDlg::IsShowFileTrans()
 {
 	return IsFilesTransferring() && m_bFileTransferVisible;
 }
 
+/**
+ * @brief 响应设置窗口大小
+ * 
+ */
 void CBuddyChatDlg::OnSizeSetWindowSize()
 {
 	if (IsWindow())
@@ -1537,6 +1569,12 @@ void CBuddyChatDlg::OnSizeSetWindowSize()
 		}
 	}
 }
+
+/**
+ * @brief 响应显示左侧区域
+ * 
+ * @param rcLeftShowArea 
+ */
 void CBuddyChatDlg::OnSizeShowLeftArea(const CRect& rcLeftShowArea)
 {
 	//左边显示区域分解
@@ -1662,6 +1700,12 @@ void CBuddyChatDlg::OnSizeShowLeftArea(const CRect& rcLeftShowArea)
 		}
 	}
 }
+
+/**
+ * @brief 响应显示右侧区域
+ * 
+ * @param rcRightShowArea 
+ */
 void CBuddyChatDlg::OnSizeShowRightArea(const CRect& rcRightShowArea)
 {
 	{
@@ -1745,6 +1789,11 @@ void CBuddyChatDlg::OnSizeShowRightArea(const CRect& rcRightShowArea)
 		}
 	}
 }
+
+/**
+ * @brief 响应对话框大小改变时显示聊天记录
+ * 
+ */
 void CBuddyChatDlg::OnSizeShowHistory()
 {
 	//OnSizeSetWindowSize();
@@ -1850,7 +1899,6 @@ BOOL CBuddyChatDlg::SendOfflineFile(PCTSTR pszFileName)
 
 		m_FileTransferCtrl.SetFileItemRequestByID(nItemID, pFileItemRequest);
 
-		//m_lpFMGClient->m_FileTask.AddItem(pFileItemRequest);
 	}
 	return TRUE;
 }
@@ -2028,6 +2076,11 @@ BOOL CBuddyChatDlg::OnRichEdit_LBtnDblClk(MSG* pMsg)
 	return bRet;
 }
 
+/**
+ * @brief 响应接收文件请求消息
+ * 
+ * @param pMsg 
+ */
 void CBuddyChatDlg::OnFileRecvReqMsg(C_WND_MSG_FileRecvReq * pMsg)
 {
 	if (nullptr != pMsg)
@@ -2051,6 +2104,11 @@ void CBuddyChatDlg::OnFileRecvReqMsg(C_WND_MSG_FileRecvReq * pMsg)
 	}
 }
 
+/**
+ * @brief 响应发送文件回复消息
+ * 
+ * @param pMsg 
+ */
 void CBuddyChatDlg::OnFileSendRspMsg(C_WND_MSG_FileSendRsp * pMsg)
 {
 	if (nullptr != pMsg)
@@ -2076,6 +2134,11 @@ void CBuddyChatDlg::OnFileSendRspMsg(C_WND_MSG_FileSendRsp * pMsg)
 	}
 }
 
+/**
+ * @brief 响应文件通知请求消息
+ * 
+ * @param pMsg 文件通知请求消息
+ */
 void CBuddyChatDlg::OnFileNotifyReqMsg(C_WND_MSG_FileNotifyReq* pMsg)
 {
 	if (nullptr != pMsg)
@@ -2085,7 +2148,6 @@ void CBuddyChatDlg::OnFileNotifyReqMsg(C_WND_MSG_FileNotifyReq* pMsg)
 		CString strToName = EncodeUtil::AnsiToUnicode(pMsg->m_szFriendId);
 		CString strContext;
 		strContext.Format(_T("%s 已经接收了 %s 的文件 %s"), strToName, strSendName, strFileName);
-		//MessageBox(strContext, _T("接收文件通知"));
 	}
 	{
 		auto pSess = CMsgProto::GetInstance();
@@ -2167,29 +2229,9 @@ BOOL CBuddyChatDlg::OnRichEdit_RBtnDown(MSG* pMsg)
 }
 
 
-/**
- * @brief 获取好友信息指针
- * 
- * @return C_UI_BuddyInfo* 
- */
-C_UI_BuddyInfo* CBuddyChatDlg::GetBuddyInfoPtr()
-{
-	return NULL;
-}
 
-/**
- * @brief 获取用户信息指针
- * 
- * @return C_UI_BuddyInfo* 
- */
-C_UI_BuddyInfo* CBuddyChatDlg::GetUserInfoPtr()
-{
-	/*if (m_lpFMGClient != NULL)
-		return m_lpFMGClient->GetUserInfo();
-	else
-		return NULL;*/
-	return nullptr;
-}
+
+
 
 
 
@@ -2199,20 +2241,18 @@ C_UI_BuddyInfo* CBuddyChatDlg::GetUserInfoPtr()
  */
 void CBuddyChatDlg::UpdateData()
 {
-	C_UI_BuddyInfo* lpBuddyInfo = GetBuddyInfoPtr();
+	C_UI_BuddyInfo* lpBuddyInfo = NULL;
 	if (lpBuddyInfo != NULL)
 	{
-		//m_nUTalkNumber = lpBuddyInfo->m_uUserID;
 		m_strBuddyName = lpBuddyInfo->m_strNickName.c_str();
 		
 		m_strBuddySign = lpBuddyInfo->m_strSign.c_str();
 		
 	}
 
-	C_UI_BuddyInfo* lpUserInfo = GetUserInfoPtr();
+	C_UI_BuddyInfo* lpUserInfo = NULL;
 	if (lpUserInfo != NULL)
 	{
-		/*m_nUserNumber = lpUserInfo->m_nUTalkNum;*/
 		m_strUserName = lpUserInfo->m_strNickName.c_str();
 	}
 }
@@ -2516,7 +2556,11 @@ void CBuddyChatDlg::InitFileTransferCtrl()
 	ShowFileTransferCtrl(FALSE);
 }
 
-
+/**
+ * @brief 响应发送文件进度消息
+ * 
+ * @param pMsg 发送文件进度消息
+ */
 void CBuddyChatDlg::OnSendFileProcess(C_WND_MSG_FileProcessMsg* pMsg)
 {
 	//TODO: 需要区分具体的文件
@@ -2529,6 +2573,11 @@ void CBuddyChatDlg::OnSendFileProcess(C_WND_MSG_FileProcessMsg* pMsg)
 	}
 }
 
+/**
+ * @brief 响应接收文件进度消息
+ * 
+ * @param pMsg 文件传输进度消息
+ */
 void CBuddyChatDlg::OnRecvFileProcess(C_WND_MSG_FileProcessMsg* pMsg)
 {
 	//TODO: 需要区分具体的文件
@@ -2711,7 +2760,7 @@ LRESULT CBuddyChatDlg::OnClickTabMgr(LPNMHDR pnmh)
 
 /**
  * @brief 响应文件传输按钮
- * 
+ * TODO: 调用出待明确
  * @param pnmh 
  * @return LRESULT 
  */
@@ -3055,7 +3104,7 @@ BOOL CBuddyChatDlg::Init()
 
 /**
  * @brief 
- * 
+ * TODO: 具体作用不明确
  */
 void CBuddyChatDlg::SetHotRgn()
 {
@@ -3291,83 +3340,7 @@ BOOL CBuddyChatDlg::_RichEdit_InsertFace(HWND hWnd, LPCTSTR lpszFileName, int nF
 	return bRet;
 }
 
-//处理系统表情ID
-BOOL CBuddyChatDlg::HandleSysFaceId(HWND hRichEditWnd, LPCTSTR& p, CString& strText)
-{
-	//int nFaceId = GetBetweenInt(p+2, _T("[\""), _T("\"]"), -1);
-	//CFaceInfo* lpFaceInfo = m_lpFaceList->GetFaceInfoById(nFaceId);
-	//if (lpFaceInfo != NULL)
-	//{
-	//	if (!strText.IsEmpty())
-	//	{
-	//		_RichEdit_ReplaceSel(hRichEditWnd, strText); 
-	//		strText = _T("");
-	//	}
 
-	//	_RichEdit_InsertFace(hRichEditWnd, lpFaceInfo->m_strFileName.c_str(), 
-	//		lpFaceInfo->m_nId, lpFaceInfo->m_nIndex);
-
-	//	p = _tcsstr(p+2, _T("\"]"));
-	//	p++;
-	//	return TRUE;
-	//}
-	return FALSE;
-}
-
-
-/**
- * @brief 处理系统表情索引
- * 
- * @param hRichEditWnd 
- * @param p 
- * @param strText 
- * @return BOOL 
- */
-BOOL CBuddyChatDlg::HandleSysFaceIndex(HWND hRichEditWnd, LPCTSTR& p, CString& strText)
-{
-	/*int nFaceIndex = GetBetweenInt(p+2, _T("[\""), _T("\"]"), -1);
-	CFaceInfo* lpFaceInfo = m_lpFaceList->GetFaceInfoByIndex(nFaceIndex);
-	if (lpFaceInfo != NULL)
-	{
-		if (!strText.IsEmpty())
-		{
-			_RichEdit_ReplaceSel(hRichEditWnd, strText); 
-			strText = _T("");
-		}
-
-		_RichEdit_InsertFace(hRichEditWnd, lpFaceInfo->m_strFileName.c_str(), 
-			lpFaceInfo->m_nId, lpFaceInfo->m_nIndex);
-
-		p = _tcsstr(p+2, _T("\"]"));
-		p++;
-		return TRUE;
-	}*/
-	return FALSE;
-}
-
-//处理客户图片
-BOOL CBuddyChatDlg::HandleCustomPic(HWND hRichEditWnd, LPCTSTR& p, CString& strText)
-{
-	//CString strFileName = GetBetweenString(p+2, _T("[\""), _T("\"]")).c_str();
-	//if (!strFileName.IsEmpty())
-	//{
-	//	if (!strText.IsEmpty())
-	//	{
-	//		_RichEdit_ReplaceSel(hRichEditWnd, strText); 
-	//		strText = _T("");
-	//	}
-
-	//	//if (::PathIsRelative(strFileName))
-	//	//	strFileName = m_lpFMGClient->GetChatPicFullName(strFileName).c_str();
-
-	//	_RichEdit_InsertFace(hRichEditWnd, strFileName, -1, -1);
-
-	//	p = _tcsstr(p+2, _T("\"]"));
-	//	p++;
-	//	return TRUE;
-	//}
-	return FALSE;
-}
 
 /**
  * @brief 将消息添加到发送的编辑框
@@ -3380,6 +3353,11 @@ void CBuddyChatDlg::AddMsgToSendEdit(LPCTSTR lpText)
 	m_richSend.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 }
 
+/**
+ * @brief 响应文件传输结果
+ * 
+ * @param pMsg 文件传输结果消息
+ */
 void CBuddyChatDlg::OnFileTransResult(C_WND_MSG_FriendFileResult* pMsg)
 {
 	if (pMsg)
@@ -3397,6 +3375,12 @@ void CBuddyChatDlg::OnFileTransResult(C_WND_MSG_FriendFileResult* pMsg)
 		AddNotifyMsgToRecvEdit(strFileName+strResult);
 	}
 }
+
+/**
+ * @brief 添加通知消息(对方不在线/文件接收成功等消息)到消息接收框
+ * 
+ * @param strMsg 通知消息内容
+ */
 void CBuddyChatDlg::AddNotifyMsgToRecvEdit(const CString& strMsg)
 {
 	RichEdit_SetSel(m_richRecv.m_hWnd, -1, -1);
@@ -3646,7 +3630,10 @@ LRESULT CBuddyChatDlg::OnSendChatMsgResult(UINT uMsg, WPARAM wParam, LPARAM lPar
 
 
 
-
+/**
+ * @brief 响应右侧区域隐藏时窗口大小改变
+ * 
+ */
 void CBuddyChatDlg::OnSizeHideRightArea()
 {
 	if(m_TabMgr.IsWindow())
